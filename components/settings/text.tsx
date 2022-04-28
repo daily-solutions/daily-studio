@@ -21,7 +21,7 @@ const TextSettings = () => {
           checked={params?.['videoSettings.showTextOverlay']}
           marginBottom={10}
           onChange={e =>
-            setParams(params => ({
+            setParams((params: any) => ({
               ...params,
               'videoSettings.showTextOverlay': e.target.checked,
             }))
@@ -37,7 +37,7 @@ const TextSettings = () => {
             defaultValue="An example text overlay"
             value={params?.['text.content']}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setParams(params => ({
+              setParams((params: any) => ({
                 ...params,
                 'text.content': e.target.value,
               }))
@@ -48,7 +48,7 @@ const TextSettings = () => {
             width="100%"
             value={params?.['text.align_horizontal']}
             onChange={e =>
-              setParams(params => ({
+              setParams((params: any) => ({
                 ...params,
                 'text.align_horizontal': e.target.value,
               }))
@@ -65,7 +65,7 @@ const TextSettings = () => {
             width="100%"
             value={params?.['text.align_vertical']}
             onChange={e =>
-              setParams(params => ({
+              setParams((params: any) => ({
                 ...params,
                 'text.align_vertical': e.target.value,
               }))

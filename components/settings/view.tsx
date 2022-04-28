@@ -26,7 +26,7 @@ const ModeButton = ({ name, label, Icon }: Props) => {
   const theme = useTheme();
   const { params, setParams } = useLiveStreaming();
 
-  const onClick = () => setParams(params => ({ ...params, mode: name }));
+  const onClick = () => setParams((params: any) => ({ ...params, mode: name }));
 
   return (
     <Pane
@@ -61,7 +61,7 @@ const ViewSettings = () => {
               width="100%"
               value={params?.['videoSettings.dominant.position']}
               onChange={e =>
-                setParams(params => ({
+                setParams((params: any) => ({
                   ...params,
                   'videoSettings.dominant.position': e.target.value,
                 }))
@@ -79,7 +79,7 @@ const ViewSettings = () => {
               width="100%"
               value={params?.['videoSettings.dominant.splitPos'] || '8'}
               onChange={e =>
-                setParams(params => ({
+                setParams((params: any) => ({
                   ...params,
                   'videoSettings.dominant.splitPos':
                     Number(e.target.value) / 10,
@@ -96,7 +96,7 @@ const ViewSettings = () => {
               defaultValue={5}
               value={params?.['videoSettings.dominant.numChiclets']}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setParams(params => ({
+                setParams((params: any) => ({
                   ...params,
                   'videoSettings.dominant.numChiclets': Number(e.target.value),
                 }))
@@ -108,7 +108,7 @@ const ViewSettings = () => {
                 defaultChecked={true}
                 checked={params?.['videoSettings.dominant.followDomFlag']}
                 onChange={e =>
-                  setParams(params => ({
+                  setParams((params: any) => ({
                     ...params,
                     'videoSettings.dominant.followDomFlag': e.target.checked,
                   }))
@@ -126,7 +126,7 @@ const ViewSettings = () => {
               width="100%"
               value={params?.['videoSettings.pip.position']}
               onChange={e =>
-                setParams(params => ({
+                setParams((params: any) => ({
                   ...params,
                   'videoSettings.pip.position': e.target.value,
                 }))
@@ -148,7 +148,7 @@ const ViewSettings = () => {
               value={params?.['videoSettings.pip.aspectRatio']}
               step={0.1}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setParams(params => ({
+                setParams((params: any) => ({
                   ...params,
                   'videoSettings.pip.aspectRatio': Number(e.target.value),
                 }))
@@ -160,7 +160,7 @@ const ViewSettings = () => {
                 defaultChecked={true}
                 checked={params?.['videoSettings.pip.followDomFlag']}
                 onChange={e =>
-                  setParams(params => ({
+                  setParams((params: any) => ({
                     ...params,
                     'videoSettings.pip.followDomFlag': e.target.checked,
                   }))

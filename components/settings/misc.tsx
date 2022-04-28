@@ -15,7 +15,7 @@ const MiscSettings = () => {
           checked={params?.['videoSettings.showParticipantLabels']}
           marginBottom={10}
           onChange={e =>
-            setParams(params => ({
+            setParams((params: any) => ({
               ...params,
               'videoSettings.showParticipantLabels': e.target.checked,
             }))
@@ -30,7 +30,7 @@ const MiscSettings = () => {
           checked={params?.['videoSettings.roundedCorners']}
           marginBottom={10}
           onChange={e =>
-            setParams(params => ({
+            setParams((params: any) => ({
               ...params,
               'videoSettings.roundedCorners': e.target.checked,
             }))
@@ -45,7 +45,7 @@ const MiscSettings = () => {
         width="100%"
         value={params?.['videoSettings.scaleMode']}
         onChange={e =>
-          setParams(params => ({
+          setParams((params: any) => ({
             ...params,
             'videoSettings.scaleMode': e.target.value,
           }))
