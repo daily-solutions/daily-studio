@@ -32,12 +32,12 @@ const Index = () => {
       >
         <Heading size={900}>VCS Studio</Heading>
         <Text size={500}>
-          Demo a breakout room UX built using Daily video APIs.
+          Wanna see VCS in action? start by joining the call
         </Text>
 
         <Pane display="flex" padding={10}>
           <Button appearance="primary" onClick={startCall}>
-            Start call
+            Join call
           </Button>
         </Pane>
       </Pane>
