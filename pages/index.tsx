@@ -17,8 +17,11 @@ const Index = () => {
   return (
     <Pane>
       <Head>
-        <title>Breakout Rooms</title>
-        <meta name="description" content="Breakout Rooms" />
+        <title>VCS Studio</title>
+        <meta
+          name="description"
+          content="Custom composite a live stream in real-time with Daily Prebuilt & VCS"
+        />
       </Head>
 
       <Header />
@@ -32,7 +35,7 @@ const Index = () => {
       >
         <Heading size={900}>VCS Studio</Heading>
         <Text size={500}>
-          Wanna see VCS in action? start by joining the call
+          Custom composite a live stream in real-time with Daily Prebuilt & VCS
         </Text>
 
         <Pane display="flex" padding={10}>
