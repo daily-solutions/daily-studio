@@ -147,6 +147,17 @@ const FormField = ({ field }: Props): ReactElement => {
             </Pane>
           </Pane>
         );
+      case 'string':
+        return (
+          <TextInputField
+            name={field.id}
+            label={field.label}
+            defaultValue={field.defaultValue}
+            value={params?.[field.id]}
+            onChange={handleChange}
+            marginTop={20}
+          />
+        );
       default:
         return null;
     }
