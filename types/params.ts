@@ -9,7 +9,7 @@ export type MenuItem = {
 export type BasicParam = {
   id: string;
   label: string;
-  render?: { key: string; value: string };
+  render?: { key: string; value: string | boolean | number };
 };
 
 export type MenuParams = {

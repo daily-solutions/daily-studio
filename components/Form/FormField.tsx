@@ -91,8 +91,7 @@ const FormField = ({ field }: Props): ReactElement => {
             <Switch
               name={field.id}
               height={20}
-              defaultChecked={field.defaultValue}
-              checked={params?.[field.id]}
+              checked={params?.[field.id] ?? field.defaultValue}
               onChange={handleChange}
             />
             <Text marginLeft={10}>{field.label}</Text>

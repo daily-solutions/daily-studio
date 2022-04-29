@@ -1,5 +1,5 @@
 import { ReactComponent as GridView } from '../icons/gridd-md.svg';
-import { ReactComponent as SingleView } from '../icons/user-md.svg';
+import { ReactComponent as SingleView } from '../icons/single-md.svg';
 import { ReactComponent as PIPView } from '../icons/pip-md.svg';
 import { ReactComponent as SpeakerView } from '../icons/speaker-md.svg';
 import { ReactComponent as SplitView } from '../icons/split-md.svg';
