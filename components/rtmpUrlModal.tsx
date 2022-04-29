@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Dialog, TextInputField } from 'evergreen-ui';
-import { useLiveStreaming } from '../contexts/LiveStreamingContext';
+import { useVCS } from '../contexts/VCSProvider';
 
 type Props = {
   isShown: boolean;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
-  const { rtmpUrl, setRtmpUrl, startStreaming } = useLiveStreaming();
+  const { rtmpUrl, setRtmpUrl, startStreaming } = useVCS();
 
   const handleClick = () => {
     startStreaming();

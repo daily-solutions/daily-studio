@@ -10,7 +10,7 @@ import React, {
 import { useCall } from './CallProvider';
 import { DailyEventObject } from '@daily-co/daily-js';
 
-type LiveStreamingType = {
+type VCSType = {
   children: React.ReactNode;
 };
 
@@ -18,11 +18,16 @@ type Tab = 'view' | 'text' | 'image' | 'toast' | 'misc';
 
 interface ContextValue {
   isLiveStreaming: boolean;
-  errorMsg: string;
+  isRecording: boolean;
+  liveStreamingErrorMsg: string;
+  recordingErrorMsg: string;
   params: any;
   setParams: Dispatch<SetStateAction<any>>;
   rtmpUrl: string;
   setRtmpUrl: Dispatch<SetStateAction<string>>;
+  startRecording: () => void;
+  updateRecording: () => void;
+  stopRecording: () => void;
   startStreaming: () => void;
   updateStreaming: () => void;
   stopStreaming: () => void;
@@ -31,18 +36,24 @@ interface ContextValue {
 }
 
 // @ts-ignore
-export const LiveStreamingContext = createContext<ContextValue>(null);
+export const VCSContext = createContext<ContextValue>(null);
 
-export const LiveStreamingProvider = ({ children }: LiveStreamingType) => {
+export const VCSProvider = ({ children }: VCSType) => {
   const [rtmpUrl, setRtmpUrl] = useState('');
   const [isLiveStreaming, setIsLiveStreaming] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+
   const [errorMsg, setErrorMsg] = useState(null);
+  const [recordingErrorMsg, setRecordingErrorMsg] = useState(null);
+
   const [activeTab, setActiveTab] = useState<Tab>('view');
 
   const { callFrame } = useCall();
   const [params, setParams] = useState({
     mode: 'dominant',
   });
+
+  // live-streaming functions
 
   const startStreaming = useCallback(() => {
     callFrame.startLiveStreaming({
@@ -68,6 +79,31 @@ export const LiveStreamingProvider = ({ children }: LiveStreamingType) => {
 
   const stopStreaming = () => callFrame.stopLiveStreaming();
 
+  // recording functions.
+
+  const startRecording = useCallback(() => {
+    callFrame.startRecording({
+      layout: {
+        // @ts-ignore
+        preset: 'custom',
+        composition_id: 'daily:baseline',
+        composition_params: { ...params },
+      },
+    });
+  }, [callFrame, params]);
+
+  const updateRecording = useCallback(() => {
+    callFrame.updateRecording({
+      layout: {
+        // @ts-ignore
+        preset: 'custom',
+        composition_params: { ...params },
+      },
+    });
+  }, [callFrame, params]);
+
+  const stopRecording = () => callFrame.stopRecording();
+
   useEffect(() => {
     if (!callFrame || !isLiveStreaming) return;
 
@@ -75,7 +111,20 @@ export const LiveStreamingProvider = ({ children }: LiveStreamingType) => {
   }, [callFrame, isLiveStreaming, params, updateStreaming]);
 
   useEffect(() => {
+    if (!callFrame || !isRecording) return;
+
+    updateRecording();
+  }, [callFrame, isRecording, params, updateRecording]);
+
+  useEffect(() => {
     if (!callFrame) return;
+
+    callFrame.on('recording-started', () => setIsRecording(true));
+    callFrame.on('recording-stopped', () => setIsRecording(false));
+    callFrame.on('recording-error', (event: DailyEventObject) => {
+      setIsRecording(false);
+      setRecordingErrorMsg(event.errorMsg);
+    });
 
     callFrame.on('live-streaming-started', () => setIsLiveStreaming(true));
     callFrame.on('live-streaming-stopped', () => setIsLiveStreaming(false));
@@ -86,14 +135,19 @@ export const LiveStreamingProvider = ({ children }: LiveStreamingType) => {
   }, [callFrame]);
 
   return (
-    <LiveStreamingContext.Provider
+    <VCSContext.Provider
       value={{
         isLiveStreaming,
-        errorMsg,
+        isRecording,
+        liveStreamingErrorMsg: errorMsg,
+        recordingErrorMsg,
         params,
         setParams,
         rtmpUrl,
         setRtmpUrl,
+        startRecording,
+        updateRecording,
+        stopRecording,
         startStreaming,
         updateStreaming,
         stopStreaming,
@@ -102,8 +156,8 @@ export const LiveStreamingProvider = ({ children }: LiveStreamingType) => {
       }}
     >
       {children}
-    </LiveStreamingContext.Provider>
+    </VCSContext.Provider>
   );
 };
 
-export const useLiveStreaming = () => useContext(LiveStreamingContext);
+export const useVCS = () => useContext(VCSContext);

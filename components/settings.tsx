@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Button, Text, Pane } from 'evergreen-ui';
 import ViewSettings from './settings/view';
-import { useLiveStreaming } from '../contexts/LiveStreamingContext';
+import { useVCS } from '../contexts/VCSProvider';
 import MiscSettings from './settings/misc';
 import TextSettings from './settings/text';
 import ImageSettings from './settings/image';
@@ -11,11 +11,23 @@ type Props = {
 };
 
 const Settings = ({ startStreaming }: Props) => {
-  const { isLiveStreaming, stopStreaming, activeTab } = useLiveStreaming();
+  const {
+    isLiveStreaming,
+    isRecording,
+    stopStreaming,
+    startRecording,
+    stopRecording,
+    activeTab,
+  } = useVCS();
 
   const handleStreamToggle = () => {
     if (isLiveStreaming) stopStreaming();
     else startStreaming(true);
+  };
+
+  const handleRecordingToggle = () => {
+    if (isRecording) stopRecording();
+    else startRecording();
   };
 
   const renderActiveTab = () => {
@@ -41,22 +53,26 @@ const Settings = ({ startStreaming }: Props) => {
         <Pane
           padding={10}
           display="flex"
-          flexDirection="column"
           justifyContent="center"
           alignItems="center"
           position="fixed"
           bottom={0}
-          width="15vw"
+          gap={10}
         >
           <Button
             appearance="primary"
             intent={isLiveStreaming ? 'danger' : 'none'}
-            size="large"
-            width="100%"
             marginTop={10}
             onClick={handleStreamToggle}
           >
             {isLiveStreaming ? 'Stop Live Streaming' : 'Start Live Stream'}
+          </Button>
+          <Button
+            intent={isRecording ? 'danger' : 'none'}
+            marginTop={10}
+            onClick={handleRecordingToggle}
+          >
+            {isRecording ? 'Stop Recording' : 'Start Recording'}
           </Button>
         </Pane>
       </Pane>

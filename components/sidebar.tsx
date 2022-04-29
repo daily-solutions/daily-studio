@@ -6,10 +6,10 @@ import { ReactComponent as IconText } from '../icons/text-md.svg';
 import { ReactComponent as IconToast } from '../icons/toast-md.svg';
 import { ReactComponent as IconImage } from '../icons/image-md.svg';
 import { ReactComponent as IconMisc } from '../icons/misc-md.svg';
-import { useLiveStreaming } from '../contexts/LiveStreamingContext';
+import { useVCS } from '../contexts/VCSProvider';
 
 const Sidebar = () => {
-  const { activeTab, setActiveTab } = useLiveStreaming();
+  const { activeTab, setActiveTab } = useVCS();
   return (
     <Pane
       display="flex"

@@ -2,7 +2,7 @@ import React from 'react';
 import { CallProvider } from '../contexts/CallProvider';
 import { useRouter } from 'next/router';
 import Layout from '../components/layout';
-import { LiveStreamingProvider } from '../contexts/LiveStreamingContext';
+import { VCSProvider } from '../contexts/VCSProvider';
 import Head from 'next/head';
 
 const Room = () => {
@@ -11,7 +11,7 @@ const Room = () => {
 
   return (
     <CallProvider roomName={room as string}>
-      <LiveStreamingProvider>
+      <VCSProvider>
         <Head>
           <title>VCS Studio</title>
           <meta
@@ -20,7 +20,7 @@ const Room = () => {
           />
         </Head>
         <Layout />
-      </LiveStreamingProvider>
+      </VCSProvider>
     </CallProvider>
   );
 };

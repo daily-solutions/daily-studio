@@ -11,11 +11,11 @@ const Layout = () => {
 
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
-      <Pane width="80%" position="fixed">
+      <Pane width="75%" position="fixed">
         <div ref={callRef} />
       </Pane>
       <Pane
-        width="20%"
+        width="25%"
         background="tint1"
         position="absolute"
         right={0}

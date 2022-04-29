@@ -23,6 +23,7 @@ export default async function handler(
           enable_network_ui: true,
           enable_screenshare: true,
           enable_chat: true,
+          enable_recording: 'cloud',
         },
       }),
     };

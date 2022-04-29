@@ -8,7 +8,7 @@ import {
   TextInputField,
   FormFieldLabel,
 } from 'evergreen-ui';
-import { useLiveStreaming } from '../../contexts/LiveStreamingContext';
+import { useVCS } from '../../contexts/VCSProvider';
 import { MenuItem as MenuItemProp } from '../../types/params';
 import IconButton from '../IconButton';
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 const FormField = ({ field }: Props): ReactElement => {
-  const { params, setParams } = useLiveStreaming();
+  const { params, setParams } = useVCS();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (field.type) {
