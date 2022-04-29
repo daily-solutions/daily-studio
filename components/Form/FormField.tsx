@@ -1,50 +1,16 @@
-import React, { FC, ReactElement, SVGProps } from 'react';
+import React, { ReactElement } from 'react';
 import { Param } from '../../types/params';
 import {
   Pane,
-  Small,
   Switch,
   Text,
-  useTheme,
   SelectField,
   TextInputField,
   FormFieldLabel,
 } from 'evergreen-ui';
 import { useLiveStreaming } from '../../contexts/LiveStreamingContext';
 import { MenuItem as MenuItemProp } from '../../types/params';
-
-type MenuItemProps = {
-  name: string;
-  label: string;
-  Icon: FC<SVGProps<SVGSVGElement>>;
-};
-
-const MenuItem = ({ name, label, Icon }: MenuItemProps) => {
-  const theme = useTheme();
-  const { params, setParams } = useLiveStreaming();
-
-  const onClick = () =>
-    setParams((params: { [key: string]: any }) => ({ ...params, mode: name }));
-
-  return (
-    <Pane
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      color={
-        params.mode === name
-          ? theme.colors.icon.selected
-          : theme.colors.icon.default
-      }
-      cursor="pointer"
-      onClick={onClick}
-    >
-      <Icon />
-      <Small marginTop={5}>{label}</Small>
-    </Pane>
-  );
-};
+import IconButton from '../IconButton';
 
 type Props = {
   field: Param;
@@ -74,20 +40,26 @@ const FormField = ({ field }: Props): ReactElement => {
     switch (field.type) {
       case 'menu':
         return (
-          <Pane display="flex" marginTop={15} gap={20}>
+          <Pane display="flex" marginTop={20} gap={20}>
             {field.menu.map((menuItem: MenuItemProp) => (
-              <MenuItem
-                name={menuItem.value}
+              <IconButton
                 label={menuItem.label}
                 Icon={menuItem.icon}
                 key={menuItem.value}
+                onClick={() =>
+                  setParams((params: { [key: string]: any }) => ({
+                    ...params,
+                    mode: menuItem.value,
+                  }))
+                }
+                isActive={params.mode === menuItem.value}
               />
             ))}
           </Pane>
         );
       case 'boolean':
         return (
-          <Pane display="flex" marginTop={15}>
+          <Pane display="flex" marginTop={20}>
             <Switch
               name={field.id}
               height={20}
@@ -109,7 +81,7 @@ const FormField = ({ field }: Props): ReactElement => {
             onChange={e =>
               handleChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
             }
-            marginTop={15}
+            marginTop={20}
           >
             {field.values.map((field: string) => (
               <option value={field} key={field}>
@@ -130,12 +102,12 @@ const FormField = ({ field }: Props): ReactElement => {
             max={field?.max}
             value={params?.[field.id]}
             onChange={handleChange}
-            marginTop={15}
+            marginTop={20}
           />
         );
       case 'range':
         return (
-          <Pane marginTop={15}>
+          <Pane marginTop={20}>
             <FormFieldLabel>{field.label}</FormFieldLabel>
             <input
               type="range"
@@ -152,7 +124,7 @@ const FormField = ({ field }: Props): ReactElement => {
         );
       case 'color':
         return (
-          <Pane marginTop={15}>
+          <Pane marginTop={20}>
             <FormFieldLabel>{field.label}</FormFieldLabel>
             <Pane
               display="flex"

@@ -14,6 +14,8 @@ type LiveStreamingType = {
   children: React.ReactNode;
 };
 
+type Tab = 'view' | 'text' | 'image' | 'toast' | 'misc';
+
 interface ContextValue {
   isLiveStreaming: boolean;
   errorMsg: string;
@@ -24,6 +26,8 @@ interface ContextValue {
   startStreaming: () => void;
   updateStreaming: () => void;
   stopStreaming: () => void;
+  activeTab: Tab;
+  setActiveTab: Dispatch<SetStateAction<Tab>>;
 }
 
 // @ts-ignore
@@ -33,6 +37,7 @@ export const LiveStreamingProvider = ({ children }: LiveStreamingType) => {
   const [rtmpUrl, setRtmpUrl] = useState('');
   const [isLiveStreaming, setIsLiveStreaming] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [activeTab, setActiveTab] = useState<Tab>('view');
 
   const { callFrame } = useCall();
   const [params, setParams] = useState({
@@ -92,6 +97,8 @@ export const LiveStreamingProvider = ({ children }: LiveStreamingType) => {
         startStreaming,
         updateStreaming,
         stopStreaming,
+        activeTab,
+        setActiveTab,
       }}
     >
       {children}

@@ -1,38 +1,42 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button, Heading, Pane } from 'evergreen-ui';
+import { Button, Text, Pane } from 'evergreen-ui';
 import ViewSettings from './settings/view';
 import { useLiveStreaming } from '../contexts/LiveStreamingContext';
 import MiscSettings from './settings/misc';
 import TextSettings from './settings/text';
+import ImageSettings from './settings/image';
 
 type Props = {
   startStreaming: Dispatch<SetStateAction<boolean>>;
 };
 
 const Settings = ({ startStreaming }: Props) => {
-  const { isLiveStreaming, stopStreaming } = useLiveStreaming();
+  const { isLiveStreaming, stopStreaming, activeTab } = useLiveStreaming();
 
   const handleStreamToggle = () => {
     if (isLiveStreaming) stopStreaming();
     else startStreaming(true);
   };
 
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case 'view':
+        return <ViewSettings />;
+      case 'text':
+        return <TextSettings />;
+      case 'image':
+        return <ImageSettings />;
+      case 'toast':
+        return <Text>Coming soon..</Text>;
+      case 'misc':
+        return <MiscSettings />;
+    }
+  };
+
   return (
-    <Pane>
-      <Pane zIndex={1} flexShrink={0} elevation={0} backgroundColor="white">
-        <Pane padding={16} textAlign="center">
-          <Heading size={600}>VCS Studio</Heading>
-        </Pane>
-      </Pane>
-      <Pane
-        padding={10}
-        display="flex"
-        flexDirection="column"
-        overflowY="scroll"
-      >
-        <ViewSettings />
-        <TextSettings />
-        <MiscSettings />
+    <Pane overflow="auto">
+      <Pane padding={10} display="flex" flexDirection="column">
+        {renderActiveTab()}
 
         <Pane
           padding={10}
@@ -42,7 +46,7 @@ const Settings = ({ startStreaming }: Props) => {
           alignItems="center"
           position="fixed"
           bottom={0}
-          width="19vw"
+          width="15vw"
         >
           <Button
             appearance="primary"
