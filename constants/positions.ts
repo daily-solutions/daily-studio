@@ -11,3 +11,15 @@ export const PositionCorner = {
   BOTTOM_LEFT: 'bottom-left',
   BOTTOM_RIGHT: 'bottom-right',
 };
+
+export const PositionHorizontal = {
+  CENTER: 'center',
+  LEFT: 'left',
+  RIGHT: 'right',
+};
+
+export const PositionVertical = {
+  CENTER: 'center',
+  TOP: 'top',
+  BOTTOM: 'bottom',
+};

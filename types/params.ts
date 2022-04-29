@@ -45,5 +45,23 @@ export type EnumParams = {
   values: string[];
 };
 
+type StringParams = {
+  type: 'string';
+  defaultValue: string;
+};
+
+type ColorParams = {
+  type: 'color';
+  defaultValue: string;
+};
+
 export type Param = BasicParam &
-  (MenuParams | BooleanParams | RangeParams | EnumParams | NumberParams);
+  (
+    | MenuParams
+    | BooleanParams
+    | RangeParams
+    | EnumParams
+    | NumberParams
+    | StringParams
+    | ColorParams
+  );

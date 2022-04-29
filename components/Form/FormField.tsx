@@ -146,8 +146,33 @@ const FormField = ({ field }: Props): ReactElement => {
               defaultValue={field.defaultValue}
               value={params?.[field.id]}
               onChange={handleChange}
-              style={{ width: '100%', height: '2px' }}
+              style={{ width: '100%', height: '2px', marginTop: '8px' }}
             />
+          </Pane>
+        );
+      case 'color':
+        return (
+          <Pane marginTop={15}>
+            <FormFieldLabel>{field.label}</FormFieldLabel>
+            <Pane
+              display="flex"
+              marginTop={8}
+              justifyContent="center"
+              alignContent="center"
+            >
+              <input
+                type="color"
+                name={field.id}
+                defaultValue={field.defaultValue}
+                value={params?.[field.id]}
+                onChange={handleChange}
+                style={{
+                  border: 'none',
+                  WebkitAppearance: 'none',
+                  width: '100%',
+                }}
+              />
+            </Pane>
           </Pane>
         );
       default:

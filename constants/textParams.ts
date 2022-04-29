@@ -1,0 +1,88 @@
+import { PositionHorizontal, PositionVertical } from './positions';
+import { Param } from '../types/params';
+
+export const textParams: Param[] = [
+  {
+    id: 'showTextOverlay',
+    label: 'Show Text Overlay?',
+    type: 'boolean',
+    defaultValue: false,
+  },
+  {
+    id: 'text.content',
+    label: 'Text',
+    type: 'string',
+    defaultValue: 'An example text overlay',
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.align_horizontal',
+    label: 'Horizontal Text Alignment',
+    type: 'enum',
+    defaultValue: PositionHorizontal.CENTER,
+    values: Object.values(PositionHorizontal),
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.align_vertical',
+    label: 'Vertical Text Alignment',
+    type: 'enum',
+    defaultValue: PositionVertical.CENTER,
+    values: Object.values(PositionVertical),
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.offset_x',
+    label: 'X offset to text overlay position',
+    type: 'number',
+    defaultValue: 0,
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.offset_y',
+    label: 'Y offset to text overlay position',
+    type: 'number',
+    defaultValue: 0,
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.rotationInDegrees',
+    label: 'Degrees to rotate (positive for clock-wise rotation)',
+    type: 'number',
+    defaultValue: 0,
+    min: -360,
+    max: 360,
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.fontWeight',
+    label: 'Font Weight',
+    type: 'enum',
+    defaultValue: '400',
+    values: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.fontSize_percentageOfViewH',
+    label: 'Font Size (% according to the height of the frame)',
+    type: 'number',
+    defaultValue: 7,
+    min: 0,
+    max: 100,
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.color',
+    label: 'Text Color',
+    type: 'color',
+    defaultValue: 'rgba(255, 250, 200, 0.95)',
+    render: { key: 'showTextOverlay', value: true },
+  },
+  {
+    id: 'text.strokeColor',
+    label: 'Text Stroke Color',
+    type: 'color',
+    defaultValue: 'rgba(0, 0, 0, 0.8)',
+    render: { key: 'showTextOverlay', value: true },
+  },
+];
