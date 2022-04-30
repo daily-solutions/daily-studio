@@ -5,9 +5,9 @@ import { useVCS } from '../contexts/VCSProvider';
 import MiscSettings from './settings/misc';
 import TextSettings from './settings/text';
 import ImageSettings from './settings/image';
-import Assets from './settings/assets';
-import People from './settings/people';
-import Toast from './settings/toast';
+import AssetSettings from './settings/assets';
+import PeopleSettings from './settings/people';
+import ToastSettings from './settings/toast';
 
 type Props = {
   startStreaming: Dispatch<SetStateAction<boolean>>;
@@ -42,30 +42,29 @@ const Settings = ({ startStreaming }: Props) => {
       case 'image':
         return <ImageSettings />;
       case 'toast':
-        return <Toast />;
+        return <ToastSettings />;
       case 'misc':
         return <MiscSettings />;
       case 'assets':
-        return <Assets />;
+        return <AssetSettings />;
       case 'people':
-        return <People />;
+        return <PeopleSettings />;
     }
   };
 
   return (
-    <Pane overflow="auto" padding={0}>
-      <Pane display="flex" flexDirection="column">
-        {renderActiveTab()}
+    <Pane padding={0} height="90vh">
+      <Pane display="flex" flexDirection="column" height="100%">
+        <Pane padding={24} overflow="auto" height="95%" maxHeight="95%">
+          {renderActiveTab()}
+        </Pane>
 
         <Pane
           padding={10}
           display="flex"
           justifyContent="center"
           alignItems="center"
-          position="absolute"
-          bottom={0}
           gap={10}
-          width="85%"
         >
           <Button
             appearance="primary"

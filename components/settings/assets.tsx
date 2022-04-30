@@ -7,7 +7,6 @@ import {
   Heading,
   Paragraph,
 } from 'evergreen-ui';
-import PaneHeader from '../PaneHeader';
 import { useVCS } from '../../contexts/VCSProvider';
 
 const Asset = () => {
@@ -44,7 +43,7 @@ const Asset = () => {
   );
 };
 
-const Assets = () => {
+const AssetSettings = () => {
   const { assets, setAssets } = useVCS();
   const [createAsset, setCreateAsset] = useState(false);
 
@@ -57,11 +56,7 @@ const Assets = () => {
 
   return (
     <Pane>
-      <PaneHeader
-        title="Session Assets"
-        subtitle="We can only set it before starting the stream or recording"
-      />
-      <Pane padding={24}>
+      <Pane>
         <Heading>Session Assets ({Object.keys(assets).length})</Heading>
 
         <Pane marginY={10}>
@@ -89,4 +84,4 @@ const Assets = () => {
   );
 };
 
-export default Assets;
+export default AssetSettings;

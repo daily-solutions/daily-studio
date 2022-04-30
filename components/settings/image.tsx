@@ -2,7 +2,6 @@ import React from 'react';
 import { Pane } from 'evergreen-ui';
 import FormMaker from '../Form';
 import { imageParams } from '../../constants/imageParams';
-import PaneHeader from '../PaneHeader';
 import { useVCS } from '../../contexts/VCSProvider';
 
 const ImageSettings = () => {
@@ -11,7 +10,6 @@ const ImageSettings = () => {
   const params = imageParams(Object.keys(assets), Object.keys(assets)?.[0]);
   return (
     <Pane>
-      <PaneHeader title="Image Settings" />
       <FormMaker fields={params} />
     </Pane>
   );

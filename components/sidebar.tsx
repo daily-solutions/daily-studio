@@ -20,6 +20,7 @@ const Sidebar = () => {
       alignItems="center"
       gap={20}
       position="fixed"
+      background="white"
     >
       <IconButton
         label="View"

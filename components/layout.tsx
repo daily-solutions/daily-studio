@@ -4,6 +4,7 @@ import { useCall } from '../contexts/CallProvider';
 import Settings from './settings';
 import RtmpUrlModal from './rtmpUrlModal';
 import Sidebar from './sidebar';
+import LayoutHeader from './PaneHeader';
 
 const Layout = () => {
   const { callRef } = useCall();
@@ -11,16 +12,11 @@ const Layout = () => {
 
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
-      <Pane width="75%" position="fixed">
+      <Pane width="75%">
         <div ref={callRef} />
       </Pane>
-      <Pane
-        width="25%"
-        background="tint1"
-        position="absolute"
-        right={0}
-        minHeight="100vh"
-      >
+      <Pane width="25%" background="tint1" minHeight="100vh">
+        <LayoutHeader />
         <Pane width="100%" display="flex">
           <Pane width="85%">
             <Settings startStreaming={setShow} />

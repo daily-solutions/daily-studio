@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pane, Heading, Paragraph } from 'evergreen-ui';
+import { useVCS } from '../contexts/VCSProvider';
 
 type Props = {
   title: string;
@@ -19,4 +20,25 @@ const PaneHeader = ({ title, subtitle }: Props) => {
   );
 };
 
-export default PaneHeader;
+const LayoutHeader = () => {
+  const { activeTab } = useVCS();
+
+  switch (activeTab) {
+    case 'view':
+      return <PaneHeader title="View Settings" />;
+    case 'text':
+      return <PaneHeader title="Text Settings" />;
+    case 'image':
+      return <PaneHeader title="Image Settings" />;
+    case 'toast':
+      return <PaneHeader title="Toast Settings" />;
+    case 'misc':
+      return <PaneHeader title="Misc Settings" />;
+    case 'assets':
+      return <PaneHeader title="Session Assets" />;
+    case 'people':
+      return <PaneHeader title="People Settings" />;
+  }
+};
+
+export default LayoutHeader;
