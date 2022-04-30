@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@daily-co/daily-js": "^0.25.0",
+    "@daily-co/daily-react-hooks": "^0.1.1",
     "evergreen-ui": "^6.9.7",
     "next": "12.1.5",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "recoil": "^0.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
