@@ -45,6 +45,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
   const [callFrame, setCallFrame] = useState<DailyCall | null>(null);
   const [joined, setJoined] = useState(false);
   const [participants, setParticipants] = useState([]);
+  const [token, setToken] = useState(null);
 
   const handleLeftMeeting = useCallback(() => {
     if (callFrame) callFrame.destroy();
@@ -52,20 +53,24 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
   }, [callFrame]);
 
   useEffect(() => {
+    if (!roomName) return;
+
+    const optionsToken = {
+      method: 'POST',
+      body: JSON.stringify({
+        isOwner: true,
+        roomName,
+      }),
+    };
+    fetch('/api/createToken', optionsToken)
+      .then(rt => rt.json())
+      .then(resToken => setToken(resToken.token));
+  }, [roomName]);
+
+  useEffect(() => {
     if (callFrame) return;
 
     const joinCall = async () => {
-      const options = {
-        method: 'POST',
-        body: JSON.stringify({
-          isOwner: true,
-          roomName,
-        }),
-      };
-
-      const res = await fetch('/api/createToken', options);
-      const { token } = await res.json();
-
       const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN;
 
       const newCallFrame: DailyCall = DailyIframe.createFrame(
@@ -85,8 +90,8 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
       };
     };
 
-    if (roomName) joinCall();
-  }, [callFrame, handleLeftMeeting, roomName]);
+    if (roomName && token) joinCall();
+  }, [callFrame, handleLeftMeeting, roomName, token]);
 
   useEffect(() => {
     if (!callFrame) return;

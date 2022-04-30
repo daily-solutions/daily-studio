@@ -9,9 +9,9 @@ const Index = () => {
 
   const startCall = async () => {
     const options = { method: 'POST' };
-    const res = await fetch('/api/createRoom', options);
-    const { name } = await res.json();
-    await router.push(`/${name}`);
+    fetch('/api/createRoom', options)
+      .then(res => res.json())
+      .then(response => router.push(`/${response.name}`));
   };
 
   return (

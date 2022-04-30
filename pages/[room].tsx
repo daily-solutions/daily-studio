@@ -10,18 +10,20 @@ const Room = () => {
   const { room } = router.query;
 
   return (
-    <CallProvider roomName={room as string}>
-      <VCSProvider>
-        <Head>
-          <title>VCS Studio</title>
-          <meta
-            name="description"
-            content="Custom composite a live stream in real-time with Daily Prebuilt & VCS"
-          />
-        </Head>
-        <Layout />
-      </VCSProvider>
-    </CallProvider>
+    router.isReady && (
+      <CallProvider roomName={room as string}>
+        <VCSProvider>
+          <Head>
+            <title>VCS Studio</title>
+            <meta
+              name="description"
+              content="Custom composite a live stream in real-time with Daily Prebuilt & VCS"
+            />
+          </Head>
+          <Layout />
+        </VCSProvider>
+      </CallProvider>
+    )
   );
 };
 
