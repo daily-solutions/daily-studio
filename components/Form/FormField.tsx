@@ -182,10 +182,9 @@ const FormField = ({ field }: Props): ReactElement => {
     }
   };
 
-  if (field?.render === undefined) return render();
-  else {
-    if (params?.[field.render.key] === field.render.value) return render();
-  }
+  if (!field?.render || params?.[field.render.key] === field.render.value)
+    return render();
+  return null;
 };
 
 export default FormField;
