@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heading, Pane } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import { useCall } from '../contexts/CallProvider';
 import Settings from './settings';
 import RtmpUrlModal from './rtmpUrlModal';
@@ -21,16 +21,18 @@ const Layout = () => {
         right={0}
         minHeight="100vh"
       >
-        <Pane zIndex={1} flexShrink={0} elevation={0} backgroundColor="white">
-          <Pane padding={16} textAlign="center">
-            <Heading size={600}>VCS Studio</Heading>
-          </Pane>
-        </Pane>
         <Pane width="100%" display="flex">
-          <Pane width="80%">
+          <Pane width="85%">
             <Settings startStreaming={setShow} />
           </Pane>
-          <Pane width="20%" background="white" padding={10} minHeight="100vh">
+          <Pane
+            width="15%"
+            background="white"
+            padding={10}
+            minHeight="100vh"
+            display="flex"
+            justifyContent="center"
+          >
             <Sidebar />
           </Pane>
         </Pane>

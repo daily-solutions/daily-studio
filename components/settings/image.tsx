@@ -1,13 +1,18 @@
 import React from 'react';
-import { Heading, Pane } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import FormMaker from '../Form';
 import { imageParams } from '../../constants/imageParams';
+import PaneHeader from '../PaneHeader';
+import { useVCS } from '../../contexts/VCSProvider';
 
 const ImageSettings = () => {
+  const { assets } = useVCS();
+
+  const params = imageParams(Object.keys(assets), Object.keys(assets)?.[0]);
   return (
-    <Pane padding={10}>
-      <Heading>Image Overlay Settings</Heading>
-      <FormMaker fields={imageParams} />
+    <Pane>
+      <PaneHeader title="Image Settings" />
+      <FormMaker fields={params} />
     </Pane>
   );
 };

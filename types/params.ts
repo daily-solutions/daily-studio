@@ -55,6 +55,11 @@ type ColorParams = {
   defaultValue: string;
 };
 
+type ButtonParams = {
+  type: 'button';
+  defaultValue: number;
+};
+
 export type Param = BasicParam &
   (
     | MenuParams
@@ -64,4 +69,5 @@ export type Param = BasicParam &
     | NumberParams
     | StringParams
     | ColorParams
+    | ButtonParams
   );

@@ -6,10 +6,12 @@ import { ReactComponent as IconText } from '../icons/text-md.svg';
 import { ReactComponent as IconToast } from '../icons/toast-md.svg';
 import { ReactComponent as IconImage } from '../icons/image-md.svg';
 import { ReactComponent as IconMisc } from '../icons/misc-md.svg';
+import { ReactComponent as IconAssets } from '../icons/assets-md.svg';
+import { ReactComponent as IconPeople } from '../icons/people-md.svg';
 import { useVCS } from '../contexts/VCSProvider';
 
 const Sidebar = () => {
-  const { activeTab, setActiveTab } = useVCS();
+  const { activeTab, setActiveTab, isRecording, isLiveStreaming } = useVCS();
   return (
     <Pane
       display="flex"
@@ -42,6 +44,19 @@ const Sidebar = () => {
         Icon={IconToast}
         onClick={() => setActiveTab('toast')}
         isActive={activeTab === 'toast'}
+      />
+      <IconButton
+        label="Assets"
+        Icon={IconAssets}
+        disabled={isRecording || isLiveStreaming}
+        onClick={() => setActiveTab('assets')}
+        isActive={activeTab === 'assets'}
+      />
+      <IconButton
+        label="People"
+        Icon={IconPeople}
+        onClick={() => setActiveTab('people')}
+        isActive={activeTab === 'people'}
       />
       <IconButton
         label="Misc"

@@ -6,9 +6,16 @@ type IconButtonProps = {
   Icon: FC<SVGProps<SVGSVGElement>>;
   onClick: () => void;
   isActive: boolean;
+  disabled?: boolean;
 };
 
-const IconButton = ({ label, Icon, onClick, isActive }: IconButtonProps) => {
+const IconButton = ({
+  label,
+  Icon,
+  onClick,
+  isActive,
+  disabled = false,
+}: IconButtonProps) => {
   const theme = useTheme();
 
   return (
@@ -17,8 +24,14 @@ const IconButton = ({ label, Icon, onClick, isActive }: IconButtonProps) => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      color={isActive ? theme.colors.icon.selected : theme.colors.icon.default}
-      cursor="pointer"
+      color={
+        disabled
+          ? theme.colors.icon.disabled
+          : isActive
+          ? theme.colors.icon.selected
+          : theme.colors.icon.default
+      }
+      cursor={disabled ? 'not-allowed' : 'pointer'}
       onClick={onClick}
     >
       <Icon />

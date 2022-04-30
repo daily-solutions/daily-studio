@@ -8,7 +8,7 @@ type Props = {
 };
 
 const FormMaker = ({ fields }: Props) => (
-  <Pane marginTop={20}>
+  <Pane padding={24}>
     {fields.map((field: Param) => (
       <FormField field={field} key={field.id} />
     ))}

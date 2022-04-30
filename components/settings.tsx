@@ -1,10 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button, Text, Pane } from 'evergreen-ui';
+import { Button, Pane } from 'evergreen-ui';
 import ViewSettings from './settings/view';
 import { useVCS } from '../contexts/VCSProvider';
 import MiscSettings from './settings/misc';
 import TextSettings from './settings/text';
 import ImageSettings from './settings/image';
+import Assets from './settings/assets';
+import People from './settings/people';
+import Toast from './settings/toast';
 
 type Props = {
   startStreaming: Dispatch<SetStateAction<boolean>>;
@@ -39,15 +42,19 @@ const Settings = ({ startStreaming }: Props) => {
       case 'image':
         return <ImageSettings />;
       case 'toast':
-        return <Text>Coming soon..</Text>;
+        return <Toast />;
       case 'misc':
         return <MiscSettings />;
+      case 'assets':
+        return <Assets />;
+      case 'people':
+        return <People />;
     }
   };
 
   return (
-    <Pane overflow="auto">
-      <Pane padding={10} display="flex" flexDirection="column">
+    <Pane overflow="auto" padding={0}>
+      <Pane display="flex" flexDirection="column">
         {renderActiveTab()}
 
         <Pane
@@ -55,14 +62,16 @@ const Settings = ({ startStreaming }: Props) => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          position="fixed"
+          position="absolute"
           bottom={0}
           gap={10}
+          width="85%"
         >
           <Button
             appearance="primary"
             intent={isLiveStreaming ? 'danger' : 'none'}
             marginTop={10}
+            width="50%"
             onClick={handleStreamToggle}
           >
             {isLiveStreaming ? 'Stop Live Streaming' : 'Start Live Stream'}
@@ -71,6 +80,7 @@ const Settings = ({ startStreaming }: Props) => {
             intent={isRecording ? 'danger' : 'none'}
             marginTop={10}
             onClick={handleRecordingToggle}
+            width="50%"
           >
             {isRecording ? 'Stop Recording' : 'Start Recording'}
           </Button>

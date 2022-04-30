@@ -7,6 +7,7 @@ import {
   SelectField,
   TextInputField,
   FormFieldLabel,
+  Button,
 } from 'evergreen-ui';
 import { useVCS } from '../../contexts/VCSProvider';
 import { MenuItem as MenuItemProp } from '../../types/params';
@@ -36,11 +37,18 @@ const FormField = ({ field }: Props): ReactElement => {
     }
   };
 
+  const handleOnClick = (field: Param) => {
+    setParams((params: { [key: string]: any }) => ({
+      ...params,
+      [field.id]: (params[field.id] ?? field.defaultValue) + 1,
+    }));
+  };
+
   const render = () => {
     switch (field.type) {
       case 'menu':
         return (
-          <Pane display="flex" marginTop={20} gap={20}>
+          <Pane marginBottom={20} display="flex" gap={20}>
             {field.menu.map((menuItem: MenuItemProp) => (
               <IconButton
                 label={menuItem.label}
@@ -59,7 +67,7 @@ const FormField = ({ field }: Props): ReactElement => {
         );
       case 'boolean':
         return (
-          <Pane display="flex" marginTop={20}>
+          <Pane display="flex" marginBottom={20}>
             <Switch
               name={field.id}
               height={20}
@@ -81,7 +89,7 @@ const FormField = ({ field }: Props): ReactElement => {
             onChange={e =>
               handleChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
             }
-            marginTop={20}
+            marginBottom={20}
           >
             {field.values.map((field: string) => (
               <option value={field} key={field}>
@@ -102,12 +110,12 @@ const FormField = ({ field }: Props): ReactElement => {
             max={field?.max}
             value={params?.[field.id]}
             onChange={handleChange}
-            marginTop={20}
+            marginBottom={20}
           />
         );
       case 'range':
         return (
-          <Pane marginTop={20}>
+          <Pane marginBottom={20}>
             <FormFieldLabel>{field.label}</FormFieldLabel>
             <input
               type="range"
@@ -118,17 +126,17 @@ const FormField = ({ field }: Props): ReactElement => {
               defaultValue={field.defaultValue}
               value={params?.[field.id]}
               onChange={handleChange}
-              style={{ width: '100%', height: '2px', marginTop: '8px' }}
+              style={{ width: '100%', height: '2px', marginBottom: '8px' }}
             />
           </Pane>
         );
       case 'color':
         return (
-          <Pane marginTop={20}>
+          <Pane marginBottom={20}>
             <FormFieldLabel>{field.label}</FormFieldLabel>
             <Pane
               display="flex"
-              marginTop={8}
+              marginBottom={8}
               justifyContent="center"
               alignContent="center"
             >
@@ -155,8 +163,19 @@ const FormField = ({ field }: Props): ReactElement => {
             defaultValue={field.defaultValue}
             value={params?.[field.id]}
             onChange={handleChange}
-            marginTop={20}
+            marginBottom={20}
           />
+        );
+      case 'button':
+        return (
+          <Button
+            marginBottom={20}
+            onClick={() => handleOnClick(field)}
+            appearance="primary"
+            width="100%"
+          >
+            {field.label}
+          </Button>
         );
       default:
         return null;

@@ -1,12 +1,13 @@
 import React from 'react';
-import { Heading, Pane } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import FormMaker from '../Form';
 import { miscParams } from '../../constants/miscParams';
+import PaneHeader from '../PaneHeader';
 
 const MiscSettings = () => {
   return (
-    <Pane padding={10}>
-      <Heading>Misc Settings</Heading>
+    <Pane>
+      <PaneHeader title="Misc Settings" />
       <FormMaker fields={miscParams} />
     </Pane>
   );

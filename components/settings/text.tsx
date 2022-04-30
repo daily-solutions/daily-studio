@@ -1,12 +1,13 @@
 import React from 'react';
-import { Heading, Pane } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import FormMaker from '../Form';
 import { textParams } from '../../constants/textParams';
+import PaneHeader from '../PaneHeader';
 
 const TextSettings = () => {
   return (
-    <Pane padding={10}>
-      <Heading>Text Overlay Settings</Heading>
+    <Pane>
+      <PaneHeader title="Text Settings" />
       <FormMaker fields={textParams} />
     </Pane>
   );

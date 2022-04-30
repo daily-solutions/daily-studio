@@ -13,7 +13,6 @@ export const textParams: Param[] = [
     label: 'Text',
     type: 'string',
     defaultValue: 'An example text overlay',
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.align_horizontal',
@@ -21,7 +20,6 @@ export const textParams: Param[] = [
     type: 'enum',
     defaultValue: PositionHorizontal.CENTER,
     values: Object.values(PositionHorizontal),
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.align_vertical',
@@ -29,21 +27,18 @@ export const textParams: Param[] = [
     type: 'enum',
     defaultValue: PositionVertical.CENTER,
     values: Object.values(PositionVertical),
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.offset_x',
     label: 'X offset to text overlay position',
     type: 'number',
     defaultValue: 0,
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.offset_y',
     label: 'Y offset to text overlay position',
     type: 'number',
     defaultValue: 0,
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.rotationInDegrees',
@@ -52,7 +47,6 @@ export const textParams: Param[] = [
     defaultValue: 0,
     min: -360,
     max: 360,
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.fontWeight',
@@ -60,7 +54,6 @@ export const textParams: Param[] = [
     type: 'enum',
     defaultValue: '400',
     values: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.fontFamily',
@@ -79,7 +72,6 @@ export const textParams: Param[] = [
       'SuezOne',
       'Teko',
     ],
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.fontSize_percentageOfViewH',
@@ -88,20 +80,17 @@ export const textParams: Param[] = [
     defaultValue: 7,
     min: 0,
     max: 100,
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.color',
     label: 'Text Color',
     type: 'color',
     defaultValue: 'rgba(255, 250, 200, 0.95)',
-    render: { key: 'showTextOverlay', value: true },
   },
   {
     id: 'text.strokeColor',
     label: 'Text Stroke Color',
     type: 'color',
     defaultValue: 'rgba(0, 0, 0, 0.8)',
-    render: { key: 'showTextOverlay', value: true },
   },
 ];

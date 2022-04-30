@@ -14,7 +14,7 @@ type VCSType = {
   children: React.ReactNode;
 };
 
-type Tab = 'view' | 'text' | 'image' | 'toast' | 'misc';
+type Tab = 'view' | 'text' | 'image' | 'toast' | 'misc' | 'assets' | 'people';
 
 interface ContextValue {
   isLiveStreaming: boolean;
@@ -33,6 +33,8 @@ interface ContextValue {
   stopStreaming: () => void;
   activeTab: Tab;
   setActiveTab: Dispatch<SetStateAction<Tab>>;
+  assets: { [key: string]: string };
+  setAssets: Dispatch<SetStateAction<{ [key: string]: string }>>;
 }
 
 // @ts-ignore
@@ -52,6 +54,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   const [params, setParams] = useState({
     mode: 'dominant',
   });
+  const [assets, setAssets] = useState({});
 
   // live-streaming functions
 
@@ -153,6 +156,8 @@ export const VCSProvider = ({ children }: VCSType) => {
         stopStreaming,
         activeTab,
         setActiveTab,
+        assets,
+        setAssets,
       }}
     >
       {children}
