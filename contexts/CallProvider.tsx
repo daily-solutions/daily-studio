@@ -8,7 +8,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import DailyIframe, { DailyCall } from '@daily-co/daily-js';
+import DailyIframe, {
+  DailyCall,
+  DailyEvent,
+  DailyParticipant,
+} from '@daily-co/daily-js';
 
 const CALL_OPTIONS = {
   showLeaveButton: true,
@@ -29,6 +33,8 @@ interface ContextValue {
   callRef: any;
   callFrame: DailyCall | null;
   setCallFrame: Dispatch<SetStateAction<DailyCall | null>>;
+  participants: DailyParticipant[];
+  joinedMeeting: boolean;
 }
 
 // @ts-ignore
@@ -37,6 +43,8 @@ export const CallContext = createContext<ContextValue>(null);
 export const CallProvider = ({ children, roomName }: CallProviderType) => {
   const callRef = useRef<HTMLDivElement>(null);
   const [callFrame, setCallFrame] = useState<DailyCall | null>(null);
+  const [joined, setJoined] = useState(false);
+  const [participants, setParticipants] = useState([]);
 
   const handleLeftMeeting = useCallback(() => {
     if (callFrame) callFrame.destroy();
@@ -69,8 +77,10 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
       const url: string = `https://${domain}.daily.co/${roomName}`;
       newCallFrame.join({ url, token });
 
+      newCallFrame.on('joined-meeting', () => setJoined(true));
       newCallFrame.on('left-meeting', handleLeftMeeting);
       return () => {
+        newCallFrame.off('joined-meeting', () => setJoined(true));
         newCallFrame.off('left-meeting', handleLeftMeeting);
       };
     };
@@ -78,12 +88,39 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
     if (roomName) joinCall();
   }, [callFrame, handleLeftMeeting, roomName]);
 
+  useEffect(() => {
+    if (!callFrame) return;
+
+    const events: string[] = [
+      'joined-meeting',
+      'participant-joined',
+      'participant-updated',
+      'participant-left',
+    ];
+
+    const handleParticipantsState = () =>
+      setParticipants(Object.values(callFrame.participants()));
+
+    handleParticipantsState();
+    events.map((event: string) => {
+      callFrame.on(event as DailyEvent, handleParticipantsState);
+    });
+
+    return () => {
+      events.map((event: string) => {
+        callFrame.off(event as DailyEvent, handleParticipantsState);
+      });
+    };
+  }, [callFrame]);
+
   return (
     <CallContext.Provider
       value={{
         callRef,
         callFrame,
         setCallFrame,
+        participants,
+        joinedMeeting: joined,
       }}
     >
       {children}

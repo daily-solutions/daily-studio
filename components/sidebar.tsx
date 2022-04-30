@@ -58,6 +58,7 @@ const Sidebar = () => {
         Icon={IconPeople}
         onClick={() => setActiveTab('people')}
         isActive={activeTab === 'people'}
+        disabled
       />
       <IconButton
         label="Misc"

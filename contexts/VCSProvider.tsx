@@ -16,6 +16,11 @@ type VCSType = {
 
 type Tab = 'view' | 'text' | 'image' | 'toast' | 'misc' | 'assets' | 'people';
 
+type LayoutParticipants = {
+  showAllParticipants: boolean;
+  participants: string[];
+};
+
 interface ContextValue {
   isLiveStreaming: boolean;
   isRecording: boolean;
@@ -35,6 +40,8 @@ interface ContextValue {
   setActiveTab: Dispatch<SetStateAction<Tab>>;
   assets: { [key: string]: string };
   setAssets: Dispatch<SetStateAction<{ [key: string]: string }>>;
+  layoutParticipants: LayoutParticipants;
+  setLayoutParticipants: Dispatch<SetStateAction<LayoutParticipants>>;
 }
 
 // @ts-ignore
@@ -55,6 +62,11 @@ export const VCSProvider = ({ children }: VCSType) => {
     mode: 'dominant',
   });
   const [assets, setAssets] = useState({});
+  const [layoutParticipants, setLayoutParticipants] =
+    useState<LayoutParticipants>({
+      showAllParticipants: true,
+      participants: [],
+    });
 
   // live-streaming functions
 
@@ -66,9 +78,18 @@ export const VCSProvider = ({ children }: VCSType) => {
         preset: 'custom',
         composition_id: 'daily:baseline',
         composition_params: { ...params },
+        participants: layoutParticipants.showAllParticipants
+          ? ['*']
+          : [...layoutParticipants.participants],
       },
     });
-  }, [callFrame, params, rtmpUrl]);
+  }, [
+    callFrame,
+    layoutParticipants.participants,
+    layoutParticipants.showAllParticipants,
+    params,
+    rtmpUrl,
+  ]);
 
   const updateStreaming = useCallback(() => {
     callFrame.updateLiveStreaming({
@@ -76,9 +97,17 @@ export const VCSProvider = ({ children }: VCSType) => {
         // @ts-ignore
         preset: 'custom',
         composition_params: { ...params },
+        participants: layoutParticipants.showAllParticipants
+          ? ['*']
+          : [...layoutParticipants.participants],
       },
     });
-  }, [callFrame, params]);
+  }, [
+    callFrame,
+    layoutParticipants.participants,
+    layoutParticipants.showAllParticipants,
+    params,
+  ]);
 
   const stopStreaming = () => callFrame.stopLiveStreaming();
 
@@ -91,9 +120,17 @@ export const VCSProvider = ({ children }: VCSType) => {
         preset: 'custom',
         composition_id: 'daily:baseline',
         composition_params: { ...params },
+        participants: layoutParticipants.showAllParticipants
+          ? ['*']
+          : [...layoutParticipants.participants],
       },
     });
-  }, [callFrame, params]);
+  }, [
+    callFrame,
+    layoutParticipants.participants,
+    layoutParticipants.showAllParticipants,
+    params,
+  ]);
 
   const updateRecording = useCallback(() => {
     callFrame.updateRecording({
@@ -101,9 +138,17 @@ export const VCSProvider = ({ children }: VCSType) => {
         // @ts-ignore
         preset: 'custom',
         composition_params: { ...params },
+        participants: layoutParticipants.showAllParticipants
+          ? ['*']
+          : [...layoutParticipants.participants],
       },
     });
-  }, [callFrame, params]);
+  }, [
+    callFrame,
+    layoutParticipants.participants,
+    layoutParticipants.showAllParticipants,
+    params,
+  ]);
 
   const stopRecording = () => callFrame.stopRecording();
 
@@ -158,6 +203,8 @@ export const VCSProvider = ({ children }: VCSType) => {
         setActiveTab,
         assets,
         setAssets,
+        layoutParticipants,
+        setLayoutParticipants,
       }}
     >
       {children}
