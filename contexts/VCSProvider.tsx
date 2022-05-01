@@ -59,8 +59,8 @@ export const VCSProvider = ({ children }: VCSType) => {
 
   const { callFrame } = useCall();
   const [params, setParams] = useState({
-    mode: 'dominant',
-    'toast.showIcon': false,
+    mode: 'grid',
+    'toast.icon.assetName': 'party-popper_1f389.png',
   });
   const [assets, setAssets] = useState({});
   const [layoutParticipants, setLayoutParticipants] =

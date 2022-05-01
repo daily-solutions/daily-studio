@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Dialog, SelectField, TextInputField } from 'evergreen-ui';
 import { useVCS } from '../contexts/VCSProvider';
 
@@ -22,8 +22,12 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
     Custom: platformUrl,
   };
 
+  useEffect(
+    () => setRtmpUrl(`${platforms[platform]}${streamKey}`),
+    [platforms, platform, streamKey, setRtmpUrl],
+  );
+
   const handleClick = () => {
-    setRtmpUrl(`${platforms[platform]}${streamKey}`);
     startStreaming();
     setIsShown(false);
   };

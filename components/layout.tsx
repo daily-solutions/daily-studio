@@ -14,7 +14,8 @@ const Layout = () => {
 
   const getCallWidth = () => {
     if (width >= 1400) return { call: '75vw', settings: '25vw' };
-    else if (width >= 1200 && width < 1400) return { call: '70vw', settings: '30vw' };
+    else if (width >= 1200 && width < 1400)
+      return { call: '70vw', settings: '30vw' };
     else return { call: '60vw', settings: '40vw' };
   };
 
