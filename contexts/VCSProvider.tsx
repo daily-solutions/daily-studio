@@ -60,6 +60,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   const { callFrame } = useCall();
   const [params, setParams] = useState({
     mode: 'dominant',
+    'toast.showIcon': false,
   });
   const [assets, setAssets] = useState({});
   const [layoutParticipants, setLayoutParticipants] =

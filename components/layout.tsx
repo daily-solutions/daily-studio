@@ -23,7 +23,7 @@ const Layout = () => {
               <Settings startStreaming={setShow} />
             </Pane>
             <Pane
-              width="15%"
+              minWidth="15%"
               background="white"
               padding={10}
               minHeight="100vh"
