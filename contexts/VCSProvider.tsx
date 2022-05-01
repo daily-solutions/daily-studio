@@ -71,6 +71,10 @@ export const VCSProvider = ({ children }: VCSType) => {
   // live-streaming functions
 
   const startStreaming = useCallback(() => {
+    const lp = layoutParticipants.showAllParticipants
+      ? ['*']
+      : [...layoutParticipants.participants];
+
     callFrame.startLiveStreaming({
       rtmpUrl,
       layout: {
@@ -78,9 +82,10 @@ export const VCSProvider = ({ children }: VCSType) => {
         preset: 'custom',
         composition_id: 'daily:baseline',
         composition_params: { ...params },
-        participants: layoutParticipants.showAllParticipants
-          ? ['*']
-          : [...layoutParticipants.participants],
+        participants: {
+          video: lp,
+          audio: lp,
+        },
       },
     });
   }, [
@@ -92,14 +97,19 @@ export const VCSProvider = ({ children }: VCSType) => {
   ]);
 
   const updateStreaming = useCallback(() => {
+    const lp = layoutParticipants.showAllParticipants
+      ? ['*']
+      : [...layoutParticipants.participants];
+
     callFrame.updateLiveStreaming({
       layout: {
         // @ts-ignore
         preset: 'custom',
         composition_params: { ...params },
-        participants: layoutParticipants.showAllParticipants
-          ? ['*']
-          : [...layoutParticipants.participants],
+        participants: {
+          video: lp,
+          audio: lp,
+        },
       },
     });
   }, [
@@ -114,15 +124,20 @@ export const VCSProvider = ({ children }: VCSType) => {
   // recording functions.
 
   const startRecording = useCallback(() => {
+    const lp = layoutParticipants.showAllParticipants
+      ? ['*']
+      : [...layoutParticipants.participants];
+
     callFrame.startRecording({
       layout: {
         // @ts-ignore
         preset: 'custom',
         composition_id: 'daily:baseline',
         composition_params: { ...params },
-        participants: layoutParticipants.showAllParticipants
-          ? ['*']
-          : [...layoutParticipants.participants],
+        participants: {
+          video: lp,
+          audio: lp,
+        },
       },
     });
   }, [
@@ -133,14 +148,19 @@ export const VCSProvider = ({ children }: VCSType) => {
   ]);
 
   const updateRecording = useCallback(() => {
+    const lp = layoutParticipants.showAllParticipants
+      ? ['*']
+      : [...layoutParticipants.participants];
+
     callFrame.updateRecording({
       layout: {
         // @ts-ignore
         preset: 'custom',
         composition_params: { ...params },
-        participants: layoutParticipants.showAllParticipants
-          ? ['*']
-          : [...layoutParticipants.participants],
+        participants: {
+          video: lp,
+          audio: lp,
+        },
       },
     });
   }, [
