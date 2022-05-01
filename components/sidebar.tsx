@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pane } from 'evergreen-ui';
 import IconButton from './IconButton';
-import { ReactComponent as IconView } from '../icons/speaker-md.svg';
+import { ReactComponent as IconView } from '../icons/view-md.svg';
 import { ReactComponent as IconText } from '../icons/text-md.svg';
 import { ReactComponent as IconToast } from '../icons/toast-md.svg';
 import { ReactComponent as IconImage } from '../icons/image-md.svg';
