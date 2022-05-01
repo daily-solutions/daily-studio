@@ -36,8 +36,9 @@ export const toastParams: Param[] = [
   {
     id: 'toast.icon.assetName',
     label: 'Toast Icon Asset Name',
-    type: 'string',
-    defaultValue: '',
+    type: 'enum',
+    defaultValue: 'party-popper_1f389.png',
+    values: ['party-popper_1f389.png'],
   },
   {
     id: 'toast.color',

@@ -16,8 +16,8 @@ export const imageParams = (
       id: 'image.assetName',
       label: 'Asset Name',
       type: 'enum',
-      defaultValue,
-      values: options,
+      defaultValue: defaultValue ? defaultValue : 'overlay.png',
+      values: ['overlay.png', ...options],
     },
     {
       id: 'image.position',

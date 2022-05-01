@@ -61,6 +61,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   const [params, setParams] = useState({
     mode: 'grid',
     'toast.icon.assetName': 'party-popper_1f389.png',
+    'image.assetName': 'overlay.png',
   });
   const [assets, setAssets] = useState({});
   const [layoutParticipants, setLayoutParticipants] =

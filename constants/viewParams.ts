@@ -1,4 +1,4 @@
-import { ReactComponent as GridView } from '../icons/gridd-md.svg';
+import { ReactComponent as GridView } from '../icons/grid-md.svg';
 import { ReactComponent as SingleView } from '../icons/single-md.svg';
 import { ReactComponent as PIPView } from '../icons/pip-md.svg';
 import { ReactComponent as SpeakerView } from '../icons/speaker-md.svg';
