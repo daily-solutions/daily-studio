@@ -2,7 +2,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Button, Pane } from 'evergreen-ui';
 import ViewSettings from './settings/view';
 import { useVCS } from '../contexts/VCSProvider';
-import MiscSettings from './settings/misc';
 import TextSettings from './settings/text';
 import ImageSettings from './settings/image';
 import AssetSettings from './settings/assets';
@@ -43,8 +42,6 @@ const Settings = ({ startStreaming }: Props) => {
         return <ImageSettings />;
       case 'toast':
         return <ToastSettings />;
-      case 'misc':
-        return <MiscSettings />;
       case 'assets':
         return <AssetSettings />;
       case 'people':

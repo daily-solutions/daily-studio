@@ -13,25 +13,20 @@ const Layout = () => {
   const { width } = useWindowSize();
 
   const getCallWidth = () => {
-    switch (width) {
-      case width >= 1200:
-        return 75;
-      case width < 1200:
-        return 60;
-    }
+    if (width >= 1400) return { call: '75vw', settings: '25vw' };
+    else if (width >= 1200 && width < 1400) return { call: '70vw', settings: '30vw' };
+    else return { call: '60vw', settings: '40vw' };
   };
+
+  const { call: callWidth, settings: settingsWidth } = getCallWidth();
 
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
-      <Pane width={joinedMeeting ? `${getCallWidth()}%` : '100%'}>
+      <Pane width={joinedMeeting ? callWidth : '100vw'}>
         <div ref={callRef} />
       </Pane>
       {joinedMeeting && (
-        <Pane
-          width={`${100 - getCallWidth()}%`}
-          background="tint1"
-          minHeight="100vh"
-        >
+        <Pane width={settingsWidth} background="tint1" minHeight="100vh">
           <LayoutHeader />
           <Pane width="100%" display="flex">
             <Pane width="85%">

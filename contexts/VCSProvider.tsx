@@ -14,7 +14,7 @@ type VCSType = {
   children: React.ReactNode;
 };
 
-type Tab = 'view' | 'text' | 'image' | 'toast' | 'misc' | 'assets' | 'people';
+type Tab = 'view' | 'text' | 'image' | 'toast' | 'assets' | 'people';
 
 type LayoutParticipants = {
   showAllParticipants: boolean;

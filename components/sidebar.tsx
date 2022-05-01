@@ -5,7 +5,6 @@ import { ReactComponent as IconView } from '../icons/view-md.svg';
 import { ReactComponent as IconText } from '../icons/text-md.svg';
 import { ReactComponent as IconToast } from '../icons/toast-md.svg';
 import { ReactComponent as IconImage } from '../icons/image-md.svg';
-import { ReactComponent as IconMisc } from '../icons/misc-md.svg';
 import { ReactComponent as IconAssets } from '../icons/assets-md.svg';
 import { ReactComponent as IconPeople } from '../icons/people-md.svg';
 import { useVCS } from '../contexts/VCSProvider';
@@ -58,12 +57,6 @@ const Sidebar = () => {
         Icon={IconPeople}
         onClick={() => setActiveTab('people')}
         isActive={activeTab === 'people'}
-      />
-      <IconButton
-        label="Misc"
-        Icon={IconMisc}
-        onClick={() => setActiveTab('misc')}
-        isActive={activeTab === 'misc'}
       />
     </Pane>
   );
