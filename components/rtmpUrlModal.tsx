@@ -48,10 +48,12 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
   const handleClick = () => {
     startStreaming();
     setIsShown(false);
-    const timeout = setTimeout(() => {
-      setPlaybackUrl(rtmp.playbackUrl);
-      clearTimeout(timeout);
-    }, 10000);
+    if (rtmp.playbackUrl !== '') {
+      const timeout = setTimeout(() => {
+        setPlaybackUrl(rtmp.playbackUrl);
+        clearTimeout(timeout);
+      }, 10000);
+    }
   };
 
   return (
@@ -69,6 +71,7 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
         value={rtmp.platform}
         onChange={handleChange}
       >
+        <option value="" disabled>Select platform</option>
         {Object.keys(platforms).map((platform: string) => (
           <option value={platform} key={platform}>
             {platform}

@@ -74,7 +74,6 @@ export const VCSProvider = ({ children }: VCSType) => {
     });
 
   // live-streaming functions
-
   const startStreaming = useCallback(() => {
     const lp = layoutParticipants.showAllParticipants
       ? ['*']
