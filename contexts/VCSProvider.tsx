@@ -192,6 +192,7 @@ export const VCSProvider = ({ children }: VCSType) => {
     callFrame.on('recording-started', () => setIsRecording(true));
     callFrame.on('recording-stopped', () => setIsRecording(false));
     callFrame.on('recording-error', (event: DailyEventObject) => {
+      console.error('Recording error', event.errorMsg);
       setIsRecording(false);
       setRecordingErrorMsg(event.errorMsg);
     });
@@ -199,9 +200,28 @@ export const VCSProvider = ({ children }: VCSType) => {
     callFrame.on('live-streaming-started', () => setIsLiveStreaming(true));
     callFrame.on('live-streaming-stopped', () => setIsLiveStreaming(false));
     callFrame.on('live-streaming-error', (event: DailyEventObject) => {
+      console.error('Streaming error', event.errorMsg);
       setIsLiveStreaming(false);
       setErrorMsg(event.errorMsg);
     });
+
+    return () => {
+      callFrame.off('recording-started', () => setIsRecording(true));
+      callFrame.off('recording-stopped', () => setIsRecording(false));
+      callFrame.off('recording-error', (event: DailyEventObject) => {
+        console.error('Recording error', event.errorMsg);
+        setIsRecording(false);
+        setRecordingErrorMsg(event.errorMsg);
+      });
+
+      callFrame.off('live-streaming-started', () => setIsLiveStreaming(true));
+      callFrame.off('live-streaming-stopped', () => setIsLiveStreaming(false));
+      callFrame.off('live-streaming-error', (event: DailyEventObject) => {
+        console.error('Streaming error', event.errorMsg);
+        setIsLiveStreaming(false);
+        setErrorMsg(event.errorMsg);
+      });
+    };
   }, [callFrame]);
 
   return (

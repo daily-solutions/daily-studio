@@ -98,8 +98,8 @@ export const viewParams: Param[] = [
     render: { key: 'mode', value: 'pip' },
   },
   {
-    id: 'showParticipantLabels',
-    label: 'Show Participant Labels?',
+    id: 'videoSettings.showParticipantLabels',
+    label: 'Show Participant Labels',
     type: 'boolean',
     defaultValue: false,
   },
