@@ -25,7 +25,7 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
 
   const platforms: { [key: string]: string } = useMemo(
     () => ({
-      Youtube: 'rtmp://a2.rtmp.youtube.com/live2/',
+      Youtube: 'rtmp://a.rtmp.youtube.com/live2/',
       Mux: 'rtmps://global-live.mux.com:443/app/',
       'Live Peer': 'rtmp://mdw-rtmp.livepeer.com/live/',
       Cloudflare: 'rtmps://live.cloudflare.com:443/live/',
