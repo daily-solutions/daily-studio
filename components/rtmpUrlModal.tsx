@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Dialog, SelectField, TextInputField } from 'evergreen-ui';
 import { useVCS } from '../contexts/VCSProvider';
 
@@ -10,22 +16,33 @@ type Props = {
 const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
   const { setRtmpUrl, startStreaming } = useVCS();
 
-  const [platform, setPlatform] = useState('');
-  const [platformUrl, setPlatformUrl] = useState('');
-  const [streamKey, setStreamKey] = useState('');
+  const [rtmp, setRTMP] = useState({
+    platform: '',
+    platformUrl: '',
+    streamKey: '',
+  });
 
-  const platforms: { [key: string]: string } = {
-    Youtube: 'rtmp://a2.rtmp.youtube.com/live2/',
-    Mux: 'rtmps://global-live.mux.com:443/app/',
-    'Live Peer': 'rtmp://mdw-rtmp.livepeer.com/live/',
-    Cloudflare: 'rtmps://live.cloudflare.com:443/live/',
-    Custom: platformUrl,
-  };
+  const platforms: { [key: string]: string } = useMemo(
+    () => ({
+      Youtube: 'rtmp://a2.rtmp.youtube.com/live2/',
+      Mux: 'rtmps://global-live.mux.com:443/app/',
+      'Live Peer': 'rtmp://mdw-rtmp.livepeer.com/live/',
+      Cloudflare: 'rtmps://live.cloudflare.com:443/live/',
+      Custom: rtmp.platformUrl,
+    }),
+    [rtmp.platformUrl],
+  );
 
   useEffect(
-    () => setRtmpUrl(`${platforms[platform]}${streamKey}`),
-    [platforms, platform, streamKey, setRtmpUrl],
+    () => setRtmpUrl(`${platforms[rtmp.platform]}${rtmp.streamKey}`),
+    [platforms, rtmp.platform, rtmp.streamKey, setRtmpUrl],
   );
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    setRTMP(rtmp => ({ ...rtmp, [e.target.name]: e.target.value }));
+  };
 
   const handleClick = () => {
     startStreaming();
@@ -42,10 +59,10 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
       onConfirm={handleClick}
     >
       <SelectField
+        name="platform"
         label="Streaming Platform"
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          setPlatform(e.target.value)
-        }
+        value={rtmp.platform}
+        onChange={handleChange}
       >
         {Object.keys(platforms).map((platform: string) => (
           <option value={platform} key={platform}>
@@ -53,23 +70,21 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
           </option>
         ))}
       </SelectField>
-      {platform === 'Custom' && (
+      {rtmp.platform === 'Custom' && (
         <TextInputField
+          name="platformUrl"
           label="RTMP URL"
           placeholder="Enter your stream RTMP URL here"
-          value={platformUrl}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPlatformUrl(e.target.value)
-          }
+          value={rtmp.platformUrl}
+          onChange={handleChange}
         />
       )}
       <TextInputField
+        name="streamKey"
         label="Stream Key"
         placeholder="Enter your stream key here"
-        value={streamKey}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setStreamKey(e.target.value)
-        }
+        value={rtmp.streamKey}
+        onChange={handleChange}
       />
     </Dialog>
   );
