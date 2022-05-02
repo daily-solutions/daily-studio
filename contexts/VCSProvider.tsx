@@ -42,6 +42,8 @@ interface ContextValue {
   setAssets: Dispatch<SetStateAction<{ [key: string]: string }>>;
   layoutParticipants: LayoutParticipants;
   setLayoutParticipants: Dispatch<SetStateAction<LayoutParticipants>>;
+  playbackUrl: string;
+  setPlaybackUrl: Dispatch<SetStateAction<string>>;
 }
 
 // @ts-ignore
@@ -49,6 +51,7 @@ export const VCSContext = createContext<ContextValue>(null);
 
 export const VCSProvider = ({ children }: VCSType) => {
   const [rtmpUrl, setRtmpUrl] = useState('');
+  const [playbackUrl, setPlaybackUrl] = useState('');
   const [isLiveStreaming, setIsLiveStreaming] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
 
@@ -247,6 +250,8 @@ export const VCSProvider = ({ children }: VCSType) => {
         setAssets,
         layoutParticipants,
         setLayoutParticipants,
+        playbackUrl,
+        setPlaybackUrl,
       }}
     >
       {children}

@@ -6,9 +6,12 @@ import RtmpUrlModal from './rtmpUrlModal';
 import Sidebar from './sidebar';
 import LayoutHeader from './PaneHeader';
 import { useWindowSize } from '../hooks/useWindowSize';
+import LiveView from './LiveView';
+import { useVCS } from '../contexts/VCSProvider';
 
 const Layout = () => {
   const { callRef, joinedMeeting } = useCall();
+  const { isLiveStreaming, playbackUrl } = useVCS();
   const [show, setShow] = useState(false);
   const { width } = useWindowSize();
 
@@ -24,7 +27,13 @@ const Layout = () => {
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
       <Pane width={joinedMeeting ? callWidth : '100vw'}>
-        <div ref={callRef} />
+        <div
+          ref={callRef}
+          style={{
+            display: isLiveStreaming && playbackUrl ? 'none' : 'initial',
+          }}
+        />
+        {playbackUrl && isLiveStreaming && <LiveView />}
       </Pane>
       {joinedMeeting && (
         <Pane width={settingsWidth} background="tint1" minHeight="100vh">

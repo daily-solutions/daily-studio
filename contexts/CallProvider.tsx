@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -13,6 +14,7 @@ import DailyIframe, {
   DailyEvent,
   DailyParticipant,
 } from '@daily-co/daily-js';
+import { DailyProvider } from '@daily-co/daily-react-hooks';
 
 const CALL_OPTIONS = {
   showLeaveButton: true,
@@ -70,14 +72,8 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
   useEffect(() => {
     if (callFrame) return;
 
-    const joinCall = async () => {
+    const joinCall = async (newCallFrame: DailyCall) => {
       const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN;
-
-      const newCallFrame: DailyCall = DailyIframe.createFrame(
-        callRef?.current as unknown as HTMLElement,
-        CALL_OPTIONS,
-      );
-      setCallFrame(newCallFrame as DailyCall);
 
       const url: string = `https://${domain}.daily.co/${roomName}`;
       newCallFrame.join({ url, token });
@@ -90,7 +86,14 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
       };
     };
 
-    if (roomName && token) joinCall();
+    if (roomName && token) {
+      const newCallFrame: DailyCall = DailyIframe.createFrame(
+        callRef?.current as unknown as HTMLElement,
+        CALL_OPTIONS,
+      );
+      setCallFrame(newCallFrame as DailyCall);
+      joinCall(newCallFrame);
+    }
   }, [callFrame, handleLeftMeeting, roomName, token]);
 
   useEffect(() => {
@@ -118,18 +121,23 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
     };
   }, [callFrame]);
 
-  return (
-    <CallContext.Provider
-      value={{
-        callRef,
-        callFrame,
-        setCallFrame,
-        participants,
-        joinedMeeting: joined,
-      }}
-    >
-      {children}
-    </CallContext.Provider>
+  return useMemo(
+    () => (
+      <CallContext.Provider
+        value={{
+          callRef,
+          callFrame,
+          setCallFrame,
+          participants,
+          joinedMeeting: joined,
+        }}
+      >
+        {/*
+          // @ts-ignore*/}
+        <DailyProvider callObject={callFrame}>{children}</DailyProvider>
+      </CallContext.Provider>
+    ),
+    [callFrame, children, joined, participants],
   );
 };
 
