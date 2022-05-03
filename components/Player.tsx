@@ -1,27 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Pane } from 'evergreen-ui';
 import { useVCS } from '../contexts/VCSProvider';
 
 const Player = () => {
   // @ts-ignore
-  const { registerIVSTech, videojs } = window;
+  const { registerIVSTech, registerIVSQualityPlugin, videojs } = window;
   const { playbackUrl } = useVCS();
+  const playerRef = useRef(null);
 
   useEffect(() => {
     registerIVSTech(videojs);
+    registerIVSQualityPlugin(videojs);
 
-    const player = videojs(
-      'video-player',
-      {
-        techOrder: ['AmazonIVS'],
-      },
-      () => {
-        console.log('Player is ready to use!');
-        player.src(playbackUrl);
-      },
-    );
-    player.fill(false);
-  }, [playbackUrl, registerIVSTech, videojs]);
+    if (!playerRef.current) {
+      playerRef.current = videojs(
+        'video-player',
+        {
+          techOrder: ['AmazonIVS'],
+        },
+        () => {
+          console.log('Player is ready to use!');
+          playerRef.current.src(playbackUrl);
+        },
+      );
+      playerRef.current.fill(false);
+      playerRef.current.enableIVSQualityPlugin();
+    } else {
+      playerRef.current.src(playbackUrl);
+      playerRef.current.fill(false);
+      playerRef.current.enableIVSQualityPlugin();
+    }
+  }, [playbackUrl, registerIVSQualityPlugin, registerIVSTech, videojs]);
 
   return (
     <Pane width="100%" height="90vh">

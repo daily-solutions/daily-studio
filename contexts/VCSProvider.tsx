@@ -123,7 +123,10 @@ export const VCSProvider = ({ children }: VCSType) => {
     params,
   ]);
 
-  const stopStreaming = () => callFrame.stopLiveStreaming();
+  const stopStreaming = () => {
+    setPlaybackUrl('');
+    callFrame.stopLiveStreaming();
+  };
 
   // recording functions.
 

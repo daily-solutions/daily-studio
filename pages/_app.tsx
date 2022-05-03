@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <Script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.14.3/video.min.js" />
       <Script src="https://player.live-video.net/1.8.0/amazon-ivs-videojs-tech.min.js" />
+      <Script src="https://player.live-video.net/1.8.0/amazon-ivs-quality-plugin.min.js" />
       <Component {...pageProps} />
     </>
   );

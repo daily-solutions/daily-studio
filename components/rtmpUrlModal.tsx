@@ -71,7 +71,9 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
         value={rtmp.platform}
         onChange={handleChange}
       >
-        <option value="" disabled>Select platform</option>
+        <option value="" disabled>
+          Select platform
+        </option>
         {Object.keys(platforms).map((platform: string) => (
           <option value={platform} key={platform}>
             {platform}
