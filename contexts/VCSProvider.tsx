@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useCall } from './CallProvider';
-import { DailyEventObject } from '@daily-co/daily-js';
+import { DailyEvent, DailyEventObject } from '@daily-co/daily-js';
 
 type VCSType = {
   children: React.ReactNode;
@@ -182,58 +182,86 @@ export const VCSProvider = ({ children }: VCSType) => {
   const stopRecording = () => callFrame.stopRecording();
 
   useEffect(() => {
-    if (!callFrame || !isLiveStreaming) return;
+    if (!callFrame) return;
 
-    updateStreaming();
-  }, [callFrame, isLiveStreaming, params, updateStreaming]);
-
-  useEffect(() => {
-    if (!callFrame || !isRecording) return;
-
-    updateRecording();
-  }, [callFrame, isRecording, params, updateRecording]);
+    if (isLiveStreaming) updateStreaming();
+    if (isRecording) updateRecording();
+  }, [
+    callFrame,
+    isLiveStreaming,
+    isRecording,
+    params,
+    updateRecording,
+    updateStreaming,
+  ]);
 
   useEffect(() => {
     if (isLiveStreaming && playbackUrl !== '') setShowPlayer(true);
   }, [isLiveStreaming, playbackUrl]);
 
+  const handleEvents = useCallback(
+    (event: DailyEventObject) => {
+      switch (event.action) {
+        case 'live-streaming-started':
+          setIsLiveStreaming(true);
+          if (playbackUrl !== '') setShowPlayer(true);
+          break;
+        case 'live-streaming-stopped':
+          setIsLiveStreaming(false);
+          setShowPlayer(false);
+          break;
+        case 'live-streaming-error':
+          console.error('Streaming error - ' + event.errorMsg);
+          setIsLiveStreaming(false);
+          setShowPlayer(false);
+          setErrorMsg(event.errorMsg);
+          break;
+        case 'recording-started':
+          setIsRecording(true);
+          break;
+        case 'recording-stopped':
+          setIsRecording(false);
+          break;
+        case 'recording-error':
+          console.error('Recording error - ' + event.errorMsg);
+          setIsRecording(false);
+          setRecordingErrorMsg(event.errorMsg);
+          break;
+        default:
+          break;
+      }
+    },
+    [playbackUrl],
+  );
+
+  const handleLiveStreamError = useCallback((event: DailyEventObject) => {
+    console.error('Streaming error', event.errorMsg);
+    setIsLiveStreaming(false);
+    setErrorMsg(event.errorMsg);
+    setShowPlayer(false);
+  }, []);
+
   useEffect(() => {
     if (!callFrame) return;
 
-    callFrame.on('recording-started', () => setIsRecording(true));
-    callFrame.on('recording-stopped', () => setIsRecording(false));
-    callFrame.on('recording-error', (event: DailyEventObject) => {
-      console.error('Recording error', event.errorMsg);
-      setIsRecording(false);
-      setRecordingErrorMsg(event.errorMsg);
-    });
+    const events = [
+      'recording-started',
+      'recording-stopped',
+      'recording-error',
+      'live-streaming-started',
+      'live-streaming-stopped',
+      'live-streaming-error',
+    ];
 
-    callFrame.on('live-streaming-started', () => setIsLiveStreaming(true));
-    callFrame.on('live-streaming-stopped', () => setIsLiveStreaming(false));
-    callFrame.on('live-streaming-error', (event: DailyEventObject) => {
-      console.error('Streaming error', event.errorMsg);
-      setIsLiveStreaming(false);
-      setErrorMsg(event.errorMsg);
+    events.map((event: string) => {
+      callFrame.on(event as DailyEvent, handleEvents);
     });
-
     return () => {
-      callFrame.off('recording-started', () => setIsRecording(true));
-      callFrame.off('recording-stopped', () => setIsRecording(false));
-      callFrame.off('recording-error', (event: DailyEventObject) => {
-        console.error('Recording error', event.errorMsg);
-        setIsRecording(false);
-        setRecordingErrorMsg(event.errorMsg);
-      });
-
-      callFrame.off('live-streaming-started', () => setIsLiveStreaming(true));
-      callFrame.off('live-streaming-stopped', () => setIsLiveStreaming(false));
-      callFrame.off('live-streaming-error', (event: DailyEventObject) => {
-        console.error('Streaming error', event.errorMsg);
-        setIsLiveStreaming(false);
-        setErrorMsg(event.errorMsg);
+      events.map((event: string) => {
+        callFrame.off(event as DailyEvent, handleEvents);
       });
     };
-  }, [callFrame]);
+  }, [callFrame, handleEvents]);
 
   return (
     <VCSContext.Provider

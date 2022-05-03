@@ -36,7 +36,8 @@ const Player = () => {
     ivsPlayer.addEventListener(
       ivsPlayerEvents.PlayerEventType.ERROR,
       (error: any) => {
-        if (error.type === 'ErrorNotAvailable') playerRef.current.src(playbackUrl);
+        if (error.type === 'ErrorNotAvailable')
+          playerRef.current.src(playbackUrl);
       },
     );
   }, [playbackUrl, registerIVSQualityPlugin, registerIVSTech, videojs]);
