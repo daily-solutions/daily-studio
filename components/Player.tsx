@@ -17,19 +17,28 @@ const Player = () => {
         'video-player',
         {
           techOrder: ['AmazonIVS'],
+          autoplay: 'muted',
+          fill: false,
         },
         () => {
           console.log('Player is ready to use!');
           playerRef.current.src(playbackUrl);
         },
       );
-      playerRef.current.fill(false);
       playerRef.current.enableIVSQualityPlugin();
     } else {
       playerRef.current.src(playbackUrl);
-      playerRef.current.fill(false);
       playerRef.current.enableIVSQualityPlugin();
     }
+
+    const ivsPlayerEvents = playerRef.current.getIVSEvents();
+    const ivsPlayer = playerRef.current.getIVSPlayer();
+    ivsPlayer.addEventListener(
+      ivsPlayerEvents.PlayerEventType.ERROR,
+      (error: any) => {
+        if (error.type === 'ErrorNotAvailable') playerRef.current.src(playbackUrl);
+      },
+    );
   }, [playbackUrl, registerIVSQualityPlugin, registerIVSTech, videojs]);
 
   return (

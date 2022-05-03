@@ -48,12 +48,7 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
   const handleClick = () => {
     startStreaming();
     setIsShown(false);
-    if (rtmp.playbackUrl !== '') {
-      const timeout = setTimeout(() => {
-        setPlaybackUrl(rtmp.playbackUrl);
-        clearTimeout(timeout);
-      }, 10000);
-    }
+    setPlaybackUrl(rtmp.playbackUrl);
   };
 
   return (

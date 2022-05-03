@@ -11,7 +11,7 @@ import { useVCS } from '../contexts/VCSProvider';
 
 const Layout = () => {
   const { callRef, joinedMeeting } = useCall();
-  const { isLiveStreaming, playbackUrl } = useVCS();
+  const { showPlayer } = useVCS();
   const [show, setShow] = useState(false);
   const { width } = useWindowSize();
 
@@ -30,10 +30,10 @@ const Layout = () => {
         <div
           ref={callRef}
           style={{
-            display: isLiveStreaming && playbackUrl ? 'none' : 'initial',
+            display: showPlayer ? 'none' : 'initial',
           }}
         />
-        {playbackUrl && isLiveStreaming && <LiveView />}
+        {showPlayer && <LiveView />}
       </Pane>
       {joinedMeeting && (
         <Pane width={settingsWidth} background="tint1" minHeight="100vh">

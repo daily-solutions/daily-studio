@@ -44,6 +44,7 @@ interface ContextValue {
   setLayoutParticipants: Dispatch<SetStateAction<LayoutParticipants>>;
   playbackUrl: string;
   setPlaybackUrl: Dispatch<SetStateAction<string>>;
+  showPlayer: boolean;
 }
 
 // @ts-ignore
@@ -52,6 +53,7 @@ export const VCSContext = createContext<ContextValue>(null);
 export const VCSProvider = ({ children }: VCSType) => {
   const [rtmpUrl, setRtmpUrl] = useState('');
   const [playbackUrl, setPlaybackUrl] = useState('');
+  const [showPlayer, setShowPlayer] = useState(false);
   const [isLiveStreaming, setIsLiveStreaming] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
 
@@ -124,7 +126,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   ]);
 
   const stopStreaming = () => {
-    setPlaybackUrl('');
+    setShowPlayer(false);
     callFrame.stopLiveStreaming();
   };
 
@@ -192,6 +194,10 @@ export const VCSProvider = ({ children }: VCSType) => {
   }, [callFrame, isRecording, params, updateRecording]);
 
   useEffect(() => {
+    if (isLiveStreaming && playbackUrl !== '') setShowPlayer(true);
+  }, [isLiveStreaming, playbackUrl]);
+
+  useEffect(() => {
     if (!callFrame) return;
 
     callFrame.on('recording-started', () => setIsRecording(true));
@@ -254,6 +260,7 @@ export const VCSProvider = ({ children }: VCSType) => {
         setLayoutParticipants,
         playbackUrl,
         setPlaybackUrl,
+        showPlayer,
       }}
     >
       {children}

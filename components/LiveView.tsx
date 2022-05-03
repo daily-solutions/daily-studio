@@ -1,7 +1,11 @@
 import React from 'react';
 import Tray from './Tray';
 import { Pane } from 'evergreen-ui';
-import Player from './Player';
+import dynamic from 'next/dynamic';
+
+const Player = dynamic(() => import('./Player'), {
+  ssr: false,
+});
 
 const LiveView = () => {
   return (
