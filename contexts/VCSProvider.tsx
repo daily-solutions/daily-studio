@@ -234,13 +234,6 @@ export const VCSProvider = ({ children }: VCSType) => {
     [playbackUrl],
   );
 
-  const handleLiveStreamError = useCallback((event: DailyEventObject) => {
-    console.error('Streaming error', event.errorMsg);
-    setIsLiveStreaming(false);
-    setErrorMsg(event.errorMsg);
-    setShowPlayer(false);
-  }, []);
-
   useEffect(() => {
     if (!callFrame) return;
 

@@ -55,7 +55,7 @@ export const toastParams: Param[] = [
   {
     id: 'toast.text.color',
     label: 'Toast Text Color',
-    type: 'string',
+    type: 'color',
     defaultValue: '#fff',
   },
   {
