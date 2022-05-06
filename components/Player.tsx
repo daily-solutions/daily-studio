@@ -40,6 +40,16 @@ const Player = () => {
           playerRef.current.src(playbackUrl);
       },
     );
+
+    return () => {
+      ivsPlayer.removeEventListener(
+        ivsPlayerEvents.PlayerEventType.ERROR,
+        (error: any) => {
+          if (error.type === 'ErrorNotAvailable')
+            playerRef.current.src(playbackUrl);
+        },
+      );
+    };
   }, [playbackUrl, registerIVSQualityPlugin, registerIVSTech, videojs]);
 
   return (
