@@ -14,7 +14,10 @@ import DailyIframe, {
   DailyEvent,
   DailyParticipant,
 } from '@daily-co/daily-js';
-import { DailyProvider } from '@daily-co/daily-react-hooks';
+import {
+  DailyProvider,
+  useLocalParticipant,
+} from '@daily-co/daily-react-hooks';
 
 const CALL_OPTIONS = {
   showLeaveButton: true,
@@ -37,6 +40,7 @@ interface ContextValue {
   setCallFrame: Dispatch<SetStateAction<DailyCall | null>>;
   participants: DailyParticipant[];
   joinedMeeting: boolean;
+  localUser: DailyParticipant;
 }
 
 // @ts-ignore
@@ -48,6 +52,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
   const [joined, setJoined] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [token, setToken] = useState(null);
+  const [localUser, setLocalUser] = useState<DailyParticipant>(null);
 
   const handleLeftMeeting = useCallback(() => {
     if (callFrame) callFrame.destroy();
@@ -78,10 +83,18 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
       const url: string = `https://${domain}.daily.co/${roomName}`;
       newCallFrame.join({ url, token });
 
-      newCallFrame.on('joined-meeting', () => setJoined(true));
+      newCallFrame.on('joined-meeting', async () => {
+        setJoined(true);
+        const participants = await newCallFrame.participants();
+        setLocalUser(participants.local);
+      });
       newCallFrame.on('left-meeting', handleLeftMeeting);
       return () => {
-        newCallFrame.off('joined-meeting', () => setJoined(true));
+        newCallFrame.off('joined-meeting', async () => {
+          setJoined(true);
+          const participants = await newCallFrame.participants();
+          setLocalUser(participants.local);
+        });
         newCallFrame.off('left-meeting', handleLeftMeeting);
       };
     };
@@ -130,6 +143,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
           setCallFrame,
           participants,
           joinedMeeting: joined,
+          localUser,
         }}
       >
         {/*
@@ -137,7 +151,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
         <DailyProvider callObject={callFrame}>{children}</DailyProvider>
       </CallContext.Provider>
     ),
-    [callFrame, children, joined, participants],
+    [callFrame, children, joined, localUser, participants],
   );
 };
 

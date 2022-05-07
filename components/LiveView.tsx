@@ -3,15 +3,14 @@ import Tray from './Tray';
 import { Pane } from 'evergreen-ui';
 import dynamic from 'next/dynamic';
 
-const Player = dynamic(() => import('./Player'), {
+const DailyVCSOutput = dynamic(() => import('./DailyVCSOutput'), {
   ssr: false,
 });
 
-const LiveView = () => {
+const LiveView = (props: any) => {
   return (
-    <Pane>
-      <Player />
-      <Tray />
+    <Pane background="black">
+      <DailyVCSOutput {...props} />
     </Pane>
   );
 };

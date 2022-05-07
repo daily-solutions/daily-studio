@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 import { Pane } from 'evergreen-ui';
 import { useCall } from '../contexts/CallProvider';
 import Settings from './settings';
 import RtmpUrlModal from './rtmpUrlModal';
 import Sidebar from './sidebar';
 import LayoutHeader from './PaneHeader';
-import { useWindowSize } from '../hooks/useWindowSize';
-import LiveView from './LiveView';
-import { useVCS } from '../contexts/VCSProvider';
+import { useWindowSize, useWindowSizeFromVW } from '../hooks/useWindowSize';
+import LiveView from "./LiveView";
 
 const Layout = () => {
   const { callRef, joinedMeeting } = useCall();
-  const { showPlayer } = useVCS();
   const [show, setShow] = useState(false);
-  const { width } = useWindowSize();
+  const { width, height } = useWindowSize();
+  const localVcsOutputApiRef = useRef();
 
   const getCallWidth = () => {
     if (width >= 1400) return { call: '75vw', settings: '25vw' };
@@ -23,6 +22,7 @@ const Layout = () => {
   };
 
   const { call: callWidth, settings: settingsWidth } = getCallWidth();
+  const w = useWindowSizeFromVW(callWidth);
 
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
@@ -30,10 +30,17 @@ const Layout = () => {
         <div
           ref={callRef}
           style={{
-            display: showPlayer ? 'none' : 'initial',
+            display: joinedMeeting ? 'none' : 'initial',
           }}
         />
-        {showPlayer && <LiveView />}
+        {joinedMeeting && (
+          <LiveView
+            compositionReadyCb={(vcs: any) =>
+              (localVcsOutputApiRef.current = vcs)
+            }
+            viewportSize={{ w, h: height }}
+          />
+        )}
       </Pane>
       {joinedMeeting && (
         <Pane width={settingsWidth} background="tint1" minHeight="100vh">

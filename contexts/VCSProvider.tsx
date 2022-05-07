@@ -42,9 +42,8 @@ interface ContextValue {
   setAssets: Dispatch<SetStateAction<{ [key: string]: string }>>;
   layoutParticipants: LayoutParticipants;
   setLayoutParticipants: Dispatch<SetStateAction<LayoutParticipants>>;
-  playbackUrl: string;
-  setPlaybackUrl: Dispatch<SetStateAction<string>>;
-  showPlayer: boolean;
+  remoteTracksBySessionId: { [key: string]: string };
+  activeVideoInputs: any;
 }
 
 // @ts-ignore
@@ -52,8 +51,6 @@ export const VCSContext = createContext<ContextValue>(null);
 
 export const VCSProvider = ({ children }: VCSType) => {
   const [rtmpUrl, setRtmpUrl] = useState('');
-  const [playbackUrl, setPlaybackUrl] = useState('');
-  const [showPlayer, setShowPlayer] = useState(false);
   const [isLiveStreaming, setIsLiveStreaming] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
 
@@ -62,11 +59,9 @@ export const VCSProvider = ({ children }: VCSType) => {
 
   const [activeTab, setActiveTab] = useState<Tab>('view');
 
-  const { callFrame } = useCall();
+  const { callFrame, localUser } = useCall();
   const [params, setParams] = useState({
     mode: 'grid',
-    'toast.icon.assetName': 'party-popper_1f389.png',
-    'image.assetName': 'overlay.png',
   });
   const [assets, setAssets] = useState({});
   const [layoutParticipants, setLayoutParticipants] =
@@ -74,6 +69,9 @@ export const VCSProvider = ({ children }: VCSType) => {
       showAllParticipants: true,
       participants: [],
     });
+
+  const [remoteTracks, setRemoteTracks] = useState<{ [key: string]: any }>({});
+  const [activeVideoInputs, setActiveVideoInputs] = useState([]);
 
   // live-streaming functions
   const startStreaming = useCallback(() => {
@@ -125,10 +123,7 @@ export const VCSProvider = ({ children }: VCSType) => {
     params,
   ]);
 
-  const stopStreaming = () => {
-    setShowPlayer(false);
-    callFrame.stopLiveStreaming();
-  };
+  const stopStreaming = () => callFrame.stopLiveStreaming();
 
   // recording functions.
 
@@ -195,25 +190,62 @@ export const VCSProvider = ({ children }: VCSType) => {
     updateStreaming,
   ]);
 
-  useEffect(() => {
-    if (isLiveStreaming && playbackUrl !== '') setShowPlayer(true);
-  }, [isLiveStreaming, playbackUrl]);
+  const recreateActiveVideoInputs = useCallback(
+    (addedParticipantId: string, deletedParticipantId: string) => {
+      if (!localUser.session_id) {
+        console.warn(
+          "can't build list of active video inputs, localSessionId missing",
+        );
+        return;
+      }
+
+      // our own local session always goes first, since we are the producer
+      const arr = [];
+      arr.push({
+        id: localUser.session_id,
+        displayName: localUser.user_name,
+      });
+
+      const prev = activeVideoInputs;
+
+      if (prev && prev.length > 1) {
+        for (let i = 1; i < prev.length; i++) {
+          const v = prev[i];
+          if (v.id !== deletedParticipantId && v.id !== addedParticipantId) {
+            arr.push(v);
+          }
+        }
+      }
+
+      if (addedParticipantId) {
+        arr.push({
+          id: addedParticipantId,
+          displayName: remoteTracks[addedParticipantId].userName,
+        });
+      }
+      console.log('active video inputs now: ', arr);
+      setActiveVideoInputs([...arr]);
+    },
+    [
+      activeVideoInputs,
+      localUser?.session_id,
+      localUser?.user_name,
+      remoteTracks,
+    ],
+  );
 
   const handleEvents = useCallback(
     (event: DailyEventObject) => {
       switch (event.action) {
         case 'live-streaming-started':
           setIsLiveStreaming(true);
-          if (playbackUrl !== '') setShowPlayer(true);
           break;
         case 'live-streaming-stopped':
           setIsLiveStreaming(false);
-          setShowPlayer(false);
           break;
         case 'live-streaming-error':
           console.error('Streaming error - ' + event.errorMsg);
           setIsLiveStreaming(false);
-          setShowPlayer(false);
           setErrorMsg(event.errorMsg);
           break;
         case 'recording-started':
@@ -227,11 +259,36 @@ export const VCSProvider = ({ children }: VCSType) => {
           setIsRecording(false);
           setRecordingErrorMsg(event.errorMsg);
           break;
+        case 'got-remote-participant-video-track':
+          const { track, participantSessionId, userName } = event;
+          setRemoteTracks(tracks => ({
+            ...tracks,
+            [participantSessionId]: { track, userName },
+          }));
+          recreateActiveVideoInputs(participantSessionId, null);
+          // sendUpdateToDailyStreamPipeline
+          break;
+        case 'lost-remote-participant-video-track':
+          const { track: t, participantSessionId: sessionId } = event;
+          setRemoteTracks(tracks => {
+            if (sessionId) delete tracks[sessionId];
+            else if (t) {
+              const key = Object.keys(tracks).find(
+                key => tracks[key]?.track === t,
+              );
+              if (key) delete tracks[key];
+              else
+                console.warn("** lost remote track wasn't somehow seen before");
+            }
+            recreateActiveVideoInputs(null, sessionId);
+            return tracks;
+          });
+          break;
         default:
           break;
       }
     },
-    [playbackUrl],
+    [recreateActiveVideoInputs],
   );
 
   useEffect(() => {
@@ -244,6 +301,8 @@ export const VCSProvider = ({ children }: VCSType) => {
       'live-streaming-started',
       'live-streaming-stopped',
       'live-streaming-error',
+      'got-remote-participant-video-track',
+      'lost-remote-participant-video-track',
     ];
 
     events.map((event: string) => {
@@ -279,9 +338,8 @@ export const VCSProvider = ({ children }: VCSType) => {
         setAssets,
         layoutParticipants,
         setLayoutParticipants,
-        playbackUrl,
-        setPlaybackUrl,
-        showPlayer,
+        remoteTracksBySessionId: remoteTracks,
+        activeVideoInputs,
       }}
     >
       {children}

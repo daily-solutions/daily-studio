@@ -14,13 +14,12 @@ type Props = {
 };
 
 const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
-  const { setRtmpUrl, setPlaybackUrl, startStreaming } = useVCS();
+  const { setRtmpUrl, startStreaming } = useVCS();
 
   const [rtmp, setRTMP] = useState({
     platform: '',
     platformUrl: '',
     streamKey: '',
-    playbackUrl: '',
   });
 
   const platforms: { [key: string]: string } = useMemo(
@@ -48,7 +47,6 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
   const handleClick = () => {
     startStreaming();
     setIsShown(false);
-    setPlaybackUrl(rtmp.playbackUrl);
   };
 
   return (
@@ -89,14 +87,6 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
         label="Stream Key"
         placeholder="Enter your stream key here"
         value={rtmp.streamKey}
-        onChange={handleChange}
-      />
-      <TextInputField
-        name="playbackUrl"
-        label="Playback URL"
-        description="Optional"
-        placeholder="Enter your playback url here"
-        value={rtmp.playbackUrl}
         onChange={handleChange}
       />
     </Dialog>
