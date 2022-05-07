@@ -5,10 +5,12 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { useCall } from './CallProvider';
 import { DailyEvent, DailyEventObject } from '@daily-co/daily-js';
+import {getDiff} from "../utils/getDiff";
 
 type VCSType = {
   children: React.ReactNode;
@@ -44,12 +46,14 @@ interface ContextValue {
   setLayoutParticipants: Dispatch<SetStateAction<LayoutParticipants>>;
   remoteTracksBySessionId: { [key: string]: string };
   activeVideoInputs: any;
+  vcsOutputRef: any;
 }
 
 // @ts-ignore
 export const VCSContext = createContext<ContextValue>(null);
 
 export const VCSProvider = ({ children }: VCSType) => {
+  const vcsOutputRef = useRef(null);
   const [rtmpUrl, setRtmpUrl] = useState('');
   const [isLiveStreaming, setIsLiveStreaming] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -63,6 +67,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   const [params, setParams] = useState({
     mode: 'grid',
   });
+
   const [assets, setAssets] = useState({});
   const [layoutParticipants, setLayoutParticipants] =
     useState<LayoutParticipants>({
@@ -179,6 +184,13 @@ export const VCSProvider = ({ children }: VCSType) => {
   useEffect(() => {
     if (!callFrame) return;
 
+    if (vcsOutputRef.current?.paramValues) {
+      const diff = getDiff(vcsOutputRef.current?.paramValues, params);
+      for (const key in diff) {
+        vcsOutputRef.current.sendParam(key, diff[key]);
+      }
+    }
+
     if (isLiveStreaming) updateStreaming();
     if (isRecording) updateRecording();
   }, [
@@ -235,7 +247,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   );
 
   const handleEvents = useCallback(
-    (event: DailyEventObject) => {
+    async (event: DailyEventObject) => {
       switch (event.action) {
         case 'live-streaming-started':
           setIsLiveStreaming(true);
@@ -259,30 +271,42 @@ export const VCSProvider = ({ children }: VCSType) => {
           setIsRecording(false);
           setRecordingErrorMsg(event.errorMsg);
           break;
-        case 'got-remote-participant-video-track':
-          const { track, participantSessionId, userName } = event;
-          setRemoteTracks(tracks => ({
-            ...tracks,
-            [participantSessionId]: { track, userName },
-          }));
-          recreateActiveVideoInputs(participantSessionId, null);
-          // sendUpdateToDailyStreamPipeline
+        case 'track-started':
+          if (
+            event &&
+            !event.participant.local &&
+            event.track &&
+            'video' === event.track.kind
+          ) {
+            setRemoteTracks(tracks => ({
+              ...tracks,
+              [event.participant.session_id]: {
+                track: event.track,
+                userName: event.participant.user_name,
+              },
+            }));
+            recreateActiveVideoInputs(event.participant.session_id, null);
+          }
           break;
-        case 'lost-remote-participant-video-track':
-          const { track: t, participantSessionId: sessionId } = event;
-          setRemoteTracks(tracks => {
-            if (sessionId) delete tracks[sessionId];
-            else if (t) {
-              const key = Object.keys(tracks).find(
-                key => tracks[key]?.track === t,
-              );
-              if (key) delete tracks[key];
-              else
-                console.warn("** lost remote track wasn't somehow seen before");
-            }
-            recreateActiveVideoInputs(null, sessionId);
-            return tracks;
-          });
+        case 'track-stopped':
+          if (event && event.track && 'video' === event.track.kind) {
+            setRemoteTracks(tracks => {
+              const sessionId = event.participant?.session_id;
+              if (sessionId) delete tracks[sessionId];
+              else if (event?.track) {
+                const key = Object.keys(tracks).find(
+                  key => tracks[key]?.track === event.track,
+                );
+                if (key) delete tracks[key];
+                else
+                  console.warn(
+                    "** lost remote track wasn't somehow seen before",
+                  );
+              }
+              recreateActiveVideoInputs(null, sessionId);
+              return tracks;
+            });
+          }
           break;
         default:
           break;
@@ -301,8 +325,8 @@ export const VCSProvider = ({ children }: VCSType) => {
       'live-streaming-started',
       'live-streaming-stopped',
       'live-streaming-error',
-      'got-remote-participant-video-track',
-      'lost-remote-participant-video-track',
+      'participant-joined',
+      'track-stopped',
     ];
 
     events.map((event: string) => {
@@ -340,6 +364,7 @@ export const VCSProvider = ({ children }: VCSType) => {
         setLayoutParticipants,
         remoteTracksBySessionId: remoteTracks,
         activeVideoInputs,
+        vcsOutputRef,
       }}
     >
       {children}

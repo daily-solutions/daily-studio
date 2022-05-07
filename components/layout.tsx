@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import { Pane } from 'evergreen-ui';
 import { useCall } from '../contexts/CallProvider';
 import Settings from './settings';
@@ -6,13 +6,14 @@ import RtmpUrlModal from './rtmpUrlModal';
 import Sidebar from './sidebar';
 import LayoutHeader from './PaneHeader';
 import { useWindowSize, useWindowSizeFromVW } from '../hooks/useWindowSize';
-import LiveView from "./LiveView";
+import LiveView from './LiveView';
+import { useVCS } from '../contexts/VCSProvider';
 
 const Layout = () => {
   const { callRef, joinedMeeting } = useCall();
+  const { vcsOutputRef } = useVCS();
   const [show, setShow] = useState(false);
   const { width, height } = useWindowSize();
-  const localVcsOutputApiRef = useRef();
 
   const getCallWidth = () => {
     if (width >= 1400) return { call: '75vw', settings: '25vw' };
@@ -35,9 +36,7 @@ const Layout = () => {
         />
         {joinedMeeting && (
           <LiveView
-            compositionReadyCb={(vcs: any) =>
-              (localVcsOutputApiRef.current = vcs)
-            }
+            compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
             viewportSize={{ w, h: height }}
           />
         )}

@@ -48,7 +48,6 @@ class VCSCompositionWrapper {
   recomputeOutputScaleFactor() {
     const displayW = this.rootEl.clientWidth;
     const displayH = this.rootEl.clientHeight;
-    //console.log('clientW, clientH: ', displayW, displayH);
     if (!displayW || !displayH) return;
 
     const asp = this.viewportSize.w / this.viewportSize.h;
@@ -60,7 +59,6 @@ class VCSCompositionWrapper {
       // fit portrait
       this.scaleFactor = displayH / this.viewportSize.h;
     }
-    //console.log('scalefactor: ', this.scaleFactor);
   }
 
   async setupDefaultSources() {
@@ -101,8 +99,6 @@ class VCSCompositionWrapper {
         video: { facingMode: 'user' },
         audio: false,
       });
-      console.log('got local mediaStream: ', mediaStream);
-
       liveVideoEl = document.createElement('video');
       liveVideoEl.setAttribute('muted', true);
       liveVideoEl.setAttribute('autoplay', true);
@@ -438,29 +434,34 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
     vcsCompRef.current.rootDisplaySizeChanged();
   }
 
-  const outputElementCb = useCallback((el) => {
-    if (!joinedMeeting) return;
+  const outputElementCb = useCallback(
+    el => {
+      if (!joinedMeeting) return;
 
-    if (!vcsCompRef.current) {
-      // container element has been mounted by React, attach to a VCS output
-      vcsCompRef.current = new VCSCompositionWrapper(el, viewportSize, params);
+      if (!vcsCompRef.current) {
+        // container element has been mounted by React, attach to a VCS output
+        vcsCompRef.current = new VCSCompositionWrapper(
+          el,
+          viewportSize,
+          params,
+        );
 
-      vcsCompRef.current.start().then(() => {
-        compositionReadyCb(vcsCompRef.current);
-      });
-    } else if (el) {
-      vcsCompRef.current.rootDisplaySizeChanged();
-    }
-  }, [compositionReadyCb, joinedMeeting, params, viewportSize]);
+        vcsCompRef.current.start().then(() => {
+          compositionReadyCb(vcsCompRef.current);
+        });
+      } else if (el) {
+        vcsCompRef.current.rootDisplaySizeChanged();
+      }
+    },
+    [compositionReadyCb, joinedMeeting, params, viewportSize],
+  );
 
   useEffect(() => {
     if (!vcsCompRef.current) return;
 
     if (!localUser?.session_id) {
-      // not yet connected to room
       vcsCompRef.current.setLocalUserName(localUser?.user_name);
     } else {
-      // connected to room; update view to match
       console.log('vcsCall.activeVideoInputs: ', activeVideoInputs);
       if (Array.isArray(activeVideoInputs) && activeVideoInputs.length > 0) {
         vcsCompRef.current.applyMeetingTracksAndOrdering(
@@ -490,9 +491,9 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
     <div
       className="DailyVCSOutput"
       ref={outputElementCb}
-      style={{ height: '100vh', width: '100%' }}
+      style={{ height: viewportSize.h, width: viewportSize.w }}
     />
   );
-}
+};
 
 export default DailyVCSOutput;
