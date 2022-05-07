@@ -491,7 +491,7 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
     <div
       className="DailyVCSOutput"
       ref={outputElementCb}
-      style={{ height: viewportSize.h, width: viewportSize.w }}
+      style={{ height: '100vh', width: viewportSize.w }}
     />
   );
 };
