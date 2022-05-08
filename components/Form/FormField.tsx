@@ -48,7 +48,7 @@ const FormField = ({ field }: Props): ReactElement => {
     switch (field.type) {
       case 'menu':
         return (
-          <Pane marginBottom={20} display="flex" gap={20}>
+          <Pane display="flex" gap={20}>
             {field.menu.map((menuItem: MenuItemProp) => (
               <IconButton
                 label={menuItem.label}

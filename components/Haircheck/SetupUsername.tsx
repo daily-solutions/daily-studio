@@ -22,10 +22,12 @@ const SetupUsername = () => {
         <Text>Enter your name below to join the call.</Text>
       </Pane>
       <Card background="white" padding={16} elevation={1}>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          onContinue();
-        }}>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            onContinue();
+          }}
+        >
           <TextInputField
             label="Your name"
             value={username}

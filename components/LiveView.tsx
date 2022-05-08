@@ -3,6 +3,8 @@ import Tray from './Tray';
 import { Pane, Heading, Button, Paragraph, Image } from 'evergreen-ui';
 import dynamic from 'next/dynamic';
 import { useVCS } from '../contexts/VCSProvider';
+import FormMaker from './Form';
+import { layoutParams } from '../constants/layoutParams';
 
 const DailyVCSOutput = dynamic(() => import('./DailyVCSOutput'), {
   ssr: false,
@@ -73,14 +75,22 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
           </Button>
         </Pane>
       </Pane>
-      <Pane width={viewportSize.w}>
+      <Pane width={viewportSize.w} position="relative">
         <DailyVCSOutput
           compositionReadyCb={compositionReadyCb}
           viewportSize={viewportSize}
         />
-      </Pane>
-      <Pane position="absolute" bottom={20} left="30%" display="flex">
-        <Tray />
+        <Pane
+          top={viewportSize.h}
+          position="relative"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          padding={16}
+        >
+          <Tray />
+          <FormMaker fields={layoutParams} />
+        </Pane>
       </Pane>
     </Pane>
   );
