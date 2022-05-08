@@ -16,7 +16,7 @@ const SetupUsername = () => {
   const onContinue = () => daily.setUserName(username);
 
   return (
-    <Pane width="25vw">
+    <Pane>
       <Pane paddingY={16}>
         <Heading marginBottom={8}>Enter your name</Heading>
         <Text>Enter your name below to join the call.</Text>

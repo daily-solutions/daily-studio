@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Button,
   Card,
@@ -21,12 +21,14 @@ import { ReactComponent as IconMicOn } from '../../icons/mic-on-md.svg';
 import { ReactComponent as IconMicOff } from '../../icons/mic-off-md.svg';
 import SetupUsername from './SetupUsername';
 import { useCall } from '../../contexts/CallProvider';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 const Haircheck = () => {
   const theme = useTheme();
   const daily = useDaily();
   const { join } = useCall();
   const localParticipant = useLocalParticipant();
+  const { width } = useWindowSize();
 
   const {
     cameras,
@@ -47,16 +49,20 @@ const Haircheck = () => {
     else daily.setLocalAudio(!localParticipant?.audio);
   };
 
-  const joinCall = () => join();
+  const hairCheckWidth = useMemo(() => {
+    if (width > 1550) return '25vw';
+    else if (width > 1200) return '35vw';
+    else if (width > 750 && width <= 1200) return '50vw';
+    else return '70vw';
+  }, [width]);
 
   if (!localParticipant) return <Spinner />;
-
   return (
-    <Pane>
+    <Pane width={hairCheckWidth}>
       {!localParticipant?.user_name ? (
         <SetupUsername />
       ) : (
-        <Card elevation={1} width="25vw" background="white">
+        <Card elevation={1} background="white">
           <Pane
             padding={24}
             display="flex"
@@ -66,7 +72,7 @@ const Haircheck = () => {
             <Heading size={700} flexGrow={4}>
               Ready to join?
             </Heading>
-            <Button appearance="primary" onClick={joinCall}>
+            <Button appearance="primary" onClick={join}>
               Join
             </Button>
           </Pane>
