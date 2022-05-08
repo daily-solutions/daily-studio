@@ -28,8 +28,7 @@ interface ContextValue {
   callObject: DailyCall | null;
   setCallObject: Dispatch<SetStateAction<DailyCall | null>>;
   participants: DailyParticipant[];
-  joinedMeeting: boolean;
-  localUser: DailyParticipant;
+  state: string;
   join: () => void;
 }
 
@@ -38,10 +37,9 @@ export const CallContext = createContext<ContextValue>(null);
 
 export const CallProvider = ({ children, roomName }: CallProviderType) => {
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
-  const [joined, setJoined] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [token, setToken] = useState(null);
-  const [localUser, setLocalUser] = useState<DailyParticipant>(null);
+  const [state, setState] = useState('lobby');
 
   const handleLeftMeeting = useCallback(() => {
     if (callObject) callObject.destroy();
@@ -85,20 +83,12 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
   const join = useCallback(async () => {
     if (!callObject) return;
 
-    callObject.join();
+    setState('joining');
+    await callObject.join();
+    setState('joined');
 
-    callObject.on('joined-meeting', async () => {
-      setJoined(true);
-      const participants = await callObject.participants();
-      setLocalUser(participants.local);
-    });
     callObject.on('left-meeting', handleLeftMeeting);
     return () => {
-      callObject.off('joined-meeting', async () => {
-        setJoined(true);
-        const participants = await callObject.participants();
-        setLocalUser(participants.local);
-      });
       callObject.off('left-meeting', handleLeftMeeting);
     };
   }, [callObject, handleLeftMeeting]);
@@ -135,8 +125,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
           callObject,
           setCallObject,
           participants,
-          joinedMeeting: joined,
-          localUser,
+          state,
           join,
         }}
       >
@@ -145,7 +134,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
         <DailyProvider callObject={callObject}>{children}</DailyProvider>
       </CallContext.Provider>
     ),
-    [callObject, children, join, joined, localUser, participants],
+    [callObject, children, join, participants, state],
   );
 };
 

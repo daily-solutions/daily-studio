@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pane } from 'evergreen-ui';
+import { Pane, Spinner } from 'evergreen-ui';
 import { useCall } from '../contexts/CallProvider';
 import Settings from './settings';
 import RtmpUrlModal from './rtmpUrlModal';
@@ -11,7 +11,7 @@ import { useVCS } from '../contexts/VCSProvider';
 import Haircheck from './Haircheck';
 
 const Layout = () => {
-  const { joinedMeeting } = useCall();
+  const { state } = useCall();
   const { vcsOutputRef } = useVCS();
   const [show, setShow] = useState(false);
   const { width } = useWindowSize();
@@ -28,8 +28,8 @@ const Layout = () => {
 
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
-      <Pane width={joinedMeeting ? callWidth : '100vw'}>
-        {joinedMeeting ? (
+      <Pane width={state === 'joined' ? callWidth : '100vw'}>
+        {state === 'joined' ? (
           <LiveView
             compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
             viewportSize={{ w, h: (9 * w) / 16 }}
@@ -43,11 +43,11 @@ const Layout = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <Haircheck />
+            {state === 'lobby' ? <Haircheck /> : <Spinner />}
           </Pane>
         )}
       </Pane>
-      {joinedMeeting && (
+      {state === 'joined' && (
         <Pane width={settingsWidth} background="tint1" minHeight="100vh">
           <LayoutHeader />
           <Pane width="100%" display="flex">

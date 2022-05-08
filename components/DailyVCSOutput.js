@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { Pane } from 'evergreen-ui';
 import { useVCS } from '../contexts/VCSProvider';
 import { useCall } from '../contexts/CallProvider';
+import { useLocalParticipant } from '@daily-co/daily-react-hooks';
 
 // the composition is loaded as a separately built module in a global
 const g_DailyVCS = window.DailyVCS;
@@ -367,7 +368,8 @@ class VCSCompositionWrapper {
 }
 
 const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
-  const { localUser, joinedMeeting } = useCall();
+  const { state } = useCall();
+  const localUser = useLocalParticipant();
   const { params, activeVideoInputs, remoteTracksBySessionId } = useVCS();
 
   const vcsCompRef = React.useRef();
@@ -379,7 +381,7 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
 
   const outputElementCb = useCallback(
     el => {
-      if (!joinedMeeting) return;
+      if (state !== 'joined') return;
 
       if (!vcsCompRef.current) {
         // container element has been mounted by React, attach to a VCS output
@@ -396,7 +398,7 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
         vcsCompRef.current.rootDisplaySizeChanged();
       }
     },
-    [compositionReadyCb, joinedMeeting, params, viewportSize],
+    [compositionReadyCb, state, params, viewportSize],
   );
 
   useEffect(() => {
@@ -430,7 +432,6 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
 
   return (
     <Pane
-      background="black"
       ref={outputElementCb}
       style={{ height: viewportSize.h, width: viewportSize.w }}
     />

@@ -11,6 +11,7 @@ import React, {
 import { useCall } from './CallProvider';
 import { DailyEvent, DailyEventObject } from '@daily-co/daily-js';
 import { getDiff } from '../utils/getDiff';
+import { useLocalParticipant } from '@daily-co/daily-react-hooks';
 
 type VCSType = {
   children: React.ReactNode;
@@ -63,7 +64,8 @@ export const VCSProvider = ({ children }: VCSType) => {
 
   const [activeTab, setActiveTab] = useState<Tab>('view');
 
-  const { callObject, localUser } = useCall();
+  const localUser = useLocalParticipant();
+  const { callObject } = useCall();
   const [params, setParams] = useState({
     mode: 'grid',
   });

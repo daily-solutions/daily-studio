@@ -75,14 +75,14 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
           </Button>
         </Pane>
       </Pane>
-      <Pane width={viewportSize.w} position="relative">
-        <DailyVCSOutput
-          compositionReadyCb={compositionReadyCb}
-          viewportSize={viewportSize}
-        />
+      <Pane width={viewportSize.w} height={viewportSize.h} position="relative">
+        <Pane height={viewportSize.h} backgroundColor="black">
+          <DailyVCSOutput
+            compositionReadyCb={compositionReadyCb}
+            viewportSize={viewportSize}
+          />
+        </Pane>
         <Pane
-          top={viewportSize.h}
-          position="relative"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
