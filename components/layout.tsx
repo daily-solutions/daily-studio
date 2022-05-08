@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Pane } from 'evergreen-ui';
 import { useCall } from '../contexts/CallProvider';
 import Settings from './settings';
@@ -32,6 +32,7 @@ const Layout = () => {
           <LiveView
             compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
             viewportSize={{ w, h: (9 * w) / 16 }}
+            startStream={setShow}
           />
         )}
       </Pane>
@@ -40,7 +41,7 @@ const Layout = () => {
           <LayoutHeader />
           <Pane width="100%" display="flex">
             <Pane width="85%">
-              <Settings startStreaming={setShow} />
+              <Settings />
             </Pane>
             <Pane
               width="15%"

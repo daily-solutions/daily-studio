@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import { Pane } from 'evergreen-ui';
 import { useVCS } from '../contexts/VCSProvider';
 import { useCall } from '../contexts/CallProvider';
 
@@ -428,8 +429,8 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
   }, []);
 
   return (
-    <div
-      className="DailyVCSOutput"
+    <Pane
+      background="black"
       ref={outputElementCb}
       style={{ height: viewportSize.h, width: viewportSize.w }}
     />
