@@ -234,7 +234,10 @@ export const VCSProvider = ({ children }: VCSType) => {
         }
       }
 
-      if (addedParticipant?.session_id) {
+      if (
+        addedParticipant?.session_id &&
+        localUser.session_id !== addedParticipant?.session_id
+      ) {
         arr.push({
           id: addedParticipant.session_id,
           displayName: addedParticipant.user_name,
