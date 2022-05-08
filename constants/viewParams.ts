@@ -45,7 +45,7 @@ export const viewParams: Param[] = [
   {
     id: 'videoSettings.pip.height_vh',
     label: 'Height of the Picture in Picture',
-    type: 'number',
+    type: 'range',
     defaultValue: 0.3,
     step: 0.1,
     min: 0,
@@ -55,7 +55,7 @@ export const viewParams: Param[] = [
   {
     id: 'videoSettings.pip.margin_vh',
     label: 'Margin around the Picture in Picture layout',
-    type: 'number',
+    type: 'range',
     defaultValue: 0.04,
     step: 0.01,
     min: 0,
@@ -160,7 +160,7 @@ export const viewParams: Param[] = [
   {
     id: 'videoSettings.margin.left_vw',
     label: 'Video Margin Left',
-    type: 'number',
+    type: 'range',
     defaultValue: 0,
     min: 0,
     max: 1,
@@ -169,7 +169,7 @@ export const viewParams: Param[] = [
   {
     id: 'videoSettings.margin.right_vw',
     label: 'Video Margin Right',
-    type: 'number',
+    type: 'range',
     defaultValue: 0,
     min: 0,
     max: 1,
@@ -178,7 +178,7 @@ export const viewParams: Param[] = [
   {
     id: 'videoSettings.margin.top_vh',
     label: 'Video Margin Top',
-    type: 'number',
+    type: 'range',
     defaultValue: 0,
     min: 0,
     max: 1,
@@ -187,7 +187,7 @@ export const viewParams: Param[] = [
   {
     id: 'videoSettings.margin.bottom_vh',
     label: 'Video Margin Bottom',
-    type: 'number',
+    type: 'range',
     defaultValue: 0,
     min: 0,
     max: 1,

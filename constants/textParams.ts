@@ -75,8 +75,8 @@ export const textParams: Param[] = [
   },
   {
     id: 'text.fontSize_percentageOfViewH',
-    label: 'Font Size (% according to the height of the frame)',
-    type: 'number',
+    label: 'Font Size',
+    type: 'range',
     defaultValue: 7,
     min: 0,
     max: 100,
