@@ -38,20 +38,17 @@ const Sidebar = () => {
         Icon={IconImage}
         onClick={() => setActiveTab('image')}
         isActive={activeTab === 'image'}
-        disabled={true}
       />
       <IconButton
         label="Toast"
         Icon={IconToast}
         onClick={() => setActiveTab('toast')}
         isActive={activeTab === 'toast'}
-        disabled={true}
       />
       <IconButton
         label="Assets"
         Icon={IconAssets}
-        // disabled={isRecording || isLiveStreaming}
-        disabled={true}
+        disabled={isRecording || isLiveStreaming}
         onClick={() => setActiveTab('assets')}
         isActive={activeTab === 'assets'}
       />

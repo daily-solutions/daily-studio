@@ -84,12 +84,12 @@ class VCSCompositionWrapper {
   }
 
   loadTestImages() {
-    const { hostname, port, protocol } = window.location;
-    return {
-      'user_white_64.png': `${protocol}//${hostname}:${port}user_white_64.png`,
-      'overlay.png': `${protocol}//${hostname}:${port}overlay.png`,
-      'party-popper_1f389.png': `${protocol}//${hostname}:${port}party-popper_1f389.png`,
-    };
+    // const { hostname, port, protocol } = window.location;
+    // return {
+    //   'user_white_64.png': `${protocol}//${hostname}:${port}user_white_64.png`,
+    //   'overlay.png': `${protocol}//${hostname}:${port}overlay.png`,
+    //   'party-popper_1f389.png': `${protocol}//${hostname}:${port}party-popper_1f389.png`,
+    // };
   }
 
   async start() {
