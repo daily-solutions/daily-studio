@@ -56,6 +56,8 @@ const Haircheck = () => {
     else return '70vw';
   }, [width]);
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   if (!localParticipant) return <Spinner />;
   return (
     <Pane width={hairCheckWidth}>
@@ -70,7 +72,7 @@ const Haircheck = () => {
             alignItems="center"
           >
             <Heading size={700} flexGrow={4}>
-              Ready to join?
+              Are you ready to join?
             </Heading>
             <Button appearance="primary" onClick={join}>
               Join
@@ -97,45 +99,54 @@ const Haircheck = () => {
               </Pane>
             </Pane>
           </Pane>
-          <hr style={{ border: `0.5px solid ${theme.colors.border.muted}` }} />
-          <Pane padding={16}>
-            <SelectField
-              label="Camera"
-              onChange={e => setCamera(e.target.value)}
-            >
-              {cameras.map(camera => (
-                <option
-                  key={camera.device.deviceId}
-                  value={camera.device.deviceId}
+          {!isMobile && (
+            <>
+              <hr
+                style={{ border: `0.5px solid ${theme.colors.border.muted}` }}
+              />
+              <Pane padding={16}>
+                <SelectField
+                  label="Camera"
+                  onChange={e => setCamera(e.target.value)}
                 >
-                  {camera.device.label}
-                </option>
-              ))}
-            </SelectField>
-            <SelectField
-              label="Microphone"
-              onChange={e => setMicrophone(e.target.value)}
-            >
-              {microphones.map(mic => (
-                <option key={mic.device.deviceId} value={mic.device.deviceId}>
-                  {mic.device.label}
-                </option>
-              ))}
-            </SelectField>
-            <SelectField
-              label="Speaker"
-              onChange={e => setSpeaker(e.target.value)}
-            >
-              {speakers.map(speaker => (
-                <option
-                  key={speaker.device.deviceId}
-                  value={speaker.device.deviceId}
+                  {cameras.map(camera => (
+                    <option
+                      key={camera.device.deviceId}
+                      value={camera.device.deviceId}
+                    >
+                      {camera.device.label}
+                    </option>
+                  ))}
+                </SelectField>
+                <SelectField
+                  label="Microphone"
+                  onChange={e => setMicrophone(e.target.value)}
                 >
-                  {speaker.device.label}
-                </option>
-              ))}
-            </SelectField>
-          </Pane>
+                  {microphones.map(mic => (
+                    <option
+                      key={mic.device.deviceId}
+                      value={mic.device.deviceId}
+                    >
+                      {mic.device.label}
+                    </option>
+                  ))}
+                </SelectField>
+                <SelectField
+                  label="Speaker"
+                  onChange={e => setSpeaker(e.target.value)}
+                >
+                  {speakers.map(speaker => (
+                    <option
+                      key={speaker.device.deviceId}
+                      value={speaker.device.deviceId}
+                    >
+                      {speaker.device.label}
+                    </option>
+                  ))}
+                </SelectField>
+              </Pane>
+            </>
+          )}
         </Card>
       )}
     </Pane>
