@@ -19,25 +19,14 @@ import {
   useLocalParticipant,
 } from '@daily-co/daily-react-hooks';
 
-const CALL_OPTIONS = {
-  showLeaveButton: true,
-  iframeStyle: {
-    height: '100vh',
-    width: '100%',
-    aspectRatio: '16 / 9',
-    border: '0',
-  },
-};
-
 type CallProviderType = {
   children: React.ReactNode;
   roomName: string;
 };
 
 interface ContextValue {
-  callRef: any;
-  callFrame: DailyCall | null;
-  setCallFrame: Dispatch<SetStateAction<DailyCall | null>>;
+  callObject: DailyCall | null;
+  setCallObject: Dispatch<SetStateAction<DailyCall | null>>;
   participants: DailyParticipant[];
   joinedMeeting: boolean;
   localUser: DailyParticipant;
@@ -47,17 +36,16 @@ interface ContextValue {
 export const CallContext = createContext<ContextValue>(null);
 
 export const CallProvider = ({ children, roomName }: CallProviderType) => {
-  const callRef = useRef<HTMLDivElement>(null);
-  const [callFrame, setCallFrame] = useState<DailyCall | null>(null);
+  const [callObject, setCallObject] = useState<DailyCall | null>(null);
   const [joined, setJoined] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [token, setToken] = useState(null);
   const [localUser, setLocalUser] = useState<DailyParticipant>(null);
 
   const handleLeftMeeting = useCallback(() => {
-    if (callFrame) callFrame.destroy();
-    setCallFrame(null);
-  }, [callFrame]);
+    if (callObject) callObject.destroy();
+    setCallObject(null);
+  }, [callObject]);
 
   useEffect(() => {
     if (!roomName) return;
@@ -75,42 +63,46 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
   }, [roomName]);
 
   useEffect(() => {
-    if (callFrame) return;
+    if (callObject) return;
 
-    const joinCall = async (newCallFrame: DailyCall) => {
-      const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN;
+    const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN;
+    const url: string = `https://${domain}.daily.co/${roomName}`;
 
-      const url: string = `https://${domain}.daily.co/${roomName}`;
-      newCallFrame.join({ url, token });
+    const joinCall = async (newCallObject: DailyCall) => {
+      newCallObject.join();
 
-      newCallFrame.on('joined-meeting', async () => {
+      newCallObject.on('joined-meeting', async () => {
         setJoined(true);
-        const participants = await newCallFrame.participants();
+        const participants = await newCallObject.participants();
         setLocalUser(participants.local);
       });
-      newCallFrame.on('left-meeting', handleLeftMeeting);
+      newCallObject.on('left-meeting', handleLeftMeeting);
       return () => {
-        newCallFrame.off('joined-meeting', async () => {
+        newCallObject.off('joined-meeting', async () => {
           setJoined(true);
-          const participants = await newCallFrame.participants();
+          const participants = await newCallObject.participants();
           setLocalUser(participants.local);
         });
-        newCallFrame.off('left-meeting', handleLeftMeeting);
+        newCallObject.off('left-meeting', handleLeftMeeting);
       };
     };
 
     if (roomName && token) {
-      const newCallFrame: DailyCall = DailyIframe.createFrame(
-        callRef?.current as unknown as HTMLElement,
-        CALL_OPTIONS,
-      );
-      setCallFrame(newCallFrame as DailyCall);
-      joinCall(newCallFrame);
+      const newCallObject: DailyCall = DailyIframe.createCallObject({
+        url,
+        token,
+        dailyConfig: {
+          experimentalChromeVideoMuteLightOff: true,
+          useDevicePreferenceCookies: true,
+        },
+      });
+      setCallObject(newCallObject as DailyCall);
+      joinCall(newCallObject);
     }
-  }, [callFrame, handleLeftMeeting, roomName, token]);
+  }, [callObject, handleLeftMeeting, roomName, token]);
 
   useEffect(() => {
-    if (!callFrame) return;
+    if (!callObject) return;
 
     const events: string[] = [
       'joined-meeting',
@@ -120,27 +112,26 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
     ];
 
     const handleParticipantsState = () =>
-      setParticipants(Object.values(callFrame.participants()));
+      setParticipants(Object.values(callObject.participants()));
 
     handleParticipantsState();
     events.map((event: string) => {
-      callFrame.on(event as DailyEvent, handleParticipantsState);
+      callObject.on(event as DailyEvent, handleParticipantsState);
     });
 
     return () => {
       events.map((event: string) => {
-        callFrame.off(event as DailyEvent, handleParticipantsState);
+        callObject.off(event as DailyEvent, handleParticipantsState);
       });
     };
-  }, [callFrame]);
+  }, [callObject]);
 
   return useMemo(
     () => (
       <CallContext.Provider
         value={{
-          callRef,
-          callFrame,
-          setCallFrame,
+          callObject,
+          setCallObject,
           participants,
           joinedMeeting: joined,
           localUser,
@@ -148,10 +139,10 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
       >
         {/*
           // @ts-ignore*/}
-        <DailyProvider callObject={callFrame}>{children}</DailyProvider>
+        <DailyProvider callObject={callObject}>{children}</DailyProvider>
       </CallContext.Provider>
     ),
-    [callFrame, children, joined, localUser, participants],
+    [callObject, children, joined, localUser, participants],
   );
 };
 

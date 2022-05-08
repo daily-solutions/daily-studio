@@ -9,7 +9,6 @@ if (!g_DailyVCS) {
 }
 
 const MAX_VIDEO_INPUT_SLOTS = 20;
-const LOCAL_VIDEO_INPUT_ID = 'livecam0';
 
 class VCSCompositionWrapper {
   constructor(rootEl, viewportSize, defaultParams) {
@@ -42,7 +41,6 @@ class VCSCompositionWrapper {
     for (let i = 0; i < MAX_VIDEO_INPUT_SLOTS; i++) {
       this.setActiveVideoInput(i, false);
     }
-    this.setActiveVideoInput(0, true, LOCAL_VIDEO_INPUT_ID);
   }
 
   recomputeOutputScaleFactor() {
@@ -65,14 +63,6 @@ class VCSCompositionWrapper {
     console.log('--setup default sources start--');
     const videoInputElements = [];
 
-    const liveVideoEl = await this.setupLiveVideo();
-
-    this.localVideoSlotItem = videoInputElements[0] = {
-      id: LOCAL_VIDEO_INPUT_ID,
-      element: liveVideoEl,
-      displayName: '',
-    };
-
     const testImages = this.loadTestImages();
 
     this.sources = {
@@ -89,29 +79,6 @@ class VCSCompositionWrapper {
       el.setAttribute('data-video-remote-track-id', trackId);
     }
     this.rootEl.appendChild(el);
-  }
-
-  async setupLiveVideo() {
-    let liveVideoEl;
-
-    try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
-        audio: false,
-      });
-      liveVideoEl = document.createElement('video');
-      liveVideoEl.setAttribute('muted', true);
-      liveVideoEl.setAttribute('autoplay', true);
-      liveVideoEl.setAttribute('playsinline', true);
-      liveVideoEl.setAttribute('controls', false);
-      liveVideoEl.srcObject = mediaStream;
-
-      this.placeVideoSourceInDOM(liveVideoEl);
-    } catch (e) {
-      console.error('** getUserMedia failed: ', e);
-      alert('Live video not available, getUserMedia failed:\n\n' + e);
-    }
-    return liveVideoEl;
   }
 
   loadTestImages() {
@@ -208,17 +175,6 @@ class VCSCompositionWrapper {
     this.vcsApi.updateImageSources(this.sources);
   }
 
-  setLocalUserName(userName) {
-    if (!this.vcsApi) return;
-
-    const slot0 = this.sources.videoSlots[0];
-    if (slot0 && slot0.id === LOCAL_VIDEO_INPUT_ID) {
-      slot0.displayName = userName;
-      this.setActiveVideoInput(0, true, LOCAL_VIDEO_INPUT_ID, userName);
-      this.sendActiveVideoInputSlots();
-    }
-  }
-
   applyMeetingTracksAndOrdering(
     newTracksById,
     orderedVideoInputs,
@@ -231,12 +187,6 @@ class VCSCompositionWrapper {
 
     for (const inputDesc of orderedVideoInputs) {
       const { id: sessionId, displayName } = inputDesc;
-      if (sessionId === localSessionId) {
-        const slot = this.localVideoSlotItem;
-        slot.displayName = displayName;
-        newSlots.push(slot);
-        continue;
-      }
 
       if (!newTracksById[sessionId]) {
         console.log(' -- no track available for session id: ', sessionId);
@@ -275,9 +225,6 @@ class VCSCompositionWrapper {
         videoEl.setAttribute('autoplay', true);
         videoEl.setAttribute('playsinline', true);
         videoEl.setAttribute('controls', false);
-        if (g_isIOS) {
-          videoEl.play();
-        }
 
         newSlots.push({
           id: `videotrack_${track.id}`,
@@ -328,8 +275,6 @@ class VCSCompositionWrapper {
     const prevSlots = this.sources.videoSlots;
     const newSlots = [];
 
-    newSlots[0] = this.localVideoSlotItem;
-
     let didChange = false;
 
     for (const sessionId in newTracksById) {
@@ -364,9 +309,6 @@ class VCSCompositionWrapper {
         videoEl.setAttribute('autoplay', true);
         videoEl.setAttribute('playsinline', true);
         videoEl.setAttribute('controls', false);
-        if (g_isIOS) {
-          videoEl.play();
-        }
 
         newSlots.push({
           id: `videotrack_${track.id}`,
@@ -459,9 +401,7 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
   useEffect(() => {
     if (!vcsCompRef.current) return;
 
-    if (!localUser?.session_id) {
-      vcsCompRef.current.setLocalUserName(localUser?.user_name);
-    } else {
+    if (localUser?.session_id) {
       console.log('vcsCall.activeVideoInputs: ', activeVideoInputs);
       if (Array.isArray(activeVideoInputs) && activeVideoInputs.length > 0) {
         vcsCompRef.current.applyMeetingTracksAndOrdering(
@@ -491,7 +431,7 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
     <div
       className="DailyVCSOutput"
       ref={outputElementCb}
-      style={{ height: '100vh', width: viewportSize.w }}
+      style={{ height: viewportSize.h, width: viewportSize.w }}
     />
   );
 };

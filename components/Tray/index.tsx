@@ -9,8 +9,8 @@ import { ReactComponent as IconCameraOff } from '../../icons/camera-off-md.svg';
 import { ReactComponent as IconCameraOn } from '../../icons/camera-on-md.svg';
 import { ReactComponent as IconShare } from '../../icons/share-md.svg';
 
-const Index = () => {
-  const { callFrame } = useCall();
+const Tray = () => {
+  const { callObject } = useCall();
   const localParticipant = useLocalParticipant();
 
   return (
@@ -25,13 +25,13 @@ const Index = () => {
       <TrayButton
         label={localParticipant?.video ? 'Turn off' : 'Turn on'}
         Icon={localParticipant?.video ? IconCameraOn : IconCameraOff}
-        onClick={() => callFrame.setLocalVideo(!localParticipant?.video)}
+        onClick={() => callObject.setLocalVideo(!localParticipant?.video)}
         muted={!localParticipant?.video}
       />
       <TrayButton
         label={localParticipant?.audio ? 'Mute' : 'Unmute'}
         Icon={localParticipant?.audio ? IconMicOn : IconMicOff}
-        onClick={() => callFrame.setLocalAudio(!localParticipant?.audio)}
+        onClick={() => callObject.setLocalAudio(!localParticipant?.audio)}
         muted={!localParticipant?.audio}
       />
       <TrayButton
@@ -39,8 +39,8 @@ const Index = () => {
         Icon={IconShare}
         onClick={() =>
           localParticipant?.screen
-            ? callFrame.stopScreenShare()
-            : callFrame.startScreenShare()
+            ? callObject.stopScreenShare()
+            : callObject.startScreenShare()
         }
         muted={!localParticipant?.screen}
       />
@@ -48,4 +48,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Tray;

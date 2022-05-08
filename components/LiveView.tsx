@@ -9,8 +9,13 @@ const DailyVCSOutput = dynamic(() => import('./DailyVCSOutput'), {
 
 const LiveView = (props: any) => {
   return (
-    <Pane background="black">
-      <DailyVCSOutput {...props} />
+    <Pane display="flex">
+      <Pane background="black" width={props.viewportSize.w}>
+        <DailyVCSOutput {...props} />
+      </Pane>
+      <Pane position="absolute" bottom={20} left="30%" display="flex">
+        <Tray />
+      </Pane>
     </Pane>
   );
 };

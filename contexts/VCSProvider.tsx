@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { useCall } from './CallProvider';
 import { DailyEvent, DailyEventObject } from '@daily-co/daily-js';
-import {getDiff} from "../utils/getDiff";
+import { getDiff } from '../utils/getDiff';
 
 type VCSType = {
   children: React.ReactNode;
@@ -63,7 +63,7 @@ export const VCSProvider = ({ children }: VCSType) => {
 
   const [activeTab, setActiveTab] = useState<Tab>('view');
 
-  const { callFrame, localUser } = useCall();
+  const { callObject, localUser } = useCall();
   const [params, setParams] = useState({
     mode: 'grid',
   });
@@ -84,7 +84,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       ? ['*']
       : [...layoutParticipants.participants];
 
-    callFrame.startLiveStreaming({
+    callObject.startLiveStreaming({
       rtmpUrl,
       layout: {
         // @ts-ignore
@@ -98,7 +98,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       },
     });
   }, [
-    callFrame,
+    callObject,
     layoutParticipants.participants,
     layoutParticipants.showAllParticipants,
     params,
@@ -110,7 +110,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       ? ['*']
       : [...layoutParticipants.participants];
 
-    callFrame.updateLiveStreaming({
+    callObject.updateLiveStreaming({
       layout: {
         // @ts-ignore
         preset: 'custom',
@@ -122,13 +122,13 @@ export const VCSProvider = ({ children }: VCSType) => {
       },
     });
   }, [
-    callFrame,
+    callObject,
     layoutParticipants.participants,
     layoutParticipants.showAllParticipants,
     params,
   ]);
 
-  const stopStreaming = () => callFrame.stopLiveStreaming();
+  const stopStreaming = () => callObject.stopLiveStreaming();
 
   // recording functions.
 
@@ -137,7 +137,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       ? ['*']
       : [...layoutParticipants.participants];
 
-    callFrame.startRecording({
+    callObject.startRecording({
       layout: {
         // @ts-ignore
         preset: 'custom',
@@ -150,7 +150,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       },
     });
   }, [
-    callFrame,
+    callObject,
     layoutParticipants.participants,
     layoutParticipants.showAllParticipants,
     params,
@@ -161,7 +161,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       ? ['*']
       : [...layoutParticipants.participants];
 
-    callFrame.updateRecording({
+    callObject.updateRecording({
       layout: {
         // @ts-ignore
         preset: 'custom',
@@ -173,16 +173,16 @@ export const VCSProvider = ({ children }: VCSType) => {
       },
     });
   }, [
-    callFrame,
+    callObject,
     layoutParticipants.participants,
     layoutParticipants.showAllParticipants,
     params,
   ]);
 
-  const stopRecording = () => callFrame.stopRecording();
+  const stopRecording = () => callObject.stopRecording();
 
   useEffect(() => {
-    if (!callFrame) return;
+    if (!callObject) return;
 
     if (vcsOutputRef.current?.paramValues) {
       const diff = getDiff(vcsOutputRef.current?.paramValues, params);
@@ -194,7 +194,7 @@ export const VCSProvider = ({ children }: VCSType) => {
     if (isLiveStreaming) updateStreaming();
     if (isRecording) updateRecording();
   }, [
-    callFrame,
+    callObject,
     isLiveStreaming,
     isRecording,
     params,
@@ -203,8 +203,8 @@ export const VCSProvider = ({ children }: VCSType) => {
   ]);
 
   const recreateActiveVideoInputs = useCallback(
-    (addedParticipantId: string, deletedParticipantId: string) => {
-      if (!localUser.session_id) {
+    (addedParticipant: any, deletedParticipant: any) => {
+      if (!localUser?.session_id) {
         console.warn(
           "can't build list of active video inputs, localSessionId missing",
         );
@@ -223,27 +223,24 @@ export const VCSProvider = ({ children }: VCSType) => {
       if (prev && prev.length > 1) {
         for (let i = 1; i < prev.length; i++) {
           const v = prev[i];
-          if (v.id !== deletedParticipantId && v.id !== addedParticipantId) {
+          if (
+            v.id !== deletedParticipant?.session_id &&
+            v.id !== addedParticipant?.session_id
+          ) {
             arr.push(v);
           }
         }
       }
 
-      if (addedParticipantId) {
+      if (addedParticipant?.session_id) {
         arr.push({
-          id: addedParticipantId,
-          displayName: remoteTracks[addedParticipantId].userName,
+          id: addedParticipant.session_id,
+          displayName: addedParticipant.user_name,
         });
       }
-      console.log('active video inputs now: ', arr);
       setActiveVideoInputs([...arr]);
     },
-    [
-      activeVideoInputs,
-      localUser?.session_id,
-      localUser?.user_name,
-      remoteTracks,
-    ],
+    [activeVideoInputs, localUser?.session_id, localUser?.user_name],
   );
 
   const handleEvents = useCallback(
@@ -272,12 +269,7 @@ export const VCSProvider = ({ children }: VCSType) => {
           setRecordingErrorMsg(event.errorMsg);
           break;
         case 'track-started':
-          if (
-            event &&
-            !event.participant.local &&
-            event.track &&
-            'video' === event.track.kind
-          ) {
+          if (event && event.track && 'video' === event.track.kind) {
             setRemoteTracks(tracks => ({
               ...tracks,
               [event.participant.session_id]: {
@@ -285,7 +277,7 @@ export const VCSProvider = ({ children }: VCSType) => {
                 userName: event.participant.user_name,
               },
             }));
-            recreateActiveVideoInputs(event.participant.session_id, null);
+            recreateActiveVideoInputs(event.participant, null);
           }
           break;
         case 'track-stopped':
@@ -303,9 +295,9 @@ export const VCSProvider = ({ children }: VCSType) => {
                     "** lost remote track wasn't somehow seen before",
                   );
               }
-              recreateActiveVideoInputs(null, sessionId);
               return tracks;
             });
+            recreateActiveVideoInputs(null, event.participant);
           }
           break;
         default:
@@ -316,7 +308,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   );
 
   useEffect(() => {
-    if (!callFrame) return;
+    if (!callObject) return;
 
     const events = [
       'recording-started',
@@ -325,19 +317,19 @@ export const VCSProvider = ({ children }: VCSType) => {
       'live-streaming-started',
       'live-streaming-stopped',
       'live-streaming-error',
-      'participant-joined',
+      'track-started',
       'track-stopped',
     ];
 
     events.map((event: string) => {
-      callFrame.on(event as DailyEvent, handleEvents);
+      callObject.on(event as DailyEvent, handleEvents);
     });
     return () => {
       events.map((event: string) => {
-        callFrame.off(event as DailyEvent, handleEvents);
+        callObject.off(event as DailyEvent, handleEvents);
       });
     };
-  }, [callFrame, handleEvents]);
+  }, [callObject, handleEvents]);
 
   return (
     <VCSContext.Provider

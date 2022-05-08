@@ -10,10 +10,10 @@ import LiveView from './LiveView';
 import { useVCS } from '../contexts/VCSProvider';
 
 const Layout = () => {
-  const { callRef, joinedMeeting } = useCall();
+  const { joinedMeeting } = useCall();
   const { vcsOutputRef } = useVCS();
   const [show, setShow] = useState(false);
-  const { width, height } = useWindowSize();
+  const { width } = useWindowSize();
 
   const getCallWidth = () => {
     if (width >= 1400) return { call: '75vw', settings: '25vw' };
@@ -28,16 +28,10 @@ const Layout = () => {
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
       <Pane width={joinedMeeting ? callWidth : '100vw'}>
-        <div
-          ref={callRef}
-          style={{
-            display: joinedMeeting ? 'none' : 'initial',
-          }}
-        />
         {joinedMeeting && (
           <LiveView
             compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
-            viewportSize={{ w, h: height }}
+            viewportSize={{ w, h: (9 * w) / 16 }}
           />
         )}
       </Pane>
