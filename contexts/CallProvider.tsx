@@ -30,6 +30,7 @@ interface ContextValue {
   participants: DailyParticipant[];
   joinedMeeting: boolean;
   localUser: DailyParticipant;
+  join: () => void;
 }
 
 // @ts-ignore
@@ -68,25 +69,6 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
     const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN;
     const url: string = `https://${domain}.daily.co/${roomName}`;
 
-    const joinCall = async (newCallObject: DailyCall) => {
-      newCallObject.join();
-
-      newCallObject.on('joined-meeting', async () => {
-        setJoined(true);
-        const participants = await newCallObject.participants();
-        setLocalUser(participants.local);
-      });
-      newCallObject.on('left-meeting', handleLeftMeeting);
-      return () => {
-        newCallObject.off('joined-meeting', async () => {
-          setJoined(true);
-          const participants = await newCallObject.participants();
-          setLocalUser(participants.local);
-        });
-        newCallObject.off('left-meeting', handleLeftMeeting);
-      };
-    };
-
     if (roomName && token) {
       const newCallObject: DailyCall = DailyIframe.createCallObject({
         url,
@@ -97,9 +79,29 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
         },
       });
       setCallObject(newCallObject as DailyCall);
-      joinCall(newCallObject);
     }
   }, [callObject, handleLeftMeeting, roomName, token]);
+
+  const join = useCallback(async () => {
+    if (!callObject) return;
+
+    callObject.join();
+
+    callObject.on('joined-meeting', async () => {
+      setJoined(true);
+      const participants = await callObject.participants();
+      setLocalUser(participants.local);
+    });
+    callObject.on('left-meeting', handleLeftMeeting);
+    return () => {
+      callObject.off('joined-meeting', async () => {
+        setJoined(true);
+        const participants = await callObject.participants();
+        setLocalUser(participants.local);
+      });
+      callObject.off('left-meeting', handleLeftMeeting);
+    };
+  }, [callObject, handleLeftMeeting]);
 
   useEffect(() => {
     if (!callObject) return;
@@ -135,6 +137,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
           participants,
           joinedMeeting: joined,
           localUser,
+          join,
         }}
       >
         {/*
@@ -142,7 +145,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
         <DailyProvider callObject={callObject}>{children}</DailyProvider>
       </CallContext.Provider>
     ),
-    [callObject, children, joined, localUser, participants],
+    [callObject, children, join, joined, localUser, participants],
   );
 };
 

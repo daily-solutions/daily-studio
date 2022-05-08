@@ -8,6 +8,7 @@ import LayoutHeader from './PaneHeader';
 import { useWindowSize, useWindowSizeFromVW } from '../hooks/useWindowSize';
 import LiveView from './LiveView';
 import { useVCS } from '../contexts/VCSProvider';
+import Haircheck from './Haircheck';
 
 const Layout = () => {
   const { joinedMeeting } = useCall();
@@ -28,12 +29,22 @@ const Layout = () => {
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
       <Pane width={joinedMeeting ? callWidth : '100vw'}>
-        {joinedMeeting && (
+        {joinedMeeting ? (
           <LiveView
             compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
             viewportSize={{ w, h: (9 * w) / 16 }}
             startStream={setShow}
           />
+        ) : (
+          <Pane
+            display="flex"
+            width="100vw"
+            height="100vh"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Haircheck />
+          </Pane>
         )}
       </Pane>
       {joinedMeeting && (
