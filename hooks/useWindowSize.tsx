@@ -22,7 +22,7 @@ export const useWindowSize = () => {
   return windowSize;
 };
 
-export const useWindowSizeFromVW = (width: string) => {
+export const useVw = (width: string) => {
   const [result, setResult] = useState(0);
 
   useEffect(() => {
@@ -36,6 +36,24 @@ export const useWindowSizeFromVW = (width: string) => {
     window.addEventListener('resize', handleOnResize);
     return () => window.removeEventListener('resize', handleOnResize);
   }, [width]);
+
+  return result;
+};
+
+export const useVh = (height: string) => {
+  const [result, setResult] = useState(0);
+
+  useEffect(() => {
+    if (!height) return;
+
+    const handleOnResize = () => {
+      const h = Number(height.slice(0, -2));
+      setResult((document.documentElement.clientHeight * h) / 100);
+    };
+    handleOnResize();
+    window.addEventListener('resize', handleOnResize);
+    return () => window.removeEventListener('resize', handleOnResize);
+  }, [height]);
 
   return result;
 };

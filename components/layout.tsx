@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Pane, Spinner } from 'evergreen-ui';
 import { useCall } from '../contexts/CallProvider';
 import Settings from './settings';
 import RtmpUrlModal from './rtmpUrlModal';
 import Sidebar from './sidebar';
 import LayoutHeader from './PaneHeader';
-import { useWindowSize, useWindowSizeFromVW } from '../hooks/useWindowSize';
+import { useWindowSize, useVh, useVw } from '../hooks/useWindowSize';
 import LiveView from './LiveView';
 import { useVCS } from '../contexts/VCSProvider';
 import Haircheck from './Haircheck';
@@ -24,7 +24,16 @@ const Layout = () => {
   };
 
   const { call: callWidth, settings: settingsWidth } = getCallWidth();
-  const w = useWindowSizeFromVW(callWidth);
+  const h = useVh('80vh');
+  const w = useVw(callWidth);
+
+  const { width: viewWidth, height: viewHeight } = useMemo(() => {
+    const [vhw, vhh, vhArea] = [(16 * h) / 9, h, ((16 * h) / 9) * h];
+    const [vww, vwh, vwArea] = [w, (9 * w) / 16, ((9 * w) / 16) * w];
+
+    if (vhArea < vwArea) return { width: vhw, height: vhh };
+    else return { width: vww, height: vwh };
+  }, [w, h]);
 
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
@@ -32,7 +41,7 @@ const Layout = () => {
         {state === 'joined' ? (
           <LiveView
             compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
-            viewportSize={{ w, h: (9 * w) / 16 }}
+            viewportSize={{ w: viewWidth, h: viewHeight }}
             startStream={setShow}
           />
         ) : (
