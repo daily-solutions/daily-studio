@@ -20,7 +20,7 @@ const Index = () => {
         <title>VCS Studio</title>
         <meta
           name="description"
-          content="Custom composite a live stream in real-time with Daily Prebuilt & VCS"
+          content="Custom composite a live stream in real-time with Daily"
         />
       </Head>
 
@@ -35,7 +35,7 @@ const Index = () => {
       >
         <Heading size={900}>VCS Studio</Heading>
         <Text size={500}>
-          Custom composite a live stream in real-time with Daily Prebuilt & VCS
+          Custom composite a live stream in real-time with Daily
         </Text>
 
         <Pane display="flex" padding={10}>

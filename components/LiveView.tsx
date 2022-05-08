@@ -54,7 +54,7 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
         >
           <Heading size={600}>VCS Studio</Heading>
           <Paragraph color="muted" size={400}>
-            Modify the baseline composition parameters to create custom layouts
+            Custom composite a live stream in real-time with Daily
           </Paragraph>
         </Pane>
         <Pane>

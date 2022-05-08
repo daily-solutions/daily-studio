@@ -183,14 +183,27 @@ export const VCSProvider = ({ children }: VCSType) => {
 
   const stopRecording = () => callObject.stopRecording();
 
+  const sendAppParams = useCallback(() => {
+    if (!callObject) return;
+
+    callObject.sendAppMessage({ params }, '*');
+  }, [callObject, params]);
+
   useEffect(() => {
     if (!callObject) return;
 
     if (vcsOutputRef.current?.paramValues) {
       const diff = getDiff(vcsOutputRef.current?.paramValues, params);
+      if (
+        diff &&
+        Object.keys(diff).length === 0 &&
+        Object.getPrototypeOf(diff) === Object.prototype
+      )
+        return;
       for (const key in diff) {
         vcsOutputRef.current.sendParam(key, diff[key]);
       }
+      sendAppParams();
     }
 
     if (isLiveStreaming) updateStreaming();
@@ -200,20 +213,15 @@ export const VCSProvider = ({ children }: VCSType) => {
     isLiveStreaming,
     isRecording,
     params,
+    sendAppParams,
     updateRecording,
     updateStreaming,
   ]);
 
   const recreateActiveVideoInputs = useCallback(
     (addedParticipant: any, deletedParticipant: any) => {
-      if (!localUser?.session_id) {
-        console.warn(
-          "can't build list of active video inputs, localSessionId missing",
-        );
-        return;
-      }
+      if (!localUser?.session_id) return;
 
-      // our own local session always goes first, since we are the producer
       const arr = [];
       arr.push({
         id: localUser.session_id,
@@ -305,6 +313,9 @@ export const VCSProvider = ({ children }: VCSType) => {
             recreateActiveVideoInputs(null, event.participant);
           }
           break;
+        case 'app-message':
+          if (event && event.data?.params) setParams(event.data.params);
+          break;
         default:
           break;
       }
@@ -324,6 +335,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       'live-streaming-error',
       'track-started',
       'track-stopped',
+      'app-message',
     ];
 
     events.map((event: string) => {
