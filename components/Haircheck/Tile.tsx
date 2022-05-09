@@ -44,19 +44,32 @@ const Tile = ({ sessionId, isScreen = false }: Props) => {
   return (
     <Pane height="100%" width="100%">
       {videoTrack ? (
-        <video
-          autoPlay
-          muted
-          playsInline
-          ref={videoEl}
-          width="100%"
-          height="100%"
-        />
+        <Pane position="relative">
+          <video
+            autoPlay
+            muted
+            playsInline
+            ref={videoEl}
+            width="100%"
+            height="100%"
+            style={{ transform: 'scale(-1, 1)' }}
+          />
+          <Pane
+            position="absolute"
+            bottom={4}
+            left={0}
+            padding={8}
+            backgroundColor="rgba(0, 0, 0, 0.6)"
+            overflow="hidden"
+          >
+            <Text color="white">{participant.user_name}</Text>
+          </Pane>
+        </Pane>
       ) : (
         <Pane width="100%" height="100%">
           <EmptyState
             background="dark"
-            title={participant?.user_name}
+            title={participant.user_name}
             orientation="vertical"
             icon={<PersonIcon color="#C1C4D6" />}
             iconBgColor="#EDEFF5"

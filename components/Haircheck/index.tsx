@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Button,
   Card,
@@ -7,7 +7,10 @@ import {
   Pane,
   SelectField,
   Spinner,
+  Popover,
+  Menu,
   useTheme,
+  Position,
 } from 'evergreen-ui';
 import Tile from './Tile';
 import {
@@ -19,6 +22,7 @@ import { ReactComponent as IconCameraOn } from '../../icons/camera-on-md.svg';
 import { ReactComponent as IconCameraOff } from '../../icons/camera-off-md.svg';
 import { ReactComponent as IconMicOn } from '../../icons/mic-on-md.svg';
 import { ReactComponent as IconMicOff } from '../../icons/mic-off-md.svg';
+import { ReactComponent as IconMore } from '../../icons/more-md.svg';
 import SetupUsername from './SetupUsername';
 import { useCall } from '../../contexts/CallProvider';
 import { useWindowSize } from '../../hooks/useWindowSize';
@@ -29,6 +33,7 @@ const Haircheck = () => {
   const { join, state } = useCall();
   const localParticipant = useLocalParticipant();
   const { width } = useWindowSize();
+  const [step, setStep] = useState<'username' | 'lobby'>('username');
 
   const {
     cameras,
@@ -43,6 +48,10 @@ const Haircheck = () => {
     if (!daily) return;
     daily.startCamera();
   }, [daily]);
+
+  useEffect(() => {
+    if (localParticipant?.user_name) setStep('lobby');
+  }, [localParticipant?.user_name]);
 
   const handleTrayButtonClick = (camera: boolean = false) => {
     if (camera) daily.setLocalVideo(!localParticipant?.video);
@@ -61,8 +70,8 @@ const Haircheck = () => {
   if (!localParticipant || state !== 'lobby') return <Spinner />;
   return (
     <Pane width={hairCheckWidth}>
-      {!localParticipant?.user_name ? (
-        <SetupUsername />
+      {step === 'username' ? (
+        <SetupUsername setStep={setStep} />
       ) : (
         <Card elevation={1} background="white">
           <Pane
@@ -96,6 +105,26 @@ const Haircheck = () => {
                   appearance="minimal"
                   size="large"
                 />
+              </Pane>
+              <Pane>
+                <Popover
+                  position={Position.BOTTOM_LEFT}
+                  content={
+                    <Menu>
+                      <Menu.Group>
+                        <Menu.Item onSelect={() => setStep('username')}>
+                          Change Username
+                        </Menu.Item>
+                      </Menu.Group>
+                    </Menu>
+                  }
+                >
+                  <IconButton
+                    icon={IconMore}
+                    appearance="minimal"
+                    size="large"
+                  />
+                </Popover>
               </Pane>
             </Pane>
           </Pane>

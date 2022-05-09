@@ -13,7 +13,7 @@ const Left = () => {
         iconBgColor="#EDEFF5"
       />
     </Pane>
-  )
+  );
 };
 
 export default Left;

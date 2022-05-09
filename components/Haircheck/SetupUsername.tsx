@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Pane,
   Heading,
@@ -7,13 +7,26 @@ import {
   TextInputField,
   Button,
 } from 'evergreen-ui';
-import { useDaily } from '@daily-co/daily-react-hooks';
+import { useDaily, useLocalParticipant } from '@daily-co/daily-react-hooks';
 
-const SetupUsername = () => {
+type Props = {
+  setStep: Dispatch<SetStateAction<'username' | 'lobby'>>;
+};
+
+const SetupUsername = ({ setStep }: Props) => {
   const daily = useDaily();
+  const localParticipant = useLocalParticipant();
   const [username, setUsername] = useState('');
 
-  const onContinue = () => daily.setUserName(username);
+  useEffect(
+    () => setUsername(localParticipant?.user_name),
+    [localParticipant?.user_name],
+  );
+
+  const onContinue = () => {
+    daily.setUserName(username);
+    setStep('lobby');
+  };
 
   return (
     <Pane>
