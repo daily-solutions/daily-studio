@@ -68,6 +68,7 @@ export const VCSProvider = ({ children }: VCSType) => {
   const { callObject } = useCall();
   const [params, setParams] = useState({
     mode: 'grid',
+    'image.assetName': 'overlay.png',
   });
 
   const [assets, setAssets] = useState({});

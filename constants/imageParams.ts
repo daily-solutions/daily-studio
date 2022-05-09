@@ -3,7 +3,7 @@ import { Param } from '../types/params';
 
 export const imageParams = (
   options: string[],
-  defaultValue: string,
+  defaultValue?: string,
 ): Param[] => {
   return [
     {

@@ -7,7 +7,7 @@ import { useVCS } from '../../contexts/VCSProvider';
 const ImageSettings = () => {
   const { assets } = useVCS();
 
-  const params = imageParams(Object.keys(assets), Object.keys(assets)?.[0]);
+  const params = imageParams(Object.keys(assets));
   return (
     <Pane>
       <FormMaker fields={params} />
