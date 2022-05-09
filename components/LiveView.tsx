@@ -43,12 +43,13 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
         padding={16}
         background="white"
         alignItems="center"
+        justifyContent="center"
         borderBottom="muted"
       >
         <Image src="/daily-logo.svg" alt="Daily's Logo" />
         <Pane
           flex={1}
-          alignItems="flex-start"
+          alignItems="center"
           display="flex"
           flexDirection="column"
           marginLeft={15}
@@ -76,7 +77,7 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
           </Button>
         </Pane>
       </Pane>
-      <Pane width={viewportSize.w} height={viewportSize.h} position="relative">
+      <Pane width={viewportSize.w} height={viewportSize.h}>
         <Pane height={viewportSize.h} backgroundColor="black">
           <DailyVCSOutput
             compositionReadyCb={compositionReadyCb}
@@ -85,9 +86,11 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
         </Pane>
         <Pane
           display="flex"
-          alignItems="center"
+          flex={1}
           justifyContent="space-between"
+          alignItems="center"
           padding={16}
+          bottom={10}
         >
           <Tray />
           <FormMaker fields={layoutParams} />

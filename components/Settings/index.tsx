@@ -29,7 +29,7 @@ const Settings = () => {
   };
 
   return (
-    <Pane padding={0} height="90vh">
+    <Pane padding={0} height="100vh" borderLeft="muted">
       <Pane display="flex" flexDirection="column" height="100%">
         <Pane padding={24} overflow="auto" height="100%" maxHeight="100%">
           {renderActiveTab()}

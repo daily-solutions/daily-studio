@@ -33,7 +33,7 @@ const Header = () => {
             }}
           />
           <Link
-            href="https://github.com/daily-demos/breakout-rooms"
+            href="https://github.com/daily-demos/"
             target="_blank"
           >
             <IconButton appearance="minimal" icon={IconGithub} />

@@ -41,11 +41,20 @@ const Layout = () => {
     <Pane display="flex" height="100vh" overflow="hidden">
       <Pane width={joinedState ? callWidth : '100vw'}>
         {joinedState ? (
-          <LiveView
-            compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
-            viewportSize={{ w: viewWidth, h: viewHeight }}
-            startStream={setShow}
-          />
+          <Pane
+            height="100vh"
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="center"
+          >
+            <LiveView
+              compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
+              viewportSize={{ w: viewWidth, h: viewHeight }}
+              startStream={setShow}
+            />
+          </Pane>
         ) : (
           <Pane
             display="flex"
