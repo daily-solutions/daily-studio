@@ -117,6 +117,9 @@ const FormField = ({ field }: Props): ReactElement => {
         return (
           <Pane marginBottom={20}>
             <FormFieldLabel>{field.label}</FormFieldLabel>
+            <Text color="muted" marginTop={16}>
+              {params?.[field.id] ?? field.defaultValue}
+            </Text>
             <input
               type="range"
               name={field.id}
