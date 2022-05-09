@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { Pane, Spinner } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import { useCall } from '../contexts/CallProvider';
-import Settings from './settings';
-import RtmpUrlModal from './rtmpUrlModal';
-import Sidebar from './sidebar';
-import LayoutHeader from './PaneHeader';
+import Settings from './Settings';
+import RTMPUrlModal from './RTMPUrlModal';
+import Sidebar from './Sidebar';
+import LayoutHeader from './Sidebar/PaneHeader';
 import { useWindowSize, useVh, useVw } from '../hooks/useWindowSize';
 import LiveView from './LiveView';
 import { useVCS } from '../contexts/VCSProvider';
@@ -35,10 +35,12 @@ const Layout = () => {
     else return { width: vww, height: vwh };
   }, [w, h]);
 
+  const joinedState = useMemo(() => state === 'joined', [state]);
+
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
-      <Pane width={state === 'joined' ? callWidth : '100vw'}>
-        {state === 'joined' ? (
+      <Pane width={joinedState ? callWidth : '100vw'}>
+        {joinedState ? (
           <LiveView
             compositionReadyCb={(vcs: any) => (vcsOutputRef.current = vcs)}
             viewportSize={{ w: viewWidth, h: viewHeight }}
@@ -52,11 +54,11 @@ const Layout = () => {
             justifyContent="center"
             alignItems="center"
           >
-            {state === 'lobby' ? <Haircheck /> : <Spinner />}
+            <Haircheck />
           </Pane>
         )}
       </Pane>
-      {state === 'joined' && (
+      {joinedState && (
         <Pane width={settingsWidth} background="tint1" minHeight="100vh">
           <LayoutHeader />
           <Pane width="100%" display="flex">
@@ -76,7 +78,7 @@ const Layout = () => {
           </Pane>
         </Pane>
       )}
-      <RtmpUrlModal isShown={show} setIsShown={setShow} />
+      <RTMPUrlModal isShown={show} setIsShown={setShow} />
     </Pane>
   );
 };

@@ -11,7 +11,7 @@ import {
 } from 'evergreen-ui';
 import { useVCS } from '../../contexts/VCSProvider';
 import { MenuItem as MenuItemProp } from '../../types/params';
-import IconButton from '../IconButton';
+import IconButton from '../Sidebar/IconButton';
 
 type Props = {
   field: Param;

@@ -26,7 +26,7 @@ import { useWindowSize } from '../../hooks/useWindowSize';
 const Haircheck = () => {
   const theme = useTheme();
   const daily = useDaily();
-  const { join } = useCall();
+  const { join, state } = useCall();
   const localParticipant = useLocalParticipant();
   const { width } = useWindowSize();
 
@@ -58,7 +58,7 @@ const Haircheck = () => {
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  if (!localParticipant) return <Spinner />;
+  if (!localParticipant || state !== 'lobby') return <Spinner />;
   return (
     <Pane width={hairCheckWidth}>
       {!localParticipant?.user_name ? (

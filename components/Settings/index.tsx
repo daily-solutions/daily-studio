@@ -1,12 +1,12 @@
 import React from 'react';
 import { Pane } from 'evergreen-ui';
-import ViewSettings from './settings/view';
-import { useVCS } from '../contexts/VCSProvider';
-import TextSettings from './settings/text';
-import ImageSettings from './settings/image';
-import AssetSettings from './settings/assets';
-import PeopleSettings from './settings/people';
-import ToastSettings from './settings/toast';
+import ViewSettings from './View';
+import { useVCS } from '../../contexts/VCSProvider';
+import TextSettings from './Text';
+import ImageSettings from './Image';
+import AssetSettings from './Assets';
+import PeopleSettings from './People';
+import ToastSettings from './Toast';
 
 const Settings = () => {
   const { activeTab } = useVCS();

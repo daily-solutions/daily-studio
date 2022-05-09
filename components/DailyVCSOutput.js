@@ -177,11 +177,7 @@ class VCSCompositionWrapper {
     this.vcsApi.updateImageSources(this.sources);
   }
 
-  applyMeetingTracksAndOrdering(
-    newTracksById,
-    orderedVideoInputs,
-    localSessionId,
-  ) {
+  applyMeetingTracksAndOrdering(newTracksById, orderedVideoInputs) {
     if (!this.sources || !newTracksById || !orderedVideoInputs) return;
 
     const prevSlots = this.sources.videoSlots;
@@ -410,19 +406,13 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
         vcsCompRef.current.applyMeetingTracksAndOrdering(
           remoteTracksBySessionId,
           activeVideoInputs,
-          localUser.session_id,
         );
       } else {
         // old code path without activeVideoInputs ordering sent from the producer client
         vcsCompRef.current.reconcileMeetingTracks(remoteTracksBySessionId);
       }
     }
-  }, [
-    activeVideoInputs,
-    localUser?.session_id,
-    localUser?.user_name,
-    remoteTracksBySessionId,
-  ]);
+  }, [activeVideoInputs, localUser?.session_id, remoteTracksBySessionId]);
 
   // watch for size changes on window resize
   useEffect(() => {

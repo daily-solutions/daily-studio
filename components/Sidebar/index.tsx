@@ -1,13 +1,13 @@
 import React from 'react';
 import { Pane } from 'evergreen-ui';
 import IconButton from './IconButton';
-import { ReactComponent as IconView } from '../icons/view-md.svg';
-import { ReactComponent as IconText } from '../icons/text-md.svg';
-import { ReactComponent as IconToast } from '../icons/toast-md.svg';
-import { ReactComponent as IconImage } from '../icons/image-md.svg';
-import { ReactComponent as IconAssets } from '../icons/assets-md.svg';
-import { ReactComponent as IconPeople } from '../icons/people-md.svg';
-import { useVCS } from '../contexts/VCSProvider';
+import { ReactComponent as IconView } from '../../icons/view-md.svg';
+import { ReactComponent as IconText } from '../../icons/text-md.svg';
+import { ReactComponent as IconToast } from '../../icons/toast-md.svg';
+import { ReactComponent as IconImage } from '../../icons/image-md.svg';
+import { ReactComponent as IconAssets } from '../../icons/assets-md.svg';
+import { ReactComponent as IconPeople } from '../../icons/people-md.svg';
+import { useVCS } from '../../contexts/VCSProvider';
 
 const Sidebar = () => {
   const { activeTab, setActiveTab, isRecording, isLiveStreaming } = useVCS();

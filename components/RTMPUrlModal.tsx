@@ -13,7 +13,7 @@ type Props = {
   setIsShown: Dispatch<SetStateAction<boolean>>;
 };
 
-const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
+const RTMPUrlModal = ({ isShown, setIsShown }: Props) => {
   const { setRtmpUrl, startStreaming } = useVCS();
 
   const [rtmp, setRTMP] = useState({
@@ -93,4 +93,4 @@ const RtmpUrlModal = ({ isShown, setIsShown }: Props) => {
   );
 };
 
-export default RtmpUrlModal;
+export default RTMPUrlModal;

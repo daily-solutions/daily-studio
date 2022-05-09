@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pane, Heading, Paragraph } from 'evergreen-ui';
-import { useVCS } from '../contexts/VCSProvider';
+import { useVCS } from '../../contexts/VCSProvider';
 
 type Props = {
   title: string;
