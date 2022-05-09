@@ -5,7 +5,7 @@ type IconButtonProps = {
   label: string;
   Icon: FC<SVGProps<SVGSVGElement>>;
   onClick: () => void;
-  muted: boolean;
+  muted?: boolean;
   disabled?: boolean;
 };
 
@@ -13,7 +13,7 @@ const IconButton = ({
   label,
   Icon,
   onClick,
-  muted,
+  muted = false,
   disabled = false,
 }: IconButtonProps) => {
   const theme = useTheme();

@@ -6,6 +6,10 @@ import { useVCS } from '../contexts/VCSProvider';
 import FormMaker from './Form';
 import { layoutParams } from '../constants/layoutParams';
 import { AudioTracks } from './Audio/AudioTracks';
+import TrayButton from './Tray/TrayButton';
+import { ReactComponent as IconLeave } from '../icons/leave-md.svg';
+import { useCall } from '../contexts/CallProvider';
+import { useRouter } from 'next/router';
 
 const DailyVCSOutput = dynamic(() => import('./DailyVCSOutput'), {
   ssr: false,
@@ -18,6 +22,8 @@ type Props = {
 };
 
 const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
+  const router = useRouter();
+  const { callObject } = useCall();
   const {
     isLiveStreaming,
     isRecording,
@@ -34,6 +40,11 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
   const handleRecordingToggle = () => {
     if (isRecording) stopRecording();
     else startRecording();
+  };
+
+  const onLeave = () => {
+    callObject.leave();
+    router.push('/left');
   };
 
   return (
@@ -94,6 +105,7 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
         >
           <Tray />
           <FormMaker fields={layoutParams} />
+          <TrayButton label="Leave" Icon={IconLeave} onClick={onLeave} />
         </Pane>
       </Pane>
       <AudioTracks />

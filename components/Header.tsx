@@ -32,10 +32,7 @@ const Header = () => {
               verticalAlign: 'middle',
             }}
           />
-          <Link
-            href="https://github.com/daily-demos/"
-            target="_blank"
-          >
+          <Link href="https://github.com/daily-demos/" target="_blank">
             <IconButton appearance="minimal" icon={IconGithub} />
           </Link>
         </Pane>
