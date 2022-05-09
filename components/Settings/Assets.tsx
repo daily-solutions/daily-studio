@@ -7,7 +7,6 @@ import {
   Heading,
   MimeType,
   Pane,
-  Paragraph,
   TextInputField,
 } from 'evergreen-ui';
 import { useVCS } from '../../contexts/VCSProvider';
@@ -30,10 +29,13 @@ const Asset = () => {
     setValues(values => ({ ...values, [e.target.name]: e.target.value }));
 
   const handleSaveAsset = () => {
+    const img = document.createElement('img');
+    img.name = values.name;
     const reader = new FileReader();
     reader.onload = function (readEv) {
       // @ts-ignore
-      setAssets({ ...assets, [values.name]: readEv.target.result });
+      img.src = readEv.target.result;
+      setAssets({ ...assets, [values.name]: img });
       setValues({ name: '', file: [] });
     };
     reader.readAsDataURL(values.file[0]);
@@ -41,7 +43,7 @@ const Asset = () => {
 
   return (
     <Card background="white" padding={24} marginBottom={16}>
-      <Heading marginBottom={16}>Create an asset?</Heading>
+      <Heading marginBottom={16}>Create an asset</Heading>
       <TextInputField
         name="name"
         label="Asset Name"
@@ -51,8 +53,7 @@ const Asset = () => {
       />
       <FileUploader
         label="Upload File"
-        description="You can upload 1 file. File can be up to 1 MB."
-        maxSizeInBytes={1024 ** 2}
+        description="You can only upload 1 file of PNG format"
         maxFiles={1}
         onChange={handleChangeFile}
         acceptedMimeTypes={[MimeType.png]}
@@ -86,10 +87,17 @@ const AssetSettings = () => {
     setAssets({ ...newAssets });
   };
 
+  const getImageSize = (asset: string) => {
+    // @ts-ignore
+    const src = assets[asset].src;
+    return Math.round(
+      ((src.length - 'data:image/png;base64,'.length) * 3) / 4,
+    ) as number;
+  };
+
   return (
     <Pane>
       <Pane>
-        <Asset />
         <Heading>Session Assets ({Object.keys(assets).length})</Heading>
         <Pane marginY={10}>
           {Object.keys(assets).map(asset => (
@@ -97,14 +105,12 @@ const AssetSettings = () => {
               key={asset}
               name={asset}
               type={MimeType.png}
-              sizeInBytes={Math.round(
-                ((assets[asset].length - 'data:image/png;base64,'.length) * 3) /
-                  4,
-              )}
+              sizeInBytes={getImageSize(asset)}
               onRemove={() => handleRemoveAsset(asset)}
             />
           ))}
         </Pane>
+        <Asset />
       </Pane>
     </Pane>
   );

@@ -41,8 +41,8 @@ interface ContextValue {
   stopStreaming: () => void;
   activeTab: Tab;
   setActiveTab: Dispatch<SetStateAction<Tab>>;
-  assets: { [key: string]: string };
-  setAssets: Dispatch<SetStateAction<{ [key: string]: string }>>;
+  assets: { [key: string]: HTMLImageElement };
+  setAssets: Dispatch<SetStateAction<{ [key: string]: HTMLImageElement }>>;
   layoutParticipants: LayoutParticipants;
   setLayoutParticipants: Dispatch<SetStateAction<LayoutParticipants>>;
   remoteTracksBySessionId: { [key: string]: string };

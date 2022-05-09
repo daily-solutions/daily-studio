@@ -33,7 +33,7 @@ class VCSCompositionWrapper {
     );
     this.defaultParams = defaultParams;
 
-    this.fps = 15;
+    this.fps = 20;
 
     this.recomputeOutputScaleFactor();
 
@@ -83,14 +83,7 @@ class VCSCompositionWrapper {
     this.rootEl.appendChild(el);
   }
 
-  loadTestImages() {
-    // const { hostname, port, protocol } = window.location;
-    // return {
-    //   'user_white_64.png': `${protocol}//${hostname}:${port}user_white_64.png`,
-    //   'overlay.png': `${protocol}//${hostname}:${port}overlay.png`,
-    //   'party-popper_1f389.png': `${protocol}//${hostname}:${port}party-popper_1f389.png`,
-    // };
-  }
+  loadTestImages() {}
 
   async start() {
     if (!this.sources) {
@@ -366,7 +359,8 @@ class VCSCompositionWrapper {
 const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
   const { state } = useCall();
   const localUser = useLocalParticipant();
-  const { params, activeVideoInputs, remoteTracksBySessionId } = useVCS();
+  const { params, activeVideoInputs, remoteTracksBySessionId, assets } =
+    useVCS();
 
   const vcsCompRef = React.useRef();
 
@@ -413,6 +407,13 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
       }
     }
   }, [activeVideoInputs, localUser?.session_id, remoteTracksBySessionId]);
+
+  useEffect(() => {
+    if (!vcsCompRef.current) return;
+
+    vcsCompRef.current.sources.compositionAssetImages = assets;
+    vcsCompRef.current.sendUpdateImageSources();
+  }, [assets]);
 
   // watch for size changes on window resize
   useEffect(() => {
