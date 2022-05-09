@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useVCS } from '../contexts/VCSProvider';
 import FormMaker from './Form';
 import { layoutParams } from '../constants/layoutParams';
+import { AudioTracks } from './Audio/AudioTracks';
 
 const DailyVCSOutput = dynamic(() => import('./DailyVCSOutput'), {
   ssr: false,
@@ -92,6 +93,7 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
           <FormMaker fields={layoutParams} />
         </Pane>
       </Pane>
+      <AudioTracks />
     </Pane>
   );
 };
