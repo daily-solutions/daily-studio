@@ -84,8 +84,7 @@ const FormField = ({ field }: Props): ReactElement => {
             name={field.id}
             label={field.label}
             width="100%"
-            defaultValue={field.defaultValue}
-            value={params?.[field.id]}
+            value={params?.[field.id] || field.defaultValue}
             onChange={e =>
               handleChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
             }
@@ -104,11 +103,10 @@ const FormField = ({ field }: Props): ReactElement => {
             name={field.id}
             type="number"
             label={field.label}
-            defaultValue={field.defaultValue}
             step={field?.step}
             min={field?.min}
             max={field?.max}
-            value={params?.[field.id]}
+            value={params?.[field.id] || field.defaultValue}
             onChange={handleChange}
             marginBottom={20}
           />
@@ -126,8 +124,7 @@ const FormField = ({ field }: Props): ReactElement => {
               min={field.min}
               max={field.max}
               step={field.step}
-              defaultValue={field.defaultValue}
-              value={params?.[field.id]}
+              value={params?.[field.id] || field.defaultValue}
               onChange={handleChange}
               style={{ width: '100%', height: '2px', marginBottom: '8px' }}
             />
@@ -146,8 +143,7 @@ const FormField = ({ field }: Props): ReactElement => {
               <input
                 type="color"
                 name={field.id}
-                defaultValue={field.defaultValue}
-                value={params?.[field.id]}
+                value={params?.[field.id] || field.defaultValue}
                 onChange={handleChange}
                 style={{
                   border: 'none',
@@ -163,8 +159,7 @@ const FormField = ({ field }: Props): ReactElement => {
           <TextInputField
             name={field.id}
             label={field.label}
-            defaultValue={field.defaultValue}
-            value={params?.[field.id]}
+            value={params?.[field.id] || field.defaultValue}
             onChange={handleChange}
             marginBottom={20}
           />

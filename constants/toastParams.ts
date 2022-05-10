@@ -48,13 +48,13 @@ export const toastParams = (
       id: 'toast.color',
       label: 'Toast Color',
       type: 'color',
-      defaultValue: 'rgba(15, 50, 110, 0.6)',
+      defaultValue: '#0F326E',
     },
     {
       id: 'toast.strokeColor',
       label: 'Toast Stroke Color',
       type: 'color',
-      defaultValue: 'rgba(0, 0, 30, 0.44)',
+      defaultValue: '#00001E',
     },
     {
       id: 'toast.text.color',

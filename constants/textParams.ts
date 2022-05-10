@@ -85,12 +85,12 @@ export const textParams: Param[] = [
     id: 'text.color',
     label: 'Text Color',
     type: 'color',
-    defaultValue: 'rgba(255, 250, 200, 0.95)',
+    defaultValue: '#FFFAC8',
   },
   {
     id: 'text.strokeColor',
     label: 'Text Stroke Color',
     type: 'color',
-    defaultValue: 'rgba(0, 0, 0, 0.8)',
+    defaultValue: '#000000',
   },
 ];
