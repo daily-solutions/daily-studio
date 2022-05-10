@@ -14,7 +14,7 @@ const Tray = () => {
   const localParticipant = useLocalParticipant();
 
   return (
-    <Pane display="flex" justifyContent="center" alignItems="center" gap={20}>
+    <Pane display="flex" justifyContent="center" alignItems="center">
       <TrayButton
         label={localParticipant?.video ? 'Turn off' : 'Turn on'}
         Icon={localParticipant?.video ? IconCameraOn : IconCameraOff}

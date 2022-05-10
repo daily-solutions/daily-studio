@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   Heading,
-  IconButton,
   Pane,
   SelectField,
   Spinner,
@@ -13,6 +12,7 @@ import {
   Position,
 } from 'evergreen-ui';
 import Tile from './Tile';
+import TrayButton from '../Tray/TrayButton';
 import {
   useDaily,
   useDevices,
@@ -34,6 +34,10 @@ const Haircheck = () => {
   const localParticipant = useLocalParticipant();
   const { width } = useWindowSize();
   const [step, setStep] = useState<'username' | 'lobby'>('username');
+
+  const [popover, setPopOver] = useState(false);
+
+  console.log(popover);
 
   const {
     cameras,
@@ -88,42 +92,48 @@ const Haircheck = () => {
             </Button>
           </Pane>
           <Tile sessionId={localParticipant?.session_id} />
-          <Pane padding={8}>
-            <Pane display="flex" alignItems="center" gap={16}>
+          <Pane padding={2}>
+            <Pane display="flex" alignItems="center">
               <Pane flex={1}>
-                <IconButton
-                  icon={localParticipant?.video ? IconCameraOn : IconCameraOff}
-                  intent={localParticipant?.video ? 'none' : 'danger'}
+                <TrayButton
+                  label={localParticipant?.video ? 'Turn off' : 'Turn on'}
+                  Icon={localParticipant?.video ? IconCameraOn : IconCameraOff}
                   onClick={() => handleTrayButtonClick(true)}
-                  appearance="minimal"
-                  size="large"
+                  muted={!localParticipant?.video}
                 />
-                <IconButton
-                  icon={localParticipant?.audio ? IconMicOn : IconMicOff}
-                  intent={localParticipant?.audio ? 'none' : 'danger'}
-                  onClick={() => handleTrayButtonClick(false)}
-                  appearance="minimal"
-                  size="large"
+                <TrayButton
+                  label={localParticipant?.audio ? 'Mute' : 'Unmute'}
+                  Icon={localParticipant?.audio ? IconMicOn : IconMicOff}
+                  onClick={() => handleTrayButtonClick()}
+                  muted={!localParticipant?.audio}
                 />
               </Pane>
               <Pane>
                 <Popover
-                  position={Position.BOTTOM_LEFT}
+                  isShown={popover}
+                  position={Position.TOP_RIGHT}
                   content={
                     <Menu>
                       <Menu.Group>
-                        <Menu.Item onSelect={() => setStep('username')}>
-                          Change Username
+                        <Menu.Item
+                          onSelect={() => {
+                            setStep('username');
+                            setPopOver(false);
+                          }}
+                        >
+                          Change name
                         </Menu.Item>
                       </Menu.Group>
                     </Menu>
                   }
                 >
-                  <IconButton
-                    icon={IconMore}
-                    appearance="minimal"
-                    size="large"
-                  />
+                  <Pane>
+                    <TrayButton
+                      label="More"
+                      Icon={IconMore}
+                      onClick={() => setPopOver(!popover)}
+                    />
+                  </Pane>
                 </Popover>
               </Pane>
             </Pane>

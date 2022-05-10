@@ -1,5 +1,5 @@
 import React, { FC, SVGProps } from 'react';
-import { Pane, Small, useTheme } from 'evergreen-ui';
+import { Pane, Text, Button } from 'evergreen-ui';
 
 type IconButtonProps = {
   label: string;
@@ -16,27 +16,24 @@ const IconButton = ({
   muted = false,
   disabled = false,
 }: IconButtonProps) => {
-  const theme = useTheme();
-
   return (
-    <Pane
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      color={
-        disabled
-          ? theme.colors.icon.disabled
-          : muted
-          ? theme.colors.red700
-          : theme.colors.icon.selected
-      }
-      cursor={disabled ? 'not-allowed' : 'pointer'}
+    <Button
+      intent={!muted ? 'none' : 'danger'}
+      appearance="minimal"
       onClick={onClick}
+      disabled={disabled}
+      height={50}
     >
-      <Icon />
-      <Small marginTop={5}>{label}</Small>
-    </Pane>
+      <Pane
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Icon />
+        <Text color={!muted ? 'none' : 'danger'}>{label}</Text>
+      </Pane>
+    </Button>
   );
 };
 
