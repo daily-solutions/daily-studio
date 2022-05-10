@@ -12,6 +12,7 @@ import { useCall } from './CallProvider';
 import { DailyEvent, DailyEventObject } from '@daily-co/daily-js';
 import { getDiff } from '../utils/getDiff';
 import { useLocalParticipant } from '@daily-co/daily-react-hooks';
+import {useSharedState} from "../hooks/useSharedState";
 
 type VCSType = {
   children: React.ReactNode;
@@ -66,9 +67,12 @@ export const VCSProvider = ({ children }: VCSType) => {
 
   const localUser = useLocalParticipant();
   const { callObject } = useCall();
-  const [params, setParams] = useState({
-    mode: 'grid',
-    'image.assetName': 'overlay.png',
+
+  const { sharedState: params, setSharedState: setParams } = useSharedState({
+    initialValues: {
+      mode: 'grid',
+      'image.assetName': 'overlay.png',
+    }
   });
 
   const [assets, setAssets] = useState({});
@@ -184,12 +188,6 @@ export const VCSProvider = ({ children }: VCSType) => {
 
   const stopRecording = () => callObject.stopRecording();
 
-  const sendAppParams = useCallback(() => {
-    if (!callObject) return;
-
-    callObject.sendAppMessage({ params }, '*');
-  }, [callObject, params]);
-
   useEffect(() => {
     if (!callObject) return;
 
@@ -204,7 +202,6 @@ export const VCSProvider = ({ children }: VCSType) => {
       for (const key in diff) {
         vcsOutputRef.current.sendParam(key, diff[key]);
       }
-      sendAppParams();
     }
 
     if (isLiveStreaming) updateStreaming();
@@ -214,7 +211,6 @@ export const VCSProvider = ({ children }: VCSType) => {
     isLiveStreaming,
     isRecording,
     params,
-    sendAppParams,
     updateRecording,
     updateStreaming,
   ]);
@@ -313,9 +309,6 @@ export const VCSProvider = ({ children }: VCSType) => {
             });
             recreateActiveVideoInputs(null, event.participant);
           }
-          break;
-        case 'app-message':
-          if (event && event.data?.params) setParams(event.data.params);
           break;
         default:
           break;
