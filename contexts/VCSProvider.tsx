@@ -294,7 +294,7 @@ export const VCSProvider = ({ children }: VCSType) => {
           if (event && event.track && 'video' === event.track.kind) {
             setRemoteTracks(tracks => {
               const sessionId = event.participant?.session_id;
-              if (event.participant.video) {
+              if (event?.participant?.video) {
                 tracks[sessionId] = {
                   track: event.participant.videoTrack,
                   userName: event.participant.user_name,
