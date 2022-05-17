@@ -250,7 +250,7 @@ export const VCSProvider = ({ children }: VCSType) => {
       }
       setActiveVideoInputs([...arr]);
     },
-    [activeVideoInputs, localUser?.session_id, localUser?.user_name],
+    [activeVideoInputs, localUser],
   );
 
   const handleEvents = useCallback(
@@ -294,16 +294,23 @@ export const VCSProvider = ({ children }: VCSType) => {
           if (event && event.track && 'video' === event.track.kind) {
             setRemoteTracks(tracks => {
               const sessionId = event.participant?.session_id;
-              if (sessionId) delete tracks[sessionId];
-              else if (event?.track) {
-                const key = Object.keys(tracks).find(
-                  key => tracks[key]?.track === event.track,
-                );
-                if (key) delete tracks[key];
-                else
-                  console.warn(
-                    "** lost remote track wasn't somehow seen before",
+              if (event.participant.video) {
+                tracks[sessionId] = {
+                  track: event.participant.videoTrack,
+                  userName: event.participant.user_name,
+                };
+              } else {
+                if (sessionId) delete tracks[sessionId];
+                else if (event?.track) {
+                  const key = Object.keys(tracks).find(
+                    key => tracks[key]?.track === event.track,
                   );
+                  if (key) delete tracks[key];
+                  else
+                    console.warn(
+                      "** lost remote track wasn't somehow seen before",
+                    );
+                }
               }
               return tracks;
             });

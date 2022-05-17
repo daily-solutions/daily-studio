@@ -131,7 +131,7 @@ class VCSCompositionWrapper {
 
   setActiveVideoInput(idx, active, id, name, isScreenshare) {
     this.activeVideoInputSlots[idx] = {
-      id: id || '',
+      id: isScreenshare ? `${id}-screen` : id || '',
       active: !!active,
       type: isScreenshare ? 'screenshare' : 'camera',
       displayName: name || 'Participant ' + (idx + 1),
