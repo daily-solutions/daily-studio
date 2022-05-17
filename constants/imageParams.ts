@@ -20,6 +20,12 @@ export const imageParams = (
       values: ['overlay.png', ...options],
     },
     {
+      id: 'image.enableFade',
+      label: 'Enable Fade Animation',
+      type: 'boolean',
+      defaultValue: true,
+    },
+    {
       id: 'image.position',
       label: 'Image Position',
       type: 'enum',

@@ -35,7 +35,7 @@ const Tray = () => {
             ? callObject.stopScreenShare()
             : callObject.startScreenShare()
         }
-        muted={!localParticipant?.screen}
+        muted={localParticipant?.screen}
       />
     </Pane>
   );

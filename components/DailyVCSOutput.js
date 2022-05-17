@@ -33,7 +33,7 @@ class VCSCompositionWrapper {
     );
     this.defaultParams = defaultParams;
 
-    this.fps = 20;
+    this.fps = 30;
 
     this.recomputeOutputScaleFactor();
 

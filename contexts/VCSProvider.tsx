@@ -12,7 +12,7 @@ import { useCall } from './CallProvider';
 import { DailyEvent, DailyEventObject } from '@daily-co/daily-js';
 import { getDiff } from '../utils/getDiff';
 import { useLocalParticipant } from '@daily-co/daily-react-hooks';
-import {useSharedState} from "../hooks/useSharedState";
+import { useSharedState } from '../hooks/useSharedState';
 
 type VCSType = {
   children: React.ReactNode;
@@ -72,7 +72,7 @@ export const VCSProvider = ({ children }: VCSType) => {
     initialValues: {
       mode: 'grid',
       'image.assetName': 'overlay.png',
-    }
+    },
   });
 
   const [assets, setAssets] = useState({});

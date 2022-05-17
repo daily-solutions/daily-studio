@@ -3,6 +3,12 @@ import { Param } from '../types/params';
 
 export const viewParams: Param[] = [
   {
+    id: 'videoSettings.preferScreenshare',
+    label: 'Prefer Screenshare',
+    type: 'boolean',
+    defaultValue: false,
+  },
+  {
     id: 'videoSettings.dominant.position',
     label: 'Active Speaker Position',
     type: 'enum',
