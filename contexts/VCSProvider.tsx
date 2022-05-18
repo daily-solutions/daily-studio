@@ -307,26 +307,36 @@ export const VCSProvider = ({ children }: VCSType) => {
           break;
         case 'track-started':
           if (event && event.track && 'video' === event.track.kind) {
-            setRemoteTracks(tracks => ({
-              ...tracks,
-              [event.participant.session_id]: {
-                track: event.track,
-                userName: event.participant.user_name,
-              },
-            }));
-            recreateActiveVideoInputs(event.participant, null);
+            if (event.track.label === 'screen:2:0') {
+              setRemoteTracks(tracks => ({
+                ...tracks,
+                [`${event.participant.session_id}-screen`]: {
+                  track: event.track,
+                  userName: event.participant.user_name,
+                },
+              }));
+              const addedParticipant = {
+                session_id: `${event.participant.session_id}-screen`,
+                user_name: event.participant.user_name,
+              };
+              recreateActiveVideoInputs(addedParticipant, null);
+            } else {
+              setRemoteTracks(tracks => ({
+                ...tracks,
+                [event.participant.session_id]: {
+                  track: event.track,
+                  userName: event.participant.user_name,
+                },
+              }));
+              recreateActiveVideoInputs(event.participant, null);
+            }
           }
           break;
         case 'track-stopped':
           if (event && event.track && 'video' === event.track.kind) {
-            setRemoteTracks(tracks => {
-              const sessionId = event.participant?.session_id;
-              if (event?.participant?.video) {
-                tracks[sessionId] = {
-                  track: event.participant.videoTrack,
-                  userName: event.participant.user_name,
-                };
-              } else {
+            if (event.track.label === 'screen:2:0') {
+              setRemoteTracks(tracks => {
+                const sessionId = `${event.participant.session_id}-screen`;
                 if (sessionId) delete tracks[sessionId];
                 else if (event?.track) {
                   const key = Object.keys(tracks).find(
@@ -338,10 +348,31 @@ export const VCSProvider = ({ children }: VCSType) => {
                       "** lost remote track wasn't somehow seen before",
                     );
                 }
-              }
-              return tracks;
-            });
-            recreateActiveVideoInputs(null, event.participant);
+                return tracks;
+              });
+              const deletedParticipant = {
+                session_id: `${event.participant.session_id}-screen`,
+                user_name: event.participant.user_name,
+              };
+              recreateActiveVideoInputs(null, deletedParticipant);
+            } else {
+              setRemoteTracks(tracks => {
+                const sessionId = event.participant?.session_id;
+                if (sessionId) delete tracks[sessionId];
+                else if (event?.track) {
+                  const key = Object.keys(tracks).find(
+                    key => tracks[key]?.track === event.track,
+                  );
+                  if (key) delete tracks[key];
+                  else
+                    console.warn(
+                      "** lost remote track wasn't somehow seen before",
+                    );
+                }
+                return tracks;
+              });
+              recreateActiveVideoInputs(null, event.participant);
+            }
           }
           break;
         default:
@@ -350,6 +381,8 @@ export const VCSProvider = ({ children }: VCSType) => {
     },
     [recreateActiveVideoInputs],
   );
+
+  console.log(activeVideoInputs, remoteTracks);
 
   useEffect(() => {
     if (!callObject) return;

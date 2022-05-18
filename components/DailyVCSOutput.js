@@ -184,7 +184,7 @@ class VCSCompositionWrapper {
         continue;
       }
 
-      const { track } = newTracksById[sessionId];
+      const { track, screenTrack } = newTracksById[sessionId];
 
       const prevSlot = prevSlots.find(it => it.sessionId === sessionId);
       if (prevSlot && prevSlot.track.id === track.id) {
