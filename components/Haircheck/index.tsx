@@ -37,8 +37,6 @@ const Haircheck = () => {
 
   const [popover, setPopOver] = useState(false);
 
-  console.log(popover);
-
   const {
     cameras,
     microphones,

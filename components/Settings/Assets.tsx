@@ -12,7 +12,7 @@ import {
 import { useVCS } from '../../contexts/VCSProvider';
 
 const Asset = () => {
-  const { assets, setAssets } = useVCS();
+  const { setAssets } = useVCS();
   const [values, setValues] = useState({
     name: '',
     file: [],
@@ -28,17 +28,30 @@ const Asset = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setValues(values => ({ ...values, [e.target.name]: e.target.value }));
 
-  const handleSaveAsset = () => {
+  const handleSaveAsset = async () => {
+    const body = new FormData();
+    body.append('file', values.file[0]);
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body,
+    });
+    const file = await response.json();
+    const url = `${window.location.origin}/assets/${file.originalFilename}`;
+
+    // creating an image to render it in the local view.
     const img = document.createElement('img');
-    img.name = values.name;
-    const reader = new FileReader();
-    reader.onload = function (readEv) {
-      // @ts-ignore
-      img.src = readEv.target.result;
-      setAssets({ ...assets, [values.name]: img });
-      setValues({ name: '', file: [] });
-    };
-    reader.readAsDataURL(values.file[0]);
+    img.alt = `${values.name} image`;
+    img.src = url;
+
+    setAssets(assets => ({
+      ...assets,
+      [values.name]: {
+        url,
+        image: img,
+        size: file.size,
+      },
+    }));
+    setValues({ name: '', file: [] });
   };
 
   return (
@@ -57,6 +70,7 @@ const Asset = () => {
         maxFiles={1}
         onChange={handleChangeFile}
         acceptedMimeTypes={[MimeType.png]}
+        maxSizeInBytes={1024 ** 2}
         renderFile={file => {
           const { name, size, type } = file;
           return (
@@ -87,14 +101,6 @@ const AssetSettings = () => {
     setAssets({ ...newAssets });
   };
 
-  const getImageSize = (asset: string) => {
-    // @ts-ignore
-    const src = assets[asset].src;
-    return Math.round(
-      ((src.length - 'data:image/png;base64,'.length) * 3) / 4,
-    ) as number;
-  };
-
   return (
     <Pane>
       <Pane>
@@ -105,7 +111,7 @@ const AssetSettings = () => {
               key={asset}
               name={asset}
               type={MimeType.png}
-              sizeInBytes={getImageSize(asset)}
+              sizeInBytes={assets[asset].size}
               onRemove={() => handleRemoveAsset(asset)}
             />
           ))}

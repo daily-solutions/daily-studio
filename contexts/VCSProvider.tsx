@@ -25,6 +25,16 @@ type LayoutParticipants = {
   participants: string[];
 };
 
+type Asset = {
+  url: string;
+  image: HTMLImageElement;
+  size: number;
+};
+
+type Assets = {
+  [key: string]: Asset;
+};
+
 interface ContextValue {
   isLiveStreaming: boolean;
   isRecording: boolean;
@@ -42,8 +52,8 @@ interface ContextValue {
   stopStreaming: () => void;
   activeTab: Tab;
   setActiveTab: Dispatch<SetStateAction<Tab>>;
-  assets: { [key: string]: HTMLImageElement };
-  setAssets: Dispatch<SetStateAction<{ [key: string]: HTMLImageElement }>>;
+  assets: Assets;
+  setAssets: Dispatch<SetStateAction<Assets>>;
   layoutParticipants: LayoutParticipants;
   setLayoutParticipants: Dispatch<SetStateAction<LayoutParticipants>>;
   remoteTracksBySessionId: { [key: string]: string };
@@ -75,7 +85,7 @@ export const VCSProvider = ({ children }: VCSType) => {
     },
   });
 
-  const [assets, setAssets] = useState({});
+  const [assets, setAssets] = useState<Assets>({});
   const [layoutParticipants, setLayoutParticipants] =
     useState<LayoutParticipants>({
       showAllParticipants: true,
@@ -85,14 +95,25 @@ export const VCSProvider = ({ children }: VCSType) => {
   const [remoteTracks, setRemoteTracks] = useState<{ [key: string]: any }>({});
   const [activeVideoInputs, setActiveVideoInputs] = useState([]);
 
+  const getSessionAssets = useCallback(() => {
+    const sessionAssets: { [key: string]: string } = {};
+    Object.keys(assets).map(
+      asset => (sessionAssets[`images/${asset}`] = assets[asset].url),
+    );
+    return sessionAssets;
+  }, [assets]);
+
   // live-streaming functions
   const startStreaming = useCallback(() => {
     const lp = layoutParticipants.showAllParticipants
       ? ['*']
       : [...layoutParticipants.participants];
 
+    const session_assets = getSessionAssets();
+
     callObject.startLiveStreaming({
       rtmpUrl,
+      fps: 30,
       layout: {
         // @ts-ignore
         preset: 'custom',
@@ -102,10 +123,12 @@ export const VCSProvider = ({ children }: VCSType) => {
           video: lp,
           audio: lp,
         },
+        session_assets,
       },
     });
   }, [
     callObject,
+    getSessionAssets,
     layoutParticipants.participants,
     layoutParticipants.showAllParticipants,
     params,
@@ -144,6 +167,8 @@ export const VCSProvider = ({ children }: VCSType) => {
       ? ['*']
       : [...layoutParticipants.participants];
 
+    const session_assets = getSessionAssets();
+
     callObject.startRecording({
       layout: {
         // @ts-ignore
@@ -154,10 +179,12 @@ export const VCSProvider = ({ children }: VCSType) => {
           video: lp,
           audio: lp,
         },
+        session_assets,
       },
     });
   }, [
     callObject,
+    getSessionAssets,
     layoutParticipants.participants,
     layoutParticipants.showAllParticipants,
     params,
