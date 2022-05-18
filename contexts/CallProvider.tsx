@@ -77,6 +77,7 @@ export const CallProvider = ({ children, roomName }: CallProviderType) => {
         },
       });
       setCallObject(newCallObject as DailyCall);
+      newCallObject.preAuth({ url, token });
     }
   }, [callObject, handleLeftMeeting, roomName, token]);
 

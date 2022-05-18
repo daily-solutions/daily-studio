@@ -1,6 +1,9 @@
 import React, { useMemo, useEffect, useRef } from 'react';
-import { Pane, PersonIcon, EmptyState, Text } from 'evergreen-ui';
-import { useMediaTrack, useParticipant } from '@daily-co/daily-react-hooks';
+import { Pane, Strong, Heading } from 'evergreen-ui';
+import {
+  useMediaTrack,
+  useParticipant,
+} from '@daily-co/daily-react-hooks';
 import Bowser from 'bowser';
 
 type Props = {
@@ -56,24 +59,26 @@ const Tile = ({ sessionId, isScreen = false }: Props) => {
           />
           <Pane
             position="absolute"
-            bottom={4}
+            bottom={2}
             left={0}
-            padding={8}
+            padding={4}
             backgroundColor="rgba(0, 0, 0, 0.6)"
             overflow="hidden"
           >
-            <Text color="white">{participant.user_name}</Text>
+            <Strong size={300} color="white">{participant.user_name}</Strong>
           </Pane>
         </Pane>
       ) : (
-        <Pane width="100%" height="100%">
-          <EmptyState
-            background="dark"
-            title={participant.user_name}
-            orientation="vertical"
-            icon={<PersonIcon color="#C1C4D6" />}
-            iconBgColor="#EDEFF5"
-          />
+        <Pane
+          width="100%"
+          height="25vh"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          border="muted"
+          background="tint1"
+        >
+          <Heading size={700}>{participant.user_name}</Heading>
         </Pane>
       )}
     </Pane>

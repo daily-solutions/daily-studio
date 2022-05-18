@@ -1,10 +1,10 @@
 import React, { FC, SVGProps } from 'react';
-import { Pane, Text, Button } from 'evergreen-ui';
+import { Pane, Small, Button } from 'evergreen-ui';
 
 type IconButtonProps = {
   label: string;
   Icon: FC<SVGProps<SVGSVGElement>>;
-  onClick: () => void;
+  onClick?: () => void;
   muted?: boolean;
   disabled?: boolean;
 };
@@ -12,7 +12,7 @@ type IconButtonProps = {
 const IconButton = ({
   label,
   Icon,
-  onClick,
+  onClick = () => {},
   muted = false,
   disabled = false,
 }: IconButtonProps) => {
@@ -22,16 +22,18 @@ const IconButton = ({
       appearance="minimal"
       onClick={onClick}
       disabled={disabled}
-      height={50}
+      height="auto"
+      width="auto"
     >
       <Pane
         display="flex"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
+        width={30}
       >
-        <Icon />
-        <Text color={!muted ? 'none' : 'danger'}>{label}</Text>
+        <Icon width={24} height={24} color={muted ? 'danger' : 'black'} />
+        <Small color="black">{label}</Small>
       </Pane>
     </Button>
   );

@@ -39,7 +39,10 @@ const Layout = () => {
 
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
-      <Pane width={joinedState ? callWidth : '100vw'}>
+      <Pane
+        width={joinedState ? callWidth : '100vw'}
+        background={joinedState ? 'white' : 'tint2'}
+      >
         {joinedState ? (
           <Pane
             height="100vh"
