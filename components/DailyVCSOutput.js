@@ -408,12 +408,20 @@ const DailyVCSOutput = ({ compositionReadyCb, viewportSize }) => {
     }
   }, [activeVideoInputs, localUser?.session_id, remoteTracksBySessionId]);
 
+  const getSessionAssets = useCallback(() => {
+    const sessionAssets = {};
+    Object.keys(assets).map(
+      asset => (sessionAssets[asset] = assets[asset].image),
+    );
+    return sessionAssets;
+  }, [assets]);
+
   useEffect(() => {
     if (!vcsCompRef.current) return;
 
-    vcsCompRef.current.sources.compositionAssetImages = assets;
+    vcsCompRef.current.sources.compositionAssetImages = getSessionAssets();
     vcsCompRef.current.sendUpdateImageSources();
-  }, [assets]);
+  }, [assets, getSessionAssets]);
 
   // watch for size changes on window resize
   useEffect(() => {

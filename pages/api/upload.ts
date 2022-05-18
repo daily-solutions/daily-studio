@@ -17,8 +17,6 @@ export default async function handler(
 
     form.parse(req, (err: any, fields: any, files: any) => {
       if (err) return reject(err);
-      console.log(fields, files);
-      console.log(files.file.filepath);
       const oldPath = files.file.filepath;
       const newPath = `./public/assets/${files.file.originalFilename}`;
       mv(oldPath, newPath, function (err: any) {
