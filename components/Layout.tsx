@@ -9,12 +9,14 @@ import { useWindowSize, useVh, useVw } from '../hooks/useWindowSize';
 import LiveView from './LiveView';
 import { useVCS } from '../contexts/VCSProvider';
 import Haircheck from './Haircheck';
+import { useLocalParticipant } from '@daily-co/daily-react-hooks';
 
 const Layout = () => {
   const { state } = useCall();
   const { vcsOutputRef } = useVCS();
   const [show, setShow] = useState(false);
   const { width } = useWindowSize();
+  const localParticipant = useLocalParticipant();
 
   const getCallWidth = () => {
     if (width >= 1400) return { call: '75vw', settings: '25vw' };
@@ -23,9 +25,14 @@ const Layout = () => {
     else return { call: '60vw', settings: '40vw' };
   };
 
+  const isEditor = useMemo(
+    () => state === 'joined' && localParticipant?.owner,
+    [state, localParticipant],
+  );
+
   const { call: callWidth, settings: settingsWidth } = getCallWidth();
-  const h = useVh('80vh');
-  const w = useVw(callWidth);
+  const h = useVh('85vh');
+  const w = useVw(isEditor ? callWidth : '100vw');
 
   const { width: viewWidth, height: viewHeight } = useMemo(() => {
     const [vhw, vhh, vhArea] = [(16 * h) / 9, h, ((16 * h) / 9) * h];
@@ -35,15 +42,13 @@ const Layout = () => {
     else return { width: vww, height: vwh };
   }, [w, h]);
 
-  const joinedState = useMemo(() => state === 'joined', [state]);
-
   return (
     <Pane display="flex" height="100vh" overflow="hidden">
       <Pane
-        width={joinedState ? callWidth : '100vw'}
-        background={joinedState ? 'white' : 'tint2'}
+        width={isEditor ? callWidth : '100vw'}
+        background={isEditor ? 'white' : 'tint2'}
       >
-        {joinedState ? (
+        {state === 'joined' ? (
           <Pane
             height="100vh"
             width="100%"
@@ -70,7 +75,7 @@ const Layout = () => {
           </Pane>
         )}
       </Pane>
-      {joinedState && (
+      {isEditor && (
         <Pane width={settingsWidth} background="tint1" minHeight="100vh">
           <LayoutHeader />
           <Pane width="100%" display="flex">

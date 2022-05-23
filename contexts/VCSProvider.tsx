@@ -382,8 +382,6 @@ export const VCSProvider = ({ children }: VCSType) => {
     [recreateActiveVideoInputs],
   );
 
-  console.log(activeVideoInputs, remoteTracks);
-
   useEffect(() => {
     if (!callObject) return;
 

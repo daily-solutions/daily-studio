@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import Tray from './Tray';
-import { Pane, Heading, Button, Paragraph, Image } from 'evergreen-ui';
+import { Pane, Heading, Button, Paragraph, Image, Badge } from 'evergreen-ui';
 import dynamic from 'next/dynamic';
 import { useVCS } from '../contexts/VCSProvider';
 import FormMaker from './Form';
@@ -10,6 +10,7 @@ import TrayButton from './Tray/TrayButton';
 import { ReactComponent as IconLeave } from '../icons/leave-md.svg';
 import { useCall } from '../contexts/CallProvider';
 import { useRouter } from 'next/router';
+import { useLocalParticipant } from '@daily-co/daily-react-hooks';
 
 const DailyVCSOutput = dynamic(() => import('./DailyVCSOutput'), {
   ssr: false,
@@ -31,6 +32,7 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
     stopRecording,
     stopStreaming,
   } = useVCS();
+  const localParticipant = useLocalParticipant();
 
   const handleStreamToggle = () => {
     if (isLiveStreaming) stopStreaming();
@@ -71,21 +73,30 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
           </Paragraph>
         </Pane>
         <Pane>
-          <Button
-            marginRight={16}
-            intent={isRecording ? 'danger' : 'none'}
-            onClick={handleRecordingToggle}
-          >
-            {isRecording ? 'Stop Recording' : 'Record'}
-          </Button>
-          <Button
-            marginRight={16}
-            appearance="primary"
-            intent={isLiveStreaming ? 'danger' : 'none'}
-            onClick={handleStreamToggle}
-          >
-            {isLiveStreaming ? 'Stop Live' : 'Go Live'}
-          </Button>
+          {localParticipant?.owner ? (
+            <>
+              <Button
+                marginRight={16}
+                intent={isRecording ? 'danger' : 'none'}
+                onClick={handleRecordingToggle}
+              >
+                {isRecording ? 'Stop Recording' : 'Record'}
+              </Button>
+              <Button
+                marginRight={16}
+                appearance="primary"
+                intent={isLiveStreaming ? 'danger' : 'none'}
+                onClick={handleStreamToggle}
+              >
+                {isLiveStreaming ? 'Stop Live' : 'Go Live'}
+              </Button>
+            </>
+          ) : (
+            <>
+              {isRecording && <Badge color="red">Recording</Badge>}
+              {isLiveStreaming && <Badge color="orange">Live Streaming</Badge>}
+            </>
+          )}
         </Pane>
       </Pane>
       <Pane width={viewportSize.w} height={viewportSize.h}>
@@ -104,7 +115,7 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
           bottom={10}
         >
           <Tray />
-          <FormMaker fields={layoutParams} />
+          {localParticipant?.owner && <FormMaker fields={layoutParams} />}
           <TrayButton label="Leave" Icon={IconLeave} onClick={onLeave} />
         </Pane>
       </Pane>

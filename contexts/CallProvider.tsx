@@ -22,6 +22,7 @@ import {
 type CallProviderType = {
   children: React.ReactNode;
   roomName: string;
+  token: string;
 };
 
 interface ContextValue {
@@ -35,31 +36,19 @@ interface ContextValue {
 // @ts-ignore
 export const CallContext = createContext<ContextValue>(null);
 
-export const CallProvider = ({ children, roomName }: CallProviderType) => {
+export const CallProvider = ({
+  children,
+  roomName,
+  token,
+}: CallProviderType) => {
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
   const [participants, setParticipants] = useState([]);
-  const [token, setToken] = useState(null);
   const [state, setState] = useState('lobby');
 
   const handleLeftMeeting = useCallback(() => {
     if (callObject) callObject.destroy();
     setCallObject(null);
   }, [callObject]);
-
-  useEffect(() => {
-    if (!roomName) return;
-
-    const optionsToken = {
-      method: 'POST',
-      body: JSON.stringify({
-        isOwner: true,
-        roomName,
-      }),
-    };
-    fetch('/api/createToken', optionsToken)
-      .then(rt => rt.json())
-      .then(resToken => setToken(resToken.token));
-  }, [roomName]);
 
   useEffect(() => {
     if (callObject) return;
