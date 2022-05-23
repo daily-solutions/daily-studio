@@ -17,6 +17,7 @@ import {
   useTheme,
   Strong,
   Paragraph,
+  Spinner,
 } from 'evergreen-ui';
 import Tile from './Tile';
 import TrayButton from '../Tray/TrayButton';
@@ -59,7 +60,7 @@ const Setup = ({ setStep }: Props) => {
   } = useDevices();
 
   const grantedState = useMemo(
-    () => camState === 'granted' || micState === 'granted',
+    () => camState === 'granted' && micState === 'granted',
     [camState, micState],
   );
 
@@ -88,7 +89,7 @@ const Setup = ({ setStep }: Props) => {
         </Pane>
       )}
       {grantedState ? (
-        <Tile sessionId={localParticipant?.session_id} />
+        <Tile sessionId={localParticipant.session_id} />
       ) : (
         <Pane
           width="100%"

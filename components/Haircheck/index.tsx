@@ -13,8 +13,9 @@ const Haircheck = () => {
   const [step, setStep] = useState<'username' | 'lobby'>('username');
 
   useEffect(() => {
-    if (localParticipant?.user_name) setStep('lobby');
-  }, [localParticipant?.user_name]);
+    if (!localParticipant?.user_name || step === 'lobby') return;
+    setStep('lobby');
+  }, [localParticipant?.user_name, step]);
 
   const hairCheckWidth = useMemo(() => {
     if (width > 1550) return '25vw';

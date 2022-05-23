@@ -37,13 +37,12 @@ const Tile = ({ sessionId, isScreen = false }: Props) => {
     if (isChrome92) video.load();
     return () => {
       video.srcObject = null;
-      if (isChrome92) video.load();
     };
   }, [isChrome92, videoEl, videoTrack, videoTrack?.id]);
 
   return (
     <Pane height="100%" width="100%">
-      {videoTrack ? (
+      {!videoState.isOff ? (
         <Pane position="relative">
           <video
             autoPlay
@@ -83,7 +82,5 @@ const Tile = ({ sessionId, isScreen = false }: Props) => {
     </Pane>
   );
 };
-
-Tile.displayName = 'Tile';
 
 export default Tile;
