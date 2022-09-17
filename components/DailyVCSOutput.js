@@ -5,7 +5,7 @@ import { useCall } from '../contexts/CallProvider';
 import { useLocalParticipant } from '@daily-co/daily-react-hooks';
 
 // the composition is loaded as a separately built module in a global
-const g_DailyVCS = window.DailyVCS;
+const g_DailyVCS = window['VCSComposition_daily_baseline'];
 if (!g_DailyVCS) {
   console.assert('window.DailyVCS not available');
 }
@@ -14,7 +14,7 @@ const MAX_VIDEO_INPUT_SLOTS = 20;
 
 class VCSCompositionWrapper {
   constructor(rootEl, viewportSize, defaultParams) {
-    const g_DailyVCS = window.DailyVCS;
+    const g_DailyVCS = window['VCSComposition_daily_baseline'];
     if (!g_DailyVCS) return;
 
     console.log('initializing VCS output for root element: ', rootEl);
