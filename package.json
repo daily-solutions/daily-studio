@@ -10,8 +10,8 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "dependencies": {
-    "@daily-co/daily-js": "^0.25.0",
-    "@daily-co/daily-react-hooks": "^0.1.1",
+    "@daily-co/daily-js": "^0.31.0",
+    "@daily-co/daily-react-hooks": "^0.4.0",
     "@types/lodash": "^4.14.182",
     "@types/react-portal": "^4.0.4",
     "evergreen-ui": "^6.9.7",

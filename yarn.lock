@@ -275,10 +275,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@daily-co/daily-js@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/@daily-co/daily-js/-/daily-js-0.25.0.tgz"
-  integrity sha512-6kDYavLN7A3YimCGKgAU9qCtJj/Hqha4oSkhID7SJKTMoQRtBbt18f+KEiQc+GFm4r2sFvDtWNjh++u8Dhr1AA==
+"@daily-co/daily-js@^0.31.0":
+  version "0.31.0"
+  resolved "https://registry.yarnpkg.com/@daily-co/daily-js/-/daily-js-0.31.0.tgz#60d07dd8b70f8746def0182448af95058ac02463"
+  integrity sha512-kx4HNtrEDU+0vOlZLpmqc4SfecGi/yA8iZEf/8YRublPBqEpV0mfR8I/kirfn1MBFDqM28eacsqzEs22CN2xbQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
     bowser "^2.8.1"
@@ -286,12 +286,13 @@
     fast-equals "^1.6.3"
     lodash "^4.17.15"
 
-"@daily-co/daily-react-hooks@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@daily-co/daily-react-hooks/-/daily-react-hooks-0.1.1.tgz"
-  integrity sha512-xXYTwSHtbebbu+0xALCiTIs1agVcpwSE+pbgzfbEyZr4y7AvRCavuKszgCfLHdyVHCbUQEkhxH6Rf6BemyOofQ==
+"@daily-co/daily-react-hooks@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@daily-co/daily-react-hooks/-/daily-react-hooks-0.4.0.tgz#a772cd67b2b932d7c47fe61e44a3f82c0fad3d6e"
+  integrity sha512-sKo1TARZm7MfZfsOLllCr909HidSqE2DRb8w1i7sg7SOg8mM94TwucpAXcR5LxCZOiP5Kg3bu/MspIK2wNapQw==
   dependencies:
     fast-deep-equal "^3.1.3"
+    lodash.throttle "^4.1.1"
 
 "@emotion/hash@^0.7.1":
   version "0.7.4"
@@ -1900,6 +1901,11 @@ lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
 
 lodash.uniqby@^4.7.0:
   version "4.7.0"
