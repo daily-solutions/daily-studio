@@ -19,8 +19,7 @@ const Sidebar = () => {
       alignItems="center"
       gap={20}
       position="fixed"
-      background="white"
-    >
+      background="white">
       <IconButton
         label="View"
         Icon={IconView}
@@ -44,6 +43,12 @@ const Sidebar = () => {
         Icon={IconToast}
         onClick={() => setActiveTab('toast')}
         isActive={activeTab === 'toast'}
+      />
+      <IconButton
+        label="Video"
+        Icon={IconToast}
+        onClick={() => setActiveTab('video')}
+        isActive={activeTab === 'video'}
       />
       <IconButton
         label="Assets"

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { CallProvider } from '../contexts/CallProvider';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
@@ -13,7 +13,24 @@ const Room = () => {
 
   const isReady = useMemo(() => !!room && !!token, [room, token]);
 
+  useEffect(() => {
+    console.log('calling my effect');
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({
+        isOwner: true,
+        room,
+      }),
+    };
+    fetch('/api/createToken', options)
+      .then(rt => rt.json())
+      .then(resToken => {
+        setToken(resToken.token);
+      });
+  }, []);
+
   if (!isReady) return <Hero roomName={room as string} setToken={setToken} />;
+
   return (
     <CallProvider roomName={room as string} token={token as string}>
       <VCSProvider>

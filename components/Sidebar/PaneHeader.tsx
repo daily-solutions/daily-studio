@@ -32,6 +32,8 @@ const LayoutHeader = () => {
       return <PaneHeader title="Image Settings" />;
     case 'toast':
       return <PaneHeader title="Toast Settings" />;
+    case 'video':
+      return <PaneHeader title="Video Settings" />;
     case 'assets':
       return <PaneHeader title="Session Assets" />;
     case 'people':

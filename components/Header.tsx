@@ -10,13 +10,12 @@ const Header = () => {
         display="flex"
         padding={15}
         background="#EFF3F5"
-        borderBottom="1px solid #C8D1DC"
-      >
+        borderBottom="1px solid #C8D1DC">
         <Pane flex={1} alignItems="center" display="flex">
           <Link href="https://daily.co" target="_blank">
             <Image src="/daily-logo.svg" alt="Daily Logo" />
           </Link>
-          <Strong marginLeft={20}>VCS Studio</Strong>
+          <Strong marginLeft={20}>Demuxed VCS Studio</Strong>
         </Pane>
         <Pane>
           <Link href="https://docs.daily.co" target="_blank">

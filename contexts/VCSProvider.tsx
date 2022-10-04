@@ -18,7 +18,7 @@ type VCSType = {
   children: React.ReactNode;
 };
 
-type Tab = 'view' | 'text' | 'image' | 'toast' | 'assets' | 'people';
+type Tab = 'view' | 'text' | 'image' | 'toast' | 'assets' | 'video' | 'people';
 
 type LayoutParticipants = {
   showAllParticipants: boolean;
@@ -100,6 +100,8 @@ export const VCSProvider = ({ children }: VCSType) => {
     Object.keys(assets).map(
       asset => (sessionAssets[`images/${asset}`] = assets[asset].url),
     );
+    sessionAssets['components/CustomOverlay.js'] =
+      'https://daily-demuxed-2022.glitch.me/vcs.js';
     return sessionAssets;
   }, [assets]);
 
@@ -433,8 +435,7 @@ export const VCSProvider = ({ children }: VCSType) => {
         remoteTracksBySessionId: remoteTracks,
         activeVideoInputs,
         vcsOutputRef,
-      }}
-    >
+      }}>
       {children}
     </VCSContext.Provider>
   );

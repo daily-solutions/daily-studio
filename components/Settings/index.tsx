@@ -7,6 +7,7 @@ import ImageSettings from './Image';
 import AssetSettings from './Assets';
 import PeopleSettings from './People';
 import ToastSettings from './Toast';
+import VideoSettings from './Video';
 
 const Settings = () => {
   const { activeTab } = useVCS();
@@ -21,6 +22,8 @@ const Settings = () => {
         return <ImageSettings />;
       case 'toast':
         return <ToastSettings />;
+      case 'video':
+        return <VideoSettings />;
       case 'assets':
         return <AssetSettings />;
       case 'people':
