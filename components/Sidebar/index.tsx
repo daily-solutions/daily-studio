@@ -8,6 +8,7 @@ import { ReactComponent as IconImage } from '../../icons/image-md.svg';
 import { ReactComponent as IconAssets } from '../../icons/assets-md.svg';
 import { ReactComponent as IconPeople } from '../../icons/people-md.svg';
 import { useVCS } from '../../contexts/VCSProvider';
+import { ReactComponent as IconVideo } from '../../icons/camera-on-md.svg';
 
 const Sidebar = () => {
   const { activeTab, setActiveTab, isRecording, isLiveStreaming } = useVCS();
@@ -46,7 +47,7 @@ const Sidebar = () => {
       />
       <IconButton
         label="Video"
-        Icon={IconToast}
+        Icon={IconVideo}
         onClick={() => setActiveTab('video')}
         isActive={activeTab === 'video'}
       />

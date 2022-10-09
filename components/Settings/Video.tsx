@@ -89,10 +89,18 @@ const VideoSettings = () => {
       case 'playing':
         return (
           <>
-            <Button onClick={handlePause} appearance="primary" width="100%">
+            <Button
+              onClick={handlePause}
+              appearance="primary"
+              width="100%"
+              marginBottom={20}>
               Pause Playback
             </Button>
-            <Button onClick={handleStop} appearance="secondary" width="100%">
+            <Button
+              onClick={handleStop}
+              appearance="secondary"
+              width="100%"
+              marginBottom={20}>
               Stop Playback
             </Button>
           </>
@@ -100,10 +108,18 @@ const VideoSettings = () => {
       case 'paused':
         return (
           <>
-            <Button onClick={handleResume} appearance="primary" width="100%">
+            <Button
+              onClick={handleResume}
+              appearance="primary"
+              width="100%"
+              marginBottom={20}>
               Resume Playback
             </Button>
-            <Button onClick={handleStop} appearance="secondary" width="100%">
+            <Button
+              onClick={handleStop}
+              appearance="secondary"
+              width="100%"
+              marginBottom={20}>
               Stop Playback
             </Button>
           </>
@@ -117,10 +133,18 @@ const VideoSettings = () => {
               value={videoURL}
               onChange={e => setVideoURL(e.target.value)}
             />
-            <Button onClick={handleStart} appearance="primary" width="100%">
+            <Button
+              onClick={handleStart}
+              appearance="primary"
+              width="100%"
+              marginBottom={20}>
               Start Playback
             </Button>
-            <Button onClick={handleQueue} appearance="primary" width="100%">
+            <Button
+              onClick={handleQueue}
+              appearance="primary"
+              width="100%"
+              marginBottom={20}>
               Queue Playback
             </Button>
           </>

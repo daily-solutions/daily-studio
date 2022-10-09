@@ -57,16 +57,14 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
         background="white"
         alignItems="center"
         justifyContent="center"
-        borderBottom="muted"
-      >
+        borderBottom="muted">
         <Image src="/daily-logo.svg" alt="Daily's Logo" />
         <Pane
           flex={1}
           alignItems="center"
           display="flex"
           flexDirection="column"
-          marginLeft={15}
-        >
+          marginLeft={15}>
           <Heading size={600}>VCS Studio</Heading>
           <Paragraph color="muted" size={400}>
             Custom composite a live stream in real-time with Daily
@@ -77,17 +75,9 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
             <>
               <Button
                 marginRight={16}
-                intent={isRecording ? 'danger' : 'none'}
-                onClick={handleRecordingToggle}
-              >
-                {isRecording ? 'Stop Recording' : 'Record'}
-              </Button>
-              <Button
-                marginRight={16}
                 appearance="primary"
                 intent={isLiveStreaming ? 'danger' : 'none'}
-                onClick={handleStreamToggle}
-              >
+                onClick={handleStreamToggle}>
                 {isLiveStreaming ? 'Stop Live' : 'Go Live'}
               </Button>
             </>
@@ -112,8 +102,7 @@ const LiveView = ({ compositionReadyCb, viewportSize, startStream }: Props) => {
           justifyContent="space-between"
           alignItems="center"
           padding={16}
-          bottom={10}
-        >
+          bottom={10}>
           <Tray />
           {localParticipant?.owner && <FormMaker fields={layoutParams} />}
           <TrayButton label="Leave" Icon={IconLeave} onClick={onLeave} />
