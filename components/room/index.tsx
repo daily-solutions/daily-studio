@@ -1,4 +1,5 @@
 import { Sidebar } from '@/components/room/sidebar';
+import { VCSPreview } from '@/components/vcs/vcsPreview';
 
 interface Props {
   isProducer?: boolean;
@@ -7,7 +8,9 @@ interface Props {
 export function Room({ isProducer = false }: Props) {
   return (
     <div className="flex h-full w-full flex-1">
-      <div className="w-full">Call</div>
+      <div className="w-full">
+        <VCSPreview />
+      </div>
       {isProducer && <Sidebar />}
     </div>
   );
