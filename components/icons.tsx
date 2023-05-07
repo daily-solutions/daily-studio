@@ -6,6 +6,7 @@ import {
   LucideProps,
   Mic,
   MicOff,
+  Tv,
   Type,
   UploadCloud,
   Users,
@@ -28,6 +29,7 @@ export const Icons = {
   micOff: MicOff,
   videoOn: Video,
   videoOff: VideoOff,
+  stream: Tv,
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

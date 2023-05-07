@@ -33,6 +33,11 @@ export function CategoryHeading() {
           heading: 'Assets',
           description: 'Manage the assets',
         };
+      case 'stream':
+        return {
+          heading: 'Stream settings',
+          description: 'Update the stream settings',
+        };
       default:
         return {
           heading: 'View Settings',
