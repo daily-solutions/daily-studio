@@ -37,6 +37,10 @@ export function DailyClientProvider({
       newCallObject = DailyIframe.getCallInstance();
     }
     setCallObject(newCallObject);
+
+    // attach callObject to window
+    window['callObject'] = newCallObject;
+
     newCallObject.preAuth({ url, token });
   }, [callObject, requiresToken, roomName, token]);
 

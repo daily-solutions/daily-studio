@@ -24,7 +24,7 @@ const buttonVariants = cva(
         sm: 'h-9 px-3 rounded-md',
         lg: 'h-11 px-8 rounded-md',
         auto: 'h-auto p-2',
-        trayButton: 'w-20 h-auto p-2',
+        trayButton: 'w-16 min-w-16 max-w-16 h-auto py-2',
       },
     },
     defaultVariants: {

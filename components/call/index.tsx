@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
-import { DailyMeetingState } from '@daily-co/daily-js';
+import React, { useCallback, useEffect } from 'react';
+import { useMeetingState } from '@/states/meetingState';
 import {
   useDaily,
   useLocalSessionId,
@@ -15,8 +15,7 @@ import { Room } from '@/components/room';
 
 export function Call() {
   const daily = useDaily();
-  const [meetingState, setMeetingState] =
-    useState<DailyMeetingState>('loading');
+  const [meetingState, setMeetingState] = useMeetingState();
 
   const localSessionId = useLocalSessionId();
   const hasPresence = useParticipantProperty(
@@ -24,15 +23,20 @@ export function Call() {
     'permissions.hasPresence'
   );
 
+  useEffect(
+    () => setMeetingState(daily?.meetingState() ?? 'loading'),
+    [daily, setMeetingState]
+  );
+
   useThrottledDailyEvent(
     ['loading', 'loaded', 'joining-meeting', 'joined-meeting'],
     useCallback(
       (evts) => {
-        evts.forEach((ev) => {
+        evts.forEach(() => {
           setMeetingState(daily?.meetingState() ?? 'loading');
         });
       },
-      [daily]
+      [daily, setMeetingState]
     )
   );
 

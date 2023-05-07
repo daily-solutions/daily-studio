@@ -1,102 +1,124 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import * as vcsComp from '@daily-co/vcs-composition-daily-baseline-web';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { useMeetingState } from '@/states/meetingState';
+import { DailyParticipantsObject } from '@daily-co/daily-js';
+import {
+  useDaily,
+  useLocalSessionId,
+  useParticipantIds,
+} from '@daily-co/daily-react';
 
-import { VcsRenderInstance } from './types';
+import { VCSCompositionWrapper } from '@/components/vcs/vcsCompositionWrapper';
 
-type Props = {
-  viewportWidth?: number;
-  viewportHeight?: number;
-  params?: { [key: string]: any };
+type ViewportSize = {
+  w: number;
+  h: number;
 };
 
-// callback passed to VCS.
-// maps asset names to URLs in our /public folder.
-function getAssetUrlCb(name: string, namespace: string, type: string) {
-  if (type === 'font') {
-    return `/vcs/res/fonts/${name}`;
-  } else if (type === 'image') {
-    if (namespace === 'composition') {
-      return `/vcs/composition-assets/${name}`;
-    } else {
-      return `/vcs/res/test-assets/${name}`;
-    }
+const getAssetUrlCb = (name: string, namespace: string, type: string) => {
+  switch (type) {
+    case 'font':
+      return `/vcs/res/fonts/${name}`;
+    case 'image':
+      return namespace === 'composition'
+        ? `/vcs/composition-assets/${name}`
+        : `/vcs/res/test-assets/${name}`;
+    default:
+      return name;
   }
-  return name;
-}
+};
 
-export const VCSPreview = React.forwardRef(
-  (
-    { viewportWidth = 1280, viewportHeight = 720, params = {} }: Props,
-    parentRef: any
-  ) => {
-    const vcsRenderRef = useRef<VcsRenderInstance | null>(null);
+const getParticipant = (
+  participants: DailyParticipantsObject | undefined,
+  localSessionId: string,
+  sessionId: string
+) => {
+  if (localSessionId === sessionId) return participants?.local;
+  else return participants?.[sessionId];
+};
 
-    const vcsContainerCb = useCallback(
-      async (el) => {
-        if (vcsRenderRef.current) {
-          vcsRenderRef.current.stop();
-          vcsRenderRef.current = null;
-          if (parentRef?.current) {
-            parentRef.current.restart = null;
-          }
-        }
+export function VcsPreview({
+  viewportSize = { w: 1280, h: 720 },
+}: {
+  viewportSize?: ViewportSize;
+}) {
+  const daily = useDaily();
+  const localSessionId = useLocalSessionId();
+  const participantIds = useParticipantIds({
+    filter: useCallback(
+      (participant) => participant.permissions.hasPresence,
+      []
+    ),
+  });
 
-        if (el) {
-          vcsRenderRef.current = new VcsRenderInstance(
-            vcsComp,
+  const [meetingState] = useMeetingState();
+  const params = {};
+
+  const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
+
+  const updateDisplaySize = useCallback(() => {
+    if (vcsCompRef.current) {
+      vcsCompRef.current.rootDisplaySizeChanged();
+    }
+  }, []);
+
+  const outputElementRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      if (!el) return;
+
+      if (meetingState === 'joined-meeting') {
+        if (!vcsCompRef.current) {
+          vcsCompRef.current = new VCSCompositionWrapper(
             el,
-            { w: viewportWidth, h: viewportHeight },
+            viewportSize,
             params,
-            {
-              getAssetUrlCb,
-            }
+            { getAssetUrlCb }
           );
-
-          await vcsRenderRef.current.start();
-
-          console.log('--- VCS composition started ----');
-
-          if (parentRef?.current) {
-            parentRef.current.restart = async function (params: any) {
-              if (vcsRenderRef.current) {
-                vcsRenderRef.current.stop();
-                await vcsRenderRef.current.start();
-                console.log('sending params after restart: ', params);
-                for (const key in params) {
-                  vcsRenderRef.current.sendParam(key, params[key]);
-                }
-              }
-            };
-          }
+          vcsCompRef.current.start();
+        } else {
+          vcsCompRef.current.rootDisplaySizeChanged();
         }
-      },
-      [params, parentRef, viewportHeight, viewportWidth]
-    );
-
-    useEffect(() => {
-      if (!vcsRenderRef.current) return;
-      for (const key in params) {
-        vcsRenderRef.current.sendParam(key, params[key]);
       }
-    }, [params]);
+    },
+    [meetingState, params, viewportSize]
+  );
 
-    // watch for size changes on window resize
-    function updateDisplaySize() {
-      if (!vcsRenderRef.current) return;
-      vcsRenderRef.current.rootDisplaySizeChanged();
+  useEffect(() => {
+    if (!vcsCompRef.current || !localSessionId) return;
+
+    const participants = daily?.participants();
+    const activeVideoInputs = participantIds.map((id) => {
+      const participant = getParticipant(participants, localSessionId, id);
+      return {
+        id,
+        displayName: participant?.user_name,
+      };
+    });
+    const remoteTracksBySessionId = participantIds.reduce((tracks, id) => {
+      const participant = getParticipant(participants, localSessionId, id);
+
+      return {
+        ...tracks,
+        [id]: {
+          track: participant?.tracks?.video?.persistentTrack,
+          userName: participant?.user_name,
+        },
+      };
+    }, {});
+
+    if (participantIds.length > 0) {
+      vcsCompRef.current.applyMeetingTracksAndOrdering(
+        remoteTracksBySessionId,
+        activeVideoInputs
+      );
+    } else {
+      vcsCompRef.current.reconcileMeetingTracks(remoteTracksBySessionId);
     }
+  }, [daily, localSessionId, participantIds]);
 
-    useEffect(() => {
-      window.addEventListener('resize', updateDisplaySize);
-      return () => window.removeEventListener('resize', updateDisplaySize);
-    }, []);
+  useEffect(() => {
+    window.addEventListener('resize', updateDisplaySize);
+    return () => window.removeEventListener('resize', updateDisplaySize);
+  }, [updateDisplaySize]);
 
-    return (
-      <div className="h-full w-full">
-        <div ref={vcsContainerCb} />
-      </div>
-    );
-  }
-);
-
-VCSPreview.displayName = 'VCSPreview';
+  return <div className="max-h-full max-w-full" ref={outputElementRef} />;
+}

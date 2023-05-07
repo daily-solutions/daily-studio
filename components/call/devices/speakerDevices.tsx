@@ -26,7 +26,7 @@ export function SpeakerDevices() {
         onValueChange={(value) => setSpeaker(value)}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Microphone" />
+          <SelectValue placeholder="Speaker" />
         </SelectTrigger>
         <SelectContent>
           {speakers.map((speaker) => (

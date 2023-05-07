@@ -8,7 +8,7 @@ export type Sidebar =
   | 'people'
   | 'assets';
 
-const sidebarView = atom({
+const sidebarView = atom<Sidebar>({
   key: 'sidebar-view',
   default: 'layout',
 });
