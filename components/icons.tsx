@@ -1,19 +1,33 @@
 import {
+  Bell,
+  Image,
+  LayoutTemplate,
   Loader2,
   LucideProps,
-  Moon,
-  SunMedium,
-  Twitter,
+  Mic,
+  MicOff,
+  Type,
+  UploadCloud,
+  Users,
+  Video,
+  VideoOff,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
-export type Icon = LucideIcon;
+export type IconType = LucideIcon;
 
 export const Icons = {
-  sun: SunMedium,
-  moon: Moon,
-  twitter: Twitter,
   spinner: Loader2,
+  view: LayoutTemplate,
+  text: Type,
+  image: Image,
+  bell: Bell,
+  files: UploadCloud,
+  people: Users,
+  micOn: Mic,
+  micOff: MicOff,
+  videoOn: Video,
+  videoOff: VideoOff,
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path
@@ -22,4 +36,12 @@ export const Icons = {
       />
     </svg>
   ),
+};
+
+export const Icon = ({
+  icon,
+  ...props
+}: { icon: keyof typeof Icons } & LucideProps) => {
+  const Component = Icons[icon];
+  return <Component {...props} />;
 };

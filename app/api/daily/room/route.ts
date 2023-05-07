@@ -1,6 +1,6 @@
 const generateRandomRoomName = () => {
   const PREFIX = 'vs-';
-  const RANDOM_STRING_LENGTH = 39;
+  const RANDOM_STRING_LENGTH = 30;
 
   const randomString = Array.from({ length: RANDOM_STRING_LENGTH })
     .map(() => Math.random().toString(36)[2])
@@ -21,6 +21,10 @@ export async function POST() {
       privacy: 'public',
       properties: {
         enable_recording: 'cloud',
+        permissions: {
+          hasPresence: false,
+          canSend: false,
+        },
       },
     }),
   };

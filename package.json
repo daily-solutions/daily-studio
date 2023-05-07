@@ -14,7 +14,10 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@daily-co/daily-js": "^0.44.1",
+    "@daily-co/daily-react": "^0.7.3",
     "@radix-ui/react-label": "^2.0.1",
+    "@radix-ui/react-select": "^1.2.1",
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "cmdk": "^0.2.0",
@@ -23,6 +26,7 @@
     "react": "^18.2.0",
     "react-day-picker": "^8.6.0",
     "react-dom": "^18.2.0",
+    "recoil": "^0.7.7",
     "sharp": "^0.31.3",
     "tailwind-merge": "^1.12.0",
     "tailwindcss-animate": "^1.0.5"

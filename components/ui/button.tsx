@@ -15,13 +15,16 @@ const buttonVariants = cva(
           'border border-input hover:bg-accent hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-accent',
         link: 'underline-offset-4 hover:underline text-primary',
+        none: '',
       },
       size: {
         default: 'h-10 py-2 px-4',
         sm: 'h-9 px-3 rounded-md',
         lg: 'h-11 px-8 rounded-md',
+        auto: 'h-auto p-2',
+        trayButton: 'w-20 h-auto p-2',
       },
     },
     defaultVariants: {
