@@ -38,6 +38,11 @@ export function CategoryHeading() {
           heading: 'Stream settings',
           description: 'Update the stream settings',
         };
+      case 'media':
+        return {
+          heading: 'Media settings',
+          description: 'Add custom media to the call',
+        };
       default:
         return {
           heading: 'View Settings',
@@ -47,7 +52,7 @@ export function CategoryHeading() {
   }, [sidebar]);
 
   return (
-    <div className="flex flex-col gap-y-1 border-b bg-white p-3">
+    <div className="flex h-16 flex-col justify-center gap-y-1 border-b bg-white px-4">
       <h2 className="font-semibold">{heading}</h2>
       <p className="text-xs">{description}</p>
     </div>

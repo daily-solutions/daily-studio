@@ -9,6 +9,7 @@ export function Category() {
       <CategoryTab name="toast" icon="bell" text="Toast" />
       <CategoryTab name="people" icon="people" text="People" />
       <CategoryTab name="stream" icon="stream" text="Stream" />
+      <CategoryTab name="media" icon="media" text="Media" />
       <CategoryTab name="assets" icon="files" text="Assets" />
     </div>
   );

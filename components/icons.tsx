@@ -1,8 +1,11 @@
 import {
   Bell,
+  Clapperboard,
+  Eye,
   Image,
   LayoutTemplate,
   Loader2,
+  LogOut,
   LucideProps,
   Mic,
   MicOff,
@@ -30,6 +33,9 @@ export const Icons = {
   videoOn: Video,
   videoOff: VideoOff,
   stream: Tv,
+  leave: LogOut,
+  eye: Eye,
+  media: Clapperboard,
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

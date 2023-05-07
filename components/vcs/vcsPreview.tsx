@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMeetingState } from '@/states/meetingState';
+import { useParams } from '@/states/params';
 import { DailyParticipantsObject } from '@daily-co/daily-js';
 import {
   useDaily,
   useLocalSessionId,
   useParticipantIds,
 } from '@daily-co/daily-react';
+import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 
+import { getDiff } from '@/lib/getDiff';
 import { VCSCompositionWrapper } from '@/components/vcs/vcsCompositionWrapper';
-
-type ViewportSize = {
-  w: number;
-  h: number;
-};
 
 const getAssetUrlCb = (name: string, namespace: string, type: string) => {
   switch (type) {
@@ -36,11 +34,7 @@ const getParticipant = (
   else return participants?.[sessionId];
 };
 
-export function VcsPreview({
-  viewportSize = { w: 1280, h: 720 },
-}: {
-  viewportSize?: ViewportSize;
-}) {
+export function VcsPreview() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
   const participantIds = useParticipantIds({
@@ -51,35 +45,36 @@ export function VcsPreview({
   });
 
   const [meetingState] = useMeetingState();
-  const params = {};
+  const [params] = useParams();
 
   const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
-
-  const updateDisplaySize = useCallback(() => {
-    if (vcsCompRef.current) {
-      vcsCompRef.current.rootDisplaySizeChanged();
-    }
-  }, []);
 
   const outputElementRef = useCallback(
     (el: HTMLDivElement | null) => {
       if (!el) return;
 
-      if (meetingState === 'joined-meeting') {
+      const viewport = document.getElementById('aspectRatio');
+
+      if (meetingState === 'joined-meeting' && viewport) {
         if (!vcsCompRef.current) {
           vcsCompRef.current = new VCSCompositionWrapper(
             el,
-            viewportSize,
+            { w: viewport.clientWidth, h: viewport.clientHeight },
             params,
-            { getAssetUrlCb }
+            {
+              getAssetUrlCb,
+            }
           );
           vcsCompRef.current.start();
         } else {
-          vcsCompRef.current.rootDisplaySizeChanged();
+          vcsCompRef.current.rootDisplaySizeChanged({
+            w: viewport.clientWidth,
+            h: viewport.clientHeight,
+          });
         }
       }
     },
-    [meetingState, params, viewportSize]
+    [meetingState, params]
   );
 
   useEffect(() => {
@@ -116,9 +111,44 @@ export function VcsPreview({
   }, [daily, localSessionId, participantIds]);
 
   useEffect(() => {
+    if (!vcsCompRef.current) return;
+
+    const diff = getDiff(vcsCompRef.current?.paramValues, params);
+    if (
+      diff &&
+      Object.keys(diff).length === 0 &&
+      Object.getPrototypeOf(diff) === Object.prototype
+    )
+      return;
+    for (const key in diff) {
+      vcsCompRef.current.sendParam(key, diff[key]);
+    }
+  }, [params]);
+
+  useEffect(() => {
+    const updateDisplaySize = () => {
+      const viewport = document.getElementById('aspectRatio');
+
+      if (vcsCompRef.current) {
+        vcsCompRef.current.rootDisplaySizeChanged(
+          viewport
+            ? {
+                w: viewport.clientWidth,
+                h: viewport.clientHeight,
+              }
+            : null
+        );
+      }
+    };
     window.addEventListener('resize', updateDisplaySize);
     return () => window.removeEventListener('resize', updateDisplaySize);
-  }, [updateDisplaySize]);
+  }, []);
 
-  return <div className="max-h-full max-w-full" ref={outputElementRef} />;
+  return (
+    <div className="flex h-[calc(100%-4rem)] w-full flex-1 items-center justify-center bg-black p-6">
+      <AspectRatio id="aspectRatio" ratio={16 / 9}>
+        <div ref={outputElementRef} />
+      </AspectRatio>
+    </div>
+  );
 }

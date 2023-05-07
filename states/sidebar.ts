@@ -7,7 +7,8 @@ export type Sidebar =
   | 'toast'
   | 'people'
   | 'assets'
-  | 'stream';
+  | 'stream'
+  | 'media';
 
 const sidebarView = atom<Sidebar>({
   key: 'sidebar-view',

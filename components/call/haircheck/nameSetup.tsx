@@ -37,7 +37,11 @@ export function NameSetup({ onContinue }: Props) {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter username"
         />
-        <Button className="mt-4 w-full" type="submit">
+        <Button
+          className="mt-4 w-full"
+          type="submit"
+          disabled={username === ''}
+        >
           {hasPresence ? 'Continue' : 'Join'}
         </Button>
       </div>

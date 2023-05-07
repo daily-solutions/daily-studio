@@ -2,6 +2,8 @@ import * as comp from '@daily-co/vcs-composition-daily-baseline-web';
 
 const MAX_VIDEO_INPUT_SLOTS = 20;
 
+type ViewportSize = { w: number; h: number };
+
 interface VideoInputSlot {
   id: string;
   active: boolean;
@@ -16,11 +18,11 @@ interface Sources {
 
 export class VCSCompositionWrapper {
   private readonly rootEl: HTMLElement;
-  private readonly viewportSize: { w: number; h: number };
+  private viewportSize: { w: number; h: number };
   private readonly defaultParams: Record<string, any>;
   private readonly fps = 30;
   private scaleFactor: number;
-  private readonly paramValues: Record<string, any> = {};
+  public readonly paramValues: Record<string, any> = {};
   private readonly activeVideoInputSlots: VideoInputSlot[] = [];
   private sources: Sources;
   private vcsApi: any;
@@ -376,7 +378,10 @@ export class VCSCompositionWrapper {
     }
   }
 
-  rootDisplaySizeChanged() {
+  rootDisplaySizeChanged(viewportSize: ViewportSize | null = null) {
+    if (viewportSize) {
+      this.viewportSize = viewportSize;
+    }
     this.recomputeOutputScaleFactor();
 
     if (this.vcsApi) {

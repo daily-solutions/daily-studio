@@ -1,11 +1,11 @@
 import '@/styles/globals.css';
+import React from 'react';
 import { Metadata } from 'next';
 
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { RecoilProvider } from '@/components/RecoilProvider';
-import { Header } from '@/components/header';
 
 export const metadata: Metadata = {
   title: {
@@ -31,13 +31,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'max-h-[100dvh] min-h-[100dvh] bg-background font-sans antialiased',
           fontSans.variable
         )}
       >
         <RecoilProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
+          <div className="h-[100dvh] max-h-[100dvh] min-h-[100dvh] overflow-hidden">
             {children}
           </div>
         </RecoilProvider>
