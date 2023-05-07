@@ -42,7 +42,7 @@ export function DailyClientProvider({
 
   if (!callObject)
     return (
-      <div className="flex h-full w-full flex-1 items-center justify-center text-muted-foreground">
+      <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
         <Icons.spinner className="h-8 w-8 animate-spin" />
       </div>
     );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   useLocalSessionId,
   useParticipantProperty,
@@ -19,18 +19,28 @@ export function NameSetup({ onContinue }: Props) {
     'permissions.hasPresence'
   );
 
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      onContinue(username);
+    },
+    [onContinue, username]
+  );
+
   return (
-    <div className="flex flex-col gap-y-3 p-6">
-      <h2 className="font-semibold">Enter your name</h2>
-      <p className="text-xs">This is how you will be presented.</p>
-      <Input
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Enter username"
-      />
-      <Button className="mt-4 w-full" onClick={() => onContinue(username)}>
-        {hasPresence ? 'Continue' : 'Join'}
-      </Button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-y-3 p-6">
+        <h2 className="font-semibold">Enter your name</h2>
+        <p className="text-xs">This is how you will be presented.</p>
+        <Input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter username"
+        />
+        <Button className="mt-4 w-full" type="submit">
+          {hasPresence ? 'Continue' : 'Join'}
+        </Button>
+      </div>
+    </form>
   );
 }

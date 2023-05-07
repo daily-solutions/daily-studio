@@ -1,10 +1,14 @@
 import { Sidebar } from '@/components/room/sidebar';
 
-export function Room() {
+interface Props {
+  isProducer?: boolean;
+}
+
+export function Room({ isProducer = false }: Props) {
   return (
     <div className="flex h-full w-full flex-1">
       <div className="w-full">Call</div>
-      <Sidebar />
+      {isProducer && <Sidebar />}
     </div>
   );
 }

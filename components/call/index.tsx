@@ -2,7 +2,12 @@
 
 import React, { useCallback, useState } from 'react';
 import { DailyMeetingState } from '@daily-co/daily-js';
-import { useDaily, useThrottledDailyEvent } from '@daily-co/daily-react';
+import {
+  useDaily,
+  useLocalSessionId,
+  useParticipantProperty,
+  useThrottledDailyEvent,
+} from '@daily-co/daily-react';
 
 import { Haircheck } from '@/components/call/haircheck';
 import { Icons } from '@/components/icons';
@@ -12,6 +17,12 @@ export function Call() {
   const daily = useDaily();
   const [meetingState, setMeetingState] =
     useState<DailyMeetingState>('loading');
+
+  const localSessionId = useLocalSessionId();
+  const hasPresence = useParticipantProperty(
+    localSessionId as string,
+    'permissions.hasPresence'
+  );
 
   useThrottledDailyEvent(
     ['loading', 'loaded', 'joining-meeting', 'joined-meeting'],
@@ -29,7 +40,7 @@ export function Call() {
     case 'loaded':
       return <Haircheck />;
     case 'joined-meeting':
-      return <Room />;
+      return <Room isProducer={hasPresence} />;
     case 'new':
     case 'joining-meeting':
     case 'loading':

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   useDaily,
   useLocalSessionId,
@@ -13,17 +13,11 @@ import { Icons } from '@/components/icons';
 export function Haircheck() {
   const [state, setState] = useState<'setup' | 'haircheck'>('setup');
   const localSessionId = useLocalSessionId();
-  const [userName, hasPresence] = useParticipantProperty(
+  const hasPresence = useParticipantProperty(
     localSessionId as string,
-    ['user_name', 'permissions.hasPresence']
+    'permissions.hasPresence'
   );
   const daily = useDaily();
-
-  useEffect(() => {
-    if (!localSessionId) return;
-
-    if (userName) setState('haircheck');
-  }, [localSessionId, userName]);
 
   const handleContinue = useCallback(
     (userName: string) => {
