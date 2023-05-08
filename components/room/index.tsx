@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Audio } from '@/components/call/tray/audio';
+import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
 import { Video } from '@/components/call/tray/video';
 import { Header } from '@/components/header';
@@ -23,6 +24,7 @@ export function Room({ isProducer = false }: Props) {
               <Video />
               <Audio />
             </div>
+            <Layout />
             <Leave />
           </div>
         </div>
