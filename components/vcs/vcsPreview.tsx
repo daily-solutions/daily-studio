@@ -145,8 +145,8 @@ export function VcsPreview() {
   }, []);
 
   return (
-    <div className="flex h-[calc(100%-4rem)] w-full flex-1 items-center justify-center bg-black p-6">
-      <AspectRatio id="aspectRatio" ratio={16 / 9}>
+    <div className="flex h-[calc(100%-4rem)] w-full flex-1 items-center justify-center bg-muted p-6">
+      <AspectRatio id="aspectRatio" className="bg-black" ratio={16 / 9}>
         <div ref={outputElementRef} />
       </AspectRatio>
     </div>

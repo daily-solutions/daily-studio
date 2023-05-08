@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
 import { DailyProvider } from '@daily-co/daily-react';
 
+import { Header } from '@/components/header';
 import { Icons } from '@/components/icons';
 
 export function DailyClientProvider({
@@ -46,8 +47,11 @@ export function DailyClientProvider({
 
   if (!callObject)
     return (
-      <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
-        <Icons.spinner className="h-8 w-8 animate-spin" />
+      <div className="flex h-full w-full flex-1 flex-col">
+        <Header />
+        <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
+          <Icons.spinner className="h-8 w-8 animate-spin" />
+        </div>
       </div>
     );
 

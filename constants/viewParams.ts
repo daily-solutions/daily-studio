@@ -10,6 +10,24 @@ export const viewParams: Param[] = [
     defaultValue: false,
   },
   {
+    id: 'videoSettings.omitPausedVideo',
+    label: 'Omit Paused Video',
+    type: 'boolean',
+    defaultValue: false,
+  },
+  {
+    id: 'videoSettings.omitAudioOnly',
+    label: 'Omit Audio Only',
+    type: 'boolean',
+    defaultValue: false,
+  },
+  {
+    id: 'videoSettings.omitExtraScreenshares',
+    label: 'Omit Extra Screenshares',
+    type: 'boolean',
+    defaultValue: false,
+  },
+  {
     id: 'videoSettings.dominant.position',
     label: 'Active Speaker Position',
     type: 'enum',
@@ -99,10 +117,23 @@ export const viewParams: Param[] = [
     defaultValue: false,
   },
   {
+    id: 'videoSettings.cornerRadius_gu',
+    label: 'Corner Radius',
+    type: 'number',
+    defaultValue: 1.2,
+  },
+  {
     id: 'videoSettings.scaleMode',
     label: 'Scale Mode',
     type: 'enum',
     defaultValue: 'fill',
+    values: ['fill', 'fit'],
+  },
+  {
+    id: 'videoSettings.scaleModeForScreenshare',
+    label: 'Screenshare Scale Mode',
+    type: 'enum',
+    defaultValue: 'fit',
     values: ['fill', 'fit'],
   },
   {
@@ -144,6 +175,18 @@ export const viewParams: Param[] = [
     label: 'Participant Label Offset Y',
     type: 'number',
     defaultValue: 0,
+  },
+  {
+    id: 'videoSettings.highlight.color',
+    label: 'Active Speaker Highlight Color',
+    type: 'color',
+    defaultValue: '#000000',
+  },
+  {
+    id: 'videoSettings.placeholder.bgColor',
+    label: 'Video Placeholder BG',
+    type: 'color',
+    defaultValue: '#003250',
   },
   {
     id: 'videoSettings.labels.color',
