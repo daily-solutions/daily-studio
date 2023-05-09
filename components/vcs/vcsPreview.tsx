@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMeetingState } from '@/states/meetingState';
 import { useParams } from '@/states/params';
-import { DailyParticipantsObject } from '@daily-co/daily-js';
 import {
+  DailyEventObjectAppMessage,
+  DailyParticipantsObject,
+} from '@daily-co/daily-js';
+import {
+  useAppMessage,
   useDaily,
   useLocalSessionId,
   useParticipantIds,
@@ -45,7 +49,7 @@ export function VcsPreview() {
   });
 
   const [meetingState] = useMeetingState();
-  const [params] = useParams();
+  const [params, setParams] = useParams();
 
   const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
 
@@ -110,6 +114,17 @@ export function VcsPreview() {
     }
   }, [daily, localSessionId, participantIds]);
 
+  const sendAppMessage = useAppMessage<{ type: 'params'; params }>({
+    onAppMessage: useCallback(
+      (ev: DailyEventObjectAppMessage<{ type: 'params'; params }>) => {
+        if (ev.data.type !== 'params') return;
+
+        setParams(ev.data.params);
+      },
+      [setParams]
+    ),
+  });
+
   useEffect(() => {
     if (!vcsCompRef.current) return;
 
@@ -120,10 +135,14 @@ export function VcsPreview() {
       Object.getPrototypeOf(diff) === Object.prototype
     )
       return;
+
     for (const key in diff) {
       vcsCompRef.current.sendParam(key, diff[key]);
     }
-  }, [params]);
+
+    // send params to other participants
+    sendAppMessage({ type: 'params', params });
+  }, [params, sendAppMessage]);
 
   useEffect(() => {
     const updateDisplaySize = () => {
