@@ -3,6 +3,7 @@ import React from 'react';
 import { Audio } from '@/components/call/tray/audio';
 import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
+import { Screenshare } from '@/components/call/tray/screenshare';
 import { Video } from '@/components/call/tray/video';
 import { Sidebar } from '@/components/room/sidebar';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
@@ -20,6 +21,7 @@ export function Room({ isProducer = false }: Props) {
           <div className="flex items-center">
             <Video />
             <Audio />
+            <Screenshare />
           </div>
           <Layout />
           <Leave />

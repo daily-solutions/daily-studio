@@ -9,12 +9,19 @@ import {
   useAppMessage,
   useDaily,
   useLocalSessionId,
-  useParticipantIds,
+  useParticipantProperty,
+  useThrottledDailyEvent,
 } from '@daily-co/daily-react';
 import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 
 import { getDiff } from '@/lib/getDiff';
+import { useParticipantCount } from '@/hooks/useParticipantCount';
 import { VCSCompositionWrapper } from '@/components/vcs/vcsCompositionWrapper';
+
+type ActiveVideoInput = {
+  id: string;
+  displayName: string;
+};
 
 const getAssetUrlCb = (name: string, namespace: string, type: string) => {
   switch (type) {
@@ -41,15 +48,59 @@ const getParticipant = (
 export function VcsPreview() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const participantIds = useParticipantIds({
-    filter: useCallback(
-      (participant) => participant.permissions.hasPresence,
-      []
-    ),
-  });
+  const userName = useParticipantProperty(
+    localSessionId as string,
+    'user_name'
+  );
+  const { present: participantCount } = useParticipantCount();
 
   const [meetingState] = useMeetingState();
   const [params, setParams] = useParams();
+
+  const [remoteTracksBySessionId, setRemoteTracksBySessionId] = useState<
+    Record<string, any>
+  >({});
+  const [activeVideoInputs, setActiveVideoInputs] = useState<
+    ActiveVideoInput[]
+  >([]);
+
+  const updateActiveVideoInputs = useCallback(
+    (
+      addParticipant: ActiveVideoInput | null,
+      deleteParticipant: ActiveVideoInput | null
+    ) => {
+      if (!localSessionId) return;
+
+      const arr: ActiveVideoInput[] = [];
+      arr.push({
+        id: localSessionId,
+        displayName: userName,
+      });
+
+      const prev = activeVideoInputs;
+
+      if (prev && prev.length > 1) {
+        for (let i = 1; i < prev.length; i++) {
+          const v = prev[i];
+          if (
+            v.id !== deleteParticipant?.id &&
+            v.displayName !== deleteParticipant?.displayName
+          ) {
+            arr.push(v);
+          }
+        }
+      }
+
+      if (addParticipant?.id && localSessionId !== addParticipant?.id) {
+        arr.push({
+          id: addParticipant.id,
+          displayName: addParticipant.displayName,
+        });
+      }
+      setActiveVideoInputs([...arr]);
+    },
+    [activeVideoInputs, localSessionId, userName]
+  );
 
   const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
 
@@ -81,30 +132,103 @@ export function VcsPreview() {
     [meetingState, params]
   );
 
+  useThrottledDailyEvent(
+    ['track-started', 'track-stopped'],
+    useCallback(
+      (evnts) => {
+        if (evnts.length === 0) return;
+
+        evnts.forEach((ev) => {
+          if (!ev || !ev.track || ev.track.kind !== 'video') return;
+
+          switch (ev.action) {
+            case 'track-started':
+              if (ev.type === 'screenVideo') {
+                setRemoteTracksBySessionId((tracks) => ({
+                  ...tracks,
+                  [`${ev.participant.session_id}-screen`]: {
+                    track: ev.participant.tracks[ev.type].persistentTrack,
+                    userName: ev.participant.user_name,
+                  },
+                }));
+                updateActiveVideoInputs(
+                  {
+                    id: `${ev.participant.session_id}-screen`,
+                    displayName: ev.participant.user_name,
+                  },
+                  null
+                );
+              } else {
+                setRemoteTracksBySessionId((tracks) => ({
+                  ...tracks,
+                  [ev.participant.session_id]: {
+                    track: ev.participant.tracks[ev.type].persistentTrack,
+                    userName: ev.participant.user_name,
+                  },
+                }));
+                updateActiveVideoInputs(
+                  {
+                    id: ev.participant.session_id,
+                    displayName: ev.participant.user_name,
+                  },
+                  null
+                );
+              }
+              break;
+            case 'track-stopped':
+              if (ev.type === 'screenVideo') {
+                setRemoteTracksBySessionId((tracks) => {
+                  const sessionId = `${ev.participant.session_id}-screen`;
+                  if (sessionId) delete tracks[sessionId];
+                  else if (ev?.track) {
+                    const key = Object.keys(tracks).find(
+                      (k) => tracks[k]?.track.id === ev.track.id
+                    );
+                    if (key) delete tracks[key];
+                    else
+                      console.warn(
+                        "** lost remote track wasn't somehow seen before"
+                      );
+                  }
+                  return tracks;
+                });
+                updateActiveVideoInputs(null, {
+                  id: `${ev.participant.session_id}-screen`,
+                  displayName: ev.participant.user_name,
+                });
+              } else {
+                setRemoteTracksBySessionId((tracks) => {
+                  const sessionId = ev.participant?.session_id;
+                  if (sessionId) delete tracks[sessionId];
+                  else if (ev?.track) {
+                    const key = Object.keys(tracks).find(
+                      (key) => tracks[key]?.track === ev.track
+                    );
+                    if (key) delete tracks[key];
+                    else
+                      console.warn(
+                        "** lost remote track wasn't somehow seen before"
+                      );
+                  }
+                  return tracks;
+                });
+                updateActiveVideoInputs(null, {
+                  id: ev.participant.session_id,
+                  displayName: ev.participant.user_name,
+                });
+              }
+              break;
+          }
+        });
+      },
+      [updateActiveVideoInputs]
+    )
+  );
+
   useEffect(() => {
     if (!vcsCompRef.current || !localSessionId) return;
 
-    const participants = daily?.participants();
-    const activeVideoInputs = participantIds.map((id) => {
-      const participant = getParticipant(participants, localSessionId, id);
-      return {
-        id,
-        displayName: participant?.user_name,
-      };
-    });
-    const remoteTracksBySessionId = participantIds.reduce((tracks, id) => {
-      const participant = getParticipant(participants, localSessionId, id);
-
-      return {
-        ...tracks,
-        [id]: {
-          track: participant?.tracks?.video?.persistentTrack,
-          userName: participant?.user_name,
-        },
-      };
-    }, {});
-
-    if (participantIds.length > 0) {
+    if (participantCount > 0) {
       vcsCompRef.current.applyMeetingTracksAndOrdering(
         remoteTracksBySessionId,
         activeVideoInputs
@@ -112,7 +236,13 @@ export function VcsPreview() {
     } else {
       vcsCompRef.current.reconcileMeetingTracks(remoteTracksBySessionId);
     }
-  }, [daily, localSessionId, participantIds]);
+  }, [
+    activeVideoInputs,
+    daily,
+    localSessionId,
+    participantCount,
+    remoteTracksBySessionId,
+  ]);
 
   const sendAppMessage = useAppMessage<{ type: 'params'; params }>({
     onAppMessage: useCallback(

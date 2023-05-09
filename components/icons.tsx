@@ -12,6 +12,8 @@ import {
   LucideProps,
   Mic,
   MicOff,
+  ScreenShare,
+  ScreenShareOff,
   Tv,
   Type,
   UploadCloud,
@@ -42,6 +44,8 @@ export const Icons = {
   single: Contact,
   split: Columns,
   grid: LayoutGrid,
+  screenShareOn: ScreenShare,
+  screenShareOff: ScreenShareOff,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
