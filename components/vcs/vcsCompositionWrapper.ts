@@ -207,7 +207,7 @@ export class VCSCompositionWrapper {
         continue;
       }
 
-      const { track } = newTracksById[sessionId];
+      const { track, isScreenShare } = newTracksById[sessionId];
 
       const prevSlot = prevSlots.find((it) => it.sessionId === sessionId);
       if (prevSlot && prevSlot.track.id === track.id) {
@@ -249,6 +249,7 @@ export class VCSCompositionWrapper {
             track: track,
             sessionId: sessionId,
             displayName,
+            isScreenShare,
           });
         }
       }
@@ -278,7 +279,13 @@ export class VCSCompositionWrapper {
       for (let i = 0; i < MAX_VIDEO_INPUT_SLOTS; i++) {
         const slot = newSlots[i];
         if (slot) {
-          this.setActiveVideoInput(i, true, slot.id, slot.displayName);
+          this.setActiveVideoInput(
+            i,
+            true,
+            slot.id,
+            slot.displayName,
+            slot.isScreenShare
+          );
         } else {
           this.setActiveVideoInput(i, false);
         }
@@ -296,7 +303,11 @@ export class VCSCompositionWrapper {
     let didChange = false;
 
     for (const sessionId in newTracksById) {
-      const { track, userName: displayName } = newTracksById[sessionId];
+      const {
+        track,
+        userName: displayName,
+        isScreenShare,
+      } = newTracksById[sessionId];
       const prevSlot = prevSlots.find((it) => it.sessionId === sessionId);
       if (prevSlot && prevSlot.track.id === track.id) {
         console.log(
@@ -337,6 +348,7 @@ export class VCSCompositionWrapper {
             track: track,
             sessionId: sessionId,
             displayName,
+            isScreenShare,
           });
           didChange = true;
         }
@@ -369,7 +381,13 @@ export class VCSCompositionWrapper {
       for (let i = 0; i < MAX_VIDEO_INPUT_SLOTS; i++) {
         const slot = newSlots[i];
         if (slot) {
-          this.setActiveVideoInput(i, true, slot.id, slot.displayName);
+          this.setActiveVideoInput(
+            i,
+            true,
+            slot.id,
+            slot.displayName,
+            slot.isScreenShare
+          );
         } else {
           this.setActiveVideoInput(i, false);
         }

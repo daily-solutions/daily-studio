@@ -82,7 +82,11 @@ export const useVideoTracks = () => {
         case 'track-started':
           setRemoteTracksBySessionId((tracks) => ({
             ...tracks,
-            [sessionId]: { track, userName },
+            [sessionId]: {
+              track,
+              userName,
+              isScreenShare: ev.type === 'screenVideo',
+            },
           }));
           updateActiveVideoInputs(
             { id: sessionId, displayName: userName },
