@@ -26,7 +26,7 @@ export function AudioDevices() {
         onValueChange={(value) => setMicrophone(value)}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Microphone" />
+          <SelectValue placeholder="Unmute microphone to allow access" />
         </SelectTrigger>
         <SelectContent>
           {microphones.map((microphone) => (

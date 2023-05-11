@@ -9,15 +9,31 @@ import { Icons } from '@/components/icons';
 
 export function DailyClientProvider({
   roomName,
-  token = '',
   children,
   requiresToken = false,
 }: React.PropsWithChildren<{
   roomName: string;
-  token?: string;
   requiresToken?: boolean;
 }>) {
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    if (!roomName || token || !requiresToken) return;
+
+    const fetchToken = async () => {
+      const res = await fetch(`/api/daily/token`, {
+        method: 'POST',
+        body: JSON.stringify({
+          roomName,
+          isOwner: true,
+        }),
+      });
+      const { token } = await res.json();
+      setToken(token);
+    };
+    fetchToken();
+  }, [requiresToken, roomName, token]);
 
   useEffect(() => {
     if (callObject || !roomName || (requiresToken && !token)) return;

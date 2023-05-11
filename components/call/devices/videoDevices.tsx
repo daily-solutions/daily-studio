@@ -26,7 +26,7 @@ export function VideoDevices() {
         onValueChange={(value) => setCamera(value)}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Camera" />
+          <SelectValue placeholder="Turn on camera to allow access" />
         </SelectTrigger>
         <SelectContent>
           {cameras.map((cam) => (
