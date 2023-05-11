@@ -2,15 +2,15 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMeetingState } from '@/states/meetingState';
 import { useParams } from '@/states/params';
 import {
+  DailyEventObject,
   DailyEventObjectAppMessage,
-  DailyParticipantsObject,
 } from '@daily-co/daily-js';
 import {
   useAppMessage,
   useDaily,
+  useDailyEvent,
   useLocalSessionId,
   useParticipantProperty,
-  useThrottledDailyEvent,
 } from '@daily-co/daily-react';
 import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 
@@ -36,15 +36,6 @@ const getAssetUrlCb = (name: string, namespace: string, type: string) => {
   }
 };
 
-const getParticipant = (
-  participants: DailyParticipantsObject | undefined,
-  localSessionId: string,
-  sessionId: string
-) => {
-  if (localSessionId === sessionId) return participants?.local;
-  else return participants?.[sessionId];
-};
-
 export function VcsPreview() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
@@ -66,8 +57,8 @@ export function VcsPreview() {
 
   const updateActiveVideoInputs = useCallback(
     (
-      addParticipant: ActiveVideoInput | null,
-      deleteParticipant: ActiveVideoInput | null
+      participant: ActiveVideoInput,
+      options: { add?: boolean; delete?: boolean } = {}
     ) => {
       if (!localSessionId) return;
 
@@ -79,24 +70,25 @@ export function VcsPreview() {
 
       const prev = activeVideoInputs;
 
-      if (prev && prev.length > 1) {
+      if (options.delete && prev && prev.length > 1) {
         for (let i = 1; i < prev.length; i++) {
           const v = prev[i];
           if (
-            v.id !== deleteParticipant?.id &&
-            v.displayName !== deleteParticipant?.displayName
+            v.id !== participant.id &&
+            v.displayName !== participant.displayName
           ) {
             arr.push(v);
           }
         }
-      }
+      } else arr.push(...prev);
 
-      if (addParticipant?.id && localSessionId !== addParticipant?.id) {
+      if (options.add && participant.id && localSessionId !== participant.id) {
         arr.push({
-          id: addParticipant.id,
-          displayName: addParticipant.displayName,
+          id: participant.id,
+          displayName: participant.displayName,
         });
       }
+
       setActiveVideoInputs([...arr]);
     },
     [activeVideoInputs, localSessionId, userName]
@@ -116,9 +108,7 @@ export function VcsPreview() {
             el,
             { w: viewport.clientWidth, h: viewport.clientHeight },
             params,
-            {
-              getAssetUrlCb,
-            }
+            { getAssetUrlCb }
           );
           vcsCompRef.current.start();
         } else {
@@ -132,98 +122,49 @@ export function VcsPreview() {
     [meetingState, params]
   );
 
-  useThrottledDailyEvent(
-    ['track-started', 'track-stopped'],
-    useCallback(
-      (evnts) => {
-        if (evnts.length === 0) return;
+  const handleTrackEvents = useCallback(
+    (ev: DailyEventObject) => {
+      if (!ev || !ev.track || ev.track.kind !== 'video') return;
 
-        evnts.forEach((ev) => {
-          if (!ev || !ev.track || ev.track.kind !== 'video') return;
+      const sessionId =
+        ev.type === 'screenVideo'
+          ? `${ev.participant.session_id}-screen`
+          : ev.participant.session_id;
 
-          switch (ev.action) {
-            case 'track-started':
-              if (ev.type === 'screenVideo') {
-                setRemoteTracksBySessionId((tracks) => ({
-                  ...tracks,
-                  [`${ev.participant.session_id}-screen`]: {
-                    track: ev.participant.tracks[ev.type].persistentTrack,
-                    userName: ev.participant.user_name,
-                  },
-                }));
-                updateActiveVideoInputs(
-                  {
-                    id: `${ev.participant.session_id}-screen`,
-                    displayName: ev.participant.user_name,
-                  },
-                  null
-                );
-              } else {
-                setRemoteTracksBySessionId((tracks) => ({
-                  ...tracks,
-                  [ev.participant.session_id]: {
-                    track: ev.participant.tracks[ev.type].persistentTrack,
-                    userName: ev.participant.user_name,
-                  },
-                }));
-                updateActiveVideoInputs(
-                  {
-                    id: ev.participant.session_id,
-                    displayName: ev.participant.user_name,
-                  },
-                  null
-                );
-              }
-              break;
-            case 'track-stopped':
-              if (ev.type === 'screenVideo') {
-                setRemoteTracksBySessionId((tracks) => {
-                  const sessionId = `${ev.participant.session_id}-screen`;
-                  if (sessionId) delete tracks[sessionId];
-                  else if (ev?.track) {
-                    const key = Object.keys(tracks).find(
-                      (k) => tracks[k]?.track.id === ev.track.id
-                    );
-                    if (key) delete tracks[key];
-                    else
-                      console.warn(
-                        "** lost remote track wasn't somehow seen before"
-                      );
-                  }
-                  return tracks;
-                });
-                updateActiveVideoInputs(null, {
-                  id: `${ev.participant.session_id}-screen`,
-                  displayName: ev.participant.user_name,
-                });
-              } else {
-                setRemoteTracksBySessionId((tracks) => {
-                  const sessionId = ev.participant?.session_id;
-                  if (sessionId) delete tracks[sessionId];
-                  else if (ev?.track) {
-                    const key = Object.keys(tracks).find(
-                      (key) => tracks[key]?.track === ev.track
-                    );
-                    if (key) delete tracks[key];
-                    else
-                      console.warn(
-                        "** lost remote track wasn't somehow seen before"
-                      );
-                  }
-                  return tracks;
-                });
-                updateActiveVideoInputs(null, {
-                  id: ev.participant.session_id,
-                  displayName: ev.participant.user_name,
-                });
-              }
-              break;
-          }
-        });
-      },
-      [updateActiveVideoInputs]
-    )
+      const track = ev.participant.tracks[ev.type].persistentTrack;
+      const userName = ev.participant.user_name;
+
+      switch (ev.action) {
+        case 'track-started':
+          setRemoteTracksBySessionId((tracks) => ({
+            ...tracks,
+            [sessionId]: { track, userName },
+          }));
+          updateActiveVideoInputs(
+            { id: sessionId, displayName: userName },
+            { add: true }
+          );
+          break;
+        case 'track-stopped':
+          setRemoteTracksBySessionId((tracks) => {
+            const key = Object.keys(tracks).find(
+              (k) => tracks[k]?.track.id === track.id
+            );
+            if (key) delete tracks[key];
+            return tracks;
+          });
+          updateActiveVideoInputs(
+            { id: sessionId, displayName: userName },
+            { delete: true }
+          );
+          break;
+      }
+    },
+    [updateActiveVideoInputs]
   );
+
+  useDailyEvent('track-started', handleTrackEvents);
+  useDailyEvent('track-stopped', handleTrackEvents);
 
   useEffect(() => {
     if (!vcsCompRef.current || !localSessionId) return;
@@ -295,8 +236,12 @@ export function VcsPreview() {
 
   return (
     <div className="flex h-[calc(100%-4rem)] w-full flex-1 items-center justify-center bg-muted p-6">
-      <AspectRatio id="aspectRatio" className="bg-black" ratio={16 / 9}>
-        <div ref={outputElementRef} />
+      <AspectRatio
+        id="aspectRatio"
+        className="h-full w-full bg-black"
+        ratio={16 / 9}
+      >
+        <div className="h-full w-full overflow-hidden" ref={outputElementRef} />
       </AspectRatio>
     </div>
   );
