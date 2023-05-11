@@ -80,7 +80,9 @@ export function VcsPreview() {
             arr.push(v);
           }
         }
-      } else arr.push(...prev);
+      } else {
+        arr.push(...prev.filter((v) => v.id !== localSessionId));
+      }
 
       if (options.add && participant.id && localSessionId !== participant.id) {
         arr.push({
@@ -148,7 +150,7 @@ export function VcsPreview() {
         case 'track-stopped':
           setRemoteTracksBySessionId((tracks) => {
             const key = Object.keys(tracks).find(
-              (k) => tracks[k]?.track.id === track.id
+              (k) => tracks[k]?.track?.id === track?.id
             );
             if (key) delete tracks[key];
             return tracks;
