@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useParticipantsState } from '@/states/participantsState';
 import { DailyEventObject } from '@daily-co/daily-js';
 import {
   useDailyEvent,
@@ -17,6 +18,8 @@ export const useVideoTracks = () => {
     localSessionId as string,
     'user_name'
   );
+
+  const [participantsState] = useParticipantsState();
 
   const [remoteTracksBySessionId, setRemoteTracksBySessionId] = useState<
     Record<string, any>
@@ -85,7 +88,6 @@ export const useVideoTracks = () => {
             [sessionId]: {
               track,
               userName,
-              isScreenShare: ev.type === 'screenVideo',
             },
           }));
           updateActiveVideoInputs(
@@ -114,5 +116,31 @@ export const useVideoTracks = () => {
   useDailyEvent('track-started', handleTrackEvents);
   useDailyEvent('track-stopped', handleTrackEvents);
 
-  return { activeVideoInputs, remoteTracksBySessionId };
+  const filteredActiveVideoInputs = useMemo(() => {
+    if (participantsState.showAllParticipants) return activeVideoInputs;
+
+    return activeVideoInputs.filter((input) => {
+      return participantsState.participantIds.includes(input.id);
+    });
+  }, [
+    activeVideoInputs,
+    participantsState.participantIds,
+    participantsState.showAllParticipants,
+  ]);
+
+  const filteredRemoteTracksBySessionId = useMemo(() => {
+    if (participantsState.showAllParticipants) return remoteTracksBySessionId;
+
+    return Object.keys(remoteTracksBySessionId)
+      .filter((key) => participantsState.participantIds.includes(key))
+      .reduce((acc, key) => {
+        acc[key] = remoteTracksBySessionId[key];
+        return acc;
+      }, {});
+  }, [remoteTracksBySessionId, participantsState]);
+
+  return {
+    activeVideoInputs: filteredActiveVideoInputs,
+    remoteTracksBySessionId: filteredRemoteTracksBySessionId,
+  };
 };

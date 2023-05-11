@@ -4,7 +4,7 @@ import { useVCSCompositionWrapper } from '@/hooks/useVCSCompositionWrapper';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 export function VcsPreview() {
-  const outputElementRef = useVCSCompositionWrapper();
+  const { outputElementRef } = useVCSCompositionWrapper();
 
   return (
     <div className="flex h-[calc(100%-4rem)] w-full flex-1 items-center justify-center bg-muted p-6">

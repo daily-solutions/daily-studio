@@ -6,6 +6,7 @@ import { viewParams } from '@/constants/viewParams';
 import { useSidebar } from '@/states/sidebar';
 
 import { FormMaker } from '@/components/formMaker';
+import { People } from '@/components/room/sidebar/people';
 
 export function CategoryContent() {
   const [sidebar] = useSidebar();
@@ -19,7 +20,7 @@ export function CategoryContent() {
       case 'toast':
         return <FormMaker fields={toastParams([])} />;
       case 'people':
-        return <div>People</div>;
+        return <People />;
       case 'stream':
         return <div>Stream</div>;
       case 'assets':

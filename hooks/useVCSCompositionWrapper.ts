@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMeetingState } from '@/states/meetingState';
 import { useParams } from '@/states/params';
+import { useParticipantsState } from '@/states/participantsState';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import { useAppMessage, useLocalSessionId } from '@daily-co/daily-react';
 
 import { getDiff } from '@/lib/getDiff';
 import { useParticipantCount } from '@/hooks/useParticipantCount';
+import { useSyncParams } from '@/hooks/useSyncParams';
 import { useVideoTracks } from '@/hooks/useVideoTracks';
 import { VCSCompositionWrapper } from '@/components/vcs/vcsCompositionWrapper';
 
@@ -29,7 +31,9 @@ export const useVCSCompositionWrapper = () => {
   const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
   const outputElementRef = useRef<HTMLDivElement | null>(null);
 
-  const [params, setParams] = useParams();
+  useSyncParams(vcsCompRef);
+
+  const [params] = useParams();
   const [meetingState] = useMeetingState();
 
   const { activeVideoInputs, remoteTracksBySessionId } = useVideoTracks();
@@ -88,36 +92,6 @@ export const useVCSCompositionWrapper = () => {
     vcsCompRef,
   ]);
 
-  const sendAppMessage = useAppMessage<{ type: 'params'; params }>({
-    onAppMessage: useCallback(
-      (ev: DailyEventObjectAppMessage<{ type: 'params'; params }>) => {
-        if (ev.data.type !== 'params') return;
-
-        setParams(ev.data.params);
-      },
-      [setParams]
-    ),
-  });
-
-  useEffect(() => {
-    if (!vcsCompRef.current) return;
-
-    const diff = getDiff(vcsCompRef.current?.paramValues, params);
-    if (
-      diff &&
-      Object.keys(diff).length === 0 &&
-      Object.getPrototypeOf(diff) === Object.prototype
-    )
-      return;
-
-    for (const key in diff) {
-      vcsCompRef.current.sendParam(key, diff[key]);
-    }
-
-    // send params to other participants
-    sendAppMessage({ type: 'params', params });
-  }, [params, sendAppMessage, vcsCompRef]);
-
   useEffect(() => {
     const outputElement = outputElementRef.current;
     window.addEventListener('resize', () => createVCSView(outputElement));
@@ -125,5 +99,5 @@ export const useVCSCompositionWrapper = () => {
       window.removeEventListener('resize', () => createVCSView(outputElement));
   }, [createVCSView]);
 
-  return outputElementRef;
+  return { outputElementRef, vcsCompRef };
 };

@@ -46,7 +46,6 @@ export function DailyClientProvider({
         token,
         strictMode: true,
         dailyConfig: {
-          keepCamIndicatorLightOn: true,
           useDevicePreferenceCookies: true,
         },
       });
