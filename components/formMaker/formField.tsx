@@ -132,12 +132,21 @@ export const FormField = ({ field }: Props) => {
         return (
           <div className="flex flex-col gap-y-2">
             <Label>{field.label}</Label>
-            <Input
-              type="color"
-              name={field.id}
-              value={params?.[field.id] || field.defaultValue}
-              onChange={handleChange}
-            />
+            <div className="flex items-center gap-x-2">
+              <Input
+                type="color"
+                name={field.id}
+                value={params?.[field.id] || field.defaultValue}
+                onChange={handleChange}
+                className="w-20 rounded-md border-none p-0 outline-none"
+              />
+              <Input
+                type="text"
+                name={field.id}
+                value={params?.[field.id] || field.defaultValue}
+                onChange={handleChange}
+              />
+            </div>
           </div>
         );
       case 'string':

@@ -192,7 +192,7 @@ export const viewParams: Param[] = [
     id: 'videoSettings.labels.color',
     label: 'Participant Label Text Color',
     type: 'color',
-    defaultValue: '#fff',
+    defaultValue: '#ffffff',
   },
   {
     id: 'videoSettings.labels.strokeColor',
