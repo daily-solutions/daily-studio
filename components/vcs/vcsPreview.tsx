@@ -7,7 +7,7 @@ export function VcsPreview() {
   const { outputElementRef } = useVCSCompositionWrapper();
 
   return (
-    <div className="flex h-[calc(100%-4rem)] w-full flex-1 items-center justify-center bg-muted p-6">
+    <div className="flex h-full w-full items-center justify-center bg-muted p-6">
       <AspectRatio
         id="vcs-viewport"
         className="h-full w-full bg-black"

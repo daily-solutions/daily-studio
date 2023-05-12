@@ -44,7 +44,7 @@ export function CategoryContent() {
   }, [assetFileNames, sidebar]);
 
   return (
-    <div className="h-[calc(100%-8rem)] max-h-[calc(100%-8rem)] overflow-auto scroll-smooth">
+    <div className="h-[calc(100dvh-8rem)] overflow-auto scroll-smooth">
       {content}
     </div>
   );

@@ -46,6 +46,12 @@ export const useVCSCompositionWrapper = () => {
       if (!viewport || meetingState !== 'joined-meeting') return;
 
       if (vcsCompRef.current) {
+        const elements = document.getElementsByClassName(
+          'vcs-asset-preload-container'
+        );
+        for (const el of Array.from(elements)) {
+          el.remove();
+        }
         setVcsInitialized(false);
         vcsCompRef.current?.stop();
         vcsCompRef.current = null;
