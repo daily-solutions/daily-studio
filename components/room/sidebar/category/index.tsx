@@ -14,14 +14,12 @@ export function Category() {
       <CategoryTab name="toast" icon="bell" text="Toast" />
       <CategoryTab name="people" icon="people" text="People" />
       <CategoryTab name="stream" icon="stream" text="RTMP" />
-      <CategoryTab name="media" icon="media" text="Media" />
       <CategoryTab
         name="assets"
         icon="files"
         text="Assets"
         disabled={isLiveStreaming || isRecording}
       />
-      <CategoryTab name="settings" icon="settings" text="Config" />
     </div>
   );
 }

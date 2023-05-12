@@ -38,16 +38,6 @@ export function CategoryHeading() {
           heading: 'Broadcast settings',
           description: 'Update the RTMP destinations',
         };
-      case 'media':
-        return {
-          heading: 'Media settings',
-          description: 'Add custom media to the call',
-        };
-      case 'settings':
-        return {
-          heading: 'Settings',
-          description: 'Adjust the layout options',
-        };
       default:
         return {
           heading: 'View Settings',
