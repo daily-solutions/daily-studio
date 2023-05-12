@@ -17,7 +17,7 @@ export function Room({ isProducer = false }: Props) {
     <div className="flex h-full w-full flex-1">
       <div className="flex w-full flex-col">
         <VcsPreview />
-        <div className="flex h-20 w-full items-center justify-between p-4">
+        <div className="flex max-h-20 w-full items-center justify-between border-t p-4">
           <div className="flex items-center">
             <Video />
             <Audio />

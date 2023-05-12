@@ -31,14 +31,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          'max-h-[100dvh] min-h-[100dvh] bg-background font-sans antialiased',
+          'h-full bg-background font-sans antialiased',
           fontSans.variable
         )}
       >
         <RecoilProvider>
-          <div className="h-[100dvh] max-h-[100dvh] min-h-[100dvh] overflow-hidden">
-            {children}
-          </div>
+          <div className="h-full overflow-hidden">{children}</div>
         </RecoilProvider>
       </body>
     </html>
