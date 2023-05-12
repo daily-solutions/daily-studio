@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useBroadcast } from '@/states/broadcastState';
 import {
   useLocalSessionId,
   useParticipantProperty,
@@ -13,10 +14,10 @@ export function HeaderMenu() {
   const localSessionId = useLocalSessionId();
   const isOwner = useParticipantProperty(localSessionId as string, 'owner');
 
-  const { isLiveStreaming, startLiveStreaming, stopLiveStreaming } =
-    useLiveStream();
+  const { isLiveStreaming, stopLiveStreaming } = useLiveStream();
 
   const { isRecording, stopRecording, startRecording } = useRecord();
+  const [, setBroadcast] = useBroadcast();
 
   const handleRecord = useCallback(
     () => (isRecording ? stopRecording() : startRecording()),
@@ -24,8 +25,8 @@ export function HeaderMenu() {
   );
 
   const handleLiveStream = useCallback(
-    () => (isLiveStreaming ? stopLiveStreaming() : startLiveStreaming()),
-    [isLiveStreaming, startLiveStreaming, stopLiveStreaming]
+    () => (isLiveStreaming ? stopLiveStreaming() : setBroadcast(true)),
+    [isLiveStreaming, setBroadcast, stopLiveStreaming]
   );
 
   if (isOwner) {

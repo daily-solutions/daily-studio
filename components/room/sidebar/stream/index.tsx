@@ -28,6 +28,7 @@ const initialValues = {
   platform: '',
   streamURL: '',
   streamKey: '',
+  active: true,
 };
 
 export function Stream() {

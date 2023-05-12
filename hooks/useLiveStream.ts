@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
 import { useParticipantsState } from '@/states/participantsState';
@@ -22,9 +22,9 @@ export const useLiveStream = () => {
   const [assets] = useAssets();
 
   const startLiveStreaming = useCallback(() => {
-    const rtmpURLs = Object.values(rtmps).map(
-      (rtmp) => rtmp.streamURL + rtmp.streamKey
-    );
+    const rtmpURLs = Object.values(rtmps)
+      .filter((rtmp) => rtmp.active)
+      .map((rtmp) => rtmp.streamURL + rtmp.streamKey);
     const session_assets = Object.values(assets).reduce((acc, asset) => {
       acc[asset.name] = asset.url;
       return acc;
@@ -107,5 +107,15 @@ export const useLiveStream = () => {
     [dailyStopLiveStreaming]
   );
 
-  return { isLiveStreaming, stopLiveStreaming, startLiveStreaming };
+  const enableBroadcast = useMemo(
+    () => Object.values(rtmps).some((rtmp) => rtmp.active),
+    [rtmps]
+  );
+
+  return {
+    enableBroadcast,
+    isLiveStreaming,
+    stopLiveStreaming,
+    startLiveStreaming,
+  };
 };

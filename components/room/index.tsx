@@ -5,6 +5,7 @@ import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
 import { Screenshare } from '@/components/call/tray/screenshare';
 import { Video } from '@/components/call/tray/video';
+import { BroadcastModal } from '@/components/room/modals/broadcast';
 import { Sidebar } from '@/components/room/sidebar';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
@@ -30,6 +31,7 @@ export function Room({ isProducer = false }: Props) {
         </div>
       </div>
       {isProducer && <Sidebar />}
+      <BroadcastModal />
     </div>
   );
 }

@@ -18,6 +18,7 @@
     "@daily-co/daily-react": "^0.8.0",
     "@daily-co/vcs-composition-daily-baseline-web": "^0.1.5",
     "@radix-ui/react-aspect-ratio": "^1.0.2",
+    "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-label": "^2.0.1",
     "@radix-ui/react-select": "^1.2.1",
     "@radix-ui/react-slider": "^1.1.1",

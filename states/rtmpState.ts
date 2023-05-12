@@ -5,6 +5,7 @@ export type RTMP = {
   platform: string;
   streamURL: string;
   streamKey: string;
+  active: boolean;
 };
 
 const rtmpState = atom<Record<string, RTMP>>({
