@@ -10,13 +10,19 @@ interface Props {
   name: Sidebar;
   icon: keyof typeof Icons;
   text: string;
+  disabled?: boolean;
 }
 
-export function CategoryTab({ name, icon, text }: Props) {
+export function CategoryTab({ name, icon, text, disabled = false }: Props) {
   const [sidebar, setSidebar] = useSidebar();
 
   return (
-    <Button variant="none" size="auto" onClick={() => setSidebar(name)}>
+    <Button
+      variant="none"
+      size="auto"
+      disabled={disabled}
+      onClick={() => setSidebar(name)}
+    >
       <div
         className={cn(
           'flex flex-col items-center gap-y-2',
