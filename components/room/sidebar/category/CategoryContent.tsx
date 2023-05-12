@@ -36,6 +36,8 @@ export function CategoryContent() {
         return <Assets />;
       case 'media':
         return <div>Media</div>;
+      case 'settings':
+        return <div>Settings</div>;
       default:
         return <FormMaker fields={viewParams} />;
     }

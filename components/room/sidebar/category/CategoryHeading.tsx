@@ -43,6 +43,11 @@ export function CategoryHeading() {
           heading: 'Media settings',
           description: 'Add custom media to the call',
         };
+      case 'settings':
+        return {
+          heading: 'Settings',
+          description: 'Adjust the layout options',
+        };
       default:
         return {
           heading: 'View Settings',

@@ -11,6 +11,7 @@ export function Category() {
       <CategoryTab name="stream" icon="stream" text="RTMP" />
       <CategoryTab name="media" icon="media" text="Media" />
       <CategoryTab name="assets" icon="files" text="Assets" />
+      <CategoryTab name="settings" icon="settings" text="Config" />
     </div>
   );
 }
