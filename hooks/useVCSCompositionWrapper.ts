@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAssets } from '@/states/assetState';
 import { useMeetingState } from '@/states/meetingState';
 import { useParams } from '@/states/params';
-import { useParticipantsState } from '@/states/participantsState';
-import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
-import { useAppMessage, useLocalSessionId } from '@daily-co/daily-react';
+import { useLocalSessionId } from '@daily-co/daily-react';
 
-import { getDiff } from '@/lib/getDiff';
 import { useParticipantCount } from '@/hooks/useParticipantCount';
 import { useSyncParams } from '@/hooks/useSyncParams';
 import { useVideoTracks } from '@/hooks/useVideoTracks';
@@ -35,6 +33,7 @@ export const useVCSCompositionWrapper = () => {
 
   const [params] = useParams();
   const [meetingState] = useMeetingState();
+  const [assets] = useAssets();
 
   const { activeVideoInputs, remoteTracksBySessionId } = useVideoTracks();
 
@@ -91,6 +90,47 @@ export const useVCSCompositionWrapper = () => {
     remoteTracksBySessionId,
     vcsCompRef,
   ]);
+
+  useEffect(() => {
+    if (!vcsCompRef.current) return;
+
+    const updateAssets = async () => {
+      const promises: Promise<any>[] = [];
+
+      for (const asset of Object.values(assets)) {
+        promises.push(
+          new Promise((resolve, reject) => {
+            const img = new Image();
+
+            img.onload = () => {
+              resolve({ name: asset.name, image: img });
+            };
+            img.onerror = () => {
+              const msg = `Image load failed, asset ${asset.name}`;
+              console.error(msg);
+              reject(new Error(msg));
+            };
+            img.src = asset.url;
+          })
+        );
+      }
+
+      const results = await Promise.all(promises);
+      const imagesByName = {};
+      for (const item of results) {
+        imagesByName[item.name] = item.image;
+        console.log('loaded test image: ', item.name);
+      }
+      return imagesByName;
+    };
+
+    updateAssets().then((assets) => {
+      if (!vcsCompRef.current) return;
+
+      vcsCompRef.current.sources.assetImages = assets;
+      vcsCompRef.current?.sendUpdateImageSources();
+    });
+  }, [assets]);
 
   useEffect(() => {
     const outputElement = outputElementRef.current;

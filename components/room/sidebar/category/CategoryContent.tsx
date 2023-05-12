@@ -3,34 +3,42 @@ import { imageParams } from '@/constants/imageParams';
 import { textParams } from '@/constants/textParams';
 import { toastParams } from '@/constants/toastParams';
 import { viewParams } from '@/constants/viewParams';
+import { useAssets } from '@/states/assetState';
 import { useSidebar } from '@/states/sidebar';
 
 import { FormMaker } from '@/components/formMaker';
+import { Assets } from '@/components/room/sidebar/assets';
 import { People } from '@/components/room/sidebar/people';
 
 export function CategoryContent() {
   const [sidebar] = useSidebar();
+  const [assets] = useAssets();
+
+  const assetFileNames = useMemo(
+    () => Object.values(assets).map((asset) => asset.name),
+    [assets]
+  );
 
   const content = useMemo(() => {
     switch (sidebar) {
       case 'text':
         return <FormMaker fields={textParams} />;
       case 'image':
-        return <FormMaker fields={imageParams([])} />;
+        return <FormMaker fields={imageParams(assetFileNames)} />;
       case 'toast':
-        return <FormMaker fields={toastParams([])} />;
+        return <FormMaker fields={toastParams(assetFileNames)} />;
       case 'people':
         return <People />;
       case 'stream':
         return <div>Stream</div>;
       case 'assets':
-        return <div>Assets</div>;
+        return <Assets />;
       case 'media':
         return <div>Media</div>;
       default:
         return <FormMaker fields={viewParams} />;
     }
-  }, [sidebar]);
+  }, [assetFileNames, sidebar]);
 
   return (
     <div className="max-h-[calc(100dvh-8rem)] min-h-[calc(100dvh-8rem)] overflow-auto scroll-smooth">

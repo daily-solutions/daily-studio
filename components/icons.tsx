@@ -16,6 +16,7 @@ import {
   ScreenShareOff,
   Tv,
   Type,
+  Upload,
   UploadCloud,
   Users,
   Video,
@@ -46,6 +47,7 @@ export const Icons = {
   grid: LayoutGrid,
   screenShareOn: ScreenShare,
   screenShareOff: ScreenShareOff,
+  upload: Upload,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

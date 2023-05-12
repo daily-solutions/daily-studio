@@ -24,7 +24,7 @@ export class VCSCompositionWrapper {
   private scaleFactor: number;
   public readonly paramValues: Record<string, any> = {};
   private readonly activeVideoInputSlots: VideoInputSlot[] = [];
-  private sources: Sources;
+  public sources: Sources;
   private vcsApi: any;
   private getAssetUrlcb: (
     name: string,

@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { Asset, useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
 import {
   ParticipantsState,
@@ -20,11 +21,17 @@ interface SyncParticipants {
   participants: ParticipantsState;
 }
 
-type SyncParamsAppMessage = SyncParams | SyncParticipants;
+interface SyncAssets {
+  type: 'assets';
+  assets: Record<string, Asset>;
+}
+
+type SyncParamsAppMessage = SyncParams | SyncParticipants | SyncAssets;
 
 export const useSyncParams = (vcsCompRef) => {
   const [params, setParams] = useParams();
   const [paxState, setPaxState] = useParticipantsState();
+  const [assets, setAssets] = useAssets();
 
   const sendAppMessage = useAppMessage<SyncParamsAppMessage>({
     onAppMessage: useCallback(
@@ -37,11 +44,15 @@ export const useSyncParams = (vcsCompRef) => {
             if (dequal(ev.data.participants, paxState)) return;
             setPaxState(ev.data.participants);
             break;
+          case 'assets':
+            if (dequal(ev.data.assets, assets)) return;
+            setAssets(ev.data.assets);
+            break;
           default:
             break;
         }
       },
-      [paxState, setParams, setPaxState]
+      [assets, paxState, setAssets, setParams, setPaxState]
     ),
   });
 
@@ -74,4 +85,15 @@ export const useSyncParticipants = () => {
   );
 
   return { updateParticipants };
+};
+
+export const useSyncAssets = () => {
+  const sendAppMessage = useAppMessage<SyncAssets>();
+
+  const updateAssets = useCallback(
+    (assets) => sendAppMessage({ type: 'assets', assets }),
+    [sendAppMessage]
+  );
+
+  return { updateAssets };
 };
