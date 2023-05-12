@@ -4,6 +4,7 @@ import { Audio } from '@/components/call/tray/audio';
 import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
 import { Screenshare } from '@/components/call/tray/screenshare';
+import { Settings } from '@/components/call/tray/settings';
 import { Video } from '@/components/call/tray/video';
 import { BroadcastModal } from '@/components/room/modals/broadcast';
 import { Sidebar } from '@/components/room/sidebar';
@@ -27,7 +28,10 @@ export function Room({ isProducer = false }: Props) {
             <Screenshare />
           </div>
           <Layout />
-          <Leave />
+          <div className="flex items-center">
+            <Settings />
+            <Leave />
+          </div>
         </div>
       </div>
       {isProducer && <Sidebar />}

@@ -70,6 +70,12 @@ export function Call() {
     }
   }, [isOwner, meetingState]);
 
+  useEffect(() => {
+    return () => {
+      daily?.leave();
+    };
+  }, [daily]);
+
   return (
     <div className="flex h-full flex-col">
       <Header />
