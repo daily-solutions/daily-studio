@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Asset } from '@/components/room/sidebar/assets/Asset';
 import { Rtmp } from '@/components/room/sidebar/stream/Rtmp';
 
 const PLATFORMS = {
