@@ -35,8 +35,8 @@ export function CategoryHeading() {
         };
       case 'stream':
         return {
-          heading: 'Stream settings',
-          description: 'Update the stream settings',
+          heading: 'Broadcast settings',
+          description: 'Update the RTMP destinations',
         };
       case 'media':
         return {

@@ -9,6 +9,7 @@ import { useSidebar } from '@/states/sidebar';
 import { FormMaker } from '@/components/formMaker';
 import { Assets } from '@/components/room/sidebar/assets';
 import { People } from '@/components/room/sidebar/people';
+import { Stream } from '@/components/room/sidebar/stream';
 
 export function CategoryContent() {
   const [sidebar] = useSidebar();
@@ -30,7 +31,7 @@ export function CategoryContent() {
       case 'people':
         return <People />;
       case 'stream':
-        return <div>Stream</div>;
+        return <Stream />;
       case 'assets':
         return <Assets />;
       case 'media':

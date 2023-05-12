@@ -14,6 +14,7 @@ import {
   MicOff,
   ScreenShare,
   ScreenShareOff,
+  TrashIcon,
   Tv,
   Type,
   Upload,
@@ -48,6 +49,7 @@ export const Icons = {
   screenShareOn: ScreenShare,
   screenShareOff: ScreenShareOff,
   upload: Upload,
+  trash: TrashIcon,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

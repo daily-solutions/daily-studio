@@ -5,6 +5,7 @@ import {
   ParticipantsState,
   useParticipantsState,
 } from '@/states/participantsState';
+import { RTMP, useRTMP } from '@/states/rtmpState';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import { useAppMessage } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
@@ -26,12 +27,22 @@ interface SyncAssets {
   assets: Record<string, Asset>;
 }
 
-type SyncParamsAppMessage = SyncParams | SyncParticipants | SyncAssets;
+interface SyncRTMP {
+  type: 'rtmp';
+  rtmps: Record<string, RTMP>;
+}
+
+type SyncParamsAppMessage =
+  | SyncParams
+  | SyncParticipants
+  | SyncAssets
+  | SyncRTMP;
 
 export const useSyncParams = (vcsCompRef) => {
   const [params, setParams] = useParams();
   const [paxState, setPaxState] = useParticipantsState();
   const [assets, setAssets] = useAssets();
+  const [rtmps, setRTMPs] = useRTMP();
 
   const sendAppMessage = useAppMessage<SyncParamsAppMessage>({
     onAppMessage: useCallback(
@@ -48,11 +59,15 @@ export const useSyncParams = (vcsCompRef) => {
             if (dequal(ev.data.assets, assets)) return;
             setAssets(ev.data.assets);
             break;
+          case 'rtmp':
+            if (dequal(ev.data.rtmps, rtmps)) return;
+            setRTMPs(ev.data.rtmps);
+            break;
           default:
             break;
         }
       },
-      [assets, paxState, setAssets, setParams, setPaxState]
+      [assets, paxState, rtmps, setAssets, setParams, setPaxState, setRTMPs]
     ),
   });
 
@@ -96,4 +111,15 @@ export const useSyncAssets = () => {
   );
 
   return { updateAssets };
+};
+
+export const useSyncRTMPs = () => {
+  const sendAppMessage = useAppMessage<SyncRTMP>();
+
+  const updateRTMPs = useCallback(
+    (rtmps) => sendAppMessage({ type: 'rtmp', rtmps }),
+    [sendAppMessage]
+  );
+
+  return { updateRTMPs };
 };
