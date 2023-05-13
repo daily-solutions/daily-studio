@@ -24,6 +24,11 @@ export function BroadcastModal() {
 
   const { startLiveStreaming, enableBroadcast } = useLiveStream();
 
+  const handleStartBroadcast = useCallback(() => {
+    startLiveStreaming();
+    setBroadcast(false);
+  }, [setBroadcast, startLiveStreaming]);
+
   const handleChange = useCallback(
     (id: string, checked: boolean) => {
       setRTMPs((prev) => {
@@ -85,7 +90,7 @@ export function BroadcastModal() {
           <Button
             className="w-full"
             disabled={!enableBroadcast}
-            onClick={startLiveStreaming}
+            onClick={handleStartBroadcast}
           >
             Start broadcast
           </Button>
