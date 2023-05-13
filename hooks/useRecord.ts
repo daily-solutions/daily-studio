@@ -21,7 +21,7 @@ export const useRecord = () => {
 
   const startRecording = useCallback(() => {
     const session_assets = Object.values(assets).reduce((acc, asset) => {
-      acc[`image/${asset.name}`] = window.location.origin + asset.url;
+      acc[`images/${asset.name}`] = asset.url;
       return acc;
     }, {});
 

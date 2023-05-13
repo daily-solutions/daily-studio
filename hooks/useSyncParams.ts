@@ -47,21 +47,22 @@ export const useSyncParams = (vcsCompRef) => {
   const sendAppMessage = useAppMessage<SyncParamsAppMessage>({
     onAppMessage: useCallback(
       (ev: DailyEventObjectAppMessage<SyncParamsAppMessage>) => {
-        switch (ev.data.type) {
+        const { data } = ev;
+        switch (data.type) {
           case 'params':
-            setParams(ev.data.params);
+            setParams(data.params);
             break;
           case 'participants':
-            if (dequal(ev.data.participants, paxState)) return;
-            setPaxState(ev.data.participants);
+            if (dequal(data.participants, paxState)) return;
+            setPaxState(data.participants);
             break;
           case 'assets':
-            if (dequal(ev.data.assets, assets)) return;
-            setAssets(ev.data.assets);
+            if (dequal(data.assets, assets)) return;
+            setAssets(data.assets);
             break;
           case 'rtmp':
-            if (dequal(ev.data.rtmps, rtmps)) return;
-            setRTMPs(ev.data.rtmps);
+            if (dequal(data.rtmps, rtmps)) return;
+            setRTMPs(data.rtmps);
             break;
           default:
             break;

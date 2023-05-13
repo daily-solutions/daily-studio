@@ -1,59 +1,84 @@
-import { useCallback } from 'react';
-import { useAssets } from '@/states/assetState';
+import React, { useCallback, useState } from 'react';
+import { Asset as AssetType, useAssets } from '@/states/assetState';
 
 import { useSyncAssets } from '@/hooks/useSyncParams';
-import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Asset } from '@/components/room/sidebar/assets/Asset';
 
 export function Assets() {
+  const [asset, setAsset] = useState<AssetType>({
+    name: '',
+    url: '',
+  });
+
   const [assets, setAssets] = useAssets();
   const { updateAssets } = useSyncAssets();
 
-  const handleUpload = useCallback(
-    async (e) => {
-      const file = e.target.files[0];
-      const fileKey = file.name.replace(/\s+/g, '-').toLowerCase();
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      setAsset((asset) => ({ ...asset, [e.target.name]: e.target.value })),
+    []
+  );
 
-      const body = new FormData();
-      body.append('file', file);
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body,
-      });
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-      const data = await response.json();
+      let name = asset.name.replace(/\s+/g, '-').toLowerCase();
+      if (!name.endsWith('.png')) name += '.png';
 
       setAssets((assets) => {
         const newAssets = {
           ...assets,
-          [fileKey]: {
-            id: fileKey,
-            name: file.name.replace(/\s/g, ''),
-            url: encodeURI(data.url),
-            size: file.size,
+          [name]: {
+            name: name,
+            url: asset.url,
           },
         };
         updateAssets(newAssets);
         return newAssets;
       });
+      setAsset({ name: '', url: '' });
     },
-    [setAssets, updateAssets]
+    [asset.name, asset.url, setAssets, updateAssets]
   );
 
   return (
     <div className="p-4">
-      <div className="relative flex w-full cursor-pointer flex-col items-center justify-center gap-y-4 rounded-md bg-muted py-8">
-        <div className="w-30 h-30 rounded-full bg-background p-4">
-          <Icons.upload className="h-5 w-5" />
+      <form onSubmit={handleSubmit}>
+        <div className="flex w-full flex-col gap-y-4">
+          <div className="flex flex-col gap-y-2">
+            <Label>Asset Name</Label>
+            <Input
+              name="name"
+              placeholder="Enter asset name"
+              value={asset.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Asset URL</Label>
+            <p className="text-xs text-muted-foreground">
+              Only PNG images are supported
+            </p>
+            <Input
+              name="url"
+              placeholder="Enter your URL"
+              value={asset.url}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Button type="submit" size="sm">
+              Save
+            </Button>
+          </div>
         </div>
-        <p className="text-sm">Browse or drag a file here</p>
-        <input
-          className="absolute left-0 top-0 h-full w-full opacity-0"
-          type="file"
-          onChange={handleUpload}
-          accept="image/png"
-        />
-      </div>
+      </form>
       {Object.keys(assets).length > 0 && (
         <div className="mt-8">
           <h3 className="text-sm">Uploaded assets</h3>
