@@ -43,7 +43,7 @@ export function Assets() {
   return (
     <div className="p-4">
       <div className="relative flex w-full cursor-pointer flex-col items-center justify-center gap-y-4 rounded-md bg-muted py-8">
-        <div className="w-30 h-30 rounded-full bg-white p-4">
+        <div className="w-30 h-30 rounded-full bg-background p-4">
           <Icons.upload className="h-5 w-5" />
         </div>
         <p className="text-sm">Browse or drag a file here</p>

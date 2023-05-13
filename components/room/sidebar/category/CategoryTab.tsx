@@ -26,7 +26,7 @@ export function CategoryTab({ name, icon, text, disabled = false }: Props) {
       <div
         className={cn(
           'flex flex-col items-center gap-y-2',
-          sidebar === name && 'text-primary'
+          sidebar === name && 'text-selected'
         )}
       >
         <Icon icon={icon} className="h-6 w-6" />

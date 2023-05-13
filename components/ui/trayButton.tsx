@@ -16,7 +16,7 @@ export function TrayButton({ text, icon, onClick, muted, selected }: Props) {
       size="trayButton"
       onClick={onClick}
       className={
-        muted ? 'text-destructive' : selected ? 'text-primary' : 'text-inherit'
+        muted ? 'text-destructive' : selected ? 'text-selected' : 'text-inherit'
       }
     >
       <div className="flex flex-col items-center justify-center gap-y-1">

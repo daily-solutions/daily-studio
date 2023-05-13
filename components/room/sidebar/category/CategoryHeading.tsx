@@ -47,7 +47,7 @@ export function CategoryHeading() {
   }, [sidebar]);
 
   return (
-    <div className="flex h-16 flex-col justify-center gap-y-1 border-b bg-white px-4">
+    <div className="flex h-16 flex-col justify-center gap-y-1 border-b bg-background px-4">
       <h2 className="font-semibold">{heading}</h2>
       <p className="text-xs">{description}</p>
     </div>

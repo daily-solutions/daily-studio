@@ -72,7 +72,7 @@ export function BroadcastModal() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-y-4 rounded-md bg-muted py-8">
-            <div className="w-30 h-30 rounded-full bg-white p-4">
+            <div className="w-30 h-30 rounded-full bg-background p-4">
               <Icons.stream className="h-5 w-5" />
             </div>
             <h3 className="text-sm">Can&apos;t find RTMP destinations</h3>
