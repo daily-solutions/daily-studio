@@ -2,8 +2,6 @@ import * as comp from '@daily-co/vcs-composition-daily-baseline-web';
 
 const MAX_VIDEO_INPUT_SLOTS = 20;
 
-type ViewportSize = { w: number; h: number };
-
 interface VideoInputSlot {
   id: string;
   active: boolean;
@@ -155,7 +153,7 @@ export class VCSCompositionWrapper {
     isScreenshare = false
   ): void {
     this.activeVideoInputSlots[idx] = {
-      id: isScreenshare ? `${id}-screen` : id || '',
+      id: id || '',
       active: Boolean(active),
       type: isScreenshare ? 'screenshare' : 'camera',
       displayName: name || `Participant ${idx + 1}`,
@@ -196,20 +194,30 @@ export class VCSCompositionWrapper {
   applyMeetingTracksAndOrdering(newTracksById, orderedVideoInputs) {
     if (!this.sources || !newTracksById || !orderedVideoInputs) return;
 
+    // Get the previous slots.
     const prevSlots = this.sources.videoSlots;
+
+    // Create a new array of slots.
     const newSlots: any[] = [];
 
+    // Iterate over the ordered video inputs.
     for (const inputDesc of orderedVideoInputs) {
+      // Get the session ID and display name.
       const { id: sessionId, displayName } = inputDesc;
 
+      // Check if there is a track for the session ID.
       if (!newTracksById[sessionId]) {
         console.log(' -- no track available for session id: ', sessionId);
         continue;
       }
 
+      // Get the track.
       const { track } = newTracksById[sessionId];
 
+      // Find the previous slot for the session ID.
       const prevSlot = prevSlots.find((it) => it.sessionId === sessionId);
+
+      // If there is a previous slot, and the track IDs match, update the slot.
       if (prevSlot && prevSlot.track.id === track.id) {
         console.log(
           'found existing track for participant session %s',
@@ -217,27 +225,26 @@ export class VCSCompositionWrapper {
         );
         newSlots.push({ ...prevSlot, displayName });
       } else {
+        // Otherwise, create a new slot.
         if (track) {
           const mediaStream = new MediaStream([track]);
           let videoEl;
+
+          // If there is a previous slot, use its element.
           if (prevSlot) {
-            console.log('track has changed for %s', sessionId);
             videoEl = prevSlot.element;
           } else {
+            // Otherwise, create a new element.
+            videoEl = document.createElement('video');
             console.log(
               "haven't seen participant session %s before",
               sessionId,
               track
             );
-            videoEl = document.createElement('video');
-            console.log(
-              '... created video el for track %s: ',
-              track.id,
-              videoEl
-            );
 
             this.placeVideoSourceInDOM(videoEl, track.id);
           }
+
           videoEl.srcObject = mediaStream;
           videoEl.setAttribute('autoplay', true);
           videoEl.setAttribute('playsinline', true);
@@ -249,14 +256,16 @@ export class VCSCompositionWrapper {
             track: track,
             sessionId: sessionId,
             displayName,
+            isScreenShare: sessionId.endsWith('-screen'),
           });
         }
       }
     }
 
+    // Check if the new slots are different from the previous slots.
     let didChange = newSlots.length !== prevSlots.length;
     if (!didChange) {
-      // check the ids
+      // If they are not different, check the IDs.
       for (let i = 0; i < newSlots.length; i++) {
         if (newSlots[i].id !== prevSlots[i].id) {
           didChange = true;
@@ -265,6 +274,7 @@ export class VCSCompositionWrapper {
       }
     }
 
+    // If the slots have changed, update the sources and send the update.
     if (didChange) {
       this.sources.videoSlots = newSlots;
       this.sendUpdateImageSources();
@@ -278,7 +288,13 @@ export class VCSCompositionWrapper {
       for (let i = 0; i < MAX_VIDEO_INPUT_SLOTS; i++) {
         const slot = newSlots[i];
         if (slot) {
-          this.setActiveVideoInput(i, true, slot.id, slot.displayName);
+          this.setActiveVideoInput(
+            i,
+            true,
+            slot.id,
+            slot.displayName,
+            slot?.isScreenShare
+          );
         } else {
           this.setActiveVideoInput(i, false);
         }
@@ -293,83 +309,60 @@ export class VCSCompositionWrapper {
     const prevSlots = this.sources.videoSlots;
     const newSlots: any[] = [];
 
-    let didChange = false;
-
     for (const sessionId in newTracksById) {
       const { track, userName: displayName } = newTracksById[sessionId];
       const prevSlot = prevSlots.find((it) => it.sessionId === sessionId);
+
       if (prevSlot && prevSlot.track.id === track.id) {
-        console.log(
-          'found existing track for participant session %s',
-          sessionId
-        );
-        newSlots.push({ ...prevSlot, displayName });
-      } else {
-        if (track) {
-          const mediaStream = new MediaStream([track]);
-          let videoEl;
-          if (prevSlot) {
-            console.log('track has changed for %s', sessionId);
-            videoEl = prevSlot.element;
-          } else {
-            console.log(
-              "haven't seen participant session %s before",
-              sessionId,
-              track
-            );
-            videoEl = document.createElement('video');
-            console.log(
-              '... created video el for track %s: ',
-              track.id,
-              videoEl
-            );
+        newSlots.push({
+          ...prevSlot,
+          displayName,
+        });
+      } else if (track) {
+        const mediaStream = new MediaStream([track]);
+        let videoEl;
 
-            this.placeVideoSourceInDOM(videoEl, track.id);
-          }
-          videoEl.srcObject = mediaStream;
-          videoEl.setAttribute('autoplay', true);
-          videoEl.setAttribute('playsinline', true);
-          videoEl.setAttribute('controls', false);
-
-          newSlots.push({
-            id: `videotrack_${track.id}`,
-            element: videoEl,
-            track: track,
-            sessionId: sessionId,
-            displayName,
-          });
-          didChange = true;
+        if (prevSlot) {
+          videoEl = prevSlot.element;
+        } else {
+          videoEl = document.createElement('video');
+          this.placeVideoSourceInDOM(videoEl, track.id);
         }
+
+        videoEl.srcObject = mediaStream;
+        videoEl.setAttribute('autoplay', true);
+        videoEl.setAttribute('playsinline', true);
+        videoEl.setAttribute('controls', false);
+
+        newSlots.push({
+          id: `videotrack_${track.id}`,
+          element: videoEl,
+          track: track,
+          sessionId: sessionId,
+          displayName,
+          isScreenShare: sessionId.endsWith('-screen'),
+        });
       }
     }
 
-    if (!didChange) {
-      // check for deletions
-      for (const it of prevSlots) {
-        const sessionId = it.sessionId;
-        if (!sessionId) continue;
-        const newIt = newSlots.find((it) => it.sessionId === sessionId);
-        if (!newIt) {
-          console.log(
-            'track for participant session %s was deleted',
-            sessionId
-          );
-          didChange = true;
-          break;
-        }
-      }
-    }
+    const didChange = newSlots.some((slot, i) => {
+      return prevSlots[i] && prevSlots[i].id !== slot.id;
+    });
 
     if (didChange) {
       this.sources.videoSlots = newSlots;
       this.sendUpdateImageSources();
 
-      console.log('updating slots: ', newSlots);
-
       for (let i = 0; i < MAX_VIDEO_INPUT_SLOTS; i++) {
         const slot = newSlots[i];
         if (slot) {
-          this.setActiveVideoInput(i, true, slot.id, slot.displayName);
+          this.setActiveVideoInput(
+            i,
+            true,
+            slot.id,
+            slot.displayName,
+            slot?.isScreenShare
+          );
         } else {
           this.setActiveVideoInput(i, false);
         }
@@ -378,10 +371,7 @@ export class VCSCompositionWrapper {
     }
   }
 
-  rootDisplaySizeChanged(viewportSize: ViewportSize | null = null) {
-    if (viewportSize) {
-      this.viewportSize = viewportSize;
-    }
+  rootDisplaySizeChanged() {
     this.recomputeOutputScaleFactor();
 
     if (this.vcsApi) {

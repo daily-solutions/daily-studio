@@ -81,12 +81,12 @@ export const useVCSCompositionWrapper = () => {
     if (!vcsCompRef.current || !localSessionId) return;
 
     if (participantCount > 0) {
-      vcsCompRef.current.applyMeetingTracksAndOrdering(
+      vcsCompRef.current?.applyMeetingTracksAndOrdering(
         remoteTracksBySessionId,
         activeVideoInputs
       );
     } else {
-      vcsCompRef.current.reconcileMeetingTracks(remoteTracksBySessionId);
+      vcsCompRef.current?.reconcileMeetingTracks(remoteTracksBySessionId);
     }
   }, [
     vcsInitialized,
@@ -139,11 +139,14 @@ export const useVCSCompositionWrapper = () => {
   }, [assets]);
 
   useEffect(() => {
-    const outputElement = outputElementRef.current;
-    window.addEventListener('resize', () => createVCSView(outputElement));
+    window.addEventListener('resize', () =>
+      vcsCompRef.current?.rootDisplaySizeChanged()
+    );
     return () =>
-      window.removeEventListener('resize', () => createVCSView(outputElement));
-  }, [createVCSView]);
+      window.removeEventListener('resize', () =>
+        vcsCompRef.current?.rootDisplaySizeChanged()
+      );
+  }, []);
 
   return { outputElementRef, vcsCompRef };
 };

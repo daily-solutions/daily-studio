@@ -33,6 +33,7 @@ export function NameSetup({ onContinue }: Props) {
         <h2 className="font-semibold">Enter your name</h2>
         <p className="text-xs">This is how you will be presented.</p>
         <Input
+          autoFocus
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter username"
