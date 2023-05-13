@@ -1,6 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useParticipantsState } from '@/states/participantsState';
-import { DailyEventObject } from '@daily-co/daily-js';
+import {
+  DailyEventObject,
+  DailyEventObjectParticipantLeft,
+} from '@daily-co/daily-js';
 import {
   useDailyEvent,
   useLocalSessionId,
@@ -78,11 +81,11 @@ export const useVideoTracks = () => {
           ? `${ev.participant.session_id}-screen`
           : ev.participant.session_id;
 
-      const track = ev.participant.tracks[ev.type].persistentTrack;
       const userName = ev.participant.user_name;
 
       switch (ev.action) {
         case 'track-started':
+          const track = ev.participant.tracks[ev.type].persistentTrack;
           setRemoteTracksBySessionId((tracks) => ({
             ...tracks,
             [sessionId]: {
@@ -97,10 +100,8 @@ export const useVideoTracks = () => {
           break;
         case 'track-stopped':
           setRemoteTracksBySessionId((tracks) => {
-            const key = Object.keys(tracks).find(
-              (k) => tracks[k]?.track?.id === track?.id
-            );
-            if (key) delete tracks[key];
+            const newTracks = { ...tracks };
+            delete newTracks[sessionId];
             return tracks;
           });
           updateActiveVideoInputs(
@@ -115,6 +116,27 @@ export const useVideoTracks = () => {
 
   useDailyEvent('track-started', handleTrackEvents);
   useDailyEvent('track-stopped', handleTrackEvents);
+  useDailyEvent(
+    'participant-left',
+    useCallback(
+      (ev: DailyEventObjectParticipantLeft) => {
+        setRemoteTracksBySessionId((tracks) => {
+          const newTracks = { ...tracks };
+          delete newTracks[ev.participant.session_id];
+          delete newTracks[`${ev.participant.session_id}-screen`];
+          return tracks;
+        });
+        updateActiveVideoInputs(
+          {
+            id: ev.participant.session_id,
+            displayName: ev.participant.user_name,
+          },
+          { delete: true }
+        );
+      },
+      [updateActiveVideoInputs]
+    )
+  );
 
   const filteredActiveVideoInputs = useMemo(() => {
     if (participantsState.showAllParticipants) return activeVideoInputs;
