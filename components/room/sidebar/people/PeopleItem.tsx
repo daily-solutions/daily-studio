@@ -13,7 +13,7 @@ export function PeopleItem({ sessionId }: { sessionId: string }) {
   const { updateParticipants } = useSyncParticipants();
 
   const onCheckedChange = useCallback(
-    (checked: Boolean) => {
+    (checked: boolean) => {
       setPaxState((p) => {
         const paxState = {
           showAllParticipants: false,
@@ -30,7 +30,7 @@ export function PeopleItem({ sessionId }: { sessionId: string }) {
 
   return (
     <div className="flex items-center justify-between space-x-2">
-      <Label htmlFor={sessionId}>{userName}</Label>
+      <Label htmlFor={sessionId}>{userName || 'Guest'}</Label>
       <Switch
         name={sessionId}
         disabled={paxState.showAllParticipants}

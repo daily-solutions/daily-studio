@@ -1,8 +1,10 @@
 import React from 'react';
+import { DailyAudio } from '@daily-co/daily-react';
 
 import { Audio } from '@/components/call/tray/audio';
 import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
+import { Rmp } from '@/components/call/tray/rmp';
 import { Screenshare } from '@/components/call/tray/screenshare';
 import { Settings } from '@/components/call/tray/settings';
 import { Video } from '@/components/call/tray/video';
@@ -26,6 +28,7 @@ export function Room({ isProducer = false }: Props) {
             <Video />
             <Audio />
             <Screenshare />
+            <Rmp />
           </div>
           <Layout />
           <div className="flex items-center">
@@ -36,6 +39,7 @@ export function Room({ isProducer = false }: Props) {
       </div>
       {isProducer && <Sidebar />}
       <BroadcastModal />
+      <DailyAudio />
     </div>
   );
 }

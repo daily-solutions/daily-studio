@@ -3,6 +3,7 @@ import { useParticipantsState } from '@/states/participantsState';
 import {
   DailyEventObject,
   DailyEventObjectParticipantLeft,
+  DailyEventObjectRemoteMediaPlayerStopped,
 } from '@daily-co/daily-js';
 import {
   useDailyEvent,
@@ -78,10 +79,10 @@ export const useVideoTracks = () => {
 
       const sessionId =
         ev.type === 'screenVideo'
-          ? `${ev.participant.session_id}-screen`
-          : ev.participant.session_id;
+          ? `${ev.participant?.session_id}-screen`
+          : ev.participant?.session_id;
 
-      const userName = ev.participant.user_name;
+      const userName = ev.participant?.user_name;
 
       switch (ev.action) {
         case 'track-started':
@@ -99,10 +100,12 @@ export const useVideoTracks = () => {
           );
           break;
         case 'track-stopped':
+          if (!sessionId) return;
+
           setRemoteTracksBySessionId((tracks) => {
             const newTracks = { ...tracks };
             delete newTracks[sessionId];
-            return tracks;
+            return newTracks;
           });
           updateActiveVideoInputs(
             { id: sessionId, displayName: userName },
@@ -117,6 +120,26 @@ export const useVideoTracks = () => {
   useDailyEvent('track-started', handleTrackEvents);
   useDailyEvent('track-stopped', handleTrackEvents);
   useDailyEvent(
+    'remote-media-player-stopped',
+    useCallback(
+      (ev: DailyEventObjectRemoteMediaPlayerStopped) => {
+        setRemoteTracksBySessionId((tracks) => {
+          const newTracks = { ...tracks };
+          delete newTracks[ev.session_id];
+          return newTracks;
+        });
+        updateActiveVideoInputs(
+          {
+            id: ev.session_id,
+            displayName: '',
+          },
+          { delete: true }
+        );
+      },
+      [updateActiveVideoInputs]
+    )
+  );
+  useDailyEvent(
     'participant-left',
     useCallback(
       (ev: DailyEventObjectParticipantLeft) => {
@@ -124,7 +147,7 @@ export const useVideoTracks = () => {
           const newTracks = { ...tracks };
           delete newTracks[ev.participant.session_id];
           delete newTracks[`${ev.participant.session_id}-screen`];
-          return tracks;
+          return newTracks;
         });
         updateActiveVideoInputs(
           {
