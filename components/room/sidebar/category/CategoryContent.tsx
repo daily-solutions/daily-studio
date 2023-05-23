@@ -31,7 +31,11 @@ export function CategoryContent() {
       case 'people':
         return <People />;
       case 'stream':
-        return <Stream />;
+        return (
+          <div className="p-4">
+            <Stream showHeader />
+          </div>
+        );
       case 'assets':
         return <Assets />;
       default:

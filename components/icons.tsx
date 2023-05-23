@@ -12,6 +12,7 @@ import {
   LucideProps,
   Mic,
   MicOff,
+  PlusIcon,
   ScreenShare,
   ScreenShareOff,
   Settings,
@@ -52,6 +53,7 @@ export const Icons = {
   upload: Upload,
   trash: TrashIcon,
   settings: Settings,
+  plus: PlusIcon,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -8,7 +8,7 @@ export function Tile({ sessionId }: { sessionId: string }) {
 
   return (
     <div className="relative pb-[56.25%]">
-      {videoState === 'playable' ? (
+      {['playable', 'loading'].includes(videoState) ? (
         <DailyVideo
           style={{ position: 'absolute' }}
           sessionId={sessionId}

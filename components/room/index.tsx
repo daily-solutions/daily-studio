@@ -9,6 +9,7 @@ import { Screenshare } from '@/components/call/tray/screenshare';
 import { Settings } from '@/components/call/tray/settings';
 import { Video } from '@/components/call/tray/video';
 import { BroadcastModal } from '@/components/room/modals/broadcast';
+import { RTMPModal } from '@/components/room/modals/rtmp';
 import { Sidebar } from '@/components/room/sidebar';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
@@ -38,6 +39,7 @@ export function Room({ isProducer = false }: Props) {
         </div>
       </div>
       {isProducer && <Sidebar />}
+      <RTMPModal />
       <BroadcastModal />
       <DailyAudio />
     </div>
