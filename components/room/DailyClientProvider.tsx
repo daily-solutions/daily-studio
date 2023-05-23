@@ -4,36 +4,21 @@ import React, { useEffect, useState } from 'react';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
 import { DailyProvider } from '@daily-co/daily-react';
 
-import { Header } from '@/components/header';
-import { Icons } from '@/components/icons';
+import { Loader } from '@/components/loader';
+
+interface DailyClientProps {
+  roomName: string;
+  token?: string;
+  requiresToken?: boolean;
+}
 
 export function DailyClientProvider({
   roomName,
   children,
+  token = '',
   requiresToken = false,
-}: React.PropsWithChildren<{
-  roomName: string;
-  requiresToken?: boolean;
-}>) {
+}: React.PropsWithChildren<DailyClientProps>) {
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
-  const [token, setToken] = useState('');
-
-  useEffect(() => {
-    if (!roomName || token || !requiresToken) return;
-
-    const fetchToken = async () => {
-      const res = await fetch(`/api/daily/token`, {
-        method: 'POST',
-        body: JSON.stringify({
-          roomName,
-          isOwner: true,
-        }),
-      });
-      const { token } = await res.json();
-      setToken(token);
-    };
-    fetchToken();
-  }, [requiresToken, roomName, token]);
 
   useEffect(() => {
     if (callObject || !roomName || (requiresToken && !token)) return;
@@ -60,15 +45,7 @@ export function DailyClientProvider({
     newCallObject.preAuth({ url, token });
   }, [callObject, requiresToken, roomName, token]);
 
-  if (!callObject)
-    return (
-      <div className="flex h-full w-full flex-1 flex-col">
-        <Header />
-        <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
-          <Icons.spinner className="h-8 w-8 animate-spin" />
-        </div>
-      </div>
-    );
+  if (!callObject) return <Loader />;
 
   return <DailyProvider callObject={callObject}>{children}</DailyProvider>;
 }

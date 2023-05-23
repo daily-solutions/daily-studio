@@ -8,7 +8,7 @@ import {
 import { Card } from '@/components/ui/card';
 import { NameSetup } from '@/components/call/haircheck/nameSetup';
 import { Setup } from '@/components/call/haircheck/setup';
-import { Icons } from '@/components/icons';
+import { Loader } from '@/components/loader';
 
 export function Haircheck() {
   const [state, setState] = useState<'setup' | 'haircheck'>('setup');
@@ -28,13 +28,7 @@ export function Haircheck() {
     [daily, hasPresence]
   );
 
-  if (!localSessionId) {
-    return (
-      <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
-        <Icons.spinner className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
+  if (!localSessionId) return <Loader showHeader={false} />;
 
   return (
     <div className="flex h-full w-full flex-1 items-center justify-center bg-muted">
