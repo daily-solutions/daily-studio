@@ -30,6 +30,9 @@ export function DailyClientProvider({
         url,
         token,
         strictMode: true,
+        sendSettings: {
+          video: 'quality-optimized',
+        },
         dailyConfig: {
           useDevicePreferenceCookies: true,
         },

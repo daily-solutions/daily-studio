@@ -203,10 +203,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@daily-co/daily-js@^0.44.1":
-  version "0.44.1"
-  resolved "https://registry.npmjs.org/@daily-co/daily-js/-/daily-js-0.44.1.tgz"
-  integrity sha512-iu158IFzm5QWmBvf2zusyxlmshVU8JiMl+wcpOmHHyJEmLSMih5JGgdIsZwFfpZfMCVCVxNX1HuaVjHJz/WbLQ==
+"@daily-co/daily-js@^0.45.0":
+  version "0.45.0"
+  resolved "https://registry.yarnpkg.com/@daily-co/daily-js/-/daily-js-0.45.0.tgz#7877722edf7e88752a3ecff2762a64ef62df6573"
+  integrity sha512-q3+RqL4ZgrA5eeCQEsJcSSMnhTig6RUhLPEiZK2XSC7XUEIO0bcQpTxBarp5fwLQXIjF3/HdB40O94nLpq5duA==
   dependencies:
     "@babel/runtime" "^7.12.5"
     bowser "^2.8.1"
@@ -217,7 +217,7 @@
 
 "@daily-co/daily-react@^0.8.0":
   version "0.8.0"
-  resolved "https://registry.npmjs.org/@daily-co/daily-react/-/daily-react-0.8.0.tgz"
+  resolved "https://registry.yarnpkg.com/@daily-co/daily-react/-/daily-react-0.8.0.tgz#438827d3e21a4866355f2e05f15ca3457f74bac1"
   integrity sha512-FJTK7tUYI0oG5ZSwouDUFmSyMlDCrELYUj8l0WgzrPP0Y3S+vr/YVLLk7+iTqBVqkbkVsZHIKpQ9U5OMuHNRAQ==
   dependencies:
     fast-deep-equal "^3.1.3"
