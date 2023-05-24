@@ -38,6 +38,12 @@ export function CategoryHeading() {
           heading: 'Broadcast settings',
           description: 'Update the RTMP destinations',
         };
+      case 'chat':
+        return {
+          heading: 'Chat',
+          description:
+            'Talk with other participants including the host & guests',
+        };
       default:
         return {
           heading: 'View Settings',

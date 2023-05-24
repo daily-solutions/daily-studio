@@ -5,7 +5,7 @@ import { CategoryHeading } from '@/components/room/sidebar/category/CategoryHead
 export function Sidebar() {
   return (
     <div className="h-full w-[35dvw] border-l">
-      <div className="flex">
+      <div className="flex bg-background">
         <div className="flex-1">
           <CategoryHeading />
           <CategoryContent />

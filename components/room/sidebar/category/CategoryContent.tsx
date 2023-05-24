@@ -8,6 +8,7 @@ import { useSidebar } from '@/states/sidebar';
 
 import { FormMaker } from '@/components/formMaker';
 import { Assets } from '@/components/room/sidebar/assets';
+import { Chat } from '@/components/room/sidebar/chat';
 import { People } from '@/components/room/sidebar/people';
 import { Stream } from '@/components/room/sidebar/stream';
 
@@ -38,6 +39,8 @@ export function CategoryContent() {
         );
       case 'assets':
         return <Assets />;
+      case 'chat':
+        return <Chat />;
       default:
         return <FormMaker fields={viewParams} />;
     }

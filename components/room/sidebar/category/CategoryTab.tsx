@@ -1,6 +1,10 @@
 'use client';
 
 import { Sidebar, useSidebar } from '@/states/sidebar';
+import {
+  useLocalSessionId,
+  useParticipantProperty,
+} from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -11,10 +15,21 @@ interface Props {
   icon: keyof typeof Icons;
   text: string;
   disabled?: boolean;
+  ownerOnly?: boolean;
 }
 
-export function CategoryTab({ name, icon, text, disabled = false }: Props) {
+export function CategoryTab({
+  name,
+  icon,
+  text,
+  disabled = false,
+  ownerOnly = true,
+}: Props) {
+  const localSessionId = useLocalSessionId();
+  const isOwner = useParticipantProperty(localSessionId as string, 'owner');
   const [sidebar, setSidebar] = useSidebar();
+
+  if (ownerOnly && !isOwner) return null;
 
   return (
     <Button

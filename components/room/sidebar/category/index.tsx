@@ -12,6 +12,7 @@ export function Category() {
       <CategoryTab name="text" icon="text" text="Text" />
       <CategoryTab name="image" icon="image" text="Image" />
       <CategoryTab name="toast" icon="bell" text="Toast" />
+      <CategoryTab name="chat" icon="chat" text="Chat" ownerOnly={false} />
       <CategoryTab name="people" icon="people" text="People" />
       <CategoryTab name="stream" icon="stream" text="RTMP" />
       <CategoryTab

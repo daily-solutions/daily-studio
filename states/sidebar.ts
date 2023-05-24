@@ -7,11 +7,12 @@ export type Sidebar =
   | 'toast'
   | 'people'
   | 'assets'
-  | 'stream';
+  | 'stream'
+  | 'chat';
 
 const sidebarView = atom<Sidebar>({
   key: 'sidebar-view',
-  default: 'layout',
+  default: 'chat',
 });
 
 export const useSidebar = () => useRecoilState(sidebarView);

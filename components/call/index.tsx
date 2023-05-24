@@ -2,10 +2,12 @@
 
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMeetingState } from '@/states/meetingState';
+import { useMessages } from '@/states/messagesState';
+import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import {
   useDaily,
+  useDailyEvent,
   useLocalSessionId,
-  useParticipantProperty,
   useThrottledDailyEvent,
 } from '@daily-co/daily-react';
 
@@ -15,12 +17,19 @@ import { Header } from '@/components/header';
 import { Icons } from '@/components/icons';
 import { Room } from '@/components/room';
 
+type AppMessage = {
+  event: 'message';
+  id: string;
+  userName: string;
+  message: string;
+};
+
 export function Call() {
   const daily = useDaily();
-  const [meetingState, setMeetingState] = useMeetingState();
-
   const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId as string, 'owner');
+
+  const [meetingState, setMeetingState] = useMeetingState();
+  const [, setMessages] = useMessages();
 
   useEffect(
     () => setMeetingState(daily?.meetingState() ?? 'loading'),
@@ -39,12 +48,33 @@ export function Call() {
     )
   );
 
+  useDailyEvent(
+    'app-message',
+    useCallback(
+      (ev: DailyEventObjectAppMessage<AppMessage>) => {
+        const { event, ...rest } = ev.data;
+        if (event !== 'message') return;
+
+        setMessages((messages) => [
+          ...messages,
+          {
+            ...rest,
+            fromId: ev.fromId,
+            isLocal: false,
+            receivedAt: new Date(),
+          },
+        ]);
+      },
+      [setMessages]
+    )
+  );
+
   const content = useMemo(() => {
     switch (meetingState) {
       case 'loaded':
         return <Haircheck />;
       case 'joined-meeting':
-        return <Room isProducer={isOwner} />;
+        return <Room />;
       case 'left-meeting':
         return (
           <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
@@ -68,7 +98,7 @@ export function Call() {
           </div>
         );
     }
-  }, [isOwner, meetingState]);
+  }, [meetingState]);
 
   useEffect(() => {
     return () => {

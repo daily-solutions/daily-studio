@@ -13,18 +13,14 @@ import { RTMPModal } from '@/components/room/modals/rtmp';
 import { Sidebar } from '@/components/room/sidebar';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
-interface Props {
-  isProducer?: boolean;
-}
-
-export function Room({ isProducer = false }: Props) {
+export function Room() {
   return (
-    <div className="flex h-full w-full flex-1">
+    <div className="flex h-full w-full flex-1 bg-muted">
       <div className="flex h-full w-full flex-col">
         <div className="flex-1">
           <VcsPreview />
         </div>
-        <div className="flex h-20 w-full items-center justify-between border-t p-4">
+        <div className="flex h-20 w-full items-center justify-between border-t bg-background p-4">
           <div className="flex items-center">
             <Video />
             <Audio />
@@ -38,7 +34,7 @@ export function Room({ isProducer = false }: Props) {
           </div>
         </div>
       </div>
-      {isProducer && <Sidebar />}
+      <Sidebar />
       <RTMPModal />
       <BroadcastModal />
       <DailyAudio />

@@ -10,11 +10,13 @@ import {
   Loader2,
   LogOut,
   LucideProps,
+  MessageCircle,
   Mic,
   MicOff,
   PlusIcon,
   ScreenShare,
   ScreenShareOff,
+  Send,
   Settings,
   TrashIcon,
   Tv,
@@ -54,6 +56,8 @@ export const Icons = {
   trash: TrashIcon,
   settings: Settings,
   plus: PlusIcon,
+  chat: MessageCircle,
+  send: Send,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
