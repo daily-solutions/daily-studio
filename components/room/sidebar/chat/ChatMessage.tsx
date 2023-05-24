@@ -21,7 +21,7 @@ export function ChatMessage({
             {message.userName} {message.isLocal && '(You)'}
           </h3>
           <p className="text-xs">
-            {message.receivedAt.toLocaleTimeString('en-US')}
+            {message.receivedAt.toLocaleTimeString([], { timeStyle: 'short' })}
           </p>
         </div>
       )}

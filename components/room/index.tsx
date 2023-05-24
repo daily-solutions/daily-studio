@@ -1,5 +1,9 @@
 import React from 'react';
-import { DailyAudio } from '@daily-co/daily-react';
+import {
+  DailyAudio,
+  useLocalSessionId,
+  useParticipantProperty,
+} from '@daily-co/daily-react';
 
 import { Audio } from '@/components/call/tray/audio';
 import { Layout } from '@/components/call/tray/layout';
@@ -14,6 +18,12 @@ import { Sidebar } from '@/components/room/sidebar';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
 export function Room() {
+  const localSessionId = useLocalSessionId();
+  const hasPermission = useParticipantProperty(
+    localSessionId as string,
+    'permissions.hasPresence'
+  );
+
   return (
     <div className="flex h-full w-full flex-1 bg-muted">
       <div className="flex h-full w-full flex-col">
@@ -21,12 +31,16 @@ export function Room() {
           <VcsPreview />
         </div>
         <div className="flex h-20 w-full items-center justify-between border-t bg-background p-4">
-          <div className="flex items-center">
-            <Video />
-            <Audio />
-            <Screenshare />
-            <Rmp />
-          </div>
+          {hasPermission ? (
+            <div className="flex items-center">
+              <Video />
+              <Audio />
+              <Screenshare />
+              <Rmp />
+            </div>
+          ) : (
+            <p>Joined as Viewer</p>
+          )}
           <Layout />
           <div className="flex items-center">
             <Settings />
