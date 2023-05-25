@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
+import { Toaster } from '@/components/ui/toaster';
 import { RecoilProvider } from '@/components/RecoilProvider';
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <RecoilProvider>
           <div className="h-full overflow-hidden">{children}</div>
         </RecoilProvider>
+        <Toaster />
       </body>
     </html>
   );
