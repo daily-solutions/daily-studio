@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useMeetingState } from '@/states/meetingState';
 import { useMessages } from '@/states/messagesState';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import {
   useDaily,
   useDailyEvent,
-  useThrottledDailyEvent,
+  useMeetingState,
 } from '@daily-co/daily-react';
 
 import { useStage } from '@/hooks/useStage';
@@ -29,7 +28,7 @@ type AppMessage = {
 export function Call() {
   const daily = useDaily();
 
-  const [meetingState, setMeetingState] = useMeetingState();
+  const meetingState = useMeetingState();
   const [, setMessages] = useMessages();
 
   const { toast } = useToast();
@@ -55,23 +54,6 @@ export function Call() {
       [acceptRequestToJoin, toast]
     ),
   });
-
-  useEffect(
-    () => setMeetingState(daily?.meetingState() ?? 'loading'),
-    [daily, setMeetingState]
-  );
-
-  useThrottledDailyEvent(
-    ['loading', 'loaded', 'joining-meeting', 'joined-meeting', 'left-meeting'],
-    useCallback(
-      (evts) => {
-        evts.forEach(() => {
-          setMeetingState(daily?.meetingState() ?? 'loading');
-        });
-      },
-      [daily, setMeetingState]
-    )
-  );
 
   useDailyEvent(
     'app-message',

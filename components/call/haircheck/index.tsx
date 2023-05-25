@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import {
   useDaily,
   useLocalSessionId,
-  useParticipantProperty,
+  usePermissions,
 } from '@daily-co/daily-react';
 
 import { Card } from '@/components/ui/card';
@@ -13,17 +13,16 @@ import { Loader } from '@/components/loader';
 export function Haircheck() {
   const [state, setState] = useState<'setup' | 'haircheck'>('setup');
   const localSessionId = useLocalSessionId();
-  const hasPresence = useParticipantProperty(
-    localSessionId as string,
-    'permissions.hasPresence'
-  );
+  const { hasPresence } = usePermissions();
   const daily = useDaily();
 
   const handleContinue = useCallback(
-    (userName: string) => {
-      daily?.setUserName(userName);
+    async (userName: string) => {
+      if (!daily) return;
+
+      await daily.setUserName(userName);
       if (hasPresence) setState('haircheck');
-      else daily?.join();
+      else await daily.join();
     },
     [daily, hasPresence]
   );

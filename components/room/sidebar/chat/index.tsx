@@ -31,8 +31,8 @@ export function Chat() {
             />
           ))
         ) : (
-          <div className="flex h-full items-center justify-center">
-            <div className="flex flex-col items-center justify-center gap-y-4 rounded-md bg-muted p-8">
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="flex w-full flex-col items-center justify-center gap-y-4 rounded-md bg-muted p-8">
               <div className="w-30 h-30 rounded-full bg-background p-4">
                 <Icons.chat className="h-5 w-5" />
               </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useMeetingState } from '@/states/meetingState';
+import { useMeetingState } from '@daily-co/daily-react';
 
 import { siteConfig } from '@/config/site';
 import { buttonVariants } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { HeaderMenu } from '@/components/header/menu';
 import { Icons } from '@/components/icons';
 
 export function Header() {
-  const [meetingState] = useMeetingState();
+  const meetingState = useMeetingState();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">

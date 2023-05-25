@@ -1,8 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import {
-  useLocalSessionId,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
+import { usePermissions } from '@daily-co/daily-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,11 +10,7 @@ interface Props {
 
 export function NameSetup({ onContinue }: Props) {
   const [username, setUsername] = useState<string>('');
-  const localSessionId = useLocalSessionId();
-  const hasPresence = useParticipantProperty(
-    localSessionId as string,
-    'permissions.hasPresence'
-  );
+  const { hasPresence } = usePermissions();
 
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {

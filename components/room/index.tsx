@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  DailyAudio,
-  useLocalSessionId,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
+import { DailyAudio, usePermissions } from '@daily-co/daily-react';
 
 import { useStage } from '@/hooks/useStage';
 import { Button } from '@/components/ui/button';
@@ -20,11 +16,7 @@ import { Sidebar } from '@/components/room/sidebar';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
 export function Room() {
-  const localSessionId = useLocalSessionId();
-  const hasPermission = useParticipantProperty(
-    localSessionId as string,
-    'permissions.hasPresence'
-  );
+  const { hasPresence: hasPermission } = usePermissions();
 
   const { isRequesting, toggleRequestToJoin } = useStage();
 
