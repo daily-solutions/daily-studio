@@ -44,10 +44,18 @@ type AcceptRequestToJoinStage = {
   };
 };
 
+type InviteToStage = {
+  event: 'invite-to-stage';
+  payload: {
+    sessionId: string;
+  };
+};
+
 type AppMessage =
   | RequestToJoinStage
   | CancelRequestToJoinStage
-  | AcceptRequestToJoinStage;
+  | AcceptRequestToJoinStage
+  | InviteToStage;
 
 interface Props {
   onRequestToJoin?(data: RequestToJoinStage['payload']): void;
@@ -102,6 +110,20 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
             setIsRequesting(false);
             toast({
               title: 'You have been accepted to join the stage.',
+              description: 'You can unmute yourself to speak.',
+            });
+          }
+          break;
+        case 'invite-to-stage':
+          const { payload: invitePayload } = ev.data as InviteToStage;
+          setRequestedParticipants((prev) => {
+            const { [invitePayload.sessionId]: _, ...rest } = prev;
+            return rest;
+          });
+          if (localSessionId === invitePayload.sessionId) {
+            setIsRequesting(false);
+            toast({
+              title: 'You have been invited to join the stage.',
               description: 'You can unmute yourself to speak.',
             });
           }
@@ -184,6 +206,28 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     [cancelRequestToJoin, isRequesting, requestToJoin]
   );
 
+  const inviteToStage = useCallback(
+    (sessionId: string) => {
+      if (!daily || !isOwner) return;
+
+      setRequestedParticipants((prev) => {
+        const { [sessionId]: _, ...rest } = prev;
+        return rest;
+      });
+      sendAppMessage({
+        event: 'invite-to-stage',
+        payload: { sessionId },
+      });
+      daily.updateParticipant(sessionId, {
+        updatePermissions: {
+          canSend: true,
+          hasPresence: true,
+        },
+      });
+    },
+    [daily, isOwner, sendAppMessage, setRequestedParticipants]
+  );
+
   return {
     isRequesting,
     requestedParticipants,
@@ -192,5 +236,6 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     cancelRequestToJoin,
     acceptRequestToJoin,
     toggleRequestToJoin,
+    inviteToStage,
   };
 };
