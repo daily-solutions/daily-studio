@@ -21,6 +21,7 @@ export function Category() {
         text="Assets"
         disabled={isLiveStreaming || isRecording}
       />
+      <CategoryTab name="settings" icon="settings" text="Config" />
     </div>
   );
 }

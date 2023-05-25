@@ -8,7 +8,8 @@ export type Sidebar =
   | 'people'
   | 'assets'
   | 'stream'
-  | 'chat';
+  | 'chat'
+  | 'settings';
 
 const sidebarView = atom<Sidebar>({
   key: 'sidebar-view',

@@ -44,6 +44,11 @@ export function CategoryHeading() {
           description:
             'Talk with other participants including the host & guests',
         };
+      case 'settings':
+        return {
+          heading: 'Settings',
+          description: 'Adjust the default settings',
+        };
       default:
         return {
           heading: 'View Settings',

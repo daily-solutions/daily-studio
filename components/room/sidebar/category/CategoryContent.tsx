@@ -10,6 +10,7 @@ import { FormMaker } from '@/components/formMaker';
 import { Assets } from '@/components/room/sidebar/assets';
 import { Chat } from '@/components/room/sidebar/chat';
 import { People } from '@/components/room/sidebar/people';
+import { Settings } from '@/components/room/sidebar/settings';
 import { Stream } from '@/components/room/sidebar/stream';
 
 export function CategoryContent() {
@@ -41,6 +42,8 @@ export function CategoryContent() {
         return <Assets />;
       case 'chat':
         return <Chat />;
+      case 'settings':
+        return <Settings />;
       default:
         return <FormMaker fields={viewParams} />;
     }
