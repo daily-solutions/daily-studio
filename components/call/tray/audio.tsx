@@ -9,7 +9,7 @@ import { TrayButton } from '@/components/ui/trayButton';
 export function Audio() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const audio = useParticipantProperty(localSessionId as string, 'audio');
+  const audio = useParticipantProperty(localSessionId, 'audio');
 
   return (
     <TrayButton

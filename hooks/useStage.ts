@@ -56,7 +56,7 @@ interface Props {
 export const useStage = ({ onRequestToJoin }: Props = {}) => {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const [userName, isOwner] = useParticipantProperty(localSessionId as string, [
+  const [userName, isOwner] = useParticipantProperty(localSessionId, [
     'user_name',
     'owner',
   ]);
@@ -70,6 +70,8 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
 
   const appMessage = useCallback(
     (ev: DailyEventObjectAppMessage<AppMessage>) => {
+      if (!ev.data?.event) return;
+
       switch (ev.data.event) {
         case 'request-to-join-stage':
           if (!isOwner) return;

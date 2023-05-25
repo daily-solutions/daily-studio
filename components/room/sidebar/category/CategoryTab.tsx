@@ -26,7 +26,7 @@ export function CategoryTab({
   ownerOnly = true,
 }: Props) {
   const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId as string, 'owner');
+  const isOwner = useParticipantProperty(localSessionId, 'owner');
   const [sidebar, setSidebar] = useSidebar();
 
   if (ownerOnly && !isOwner) return null;

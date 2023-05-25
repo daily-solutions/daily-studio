@@ -15,10 +15,7 @@ export function ChatInput() {
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const localSessionId = useLocalSessionId();
-  const userName = useParticipantProperty(
-    localSessionId as string,
-    'user_name'
-  );
+  const userName = useParticipantProperty(localSessionId, 'user_name');
   const [, setMessages] = useMessages();
 
   const sendAppMessage = useCallback(

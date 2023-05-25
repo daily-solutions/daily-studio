@@ -9,7 +9,7 @@ import { TrayButton } from '@/components/ui/trayButton';
 export function Video() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const video = useParticipantProperty(localSessionId as string, 'video');
+  const video = useParticipantProperty(localSessionId, 'video');
 
   return (
     <TrayButton

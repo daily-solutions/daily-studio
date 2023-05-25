@@ -18,13 +18,6 @@ import { Header } from '@/components/header';
 import { Icons } from '@/components/icons';
 import { Room } from '@/components/room';
 
-type AppMessage = {
-  event: 'message';
-  id: string;
-  userName: string;
-  message: string;
-};
-
 export function Call() {
   const daily = useDaily();
 
@@ -58,7 +51,7 @@ export function Call() {
   useDailyEvent(
     'app-message',
     useCallback(
-      (ev: DailyEventObjectAppMessage<AppMessage>) => {
+      (ev: DailyEventObjectAppMessage) => {
         const { event, ...rest } = ev.data;
 
         switch (event) {

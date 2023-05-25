@@ -9,7 +9,7 @@ import { TrayButton } from '@/components/ui/trayButton';
 
 export function Layout() {
   const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId as string, 'owner');
+  const isOwner = useParticipantProperty(localSessionId, 'owner');
   const [params, setParams] = useParams();
 
   const handleSelect = useCallback(

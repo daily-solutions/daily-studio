@@ -18,10 +18,7 @@ type ActiveVideoInput = {
 
 export const useVideoTracks = () => {
   const localSessionId = useLocalSessionId();
-  const userName = useParticipantProperty(
-    localSessionId as string,
-    'user_name'
-  );
+  const userName = useParticipantProperty(localSessionId, 'user_name');
 
   const [participantsState] = useParticipantsState();
 

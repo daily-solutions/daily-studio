@@ -20,7 +20,7 @@ export function Setup() {
   return (
     <div>
       <div className="border-b">
-        <Tile sessionId={localSessionId as string} />
+        <Tile sessionId={localSessionId} />
       </div>
       <div className="flex items-center justify-between border-b p-2">
         <div className="flex items-center justify-center">

@@ -19,7 +19,7 @@ export function People() {
       setPaxState(() => {
         const paxState = {
           showAllParticipants: checked,
-          participantIds: checked ? [] : [localSessionId as string],
+          participantIds: checked ? [] : [localSessionId],
         };
         updateParticipants(paxState);
         return paxState;

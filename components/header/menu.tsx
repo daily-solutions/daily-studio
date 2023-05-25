@@ -12,7 +12,7 @@ import { ViewerCount } from '@/components/header/viewerCount';
 
 export function HeaderMenu() {
   const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId as string, 'owner');
+  const isOwner = useParticipantProperty(localSessionId, 'owner');
 
   const { isLiveStreaming, stopLiveStreaming } = useLiveStream();
 
