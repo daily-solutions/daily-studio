@@ -5,6 +5,8 @@ import {
   useParticipantProperty,
 } from '@daily-co/daily-react';
 
+import { useStage } from '@/hooks/useStage';
+import { Button } from '@/components/ui/button';
 import { Audio } from '@/components/call/tray/audio';
 import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
@@ -24,6 +26,8 @@ export function Room() {
     'permissions.hasPresence'
   );
 
+  const { isRequesting, toggleRequestToJoin } = useStage();
+
   return (
     <div className="flex h-full w-full flex-1 bg-muted">
       <div className="flex h-full w-full flex-col">
@@ -39,7 +43,12 @@ export function Room() {
               <Rmp />
             </div>
           ) : (
-            <p>Joined as Viewer</p>
+            <Button
+              variant={isRequesting ? 'destructive' : 'default'}
+              onClick={toggleRequestToJoin}
+            >
+              {isRequesting ? 'Cancel request' : 'Request to join stage'}
+            </Button>
           )}
           <Layout />
           <div className="flex items-center">

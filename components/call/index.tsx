@@ -7,11 +7,13 @@ import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import {
   useDaily,
   useDailyEvent,
-  useLocalSessionId,
   useThrottledDailyEvent,
 } from '@daily-co/daily-react';
 
+import { useStage } from '@/hooks/useStage';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/components/ui/use-toast';
 import { Haircheck } from '@/components/call/haircheck';
 import { Header } from '@/components/header';
 import { Icons } from '@/components/icons';
@@ -26,10 +28,33 @@ type AppMessage = {
 
 export function Call() {
   const daily = useDaily();
-  const localSessionId = useLocalSessionId();
 
   const [meetingState, setMeetingState] = useMeetingState();
   const [, setMessages] = useMessages();
+
+  const { toast } = useToast();
+
+  const { acceptRequestToJoin } = useStage();
+
+  const { appMessage } = useStage({
+    onRequestToJoin: useCallback(
+      ({ sessionId, userName }) => {
+        toast({
+          title: 'Request to join',
+          description: `${userName} has requested to join the call`,
+          action: (
+            <ToastAction
+              altText="Accept"
+              onClick={() => acceptRequestToJoin(sessionId)}
+            >
+              Accept
+            </ToastAction>
+          ),
+        });
+      },
+      [acceptRequestToJoin, toast]
+    ),
+  });
 
   useEffect(
     () => setMeetingState(daily?.meetingState() ?? 'loading'),
@@ -53,19 +78,25 @@ export function Call() {
     useCallback(
       (ev: DailyEventObjectAppMessage<AppMessage>) => {
         const { event, ...rest } = ev.data;
-        if (event !== 'message') return;
 
-        setMessages((messages) => [
-          ...messages,
-          {
-            ...rest,
-            fromId: ev.fromId,
-            isLocal: false,
-            receivedAt: new Date(),
-          },
-        ]);
+        switch (event) {
+          case 'message':
+            setMessages((messages) => [
+              ...messages,
+              {
+                ...rest,
+                fromId: ev.fromId,
+                isLocal: false,
+                receivedAt: new Date(),
+              },
+            ]);
+            break;
+          default:
+            appMessage(ev);
+            break;
+        }
       },
-      [setMessages]
+      [appMessage, setMessages]
     )
   );
 
