@@ -13,6 +13,7 @@ import {
   MessageCircle,
   Mic,
   MicOff,
+  MoreHorizontal,
   PlusIcon,
   ScreenShare,
   ScreenShareOff,
@@ -23,6 +24,7 @@ import {
   Type,
   Upload,
   UploadCloud,
+  UserMinus,
   Users,
   Video,
   VideoOff,
@@ -58,6 +60,8 @@ export const Icons = {
   plus: PlusIcon,
   chat: MessageCircle,
   send: Send,
+  ellipsis: MoreHorizontal,
+  userMinus: UserMinus,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

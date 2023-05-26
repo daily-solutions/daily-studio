@@ -51,11 +51,19 @@ type InviteToStage = {
   };
 };
 
+type RemoveFromStage = {
+  event: 'remove-from-stage';
+  payload: {
+    sessionId: string;
+  };
+};
+
 type AppMessage =
   | RequestToJoinStage
   | CancelRequestToJoinStage
   | AcceptRequestToJoinStage
-  | InviteToStage;
+  | InviteToStage
+  | RemoveFromStage;
 
 interface Props {
   onRequestToJoin?(data: RequestToJoinStage['payload']): void;
@@ -125,6 +133,16 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
             toast({
               title: 'You have been invited to join the stage.',
               description: 'You can unmute yourself to speak.',
+            });
+          }
+          break;
+        case 'remove-from-stage':
+          const { payload: removePayload } = ev.data as RemoveFromStage;
+          if (localSessionId === removePayload.sessionId) {
+            setIsRequesting(false);
+            toast({
+              title: 'You have been removed from the stage.',
+              description: 'You can still watch the stage.',
             });
           }
           break;
@@ -228,6 +246,24 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     [daily, isOwner, sendAppMessage, setRequestedParticipants]
   );
 
+  const removeFromStage = useCallback(
+    (sessionId: string) => {
+      if (!daily || !isOwner) return;
+
+      sendAppMessage({
+        event: 'remove-from-stage',
+        payload: { sessionId },
+      });
+      daily.updateParticipant(sessionId, {
+        updatePermissions: {
+          canSend: false,
+          hasPresence: false,
+        },
+      });
+    },
+    [daily, isOwner, sendAppMessage]
+  );
+
   return {
     isRequesting,
     requestedParticipants,
@@ -237,5 +273,6 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     acceptRequestToJoin,
     toggleRequestToJoin,
     inviteToStage,
+    removeFromStage,
   };
 };

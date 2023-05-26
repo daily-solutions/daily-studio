@@ -1,4 +1,8 @@
 import { useCallback, useState } from 'react';
+import {
+  useLocalSessionId,
+  useParticipantProperty,
+} from '@daily-co/daily-react';
 
 import { useRMP } from '@/hooks/useRMP';
 import { Button } from '@/components/ui/button';
@@ -68,6 +72,11 @@ export const RMPPopover = () => {
 };
 
 export function Rmp() {
+  const localSessionId = useLocalSessionId();
+  const isOwner = useParticipantProperty(localSessionId, 'owner');
+
+  if (!isOwner) return null;
+
   return (
     <Popover>
       <PopoverTrigger asChild>
