@@ -22,7 +22,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
 
-export function PeopleItem({ sessionId }: { sessionId: string }) {
+export function Participant({ sessionId }: { sessionId: string }) {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
   const isLocalOwner = useParticipantProperty(localSessionId, 'owner');

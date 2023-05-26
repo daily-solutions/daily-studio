@@ -25,6 +25,7 @@ import {
   Upload,
   UploadCloud,
   UserMinus,
+  UserPlus,
   Users,
   Video,
   VideoOff,
@@ -62,6 +63,7 @@ export const Icons = {
   send: Send,
   ellipsis: MoreHorizontal,
   userMinus: UserMinus,
+  userPlus: UserPlus,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,7 @@
 import React from 'react';
 import { DailyAudio, usePermissions } from '@daily-co/daily-react';
 
+import { usePresence } from '@/hooks/usePresence';
 import { useStage } from '@/hooks/useStage';
 import { Button } from '@/components/ui/button';
 import { Audio } from '@/components/call/tray/audio';
@@ -16,6 +17,7 @@ import { Sidebar } from '@/components/room/sidebar';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
 export function Room() {
+  usePresence();
   const { hasPresence: hasPermission } = usePermissions();
 
   const { isRequesting, toggleRequestToJoin } = useStage();

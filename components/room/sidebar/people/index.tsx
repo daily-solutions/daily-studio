@@ -1,11 +1,13 @@
 import React, { useCallback } from 'react';
 import { useParticipantsState } from '@/states/participantsState';
+import { useViewers } from '@/states/viewersState';
 import { useLocalSessionId, useParticipantIds } from '@daily-co/daily-react';
 
 import { useSyncParticipants } from '@/hooks/useSyncParams';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { PeopleItem } from '@/components/room/sidebar/people/PeopleItem';
+import { Participant } from '@/components/room/sidebar/people/Participant';
+import { Viewer } from '@/components/room/sidebar/people/Viewer';
 
 export function People() {
   const localSessionId = useLocalSessionId();
@@ -13,6 +15,8 @@ export function People() {
 
   const participantIds = useParticipantIds();
   const { updateParticipants } = useSyncParticipants();
+
+  const [viewers] = useViewers();
 
   const handleCheckedChange = useCallback(
     (checked: boolean) => {
@@ -39,13 +43,23 @@ export function People() {
         />
       </div>
       <div className="mt-6">
-        <h3 className="font-medium">Participants</h3>
-        <div className="mt-2 flex flex-col gap-y-2">
+        <h3 className="text-xs">Participants</h3>
+        <div className="mt-2 flex flex-col gap-y-1">
           {participantIds.map((id) => (
-            <PeopleItem key={id} sessionId={id} />
+            <Participant key={id} sessionId={id} />
           ))}
         </div>
       </div>
+      {viewers.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-xs">Viewers</h3>
+          <div className="mt-2 flex flex-col gap-y-1">
+            {viewers.map((viewer) => (
+              <Viewer key={viewer.sessionId} {...viewer} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

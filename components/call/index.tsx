@@ -54,22 +54,17 @@ export function Call() {
       (ev: DailyEventObjectAppMessage) => {
         const { event, ...rest } = ev.data;
 
-        switch (event) {
-          case 'message':
-            setMessages((messages) => [
-              ...messages,
-              {
-                ...rest,
-                fromId: ev.fromId,
-                isLocal: false,
-                receivedAt: new Date(),
-              },
-            ]);
-            break;
-          default:
-            appMessage(ev);
-            break;
-        }
+        if (event === 'message') {
+          setMessages((messages) => [
+            ...messages,
+            {
+              ...rest,
+              fromId: ev.fromId,
+              isLocal: false,
+              receivedAt: new Date(),
+            },
+          ]);
+        } else appMessage(ev);
       },
       [appMessage, setMessages]
     )
