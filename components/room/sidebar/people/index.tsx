@@ -53,7 +53,7 @@ export function People() {
       {viewers.length > 0 && (
         <div className="mt-6">
           <h3 className="text-xs">Viewers</h3>
-          <div className="mt-2 flex flex-col gap-y-1">
+          <div className="mt-2 flex flex-col gap-y-2">
             {viewers.map((viewer) => (
               <Viewer key={viewer.sessionId} {...viewer} />
             ))}

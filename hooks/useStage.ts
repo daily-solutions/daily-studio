@@ -44,6 +44,13 @@ type AcceptRequestToJoinStage = {
   };
 };
 
+type DeclineRequestToJoinStage = {
+  event: 'decline-request-to-join-stage';
+  payload: {
+    sessionId: string;
+  };
+};
+
 type InviteToStage = {
   event: 'invite-to-stage';
   payload: {
@@ -62,6 +69,7 @@ type AppMessage =
   | RequestToJoinStage
   | CancelRequestToJoinStage
   | AcceptRequestToJoinStage
+  | DeclineRequestToJoinStage
   | InviteToStage
   | RemoveFromStage;
 
@@ -92,7 +100,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
         case 'request-to-join-stage':
           if (!isOwner) return;
 
-          const { payload: requestPayload } = ev.data as RequestToJoinStage;
+          const { payload: requestPayload }: RequestToJoinStage = ev.data;
           setRequestedParticipants((prev) => ({
             ...prev,
             [requestPayload.sessionId]: requestPayload,
@@ -108,8 +116,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
           });
           break;
         case 'accept-request-to-join-stage':
-          const { payload: acceptPayload } =
-            ev.data as AcceptRequestToJoinStage;
+          const { payload: acceptPayload }: AcceptRequestToJoinStage = ev.data;
           setRequestedParticipants((prev) => {
             const { [acceptPayload.sessionId]: _, ...rest } = prev;
             return rest;
@@ -122,8 +129,23 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
             });
           }
           break;
+        case 'decline-request-to-join-stage':
+          const { payload: declinePayload }: DeclineRequestToJoinStage =
+            ev.data;
+          setRequestedParticipants((prev) => {
+            const { [declinePayload.sessionId]: _, ...rest } = prev;
+            return rest;
+          });
+          if (localSessionId === declinePayload.sessionId) {
+            setIsRequesting(false);
+            toast({
+              title: 'You have been declined to join the stage.',
+              description: 'You can still watch the stage.',
+            });
+          }
+          break;
         case 'invite-to-stage':
-          const { payload: invitePayload } = ev.data as InviteToStage;
+          const { payload: invitePayload }: InviteToStage = ev.data;
           setRequestedParticipants((prev) => {
             const { [invitePayload.sessionId]: _, ...rest } = prev;
             return rest;
@@ -137,7 +159,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
           }
           break;
         case 'remove-from-stage':
-          const { payload: removePayload } = ev.data as RemoveFromStage;
+          const { payload: removePayload }: RemoveFromStage = ev.data;
           if (localSessionId === removePayload.sessionId) {
             setIsRequesting(false);
             toast({
@@ -219,6 +241,22 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     [daily, isOwner, sendAppMessage, setRequestedParticipants]
   );
 
+  const declineRequestToJoin = useCallback(
+    (sessionId: string) => {
+      if (!daily || !isOwner) return;
+
+      setRequestedParticipants((prev) => {
+        const { [sessionId]: _, ...rest } = prev;
+        return rest;
+      });
+      sendAppMessage({
+        event: 'decline-request-to-join-stage',
+        payload: { sessionId },
+      });
+    },
+    [daily, isOwner, sendAppMessage, setRequestedParticipants]
+  );
+
   const toggleRequestToJoin = useCallback(
     () => (isRequesting ? cancelRequestToJoin() : requestToJoin()),
     [cancelRequestToJoin, isRequesting, requestToJoin]
@@ -271,6 +309,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     requestToJoin,
     cancelRequestToJoin,
     acceptRequestToJoin,
+    declineRequestToJoin,
     toggleRequestToJoin,
     inviteToStage,
     removeFromStage,
