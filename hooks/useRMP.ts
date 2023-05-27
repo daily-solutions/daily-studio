@@ -25,6 +25,20 @@ export const useRMP = () => {
   );
 
   useDailyEvent(
+    'remote-media-player-updated',
+    useCallback(
+      (ev) => {
+        setRMP({
+          isPlaying: ev.remoteMediaPlayerState.state === 'playing',
+          isPaused: ev.remoteMediaPlayerState.state === 'paused',
+          sessionId: ev.session_id,
+        });
+      },
+      [setRMP]
+    )
+  );
+
+  useDailyEvent(
     'remote-media-player-stopped',
     useCallback(() => {
       setRMP({

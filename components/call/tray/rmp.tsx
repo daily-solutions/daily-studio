@@ -21,11 +21,12 @@ export const RMPPopover = () => {
     startRemoteMediaPlayer,
     stopRemoteMediaPlayer,
     updateRemoteMediaPlayer,
+    sessionId,
   } = useRMP();
   const [url, setUrl] = useState('');
 
   const handleRMPPlayer = useCallback(async () => {
-    if (isPlaying) {
+    if (sessionId) {
       await stopRemoteMediaPlayer();
     } else {
       await startRemoteMediaPlayer({
@@ -35,20 +36,20 @@ export const RMPPopover = () => {
         },
       });
     }
-  }, [isPlaying, startRemoteMediaPlayer, stopRemoteMediaPlayer, url]);
+  }, [sessionId, startRemoteMediaPlayer, stopRemoteMediaPlayer, url]);
 
-  const handlePauseRMP = useCallback(async () => {
-    if (!isPlaying) return;
+  const handleRMPPlayPause = useCallback(async () => {
+    if (!sessionId) return;
 
-    await updateRemoteMediaPlayer({ state: 'pause' });
-  }, [isPlaying, updateRemoteMediaPlayer]);
+    await updateRemoteMediaPlayer({ state: isPlaying ? 'pause' : 'play' });
+  }, [isPlaying, sessionId, updateRemoteMediaPlayer]);
 
   return (
     <div className="flex flex-col gap-4">
       <p className="text-xs text-muted-foreground">Remote Media Player</p>
-      {isPlaying ? (
-        <Button className="w-full" onClick={handlePauseRMP}>
-          Pause
+      {sessionId ? (
+        <Button className="w-full" onClick={handleRMPPlayPause}>
+          {isPlaying ? 'Pause' : 'Resume'}
         </Button>
       ) : (
         <div className="flex flex-col gap-2">
@@ -63,9 +64,9 @@ export const RMPPopover = () => {
       <Button
         className="w-full"
         onClick={handleRMPPlayer}
-        variant={isPlaying ? 'destructive' : 'default'}
+        variant={sessionId ? 'destructive' : 'default'}
       >
-        {isPlaying ? 'Stop' : 'Start'}
+        {sessionId ? 'Stop' : 'Start'}
       </Button>
     </div>
   );

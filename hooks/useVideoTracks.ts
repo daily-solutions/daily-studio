@@ -24,14 +24,26 @@ export const useVideoTracks = () => {
 
   const participantIds = useParticipantIds({
     filter: useCallback(
-      (p: DailyParticipant) => p.permissions.hasPresence && !p.local,
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence &&
+        !p.local &&
+        p.participantType !== 'remote-media-player',
       []
     ),
     sort: 'joined_at',
   });
   const { screens } = useScreenShare();
+  const rmpIds = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) => Boolean(p?.tracks?.rmpVideo),
+      []
+    ),
+    sort: 'joined_at',
+  });
 
-  const activeVideoInputs = useMemo(() => {
+  const activeVideoInputs: ActiveVideoInput[] = useMemo(() => {
+    if (!daily) return [];
+
     const activeVideos: ActiveVideoInput[] = [
       {
         id: localSessionId,
@@ -39,7 +51,7 @@ export const useVideoTracks = () => {
       },
     ];
 
-    const participants = Object.values(daily?.participants());
+    const participants = Object.values(daily.participants());
 
     participantIds.forEach((id) => {
       const participant = participants.find((p) => p.session_id === id);
@@ -59,10 +71,19 @@ export const useVideoTracks = () => {
       });
     });
 
+    rmpIds.forEach((id) => {
+      activeVideos.push({
+        id,
+        displayName: 'RMP',
+      });
+    });
+
     return activeVideos;
-  }, [daily, localSessionId, participantIds, screens, userName]);
+  }, [daily, localSessionId, participantIds, rmpIds, screens, userName]);
 
   const remoteTracksBySessionId = useMemo(() => {
+    if (!daily) return {};
+
     const tracksBySessionId = {
       [localSessionId]: {
         track: videoTrack,
@@ -70,8 +91,10 @@ export const useVideoTracks = () => {
       },
     };
 
+    const participants = Object.values(daily.participants());
+
     participantIds.forEach((id) => {
-      const participant = daily?.participants()[id];
+      const participant = participants.find((p) => p.session_id === id);
       if (!participant) return;
 
       const displayName = participant.user_name;
@@ -92,15 +115,33 @@ export const useVideoTracks = () => {
       };
     });
 
+    rmpIds.forEach((id) => {
+      const participant = participants.find((p) => p.session_id === id);
+      if (!participant) return;
+
+      tracksBySessionId[id] = {
+        track: participant.tracks.rmpVideo?.persistentTrack,
+        userName: 'RMP',
+      };
+    });
+
     return tracksBySessionId;
-  }, [daily, localSessionId, participantIds, screens, userName, videoTrack]);
+  }, [
+    daily,
+    localSessionId,
+    participantIds,
+    rmpIds,
+    screens,
+    userName,
+    videoTrack,
+  ]);
 
   const filteredActiveVideoInputs = useMemo(() => {
     if (participantsState.showAllParticipants) return activeVideoInputs;
 
-    return activeVideoInputs.filter((input) => {
-      return participantsState.participantIds.includes(input.id);
-    });
+    return activeVideoInputs.filter((input) =>
+      participantsState.participantIds.includes(input.id)
+    );
   }, [
     activeVideoInputs,
     participantsState.participantIds,

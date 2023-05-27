@@ -44,7 +44,7 @@ export function People() {
       </div>
       <div className="mt-6">
         <h3 className="text-xs">Participants</h3>
-        <div className="mt-2 flex flex-col gap-y-1">
+        <div className="flex flex-col gap-y-1">
           {participantIds.map((id) => (
             <Participant key={id} sessionId={id} />
           ))}
@@ -53,7 +53,7 @@ export function People() {
       {viewers.length > 0 && (
         <div className="mt-6">
           <h3 className="text-xs">Viewers</h3>
-          <div className="mt-2 flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2">
             {viewers.map((viewer) => (
               <Viewer key={viewer.sessionId} {...viewer} />
             ))}
