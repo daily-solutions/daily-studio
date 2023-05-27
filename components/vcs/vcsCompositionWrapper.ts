@@ -218,7 +218,7 @@ export class VCSCompositionWrapper {
       const prevSlot = prevSlots.find((it) => it.sessionId === sessionId);
 
       // If there is a previous slot, and the track IDs match, update the slot.
-      if (prevSlot && prevSlot.track.id === track.id) {
+      if (prevSlot && prevSlot.track.id === track?.id) {
         console.log(
           'found existing track for participant session %s',
           sessionId
@@ -313,7 +313,7 @@ export class VCSCompositionWrapper {
       const { track, userName: displayName } = newTracksById[sessionId];
       const prevSlot = prevSlots.find((it) => it.sessionId === sessionId);
 
-      if (prevSlot && prevSlot.track.id === track.id) {
+      if (prevSlot && prevSlot.track.id === track?.id) {
         newSlots.push({
           ...prevSlot,
           displayName,

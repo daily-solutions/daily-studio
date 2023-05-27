@@ -1,14 +1,13 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParticipantsState } from '@/states/participantsState';
+import { DailyParticipant } from '@daily-co/daily-js';
 import {
-  DailyEventObject,
-  DailyEventObjectParticipantLeft,
-  DailyEventObjectRemoteMediaPlayerStopped,
-} from '@daily-co/daily-js';
-import {
-  useDailyEvent,
+  useDaily,
   useLocalSessionId,
+  useMediaTrack,
+  useParticipantIds,
   useParticipantProperty,
+  useScreenShare,
 } from '@daily-co/daily-react';
 
 type ActiveVideoInput = {
@@ -17,146 +16,84 @@ type ActiveVideoInput = {
 };
 
 export const useVideoTracks = () => {
+  const daily = useDaily();
   const localSessionId = useLocalSessionId();
   const userName = useParticipantProperty(localSessionId, 'user_name');
-
+  const { persistentTrack: videoTrack } = useMediaTrack(localSessionId);
   const [participantsState] = useParticipantsState();
 
-  const [remoteTracksBySessionId, setRemoteTracksBySessionId] = useState<
-    Record<string, any>
-  >({});
-  const [activeVideoInputs, setActiveVideoInputs] = useState<
-    ActiveVideoInput[]
-  >([]);
+  const participantIds = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) => p.permissions.hasPresence && !p.local,
+      []
+    ),
+    sort: 'joined_at',
+  });
+  const { screens } = useScreenShare();
 
-  const updateActiveVideoInputs = useCallback(
-    (
-      participant: ActiveVideoInput,
-      options: { add?: boolean; delete?: boolean } = {}
-    ) => {
-      if (!localSessionId) return;
-
-      const arr: ActiveVideoInput[] = [];
-      arr.push({
+  const activeVideoInputs = useMemo(() => {
+    const activeVideos: ActiveVideoInput[] = [
+      {
         id: localSessionId,
         displayName: userName,
+      },
+    ];
+
+    const participants = Object.values(daily?.participants());
+
+    participantIds.forEach((id) => {
+      const participant = participants.find((p) => p.session_id === id);
+      if (!participant) return;
+
+      const displayName = participant.user_name;
+      activeVideos.push({
+        id,
+        displayName,
       });
+    });
 
-      const prev = activeVideoInputs;
+    screens.forEach((screen) => {
+      activeVideos.push({
+        id: `${screen.session_id}-screen`,
+        displayName: '',
+      });
+    });
 
-      if (options.delete && prev && prev.length > 1) {
-        for (let i = 1; i < prev.length; i++) {
-          const v = prev[i];
-          if (
-            v.id !== participant.id &&
-            v.displayName !== participant.displayName
-          ) {
-            arr.push(v);
-          }
-        }
-      } else {
-        arr.push(...prev.filter((v) => v.id !== localSessionId));
-      }
+    return activeVideos;
+  }, [daily, localSessionId, participantIds, screens, userName]);
 
-      if (options.add && participant.id && localSessionId !== participant.id) {
-        arr.push({
-          id: participant.id,
-          displayName: participant.displayName,
-        });
-      }
-
-      setActiveVideoInputs([...arr]);
-    },
-    [activeVideoInputs, localSessionId, userName]
-  );
-
-  const handleTrackEvents = useCallback(
-    (ev: DailyEventObject) => {
-      if (!ev || !ev.track || ev.track.kind !== 'video') return;
-
-      const sessionId =
-        ev.type === 'screenVideo'
-          ? `${ev.participant?.session_id}-screen`
-          : ev.participant?.session_id;
-
-      const userName = ev.participant?.user_name;
-
-      switch (ev.action) {
-        case 'track-started':
-          const track = ev.participant.tracks[ev.type].persistentTrack;
-          setRemoteTracksBySessionId((tracks) => ({
-            ...tracks,
-            [sessionId]: {
-              track,
-              userName,
-            },
-          }));
-          updateActiveVideoInputs(
-            { id: sessionId, displayName: userName },
-            { add: true }
-          );
-          break;
-        case 'track-stopped':
-          if (!sessionId) return;
-
-          setRemoteTracksBySessionId((tracks) => {
-            const newTracks = { ...tracks };
-            delete newTracks[sessionId];
-            return newTracks;
-          });
-          updateActiveVideoInputs(
-            { id: sessionId, displayName: userName },
-            { delete: true }
-          );
-          break;
-      }
-    },
-    [updateActiveVideoInputs]
-  );
-
-  useDailyEvent('track-started', handleTrackEvents);
-  useDailyEvent('track-stopped', handleTrackEvents);
-  useDailyEvent(
-    'remote-media-player-stopped',
-    useCallback(
-      (ev: DailyEventObjectRemoteMediaPlayerStopped) => {
-        setRemoteTracksBySessionId((tracks) => {
-          const newTracks = { ...tracks };
-          delete newTracks[ev.session_id];
-          return newTracks;
-        });
-        updateActiveVideoInputs(
-          {
-            id: ev.session_id,
-            displayName: '',
-          },
-          { delete: true }
-        );
+  const remoteTracksBySessionId = useMemo(() => {
+    const tracksBySessionId = {
+      [localSessionId]: {
+        track: videoTrack,
+        userName,
       },
-      [updateActiveVideoInputs]
-    )
-  );
-  useDailyEvent(
-    'participant-left',
-    useCallback(
-      (ev: DailyEventObjectParticipantLeft) => {
-        setRemoteTracksBySessionId((tracks) => {
-          const newTracks = { ...tracks };
-          delete newTracks[ev.participant.session_id];
-          delete newTracks[`${ev.participant.session_id}-screen`];
-          return newTracks;
-        });
-        updateActiveVideoInputs(
-          {
-            id: ev.participant.session_id,
-            displayName: ev.participant.user_name,
-          },
-          { delete: true }
-        );
-      },
-      [updateActiveVideoInputs]
-    )
-  );
+    };
+
+    participantIds.forEach((id) => {
+      const participant = daily?.participants()[id];
+      if (!participant) return;
+
+      const displayName = participant.user_name;
+      const isOff = ['off', 'interrupted'].includes(
+        participant.tracks.video.state
+      );
+      tracksBySessionId[id] = {
+        track: isOff ? undefined : participant.tracks.video.persistentTrack,
+        userName: displayName,
+      };
+    });
+
+    screens.forEach((screen) => {
+      const isOff = ['off', 'interrupted'].includes(screen.screenVideo.state);
+      tracksBySessionId[`${screen.session_id}-screen`] = {
+        track: isOff ? undefined : screen.screenVideo.persistentTrack,
+        userName: '',
+      };
+    });
+
+    return tracksBySessionId;
+  }, [daily, localSessionId, participantIds, screens, userName, videoTrack]);
 
   const filteredActiveVideoInputs = useMemo(() => {
     if (participantsState.showAllParticipants) return activeVideoInputs;
@@ -170,19 +107,8 @@ export const useVideoTracks = () => {
     participantsState.showAllParticipants,
   ]);
 
-  const filteredRemoteTracksBySessionId = useMemo(() => {
-    if (participantsState.showAllParticipants) return remoteTracksBySessionId;
-
-    return Object.keys(remoteTracksBySessionId)
-      .filter((key) => participantsState.participantIds.includes(key))
-      .reduce((acc, key) => {
-        acc[key] = remoteTracksBySessionId[key];
-        return acc;
-      }, {});
-  }, [remoteTracksBySessionId, participantsState]);
-
   return {
     activeVideoInputs: filteredActiveVideoInputs,
-    remoteTracksBySessionId: filteredRemoteTracksBySessionId,
+    remoteTracksBySessionId,
   };
 };
