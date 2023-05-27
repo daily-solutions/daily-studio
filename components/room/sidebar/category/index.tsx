@@ -21,7 +21,12 @@ export function Category() {
         text="Assets"
         disabled={isLiveStreaming || isRecording}
       />
-      <CategoryTab name="settings" icon="settings" text="Config" />
+      <CategoryTab
+        name="settings"
+        icon="settings"
+        text="Config"
+        ownerOnly={false}
+      />
     </div>
   );
 }

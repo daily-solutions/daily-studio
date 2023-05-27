@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePermissions } from '@daily-co/daily-react';
 
 import { useSendSettingsQuality } from '@/hooks/useSendSettings';
 import { Label } from '@/components/ui/label';
@@ -18,6 +19,9 @@ const qualities = [
 
 export function QualityToggle() {
   const { quality, updateQuality } = useSendSettingsQuality();
+  const { hasPresence } = usePermissions();
+
+  if (!hasPresence) return null;
 
   return (
     <div className="flex flex-col gap-y-3">
