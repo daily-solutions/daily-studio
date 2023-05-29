@@ -1,14 +1,15 @@
 import { DailyVideo, useParticipantProperty } from '@daily-co/daily-react';
 
+import { NoVideoTile } from '@/components/Tile/NoVideoTile';
+
 export function Tile({ sessionId }: { sessionId: string }) {
-  const [videoState, userName] = useParticipantProperty(sessionId, [
-    'tracks.video.state',
-    'user_name',
-  ]);
+  const videoState = useParticipantProperty(sessionId, 'tracks.video.state');
 
   return (
     <div className="relative pb-[56.25%]">
-      {['playable', 'loading'].includes(videoState) ? (
+      {videoState === 'off' ? (
+        <NoVideoTile sessionId={sessionId} />
+      ) : (
         <DailyVideo
           style={{ position: 'absolute' }}
           sessionId={sessionId}
@@ -16,10 +17,6 @@ export function Tile({ sessionId }: { sessionId: string }) {
           width="100%"
           height="100%"
         />
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-          <h2>{userName}</h2>
-        </div>
       )}
     </div>
   );

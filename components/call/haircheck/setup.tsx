@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useDaily, useLocalSessionId } from '@daily-co/daily-react';
 
 import { Button } from '@/components/ui/button';
+import { Tile } from '@/components/Tile';
 import { Devices } from '@/components/call/devices';
 import { Audio } from '@/components/call/tray/audio';
 import { Video } from '@/components/call/tray/video';
-import { Tile } from '@/components/tile';
 
 export function Setup() {
   const daily = useDaily();
