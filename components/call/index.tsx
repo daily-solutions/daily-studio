@@ -78,7 +78,7 @@ export function Call() {
         return <Room />;
       case 'left-meeting':
         return (
-          <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
+          <div className="flex h-full w-full flex-1 items-center justify-center">
             <Card className="flex flex-col items-center justify-center">
               <CardHeader>
                 <h2 className="font-semibold">You&apos;ve left the call</h2>
@@ -94,7 +94,7 @@ export function Call() {
       case 'loading':
       default:
         return (
-          <div className="flex h-full w-full flex-1 items-center justify-center bg-muted text-muted-foreground">
+          <div className="flex h-full w-full flex-1 items-center justify-center">
             <Icons.spinner className="h-8 w-8 animate-spin" />
           </div>
         );
