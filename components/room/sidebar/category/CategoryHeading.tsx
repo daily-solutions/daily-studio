@@ -41,8 +41,7 @@ export function CategoryHeading() {
       case 'chat':
         return {
           heading: 'Chat',
-          description:
-            'Talk with other participants including the host & guests',
+          description: 'Talk with other participants',
         };
       case 'settings':
         return {
