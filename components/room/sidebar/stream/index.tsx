@@ -3,6 +3,7 @@ import { useCreateRTMP } from '@/states/createRTMPState';
 import { useRTMP } from '@/states/rtmpState';
 
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/empty-state';
 import { Icons } from '@/components/icons';
 import { Rtmp } from '@/components/room/sidebar/stream/Rtmp';
 
@@ -42,15 +43,11 @@ export function Stream({
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center gap-y-4 rounded-md bg-muted py-8">
-          <div className="w-30 h-30 rounded-full bg-background p-4">
-            <Icons.stream className="h-5 w-5" />
-          </div>
-          <h3 className="text-sm">Can&apos;t find RTMP destinations</h3>
-          <p className="text-xs">
-            Please configure RTMP destinations to start broadcasting.
-          </p>
-        </div>
+        <EmptyState
+          icon="stream"
+          title="Can't find RTMP destinations"
+          description="Configure RTMP destinations"
+        />
       )}
     </div>
   );

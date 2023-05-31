@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useMessages } from '@/states/messagesState';
 
-import { Icons } from '@/components/icons';
+import { EmptyState } from '@/components/ui/empty-state';
 import { ChatInput } from '@/components/room/sidebar/chat/ChatInput';
 import { ChatMessage } from '@/components/room/sidebar/chat/ChatMessage';
 
@@ -31,17 +31,11 @@ export function Chat() {
             />
           ))
         ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="flex w-full flex-col items-center justify-center gap-y-4 rounded-md bg-muted p-8">
-              <div className="w-30 h-30 rounded-full bg-background p-4">
-                <Icons.chat className="h-5 w-5" />
-              </div>
-              <h3 className="text-sm">It&apos;s empty in here!</h3>
-              <p className="text-xs">
-                Would you like to say something to the group?
-              </p>
-            </div>
-          </div>
+          <EmptyState
+            icon="chat"
+            title="It's empty in here!"
+            description="Would you like to say something?"
+          />
         )}
       </div>
       <ChatInput />
