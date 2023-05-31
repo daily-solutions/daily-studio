@@ -13,16 +13,28 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useToast } from '@/components/ui/use-toast';
 import { Icon } from '@/components/icons';
 
 export const RMPPopover = () => {
+  const { toast } = useToast();
   const {
     isPlaying,
     startRemoteMediaPlayer,
     stopRemoteMediaPlayer,
     updateRemoteMediaPlayer,
     sessionId,
-  } = useRMP();
+  } = useRMP({
+    onError: useCallback(
+      (e) =>
+        toast({
+          title: 'Failed to start remote media player',
+          description: e,
+          variant: 'destructive',
+        }),
+      [toast]
+    ),
+  });
   const [url, setUrl] = useState('');
 
   const handleRMPPlayer = useCallback(async () => {
@@ -62,6 +74,7 @@ export const RMPPopover = () => {
         </div>
       )}
       <Button
+        disabled={!url}
         className="w-full"
         onClick={handleRMPPlayer}
         variant={sessionId ? 'destructive' : 'default'}

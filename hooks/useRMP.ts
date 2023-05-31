@@ -6,7 +6,11 @@ import {
 } from '@daily-co/daily-js';
 import { useDaily, useDailyEvent } from '@daily-co/daily-react';
 
-export const useRMP = () => {
+interface Props {
+  onError?: (error: string) => void;
+}
+
+export const useRMP = ({ onError = () => {} }: Props = {}) => {
   const daily = useDaily();
   const [rmp, setRMP] = useRMPState();
 
@@ -47,6 +51,23 @@ export const useRMP = () => {
         sessionId: '',
       });
     }, [setRMP])
+  );
+
+  useDailyEvent(
+    'nonfatal-error',
+    useCallback(
+      (ev) => {
+        if (ev.type !== 'remote-media-player-error') return;
+
+        setRMP({
+          isPlaying: false,
+          isPaused: false,
+          sessionId: '',
+        });
+        onError?.(ev.errorMsg);
+      },
+      [onError, setRMP]
+    )
   );
 
   const startRemoteMediaPlayer = useCallback(
