@@ -1,60 +1,37 @@
 import React from 'react';
-import { DailyAudio, usePermissions } from '@daily-co/daily-react';
+import {
+  DailyAudio,
+  useLocalSessionId,
+  useParticipantProperty,
+} from '@daily-co/daily-react';
 
 import { usePresence } from '@/hooks/usePresence';
-import { useStage } from '@/hooks/useStage';
-import { Button } from '@/components/ui/button';
-import { Audio } from '@/components/call/tray/audio';
-import { Layout } from '@/components/call/tray/layout';
-import { Leave } from '@/components/call/tray/leave';
-import { Rmp } from '@/components/call/tray/rmp';
-import { Screenshare } from '@/components/call/tray/screenshare';
-import { Settings } from '@/components/call/tray/settings';
-import { Video } from '@/components/call/tray/video';
+import { Tray } from '@/components/call/tray';
 import { BroadcastModal } from '@/components/room/modals/broadcast';
 import { RTMPModal } from '@/components/room/modals/rtmp';
 import { Sidebar } from '@/components/room/sidebar';
+import { Stage } from '@/components/room/stage';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
 export function Room() {
   usePresence();
-  const { hasPresence: hasPermission } = usePermissions();
 
-  const { isRequesting, toggleRequestToJoin } = useStage();
+  const localSessionId = useLocalSessionId();
+  const isOwner = useParticipantProperty(localSessionId, 'owner');
 
   return (
-    <div className="flex h-full w-full flex-1 bg-muted">
-      <div className="flex h-full w-full flex-col">
-        <div className="flex-1">
+    <>
+      <div className="flex flex-1">
+        <div className="flex flex-1 flex-col">
           <VcsPreview />
+          {isOwner && <Stage />}
+          <Tray />
         </div>
-        <div className="flex h-20 w-full items-center justify-between border-t bg-background p-4">
-          {hasPermission ? (
-            <div className="flex items-center">
-              <Video />
-              <Audio />
-              <Screenshare />
-              <Rmp />
-            </div>
-          ) : (
-            <Button
-              variant={isRequesting ? 'destructive' : 'default'}
-              onClick={toggleRequestToJoin}
-            >
-              {isRequesting ? 'Cancel request' : 'Request to join stage'}
-            </Button>
-          )}
-          <Layout />
-          <div className="flex items-center">
-            <Settings />
-            <Leave />
-          </div>
-        </div>
+        <Sidebar />
       </div>
-      <Sidebar />
       <RTMPModal />
       <BroadcastModal />
       <DailyAudio />
-    </div>
+    </>
   );
 }

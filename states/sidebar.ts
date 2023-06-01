@@ -1,4 +1,4 @@
-import { SetStateAction, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   useLocalSessionId,
   useParticipantProperty,

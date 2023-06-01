@@ -7,6 +7,7 @@ import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { RecoilProvider } from '@/components/RecoilProvider';
+import { TailwindIndicator } from '@/components/TailwindIndicator';
 import { ThemeProvider } from '@/components/ThemeProvider';
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="h-full overflow-hidden">{children}</div>
           </RecoilProvider>
           <Toaster />
+          <TailwindIndicator />
         </ThemeProvider>
       </body>
     </html>
