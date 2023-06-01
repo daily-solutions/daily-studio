@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useSidebar } from '@/states/sidebar';
 
-export function CategoryHeading() {
+export function TabHeading() {
   const [sidebar] = useSidebar();
 
   const { heading, description } = useMemo(() => {

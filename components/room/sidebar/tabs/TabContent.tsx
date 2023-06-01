@@ -13,7 +13,7 @@ import { People } from '@/components/room/sidebar/people';
 import { Settings } from '@/components/room/sidebar/settings';
 import { Stream } from '@/components/room/sidebar/stream';
 
-export function CategoryContent() {
+export function TabContent() {
   const [sidebar] = useSidebar();
   const [assets] = useAssets();
 

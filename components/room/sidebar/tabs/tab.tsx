@@ -18,7 +18,7 @@ interface Props {
   ownerOnly?: boolean;
 }
 
-export function CategoryTab({
+export function Tab({
   name,
   icon,
   text,
