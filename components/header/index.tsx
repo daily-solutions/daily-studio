@@ -13,7 +13,7 @@ export function Header() {
   const meetingState = useMeetingState();
 
   return (
-    <header className="sticky top-0 z-40 h-20 w-full border-b bg-background">
+    <header className="sticky top-0 z-40 max-h-20 w-full border-b bg-background">
       <div className="mx-2 flex h-16 items-center sm:mx-5 sm:justify-between">
         <div className="gap-6 md:gap-10">
           <Link href="/">

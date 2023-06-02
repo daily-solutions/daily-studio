@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { DailyVideo, useParticipantProperty } from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { NoVideoTile } from '@/components/tile/NoVideoTile';
+import { TileMenu } from '@/components/tile/TileMenu';
 import { TileUserName } from '@/components/tile/TileUserName';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   sessionId: string;
   noVideoTileColor?: string;
+  showMenu?: boolean;
 }
 
-export function Tile({
+function TileComponent({
   sessionId,
   className,
   noVideoTileColor = 'bg-muted',
+  showMenu = false,
 }: Props) {
   const videoState = useParticipantProperty(sessionId, 'tracks.video.state');
 
@@ -39,9 +42,12 @@ export function Tile({
             sessionId={sessionId}
             type="video"
           />
+          {showMenu && <TileMenu sessionId={sessionId} />}
           <TileUserName sessionId={sessionId} />
         </>
       )}
     </AspectRatio>
   );
 }
+
+export const Tile = memo(TileComponent);

@@ -10,7 +10,19 @@ export function Stage() {
   const [tab, setTab] = useState('stage');
 
   const stageParticipants = useParticipantIds({
-    filter: useCallback((p: DailyParticipant) => p.permissions.hasPresence, []),
+    filter: useCallback(
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence && (p.owner || p.userData?.['onStage']),
+      []
+    ),
+  });
+
+  const waitingParticipants = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence && !(p.owner || p.userData?.['onStage']),
+      []
+    ),
   });
 
   return (
@@ -32,7 +44,7 @@ export function Stage() {
             <TabHeader
               name="Waiting"
               value="waiting"
-              count={1}
+              count={waitingParticipants.length}
               active={tab === 'waiting'}
             />
           </TabsList>
@@ -41,7 +53,7 @@ export function Stage() {
               <Participants participantIds={stageParticipants} />
             </TabsContent>
             <TabsContent value="waiting">
-              Change your password here.
+              <Participants participantIds={waitingParticipants} />
             </TabsContent>
           </div>
         </div>
