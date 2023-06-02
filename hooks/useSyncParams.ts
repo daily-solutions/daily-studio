@@ -1,10 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { Asset, useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
-import {
-  ParticipantsState,
-  useParticipantsState,
-} from '@/states/participantsState';
+import { ParticipantsState } from '@/states/participantsState';
 import { RTMP, useRTMP } from '@/states/rtmpState';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import { useAppMessage } from '@daily-co/daily-react';
@@ -40,7 +37,6 @@ type SyncParamsAppMessage =
 
 export const useSyncParams = (vcsCompRef) => {
   const [params, setParams] = useParams();
-  const [paxState, setPaxState] = useParticipantsState();
   const [assets, setAssets] = useAssets();
   const [rtmps, setRTMPs] = useRTMP();
 
@@ -51,10 +47,6 @@ export const useSyncParams = (vcsCompRef) => {
         switch (data.type) {
           case 'params':
             setParams(data.params);
-            break;
-          case 'participants':
-            if (dequal(data.participants, paxState)) return;
-            setPaxState(data.participants);
             break;
           case 'assets':
             if (dequal(data.assets, assets)) return;
@@ -68,7 +60,7 @@ export const useSyncParams = (vcsCompRef) => {
             break;
         }
       },
-      [assets, paxState, rtmps, setAssets, setParams, setPaxState, setRTMPs]
+      [assets, rtmps, setAssets, setParams, setRTMPs]
     ),
   });
 
@@ -90,17 +82,6 @@ export const useSyncParams = (vcsCompRef) => {
     // send params to other participants
     sendAppMessage({ type: 'params', params });
   }, [params, sendAppMessage, vcsCompRef]);
-};
-
-export const useSyncParticipants = () => {
-  const sendAppMessage = useAppMessage<SyncParticipants>();
-
-  const updateParticipants = useCallback(
-    (participants) => sendAppMessage({ type: 'participants', participants }),
-    [sendAppMessage]
-  );
-
-  return { updateParticipants };
 };
 
 export const useSyncAssets = () => {

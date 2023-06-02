@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { useParticipantsState } from '@/states/participantsState';
 import {
   useDaily,
   useLocalSessionId,
@@ -8,7 +7,6 @@ import {
 
 import { useRemotePermissions } from '@/hooks/useRemotePermissions';
 import { useStage } from '@/hooks/useStage';
-import { useSyncParticipants } from '@/hooks/useSyncParams';
 import { Button, ButtonProps } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -30,34 +28,15 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
   const isLocalOwner = useParticipantProperty(localSessionId, 'owner');
-  const [isOwner, isLocal] = useParticipantProperty(sessionId, [
-    'owner',
-    'local',
-  ]);
-  const [paxState, setPaxState] = useParticipantsState();
-
-  const { updateParticipants } = useSyncParticipants();
+  const [isOwner, isLocal, userData, hasPresence] = useParticipantProperty(
+    sessionId,
+    ['owner', 'local', 'userData', 'permissions.hasPresence']
+  );
 
   const { canSendAudio, canSendVideo, canSendScreenVideo } =
     useRemotePermissions(sessionId);
 
   const { removeFromStage } = useStage();
-
-  const onCheckedChange = useCallback(
-    (checked: boolean) => {
-      setPaxState((p) => {
-        const paxState = {
-          showAllParticipants: false,
-          participantIds: checked
-            ? [...p.participantIds, sessionId]
-            : [...p.participantIds].filter((id) => id !== sessionId),
-        };
-        updateParticipants(paxState);
-        return paxState;
-      });
-    },
-    [sessionId, setPaxState, updateParticipants]
-  );
 
   const handlePermissionChange = useCallback(
     (type: 'audio' | 'video' | 'screen', checked: boolean) => {
@@ -120,12 +99,7 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
-          disabled={paxState.showAllParticipants}
-          checked={
-            paxState.showAllParticipants ||
-            paxState.participantIds.includes(sessionId)
-          }
-          onCheckedChange={onCheckedChange}
+          checked={hasPresence && (isOwner || userData?.['onStage'])}
         >
           Visible on stream
         </DropdownMenuCheckboxItem>

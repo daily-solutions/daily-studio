@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
-import { useParticipantsState } from '@/states/participantsState';
 import { useRTMP } from '@/states/rtmpState';
-import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
-import { useLiveStreaming } from '@daily-co/daily-react';
+import {
+  DailyParticipant,
+  DailyUpdateStreamingCustomLayoutConfig,
+} from '@daily-co/daily-js';
+import { useLiveStreaming, useParticipantIds } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
 export const useLiveStream = () => {
@@ -18,8 +20,15 @@ export const useLiveStream = () => {
 
   const [rtmps] = useRTMP();
   const [params] = useParams();
-  const [paxState] = useParticipantsState();
   const [assets] = useAssets();
+
+  const participantIds = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence && (p.owner || p.userData?.['onStage']),
+      []
+    ),
+  });
 
   const startLiveStreaming = useCallback(() => {
     const rtmpURLs = Object.values(rtmps)
@@ -29,10 +38,6 @@ export const useLiveStream = () => {
       acc[`images/${asset.name}`] = asset.url;
       return acc;
     }, {});
-
-    const participantIds = paxState.showAllParticipants
-      ? ['*']
-      : [...paxState.participantIds];
 
     dailyStartLiveStreaming({
       instanceId: '40000000-4000-4000-8000-800000000000',
@@ -49,14 +54,7 @@ export const useLiveStream = () => {
         },
       },
     });
-  }, [
-    assets,
-    dailyStartLiveStreaming,
-    params,
-    paxState.participantIds,
-    paxState.showAllParticipants,
-    rtmps,
-  ]);
+  }, [assets, dailyStartLiveStreaming, params, participantIds, rtmps]);
 
   useEffect(() => {
     if (!isLiveStreaming) return;
@@ -68,14 +66,10 @@ export const useLiveStream = () => {
 
     const areParticipantsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).video,
-      paxState.showAllParticipants ? ['*'] : paxState.participantIds
+      participantIds
     );
 
     if (areParamsEqual && areParticipantsEqual) return;
-
-    const participantIds = paxState.showAllParticipants
-      ? ['*']
-      : [...paxState.participantIds];
 
     updateLiveStreaming({
       instanceId: '40000000-4000-4000-8000-800000000000',
@@ -90,14 +84,7 @@ export const useLiveStream = () => {
         },
       },
     });
-  }, [
-    params,
-    isLiveStreaming,
-    layout,
-    paxState.showAllParticipants,
-    paxState.participantIds,
-    updateLiveStreaming,
-  ]);
+  }, [params, isLiveStreaming, layout, updateLiveStreaming, participantIds]);
 
   const stopLiveStreaming = useCallback(
     () =>

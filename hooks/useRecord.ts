@@ -1,9 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import { useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
-import { useParticipantsState } from '@/states/participantsState';
-import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
-import { useRecording } from '@daily-co/daily-react';
+import {
+  DailyParticipant,
+  DailyUpdateStreamingCustomLayoutConfig,
+} from '@daily-co/daily-js';
+import { useParticipantIds, useRecording } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
 export const useRecord = () => {
@@ -16,18 +18,21 @@ export const useRecord = () => {
   } = useRecording();
 
   const [params] = useParams();
-  const [paxState] = useParticipantsState();
   const [assets] = useAssets();
+
+  const participantIds = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence && (p.owner || p.userData?.['onStage']),
+      []
+    ),
+  });
 
   const startRecording = useCallback(() => {
     const session_assets = Object.values(assets).reduce((acc, asset) => {
       acc[`images/${asset.name}`] = asset.url;
       return acc;
     }, {});
-
-    const participantIds = paxState.showAllParticipants
-      ? ['*']
-      : [...paxState.participantIds];
 
     dailyStartRecording({
       instanceId: '40000008-4008-4000-8008-800000000004',
@@ -43,13 +48,7 @@ export const useRecord = () => {
         },
       },
     });
-  }, [
-    assets,
-    dailyStartRecording,
-    params,
-    paxState.participantIds,
-    paxState.showAllParticipants,
-  ]);
+  }, [assets, dailyStartRecording, params, participantIds]);
 
   useEffect(() => {
     if (!isRecording) return;
@@ -61,14 +60,10 @@ export const useRecord = () => {
 
     const areParticipantsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).video,
-      paxState.showAllParticipants ? ['*'] : paxState.participantIds
+      participantIds
     );
 
     if (areParamsEqual && areParticipantsEqual) return;
-
-    const participantIds = paxState.showAllParticipants
-      ? ['*']
-      : [...paxState.participantIds];
 
     updateRecording({
       instanceId: '40000008-4008-4000-8008-800000000004',
@@ -83,14 +78,7 @@ export const useRecord = () => {
         },
       },
     });
-  }, [
-    params,
-    layout,
-    paxState.showAllParticipants,
-    paxState.participantIds,
-    isRecording,
-    updateRecording,
-  ]);
+  }, [params, layout, isRecording, updateRecording, participantIds]);
 
   const stopRecording = useCallback(
     () =>
