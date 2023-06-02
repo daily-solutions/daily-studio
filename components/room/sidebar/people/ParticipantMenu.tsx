@@ -36,7 +36,7 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
   const { canSendAudio, canSendVideo, canSendScreenVideo } =
     useRemotePermissions(sessionId);
 
-  const { removeFromStage } = useStage();
+  const { removeFromStage, toggleStageVisibility } = useStage();
 
   const handlePermissionChange = useCallback(
     (type: 'audio' | 'video' | 'screen', checked: boolean) => {
@@ -100,6 +100,7 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
           checked={hasPresence && userData?.['onStage']}
+          onCheckedChange={() => toggleStageVisibility(sessionId)}
         >
           Visible on stream
         </DropdownMenuCheckboxItem>
