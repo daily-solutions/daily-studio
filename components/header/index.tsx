@@ -7,21 +7,21 @@ import { useMeetingState } from '@daily-co/daily-react';
 import { siteConfig } from '@/config/site';
 import { buttonVariants } from '@/components/ui/button';
 import { HeaderMenu } from '@/components/header/menu';
+import { ViewerCount } from '@/components/header/viewerCount';
 import { Icons } from '@/components/icons';
 
 export function Header() {
   const meetingState = useMeetingState();
 
   return (
-    <header className="sticky top-0 z-40 max-h-20 w-full border-b bg-background">
-      <div className="mx-2 flex h-16 items-center sm:mx-5 sm:justify-between">
-        <div className="gap-6 md:gap-10">
-          <Link href="/">
-            <span className="inline-block font-bold">{siteConfig.name}</span>
-          </Link>
-        </div>
+    <header className="sticky top-0 z-40 w-full border-b bg-background">
+      <div className="mx-2 flex h-16 items-center justify-between">
+        <Link href="/">
+          <span className="inline-block font-bold">{siteConfig.name}</span>
+        </Link>
+        <HeaderMenu />
         {meetingState === 'joined-meeting' ? (
-          <HeaderMenu />
+          <ViewerCount />
         ) : (
           <div className="flex flex-1 items-center justify-end space-x-4">
             <Link

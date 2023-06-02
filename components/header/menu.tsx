@@ -2,17 +2,18 @@ import React, { useCallback } from 'react';
 import { useBroadcast } from '@/states/broadcastState';
 import {
   useLocalSessionId,
+  useMeetingState,
   useParticipantProperty,
 } from '@daily-co/daily-react';
 
 import { useLiveStream } from '@/hooks/useLiveStream';
 import { useRecord } from '@/hooks/useRecord';
 import { Button } from '@/components/ui/button';
-import { ViewerCount } from '@/components/header/viewerCount';
 
 export function HeaderMenu() {
   const localSessionId = useLocalSessionId();
   const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const meetingState = useMeetingState();
 
   const { isLiveStreaming, stopLiveStreaming } = useLiveStream();
 
@@ -29,26 +30,24 @@ export function HeaderMenu() {
     [isLiveStreaming, setBroadcast, stopLiveStreaming]
   );
 
-  if (isOwner) {
-    return (
-      <div className="flex items-center justify-center gap-x-2">
-        <Button
-          size="sm"
-          variant={isRecording ? 'destructive' : 'outline'}
-          onClick={handleRecord}
-        >
-          {isRecording ? 'Stop' : 'Record'}
-        </Button>
-        <Button
-          size="sm"
-          variant={isLiveStreaming ? 'destructive' : 'default'}
-          onClick={handleLiveStream}
-        >
-          {isLiveStreaming ? 'End broadcast' : 'Broadcast'}
-        </Button>
-      </div>
-    );
-  }
+  if (!isOwner || meetingState !== 'joined-meeting') return null;
 
-  return <ViewerCount />;
+  return (
+    <div className="flex items-center justify-center gap-x-2">
+      <Button
+        size="sm"
+        variant={isRecording ? 'destructive' : 'outline'}
+        onClick={handleRecord}
+      >
+        {isRecording ? 'Stop' : 'Record'}
+      </Button>
+      <Button
+        size="sm"
+        variant={isLiveStreaming ? 'destructive' : 'default'}
+        onClick={handleLiveStream}
+      >
+        {isLiveStreaming ? 'End broadcast' : 'Broadcast'}
+      </Button>
+    </div>
+  );
 }
