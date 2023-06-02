@@ -27,7 +27,9 @@ export function Setup() {
           <Video />
           <Audio />
         </div>
-        <Button onClick={() => daily?.join()}>Join</Button>
+        <Button onClick={() => daily?.join({ userData: { onStage: true } })}>
+          Join
+        </Button>
       </div>
       <div className="p-4">
         <Devices />

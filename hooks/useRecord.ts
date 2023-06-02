@@ -1,12 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import { useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
-import {
-  DailyParticipant,
-  DailyUpdateStreamingCustomLayoutConfig,
-} from '@daily-co/daily-js';
-import { useParticipantIds, useRecording } from '@daily-co/daily-react';
+import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
+import { useRecording } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
+
+import { useParticipants } from '@/hooks/useParticipants';
 
 export const useRecord = () => {
   const {
@@ -20,13 +19,7 @@ export const useRecord = () => {
   const [params] = useParams();
   const [assets] = useAssets();
 
-  const participantIds = useParticipantIds({
-    filter: useCallback(
-      (p: DailyParticipant) =>
-        p.permissions.hasPresence && (p.owner || p.userData?.['onStage']),
-      []
-    ),
-  });
+  const { participantIds } = useParticipants();
 
   const startRecording = useCallback(() => {
     const session_assets = Object.values(assets).reduce((acc, asset) => {

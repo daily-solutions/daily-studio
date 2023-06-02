@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Asset, useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
-import { ParticipantsState } from '@/states/participantsState';
 import { RTMP, useRTMP } from '@/states/rtmpState';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import { useAppMessage } from '@daily-co/daily-react';
@@ -14,11 +13,6 @@ interface SyncParams {
   params: Record<string, any>;
 }
 
-interface SyncParticipants {
-  type: 'participants';
-  participants: ParticipantsState;
-}
-
 interface SyncAssets {
   type: 'assets';
   assets: Record<string, Asset>;
@@ -29,11 +23,7 @@ interface SyncRTMP {
   rtmps: Record<string, RTMP>;
 }
 
-type SyncParamsAppMessage =
-  | SyncParams
-  | SyncParticipants
-  | SyncAssets
-  | SyncRTMP;
+type SyncParamsAppMessage = SyncParams | SyncAssets | SyncRTMP;
 
 export const useSyncParams = (vcsCompRef) => {
   const [params, setParams] = useParams();

@@ -1,7 +1,6 @@
-import React, { useCallback, useState } from 'react';
-import { DailyParticipant } from '@daily-co/daily-js';
-import { useParticipantIds } from '@daily-co/daily-react';
+import React, { useState } from 'react';
 
+import { useParticipants } from '@/hooks/useParticipants';
 import { Tabs, TabsContent, TabsList } from '@/components/ui/tabs';
 import { Participants } from '@/components/room/stage/Participants';
 import { TabHeader } from '@/components/room/stage/TabHeader';
@@ -9,21 +8,7 @@ import { TabHeader } from '@/components/room/stage/TabHeader';
 export function Stage() {
   const [tab, setTab] = useState('stage');
 
-  const stageParticipants = useParticipantIds({
-    filter: useCallback(
-      (p: DailyParticipant) =>
-        p.permissions.hasPresence && (p.owner || p.userData?.['onStage']),
-      []
-    ),
-  });
-
-  const waitingParticipants = useParticipantIds({
-    filter: useCallback(
-      (p: DailyParticipant) =>
-        p.permissions.hasPresence && !(p.owner || p.userData?.['onStage']),
-      []
-    ),
-  });
+  const { participantIds, waitingParticipantIds } = useParticipants();
 
   return (
     <Tabs
@@ -38,22 +23,22 @@ export function Stage() {
             <TabHeader
               name="Stage"
               value="stage"
-              count={stageParticipants.length}
+              count={participantIds.length}
               active={tab === 'stage'}
             />
             <TabHeader
               name="Waiting"
               value="waiting"
-              count={waitingParticipants.length}
+              count={waitingParticipantIds.length}
               active={tab === 'waiting'}
             />
           </TabsList>
           <div className="h-full flex-1">
             <TabsContent value="stage">
-              <Participants participantIds={stageParticipants} />
+              <Participants participantIds={participantIds} />
             </TabsContent>
             <TabsContent value="waiting">
-              <Participants participantIds={waitingParticipants} />
+              <Participants participantIds={waitingParticipantIds} />
             </TabsContent>
           </div>
         </div>

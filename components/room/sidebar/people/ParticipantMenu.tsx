@@ -99,7 +99,7 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
-          checked={hasPresence && (isOwner || userData?.['onStage'])}
+          checked={hasPresence && userData?.['onStage']}
         >
           Visible on stream
         </DropdownMenuCheckboxItem>

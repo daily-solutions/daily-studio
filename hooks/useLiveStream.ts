@@ -2,12 +2,11 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
 import { useRTMP } from '@/states/rtmpState';
-import {
-  DailyParticipant,
-  DailyUpdateStreamingCustomLayoutConfig,
-} from '@daily-co/daily-js';
-import { useLiveStreaming, useParticipantIds } from '@daily-co/daily-react';
+import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
+import { useLiveStreaming } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
+
+import { useParticipants } from '@/hooks/useParticipants';
 
 export const useLiveStream = () => {
   const {
@@ -22,13 +21,7 @@ export const useLiveStream = () => {
   const [params] = useParams();
   const [assets] = useAssets();
 
-  const participantIds = useParticipantIds({
-    filter: useCallback(
-      (p: DailyParticipant) =>
-        p.permissions.hasPresence && (p.owner || p.userData?.['onStage']),
-      []
-    ),
-  });
+  const { participantIds } = useParticipants();
 
   const startLiveStreaming = useCallback(() => {
     const rtmpURLs = Object.values(rtmps)

@@ -18,10 +18,9 @@ type ActiveVideoInput = {
 export const useVideoTracks = () => {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const [userName, userData, owner] = useParticipantProperty(localSessionId, [
+  const [userName, userData] = useParticipantProperty(localSessionId, [
     'user_name',
     'userData',
-    'owner',
   ]);
   const { persistentTrack: videoTrack } = useMediaTrack(localSessionId);
 
@@ -31,7 +30,7 @@ export const useVideoTracks = () => {
     filter: useCallback(
       (p: DailyParticipant) =>
         p.permissions.hasPresence &&
-        (p.owner || p.userData?.['onStage']) &&
+        p.userData?.['onStage'] &&
         !p.local &&
         p.participantType !== 'remote-media-player',
       []
@@ -58,7 +57,7 @@ export const useVideoTracks = () => {
       tracksBySessionId[id] = { track, userName };
     };
 
-    if (hasPresence && (owner || userData?.['onStage'])) {
+    if (hasPresence && userData?.['onStage']) {
       addActiveVideo(localSessionId, userName, videoTrack);
     }
 
@@ -104,7 +103,6 @@ export const useVideoTracks = () => {
     daily,
     hasPresence,
     localSessionId,
-    owner,
     participantIds,
     rmpIds,
     screens,
