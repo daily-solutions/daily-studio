@@ -4,6 +4,7 @@ import { DailyAudio } from '@daily-co/daily-react';
 import { usePresence } from '@/hooks/usePresence';
 import { useTrackSubscriptions } from '@/hooks/useTrackSubscriptions';
 import { Tray } from '@/components/call/tray';
+import { Layout } from '@/components/call/tray/layout';
 import { BroadcastModal } from '@/components/room/modals/broadcast';
 import { JoinStageModal } from '@/components/room/modals/joinStage';
 import { RTMPModal } from '@/components/room/modals/rtmp';
@@ -16,10 +17,11 @@ export function Room() {
   useTrackSubscriptions();
 
   return (
-    <>
-      <div className="flex flex-1">
-        <div className="relative flex flex-1 flex-col">
+    <div className="flex-1">
+      <div className="flex">
+        <div className="relative flex w-[70dvw] max-w-[70dvw] flex-1 flex-col 2xl:w-[75dvw] 2xl:max-w-[75dvw]">
           <VcsPreview />
+          <Layout />
           <Stage />
           <Tray />
         </div>
@@ -29,6 +31,6 @@ export function Room() {
       <BroadcastModal />
       <JoinStageModal />
       <DailyAudio />
-    </>
+    </div>
   );
 }

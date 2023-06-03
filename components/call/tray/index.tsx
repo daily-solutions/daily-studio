@@ -23,7 +23,7 @@ export function Tray() {
   } = useStage();
 
   return (
-    <div className="h-20 w-full border-t bg-background p-4">
+    <div className="h-20 max-h-20 w-full overflow-hidden border-t bg-background p-4">
       <div className="flex items-center justify-between">
         {showRequestToJoin && (
           <Button
@@ -44,7 +44,6 @@ export function Tray() {
             <Rmp />
           </div>
         )}
-        <Layout />
         <div className="flex items-center">
           <Invite />
           <Settings />

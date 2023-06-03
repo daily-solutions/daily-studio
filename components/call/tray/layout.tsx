@@ -17,7 +17,7 @@ export function Layout() {
   if (!isOwner) return null;
 
   return (
-    <div className="flex">
+    <div className="flex items-center justify-center border-t p-2">
       <TrayButton
         selected={params.mode === 'single'}
         onClick={() => handleSelect('single')}

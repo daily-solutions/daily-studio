@@ -38,9 +38,9 @@ export function Stage() {
       orientation="vertical"
       value={tab}
       onValueChange={setTab}
-      className="border-t bg-muted px-2"
+      className="h-40 max-h-40 border-t bg-muted px-2"
     >
-      <div className="min-h-40 h-40 w-full">
+      <div className="h-40 max-h-40 w-full overflow-hidden">
         <div className="flex h-full items-center gap-4">
           <TabsList className="flex flex-col gap-2">
             <TabHeader

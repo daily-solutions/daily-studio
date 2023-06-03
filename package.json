@@ -41,7 +41,8 @@
     "recoil": "^0.7.7",
     "sharp": "^0.31.3",
     "tailwind-merge": "^1.12.0",
-    "tailwindcss-animate": "^1.0.5"
+    "tailwindcss-animate": "^1.0.5",
+    "use-resize-observer": "^9.1.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^3.7.1",
