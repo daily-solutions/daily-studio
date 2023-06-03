@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useJoinStage } from '@/states/joinStageState';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import {
@@ -6,6 +6,7 @@ import {
   useDaily,
   useLocalSessionId,
   useParticipantProperty,
+  usePermissions,
 } from '@daily-co/daily-react';
 import { atom, useRecoilState } from 'recoil';
 
@@ -97,10 +98,12 @@ interface Props {
 export const useStage = ({ onRequestToJoin }: Props = {}) => {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const [userName, isOwner] = useParticipantProperty(localSessionId, [
+  const [userName, isOwner, userData] = useParticipantProperty(localSessionId, [
     'user_name',
     'owner',
+    'userData',
   ]);
+  const { hasPresence } = usePermissions();
 
   const { toast } = useToast();
 
@@ -178,6 +181,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
           const { payload: removePayload }: RemoveFromStage = ev.data;
           if (localSessionId === removePayload.sessionId) {
             setIsRequesting(false);
+            daily?.setUserData({ onStage: false, acceptedToJoin: false });
             toast({
               title: 'You have been removed from the stage.',
               description: 'You can still watch the stage.',
@@ -217,6 +221,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
       localSessionId,
       onRequestToJoin,
       setIsRequesting,
+      setJoinStage,
       setRequestedParticipants,
       toast,
     ]
@@ -363,6 +368,17 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     [daily, isOwner, sendAppMessage]
   );
 
+  const showRequestToJoin = useMemo(() => !hasPresence, [hasPresence]);
+  const showInvitedToJoin = useMemo(
+    () => !isOwner && hasPresence && !userData?.['acceptedToJoin'],
+    [hasPresence, isOwner, userData]
+  );
+  const showVideoControls = useMemo(
+    () =>
+      hasPresence && (userData?.['onStage'] || userData?.['acceptedToJoin']),
+    [hasPresence, userData]
+  );
+
   return {
     isRequesting,
     requestedParticipants,
@@ -375,5 +391,8 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     inviteToStage,
     removeFromStage,
     toggleStageVisibility,
+    showRequestToJoin,
+    showVideoControls,
+    showInvitedToJoin,
   };
 };

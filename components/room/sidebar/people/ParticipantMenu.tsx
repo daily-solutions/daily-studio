@@ -99,6 +99,7 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
+          disabled={!userData?.['acceptedToJoin']}
           checked={hasPresence && userData?.['onStage']}
           onCheckedChange={() => toggleStageVisibility(sessionId)}
         >

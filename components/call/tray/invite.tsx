@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +14,7 @@ import { toast } from '@/components/ui/use-toast';
 import { Icon } from '@/components/icons';
 
 export function Invite() {
+  const isOwner = useIsOwner();
   const params = useParams();
 
   const baseURL = useMemo(
@@ -24,6 +26,8 @@ export function Invite() {
     navigator.clipboard.writeText(url);
     toast({ title: 'Copied to clipboard' });
   }, []);
+
+  if (!isOwner) return null;
 
   return (
     <Popover>

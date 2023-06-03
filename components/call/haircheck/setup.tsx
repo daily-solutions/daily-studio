@@ -27,6 +27,7 @@ export function Setup({ onJoin = () => {} } = {}) {
 
     if (meetingState !== 'joined-meeting')
       await daily.join({ userData: { onStage: true } });
+    else await daily.setUserData({ acceptedToJoin: true });
 
     onJoin?.();
   }, [daily, meetingState, onJoin]);

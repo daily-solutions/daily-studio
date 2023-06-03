@@ -15,7 +15,7 @@ export function Participants({ participantIds }: Props) {
   }
 
   return (
-    <div className="flex h-36 w-full items-center gap-4">
+    <div className="flex h-36 items-center gap-x-4 overflow-x-scroll">
       {participantIds.map((id) => (
         <div className="w-[calc(9rem*(16/9))]" key={id}>
           <Tile sessionId={id} noVideoTileColor="bg-background" showMenu />

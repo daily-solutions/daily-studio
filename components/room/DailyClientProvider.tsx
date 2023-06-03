@@ -36,6 +36,7 @@ export function DailyClientProvider({
         dailyConfig: {
           useDevicePreferenceCookies: true,
         },
+        subscribeToTracksAutomatically: false,
       });
     } catch {
       newCallObject = DailyIframe.getCallInstance();

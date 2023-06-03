@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useLocalSessionId, usePermissions } from '@daily-co/daily-react';
+import {
+  useLocalSessionId,
+  useParticipantProperty,
+  usePermissions,
+} from '@daily-co/daily-react';
 
-import { useIsOwner } from '@/hooks/useIsOwner';
 import { useParticipants } from '@/hooks/useParticipants';
 import { Tabs, TabsContent, TabsList } from '@/components/ui/tabs';
 import { Participants } from '@/components/room/stage/Participants';
@@ -14,10 +17,13 @@ export function Stage() {
   const { participantIds, waitingParticipantIds } = useParticipants();
 
   const localSessionId = useLocalSessionId();
-  const isOwner = useIsOwner();
+  const [isOwner, userData] = useParticipantProperty(localSessionId, [
+    'owner',
+    'userData',
+  ]);
   const { hasPresence } = usePermissions();
 
-  if (!hasPresence) return null;
+  if (!hasPresence || (!isOwner && userData?.['onStage'])) return null;
 
   if (!isOwner) {
     return (
