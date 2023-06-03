@@ -1,9 +1,6 @@
 import { useCallback, useState } from 'react';
-import {
-  useLocalSessionId,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useRMP } from '@/hooks/useRMP';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -86,8 +83,7 @@ export const RMPPopover = () => {
 };
 
 export function Rmp() {
-  const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const isOwner = useIsOwner();
 
   if (!isOwner) return null;
 

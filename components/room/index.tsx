@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-  DailyAudio,
-  useLocalSessionId,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
+import { DailyAudio } from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { usePresence } from '@/hooks/usePresence';
 import { Tray } from '@/components/call/tray';
 import { BroadcastModal } from '@/components/room/modals/broadcast';
@@ -16,8 +13,7 @@ import { VcsPreview } from '@/components/vcs/vcsPreview';
 export function Room() {
   usePresence();
 
-  const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const isOwner = useIsOwner();
 
   return (
     <>

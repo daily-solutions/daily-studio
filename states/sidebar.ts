@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
-import {
-  useLocalSessionId,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
 import { SetterOrUpdater, atom, useRecoilState } from 'recoil';
+
+import { useIsOwner } from '@/hooks/useIsOwner';
 
 export type Sidebar =
   | 'layout'
@@ -24,8 +22,7 @@ const sidebarView = atom<Sidebar>({
 });
 
 export const useSidebar = (): [Sidebar, SetterOrUpdater<Sidebar>] => {
-  const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const isOwner = useIsOwner();
   const [sidebar, setSidebar] = useRecoilState(sidebarView);
 
   const defaultSidebar = useMemo(() => {

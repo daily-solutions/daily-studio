@@ -1,18 +1,14 @@
 import React, { useCallback } from 'react';
 import { useBroadcast } from '@/states/broadcastState';
-import {
-  useLocalSessionId,
-  useMeetingState,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
+import { useMeetingState } from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useLiveStream } from '@/hooks/useLiveStream';
 import { useRecord } from '@/hooks/useRecord';
 import { Button } from '@/components/ui/button';
 
 export function HeaderMenu() {
-  const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const isOwner = useIsOwner();
   const meetingState = useMeetingState();
 
   const { isLiveStreaming, stopLiveStreaming } = useLiveStream();

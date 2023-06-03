@@ -1,15 +1,11 @@
 import { useCallback } from 'react';
 import { useParams } from '@/states/params';
-import {
-  useLocalSessionId,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { TrayButton } from '@/components/ui/trayButton';
 
 export function Layout() {
-  const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const isOwner = useIsOwner();
   const [params, setParams] = useParams();
 
   const handleSelect = useCallback(

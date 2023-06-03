@@ -1,16 +1,12 @@
 import React from 'react';
-import {
-  useLocalSessionId,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useVCSCompositionWrapper } from '@/hooks/useVCSCompositionWrapper';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 export function VcsPreview() {
-  const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const isOwner = useIsOwner();
 
   const { outputElementRef } = useVCSCompositionWrapper();
 

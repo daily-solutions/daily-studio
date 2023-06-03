@@ -5,17 +5,13 @@ import {
   DailyEventObjectParticipantCounts,
   DailyParticipant,
 } from '@daily-co/daily-js';
-import {
-  useDailyEvent,
-  useLocalSessionId,
-  useParticipantIds,
-  useParticipantProperty,
-} from '@daily-co/daily-react';
+import { useDailyEvent, useParticipantIds } from '@daily-co/daily-react';
+
+import { useIsOwner } from '@/hooks/useIsOwner';
 
 export const usePresence = () => {
   const { name } = useParams();
-  const localSessionId = useLocalSessionId();
-  const isOwner = useParticipantProperty(localSessionId, 'owner');
+  const isOwner = useIsOwner();
 
   const participantIds = useParticipantIds({
     filter: useCallback((p: DailyParticipant) => p.permissions.hasPresence, []),
