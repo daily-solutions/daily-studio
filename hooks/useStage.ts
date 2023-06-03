@@ -378,6 +378,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
       hasPresence && (userData?.['onStage'] || userData?.['acceptedToJoin']),
     [hasPresence, userData]
   );
+  const onStage = useMemo(() => userData?.['onStage'], [userData]);
 
   return {
     isRequesting,
@@ -394,5 +395,6 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     showRequestToJoin,
     showVideoControls,
     showInvitedToJoin,
+    onStage,
   };
 };
