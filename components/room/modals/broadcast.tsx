@@ -13,7 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Icons } from '@/components/icons';
 import { Stream } from '@/components/room/sidebar/stream';
 
 export function BroadcastModal() {

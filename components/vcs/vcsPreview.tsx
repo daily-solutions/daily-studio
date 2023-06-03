@@ -11,10 +11,10 @@ export function VcsPreview() {
   const { outputElementRef } = useVCSCompositionWrapper();
 
   return (
-    <div className="flex flex-1 items-center justify-center">
+    <div className="h-full flex-1">
       <div
         className={cn(
-          'h-full p-4',
+          'flex h-full items-center justify-center p-4',
           isOwner ? 'w-[calc((100dvh-20rem)*(16/9))]' : 'w-full'
         )}
       >

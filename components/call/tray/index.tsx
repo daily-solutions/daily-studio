@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePermissions } from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useStage } from '@/hooks/useStage';
 import { Button } from '@/components/ui/button';
 import { Audio } from '@/components/call/tray/audio';
@@ -15,6 +16,7 @@ import { Video } from '@/components/call/tray/video';
 export function Tray() {
   const { hasPresence } = usePermissions();
 
+  const isOwner = useIsOwner();
   const { isRequesting, toggleRequestToJoin } = useStage();
 
   return (
@@ -37,7 +39,7 @@ export function Tray() {
         )}
         <Layout />
         <div className="flex items-center">
-          <Invite />
+          {isOwner && <Invite />}
           <Settings />
           <Leave />
         </div>

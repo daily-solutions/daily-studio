@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
+import { useLocalSessionId, usePermissions } from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useParticipants } from '@/hooks/useParticipants';
 import { Tabs, TabsContent, TabsList } from '@/components/ui/tabs';
 import { Participants } from '@/components/room/stage/Participants';
 import { TabHeader } from '@/components/room/stage/TabHeader';
+import { Tile } from '@/components/tile';
 
 export function Stage() {
   const [tab, setTab] = useState('stage');
 
   const { participantIds, waitingParticipantIds } = useParticipants();
+
+  const localSessionId = useLocalSessionId();
+  const isOwner = useIsOwner();
+  const { hasPresence } = usePermissions();
+
+  if (!hasPresence) return null;
+
+  if (!isOwner) {
+    return (
+      <div className="absolute bottom-28 left-8 w-[calc(9rem*(16/9))]">
+        <Tile sessionId={localSessionId} noVideoTileColor="bg-background" />
+      </div>
+    );
+  }
 
   return (
     <Tabs

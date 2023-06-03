@@ -42,10 +42,10 @@ function TileComponent({
             sessionId={sessionId}
             type="video"
           />
-          {showMenu && <TileMenu sessionId={sessionId} />}
           <TileUserName sessionId={sessionId} />
         </>
       )}
+      {showMenu && <TileMenu sessionId={sessionId} />}
     </AspectRatio>
   );
 }

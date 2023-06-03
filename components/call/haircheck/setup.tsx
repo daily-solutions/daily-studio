@@ -1,5 +1,9 @@
-import { useEffect } from 'react';
-import { useDaily, useLocalSessionId } from '@daily-co/daily-react';
+import { useCallback, useEffect } from 'react';
+import {
+  useDaily,
+  useLocalSessionId,
+  useMeetingState,
+} from '@daily-co/daily-react';
 import { Tile } from 'components/tile';
 
 import { Button } from '@/components/ui/button';
@@ -7,15 +11,25 @@ import { Devices } from '@/components/call/devices';
 import { Audio } from '@/components/call/tray/audio';
 import { Video } from '@/components/call/tray/video';
 
-export function Setup() {
+export function Setup({ onJoin = () => {} } = {}) {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
+  const meetingState = useMeetingState();
 
   useEffect(() => {
-    if (!daily) return;
+    if (!daily || meetingState === 'joined-meeting') return;
 
     daily.startCamera();
-  }, [daily]);
+  }, [daily, meetingState]);
+
+  const handleJoin = useCallback(async () => {
+    if (!daily) return;
+
+    if (meetingState !== 'joined-meeting')
+      await daily.join({ userData: { onStage: true } });
+
+    onJoin?.();
+  }, [daily, meetingState, onJoin]);
 
   return (
     <div>
@@ -27,9 +41,7 @@ export function Setup() {
           <Video />
           <Audio />
         </div>
-        <Button onClick={() => daily?.join({ userData: { onStage: true } })}>
-          Join
-        </Button>
+        <Button onClick={handleJoin}>Join</Button>
       </div>
       <div className="p-4">
         <Devices />

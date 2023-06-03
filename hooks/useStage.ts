@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useJoinStage } from '@/states/joinStageState';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import {
   useAppMessage,
@@ -107,6 +108,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
   const [requestedParticipants, setRequestedParticipants] = useRecoilState(
     requestedParticipantsState
   );
+  const [, setJoinStage] = useJoinStage();
 
   const appMessage = useCallback(
     (ev: DailyEventObjectAppMessage<AppMessage>) => {
@@ -139,10 +141,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
           });
           if (localSessionId === acceptPayload.sessionId) {
             setIsRequesting(false);
-            toast({
-              title: 'You have been accepted to join the stage.',
-              description: 'You can unmute yourself to speak.',
-            });
+            setJoinStage(true);
           }
           break;
         case 'decline-request-to-join-stage':
@@ -168,6 +167,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
           });
           if (localSessionId === invitePayload.sessionId) {
             setIsRequesting(false);
+            setJoinStage(true);
             toast({
               title: 'You have been invited to join the stage.',
               description: 'You can unmute yourself to speak.',
