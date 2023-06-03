@@ -19,7 +19,7 @@ export function Settings() {
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="min-w-100">
+      <PopoverContent className="min-w-150 w-150">
         <Devices />
       </PopoverContent>
     </Popover>

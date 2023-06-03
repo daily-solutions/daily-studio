@@ -1,0 +1,70 @@
+import { useCallback, useMemo } from 'react';
+import { useParams } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { toast } from '@/components/ui/use-toast';
+import { Icon } from '@/components/icons';
+
+export function Invite() {
+  const params = useParams();
+
+  const baseURL = useMemo(
+    () => window.location.origin + '/' + params.name,
+    [params]
+  );
+
+  const handleCopyToClipboard = useCallback((url: string) => {
+    navigator.clipboard.writeText(url);
+    toast({ title: 'Copied to clipboard' });
+  }, []);
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="trayButton" className="text-inherit">
+          <div className="flex flex-col items-center justify-center gap-y-1">
+            <Icon icon="userPlus" className="h-6 w-6" />
+            <p className="text-xs">Invite</p>
+          </div>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <div className="flex flex-col gap-y-4">
+          <div className="flex flex-col gap-y-2">
+            <Label>Invite as producer</Label>
+            <div className="flex items-center justify-center gap-x-2">
+              <Input disabled value={baseURL + '/producer'} />
+              <Button
+                size="auto"
+                variant="outline"
+                onClick={() => handleCopyToClipboard(baseURL + '/producer')}
+              >
+                <Icon icon="clipboard" className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Invite as viewer</Label>
+            <div className="flex items-center justify-center gap-x-2">
+              <Input disabled value={baseURL + '/viewer'} />
+              <Button
+                size="auto"
+                variant="outline"
+                onClick={() => handleCopyToClipboard(baseURL + '/viewer')}
+              >
+                <Icon icon="clipboard" className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}

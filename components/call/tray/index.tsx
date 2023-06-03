@@ -4,6 +4,7 @@ import { usePermissions } from '@daily-co/daily-react';
 import { useStage } from '@/hooks/useStage';
 import { Button } from '@/components/ui/button';
 import { Audio } from '@/components/call/tray/audio';
+import { Invite } from '@/components/call/tray/invite';
 import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
 import { Rmp } from '@/components/call/tray/rmp';
@@ -36,6 +37,7 @@ export function Tray() {
         )}
         <Layout />
         <div className="flex items-center">
+          <Invite />
           <Settings />
           <Leave />
         </div>
