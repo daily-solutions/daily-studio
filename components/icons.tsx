@@ -4,6 +4,7 @@ import {
   Clipboard,
   Columns,
   Contact,
+  Disc2,
   Eye,
   Image,
   LayoutGrid,
@@ -16,10 +17,12 @@ import {
   MicOff,
   MoreHorizontal,
   PlusIcon,
+  Radio,
   ScreenShare,
   ScreenShareOff,
   Send,
   Settings,
+  StopCircle,
   TrashIcon,
   Tv,
   Type,
@@ -66,6 +69,9 @@ export const Icons = {
   userMinus: UserMinus,
   userPlus: UserPlus,
   clipboard: Clipboard,
+  record: Disc2,
+  recordOff: StopCircle,
+  broadcast: Radio,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

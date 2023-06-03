@@ -5,11 +5,12 @@ import { useStage } from '@/hooks/useStage';
 import { Button } from '@/components/ui/button';
 import { Audio } from '@/components/call/tray/audio';
 import { Invite } from '@/components/call/tray/invite';
-import { Layout } from '@/components/call/tray/layout';
 import { Leave } from '@/components/call/tray/leave';
+import { Record } from '@/components/call/tray/record';
 import { Rmp } from '@/components/call/tray/rmp';
 import { Screenshare } from '@/components/call/tray/screenshare';
 import { Settings } from '@/components/call/tray/settings';
+import { Stream } from '@/components/call/tray/stream';
 import { Video } from '@/components/call/tray/video';
 
 export function Tray() {
@@ -44,6 +45,10 @@ export function Tray() {
             <Rmp />
           </div>
         )}
+        <div className="flex items-center justify-center gap-x-2">
+          <Record />
+          <Stream />
+        </div>
         <div className="flex items-center">
           <Invite />
           <Settings />

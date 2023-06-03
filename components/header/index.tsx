@@ -6,7 +6,6 @@ import { useMeetingState } from '@daily-co/daily-react';
 
 import { siteConfig } from '@/config/site';
 import { buttonVariants } from '@/components/ui/button';
-import { HeaderMenu } from '@/components/header/menu';
 import { ViewerCount } from '@/components/header/viewerCount';
 import { Icons } from '@/components/icons';
 
@@ -19,7 +18,6 @@ export function Header() {
         <Link href="/">
           <span className="inline-block font-bold">{siteConfig.name}</span>
         </Link>
-        <HeaderMenu />
         {meetingState === 'joined-meeting' ? (
           <ViewerCount />
         ) : (
