@@ -11,12 +11,9 @@ export function VcsPreview() {
   const { outputElementRef } = useVCSCompositionWrapper();
 
   return (
-    <div className="h-full flex-1">
+    <div className="flex h-full w-full flex-1 items-center justify-center">
       <div
-        className={cn(
-          'flex h-full items-center justify-center p-4',
-          isOwner ? 'w-[calc((100dvh-20rem)*(16/9))]' : 'w-full'
-        )}
+        className={cn(isOwner ? 'w-[calc((100dvh-19rem)*(16/9))]' : 'w-full')}
       >
         <AspectRatio id="vcs-viewport" className="bg-black" ratio={16 / 9}>
           <div className="overflow-hidden" ref={outputElementRef} />

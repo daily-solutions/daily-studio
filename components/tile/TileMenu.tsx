@@ -7,7 +7,7 @@ interface Props {
 export function TileMenu({ sessionId }: Props) {
   return (
     <div className="absolute right-2 top-2">
-      <ParticipantMenu sessionId={sessionId} variant="default" />
+      <ParticipantMenu sessionId={sessionId} variant="secondary" />
     </div>
   );
 }
