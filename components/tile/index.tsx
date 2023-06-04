@@ -19,14 +19,20 @@ function TileComponent({
   noVideoTileColor = 'bg-muted',
   showMenu = false,
 }: Props) {
-  const videoState = useParticipantProperty(sessionId, 'tracks.video.state');
+  const [videoState, participantType] = useParticipantProperty(sessionId, [
+    'tracks.video.state',
+    'participantType',
+  ]);
+
+  const state =
+    participantType === 'remote-media-player' ? 'playable' : videoState;
 
   return (
     <AspectRatio
       className={cn('relative rounded-md', noVideoTileColor, className)}
       ratio={16 / 9}
     >
-      {videoState === 'off' ? (
+      {state === 'off' ? (
         <NoVideoTile sessionId={sessionId} bgColor={noVideoTileColor} />
       ) : (
         <>
@@ -40,7 +46,9 @@ function TileComponent({
               left: 0,
             }}
             sessionId={sessionId}
-            type="video"
+            type={
+              participantType === 'remote-media-player' ? 'rmpVideo' : 'video'
+            }
           />
           <TileUserName sessionId={sessionId} />
         </>

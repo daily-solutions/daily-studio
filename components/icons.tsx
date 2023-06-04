@@ -1,5 +1,6 @@
 import {
   Bell,
+  CircleSlash,
   Clapperboard,
   Clipboard,
   Columns,
@@ -16,6 +17,8 @@ import {
   Mic,
   MicOff,
   MoreHorizontal,
+  PauseCircle,
+  PlayCircle,
   PlusIcon,
   Radio,
   ScreenShare,
@@ -72,6 +75,9 @@ export const Icons = {
   record: Disc2,
   recordOff: StopCircle,
   broadcast: Radio,
+  play: PlayCircle,
+  pause: PauseCircle,
+  stop: CircleSlash,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

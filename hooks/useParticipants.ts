@@ -6,7 +6,9 @@ export const useParticipants = () => {
   const participantIds = useParticipantIds({
     filter: useCallback(
       (p: DailyParticipant) =>
-        p.permissions.hasPresence && p.userData?.['onStage'],
+        p.permissions.hasPresence &&
+        (p.userData?.['onStage'] ||
+          p?.participantType === 'remote-media-player'),
       []
     ),
   });

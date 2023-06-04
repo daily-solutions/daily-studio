@@ -1,6 +1,5 @@
+import { useMemo } from 'react';
 import { useParticipantProperty } from '@daily-co/daily-react';
-
-import { cn } from '@/lib/utils';
 
 export function NoVideoTile({
   sessionId,
@@ -8,10 +7,16 @@ export function NoVideoTile({
   sessionId: string;
   bgColor?: string;
 }) {
-  const [userName, isLocal] = useParticipantProperty(sessionId, [
-    'user_name',
-    'local',
-  ]);
+  const [userName, isLocal, participantType] = useParticipantProperty(
+    sessionId,
+    ['user_name', 'local', 'participantType']
+  );
+
+  const tileName = useMemo(
+    () =>
+      participantType === 'remote-media-player' ? 'RMP' : userName || 'Guest',
+    [userName, participantType]
+  );
 
   return (
     <div
@@ -20,7 +25,7 @@ export function NoVideoTile({
       }
     >
       <h2>
-        {userName} {isLocal && '(You)'}
+        {tileName} {isLocal && '(You)'}
       </h2>
     </div>
   );
