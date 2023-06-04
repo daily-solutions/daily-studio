@@ -2,6 +2,7 @@ import React from 'react';
 import { DailyAudio } from '@daily-co/daily-react';
 
 import { usePresence } from '@/hooks/usePresence';
+import { useReceiveSettings } from '@/hooks/useReceiveSettings';
 import { useTrackSubscriptions } from '@/hooks/useTrackSubscriptions';
 import { Tray } from '@/components/call/tray';
 import { Layout } from '@/components/call/tray/layout';
@@ -15,6 +16,7 @@ import { VcsPreview } from '@/components/vcs/vcsPreview';
 export function Room() {
   usePresence();
   useTrackSubscriptions();
+  useReceiveSettings();
 
   return (
     <div className="flex-1">
