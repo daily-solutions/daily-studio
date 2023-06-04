@@ -24,36 +24,34 @@ export function Tray() {
   } = useStage();
 
   return (
-    <div className="h-20 max-h-20 w-full overflow-hidden border-t bg-background p-4">
-      <div className="flex items-center justify-between">
-        {showRequestToJoin && (
-          <Button
-            variant={isRequesting ? 'destructive' : 'default'}
-            onClick={toggleRequestToJoin}
-          >
-            {isRequesting ? 'Cancel request' : 'Request to join stage'}
-          </Button>
-        )}
-        {showInvitedToJoin && (
-          <Button onClick={() => setJoinStage(true)}>Join stage</Button>
-        )}
-        {showVideoControls && (
-          <div className="flex items-center">
-            <Video />
-            <Audio />
-            <Screenshare />
-            <Rmp />
-          </div>
-        )}
-        <div className="flex items-center justify-center gap-x-2">
-          <Record />
-          <Stream />
-        </div>
+    <div className="flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t bg-background p-4">
+      {showRequestToJoin && (
+        <Button
+          variant={isRequesting ? 'destructive' : 'default'}
+          onClick={toggleRequestToJoin}
+        >
+          {isRequesting ? 'Cancel request' : 'Request to join stage'}
+        </Button>
+      )}
+      {showInvitedToJoin && (
+        <Button onClick={() => setJoinStage(true)}>Join stage</Button>
+      )}
+      {showVideoControls && (
         <div className="flex items-center">
-          <Invite />
-          <Settings />
-          <Leave />
+          <Video />
+          <Audio />
+          <Screenshare />
+          <Rmp />
         </div>
+      )}
+      <div className="flex items-center justify-center gap-x-2">
+        <Record />
+        <Stream />
+      </div>
+      <div className="flex items-center">
+        <Invite />
+        <Settings />
+        <Leave />
       </div>
     </div>
   );

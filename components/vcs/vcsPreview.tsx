@@ -65,7 +65,7 @@ export function VcsPreview() {
   return (
     <div
       ref={divRef}
-      className="flex h-full w-full flex-1 items-center justify-center"
+      className="flex h-full w-full flex-1 items-center justify-center bg-muted"
     >
       <div style={{ width: previewWidth, height: previewHeight }}>
         <AspectRatio className="bg-black" ratio={16 / 9}>

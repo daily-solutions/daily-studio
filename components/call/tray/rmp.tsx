@@ -71,7 +71,7 @@ export const RMPPopover = () => {
         </div>
       )}
       <Button
-        disabled={!url}
+        disabled={!(url || sessionId)}
         className="w-full"
         onClick={handleRMPPlayer}
         variant={sessionId ? 'destructive' : 'default'}
@@ -85,12 +85,18 @@ export const RMPPopover = () => {
 export function Rmp() {
   const isOwner = useIsOwner();
 
+  const { sessionId } = useRMP();
+
   if (!isOwner) return null;
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="trayButton" className="text-inherit">
+        <Button
+          variant="ghost"
+          size="trayButton"
+          className={sessionId ? 'text-destructive' : 'text-inherit'}
+        >
           <div className="flex flex-col items-center justify-center gap-y-1">
             <Icon icon="media" className="h-6 w-6" />
             <p className="text-xs">RMP</p>
