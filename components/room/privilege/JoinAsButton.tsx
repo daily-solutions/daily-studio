@@ -7,7 +7,7 @@ import { Button, ButtonProps } from '@/components/ui/button';
 
 interface Props {
   roomName: string;
-  privilege: 'producer' | 'viewer';
+  privilege: 'producer' | 'presenter' | 'viewer';
   buttonText: string;
   variant?: ButtonProps['variant'];
 }

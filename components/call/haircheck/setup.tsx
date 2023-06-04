@@ -6,6 +6,7 @@ import {
 } from '@daily-co/daily-react';
 import { Tile } from 'components/tile';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { Button } from '@/components/ui/button';
 import { Devices } from '@/components/call/devices';
 import { Audio } from '@/components/call/tray/audio';
@@ -15,6 +16,7 @@ export function Setup({ onJoin = () => {} } = {}) {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
   const meetingState = useMeetingState();
+  const isOwner = useIsOwner();
 
   useEffect(() => {
     if (!daily || meetingState === 'joined-meeting') return;
@@ -26,11 +28,13 @@ export function Setup({ onJoin = () => {} } = {}) {
     if (!daily) return;
 
     if (meetingState !== 'joined-meeting')
-      await daily.join({ userData: { onStage: true } });
+      await daily.join({
+        userData: isOwner ? { onStage: true } : { acceptedToJoin: true },
+      });
     else await daily.setUserData({ acceptedToJoin: true });
 
     onJoin?.();
-  }, [daily, meetingState, onJoin]);
+  }, [daily, isOwner, meetingState, onJoin]);
 
   return (
     <div>

@@ -16,14 +16,22 @@ export default function RoomPage({
         <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row">
           <PrivilegeCard
             roomName={name}
-            heading="Enter as producer"
+            heading="Producer"
             description="Join call in new tab as a meeting owner. You can configure layouts and the stream settings."
             buttonText="Join as producer"
             privilege="producer"
           />
           <PrivilegeCard
             roomName={name}
-            heading="Enter as viewer"
+            heading="Presenter"
+            description="Add an owner to the room prior to adding additional participants. Select this option to join from the perspective of a presenter."
+            buttonVariant="secondary"
+            buttonText="Join as presenter"
+            privilege="presenter"
+          />
+          <PrivilegeCard
+            roomName={name}
+            heading="Viewer"
             description="Add an owner to the room prior to adding additional participants. Select this option to join from the perspective of a participant."
             buttonText="Join as viewer"
             buttonVariant="outline"

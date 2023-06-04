@@ -12,7 +12,7 @@ interface Props {
   heading: string;
   description: string;
   buttonText: string;
-  privilege?: 'producer' | 'viewer';
+  privilege?: 'producer' | 'presenter' | 'viewer';
   buttonVariant?: ButtonProps['variant'];
 }
 

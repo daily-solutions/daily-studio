@@ -11,6 +11,10 @@ export async function POST(request: Request) {
       properties: {
         room_name: roomName,
         is_owner: isOwner,
+        permissions: {
+          canSend: true,
+          hasPresence: true,
+        },
       },
     }),
   };
