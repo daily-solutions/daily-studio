@@ -31,7 +31,7 @@ export function Haircheck() {
 
   return (
     <div className="flex h-full w-full flex-1 items-center justify-center">
-      <Card className="w-full sm:w-[35dvw] 2xl:w-[25dvw]">
+      <Card className="w-full sm:w-[70dvw] md:w-[60dvw] xl:w-[30dvw] 2xl:w-[25dvw]">
         {state === 'haircheck' ? (
           <Setup />
         ) : (

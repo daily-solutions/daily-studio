@@ -23,23 +23,17 @@ export function Header() {
         {meetingState === 'joined-meeting' ? (
           <ViewerCount />
         ) : (
-          <div className="flex flex-1 items-center justify-end space-x-4">
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
+          <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
+            <div
+              className={buttonVariants({
+                size: 'sm',
+                variant: 'ghost',
+              })}
             >
-              <div
-                className={buttonVariants({
-                  size: 'sm',
-                  variant: 'ghost',
-                })}
-              >
-                <Icons.gitHub className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </div>
-            </Link>
-          </div>
+              <Icons.gitHub className="h-5 w-5" />
+              <span className="sr-only">GitHub</span>
+            </div>
+          </Link>
         )}
       </div>
     </header>

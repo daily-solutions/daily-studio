@@ -23,7 +23,7 @@ function TileComponent({
 
   return (
     <AspectRatio
-      className={cn('relative rounded-md', className)}
+      className={cn('relative rounded-md', noVideoTileColor, className)}
       ratio={16 / 9}
     >
       {videoState === 'off' ? (

@@ -192,7 +192,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
         case 'visible-on-stage':
           const { payload: visiblePayload }: VisibleOnStage = ev.data;
           if (localSessionId === visiblePayload.sessionId) {
-            daily?.setUserData({ onStage: true });
+            daily?.setUserData({ acceptedToJoin: true, onStage: true });
             toast({
               title: 'You are now visible on stage.',
               description: 'You can unmute yourself to speak.',
@@ -202,7 +202,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
         case 'hide-on-stage':
           const { payload: hidePayload }: HideOnStage = ev.data;
           if (localSessionId === hidePayload.sessionId) {
-            daily?.setUserData({ onStage: false });
+            daily?.setUserData({ acceptedToJoin: true, onStage: false });
             toast({
               title: 'You are now hidden from stage.',
               description:
@@ -357,7 +357,10 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
 
       const visibleOnStage = Boolean(participant.userData?.['onStage']);
       if (participant.local) {
-        await daily.setUserData({ onStage: !visibleOnStage });
+        await daily.setUserData({
+          acceptedToJoin: true,
+          onStage: !visibleOnStage,
+        });
       } else {
         sendAppMessage({
           event: visibleOnStage ? 'hide-on-stage' : 'visible-on-stage',

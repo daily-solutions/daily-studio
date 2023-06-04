@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 
 export function NoVideoTile({
   sessionId,
-  bgColor = 'bg-muted',
 }: {
   sessionId: string;
   bgColor?: string;
@@ -16,10 +15,9 @@ export function NoVideoTile({
 
   return (
     <div
-      className={cn(
-        `absolute inset-0 flex items-center justify-center border  text-muted-foreground`,
-        bgColor
-      )}
+      className={
+        'absolute inset-0 flex items-center justify-center border  text-muted-foreground'
+      }
     >
       <h2>
         {userName} {isLocal && '(You)'}
