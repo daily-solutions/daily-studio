@@ -55,6 +55,19 @@ export function Invite() {
             </div>
           </div>
           <div className="flex flex-col gap-y-2">
+            <Label>Invite as presenter</Label>
+            <div className="flex items-center justify-center gap-x-2">
+              <Input disabled value={baseURL + '/presenter'} />
+              <Button
+                size="auto"
+                variant="outline"
+                onClick={() => handleCopyToClipboard(baseURL + '/presenter')}
+              >
+                <Icon icon="clipboard" className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-2">
             <Label>Invite as viewer</Label>
             <div className="flex items-center justify-center gap-x-2">
               <Input disabled value={baseURL + '/viewer'} />
