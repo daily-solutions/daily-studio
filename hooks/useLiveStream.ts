@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useParams } from '@/states/params';
-import { useRTMP } from '@/states/rtmpState';
 import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
 import { useLiveStreaming } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
@@ -18,9 +17,8 @@ export const useLiveStream = () => {
     updateLiveStreaming,
   } = useLiveStreaming();
 
-  const [rtmps] = useRTMP();
   const [params] = useParams();
-  const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
+  const [{ assets, rtmps }] = useMeetingSessionState<MeetingSessionState>();
 
   const { participantIds } = useParticipants();
 
@@ -89,7 +87,7 @@ export const useLiveStream = () => {
   );
 
   const enableBroadcast = useMemo(
-    () => Object.values(rtmps).some((rtmp) => rtmp.active),
+    () => Object.values(rtmps ?? {}).some((rtmp) => rtmp.active),
     [rtmps]
   );
 

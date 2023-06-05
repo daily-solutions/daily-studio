@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
-import { RTMP, useRTMP } from '@/states/rtmpState';
 
-import { useSyncRTMPs } from '@/hooks/useSyncParams';
+import { MeetingSessionState } from '@/types/meetingSessionState';
+import { RTMP } from '@/types/rtmp';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Icons } from '@/components/icons';
@@ -13,34 +14,31 @@ interface Props {
 }
 
 export function Rtmp({ rtmp, id, showSwitch = false }: Props) {
-  const [, setRTMPs] = useRTMP();
-  const { updateRTMPs } = useSyncRTMPs();
+  const [{ rtmps }, setSessionState] =
+    useMeetingSessionState<MeetingSessionState>();
 
   const handleDelete = useCallback(() => {
-    setRTMPs((r) => {
-      const newRTMPs = { ...r };
-      delete newRTMPs[id];
-
-      updateRTMPs(newRTMPs);
-      return newRTMPs;
-    });
-  }, [id, setRTMPs, updateRTMPs]);
+    const newRTMPs = { ...rtmps };
+    delete newRTMPs[id];
+    setSessionState({ rtmps: newRTMPs }, 'shallow-merge');
+  }, [id, rtmps, setSessionState]);
 
   const handleChange = useCallback(
     (checked: boolean) => {
-      setRTMPs((prev) => {
-        const rtmps = {
-          ...prev,
-          [id]: {
-            ...prev[id],
-            active: checked,
+      setSessionState(
+        {
+          rtmps: {
+            ...rtmps,
+            [id]: {
+              ...rtmps[id],
+              active: checked,
+            },
           },
-        };
-        updateRTMPs(rtmps);
-        return rtmps;
-      });
+        },
+        'shallow-merge'
+      );
     },
-    [id, setRTMPs, updateRTMPs]
+    [id, rtmps, setSessionState]
   );
 
   return (

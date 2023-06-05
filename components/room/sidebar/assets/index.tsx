@@ -82,11 +82,11 @@ export function Assets() {
           </div>
         </div>
       </form>
-      {Object.keys(assets).length > 0 && (
+      {Object.keys(assets ?? {}).length > 0 && (
         <div className="mt-8">
           <h3 className="text-sm">Uploaded assets</h3>
           <div className="mt-4 flex flex-col space-y-4">
-            {Object.keys(assets).map((key) => (
+            {Object.keys(assets ?? {}).map((key) => (
               <Asset asset={assets?.[key]} key={key} />
             ))}
           </div>

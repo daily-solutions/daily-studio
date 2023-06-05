@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useCreateRTMP } from '@/states/createRTMPState';
-import { useRTMP } from '@/states/rtmpState';
 
-import { useSyncRTMPs } from '@/hooks/useSyncParams';
+import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -42,10 +42,9 @@ const initialValues = {
 export function RTMPModal() {
   const [show, setShow] = useCreateRTMP();
 
-  const [, setRTMPs] = useRTMP();
+  const [{ rtmps }, setSessionState] =
+    useMeetingSessionState<MeetingSessionState>();
   const [currentPlatform, setCurrentPlatform] = useState(initialValues);
-
-  const { updateRTMPs } = useSyncRTMPs();
 
   const handlePlatformChange = (value: string) => {
     setCurrentPlatform((cp) => ({
@@ -65,15 +64,16 @@ export function RTMPModal() {
       e.preventDefault();
 
       const uuid = crypto.randomUUID();
-      setRTMPs((r) => {
-        const newRTMPs = { ...r, [uuid]: currentPlatform };
-        updateRTMPs(newRTMPs);
-        return newRTMPs;
-      });
+      setSessionState(
+        {
+          rtmps: { ...rtmps, [uuid]: currentPlatform },
+        },
+        'shallow-merge'
+      );
       setCurrentPlatform(initialValues);
       setShow(false);
     },
-    [currentPlatform, setRTMPs, setShow, updateRTMPs]
+    [currentPlatform, rtmps, setSessionState, setShow]
   );
 
   return (

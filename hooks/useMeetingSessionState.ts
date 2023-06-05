@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   DailyEventObjectMeetingSessionStateUpdated,
   DailySessionDataMergeStrategy,
@@ -35,6 +35,12 @@ export const useMeetingSessionState = <T>(): [
       setState(daily.meetingSessionState().data as T);
     }, [daily, setState])
   );
+
+  useEffect(() => {
+    if (!daily || daily.meetingState() !== 'joined-meeting') return;
+
+    setState(daily.meetingSessionState().data as T);
+  }, [daily, setState]);
 
   const updateMeetingSessionData = useCallback(
     (data: unknown, mergeStrategy?: DailySessionDataMergeStrategy) => {

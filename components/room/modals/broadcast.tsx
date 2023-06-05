@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { useBroadcast } from '@/states/broadcastState';
 import { useCreateRTMP } from '@/states/createRTMPState';
-import { useRTMP } from '@/states/rtmpState';
 
+import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useLiveStream } from '@/hooks/useLiveStream';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,7 +18,7 @@ import { Stream } from '@/components/room/sidebar/stream';
 
 export function BroadcastModal() {
   const [broadcast, setBroadcast] = useBroadcast();
-  const [rtmps] = useRTMP();
+  const [{ rtmps }] = useMeetingSessionState<MeetingSessionState>();
   const [, setCreateRTMP] = useCreateRTMP();
 
   const { startLiveStreaming, enableBroadcast } = useLiveStream();
@@ -38,7 +39,7 @@ export function BroadcastModal() {
         </DialogHeader>
         <Stream showSwitch />
         <DialogFooter className="mt-4">
-          {Object.keys(rtmps).length > 0 ? (
+          {Object.keys(rtmps ?? {}).length > 0 ? (
             <Button
               className="w-full"
               disabled={!enableBroadcast}

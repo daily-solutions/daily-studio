@@ -19,7 +19,7 @@ export function TabContent() {
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
   const assetFileNames = useMemo(
-    () => Object.values(assets).map((asset) => asset.name),
+    () => Object.values(assets ?? {}).map((asset) => asset.name),
     [assets]
   );
 
