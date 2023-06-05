@@ -10,8 +10,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+const DEVICES_NOT_FOUND = ['idle', 'pending'];
+
 export function VideoDevices() {
-  const { cameras, setCamera } = useDevices();
+  const { cameras, setCamera, camState } = useDevices();
 
   const selectedCamera = useMemo(
     () => cameras.find((cam) => cam.selected),
@@ -29,6 +31,9 @@ export function VideoDevices() {
           <SelectValue placeholder="Turn on camera to allow access" />
         </SelectTrigger>
         <SelectContent>
+          {DEVICES_NOT_FOUND.includes(camState) && (
+            <SelectItem value="">Turn on camera to allow access</SelectItem>
+          )}
           {cameras.map((cam) => (
             <SelectItem key={cam.device.deviceId} value={cam.device.deviceId}>
               {cam.device.label}

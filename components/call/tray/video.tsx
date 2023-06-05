@@ -7,7 +7,11 @@ import {
 
 import { TrayButton } from '@/components/ui/trayButton';
 
-export function Video() {
+interface Props {
+  disabled?: boolean;
+}
+
+export function Video({ disabled = false }: Props) {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
   const video = useParticipantProperty(localSessionId, 'video');
@@ -22,6 +26,7 @@ export function Video() {
       onClick={() => daily?.setLocalVideo(!video)}
       text={video ? 'Turn off' : 'Turn on'}
       icon={video ? 'videoOn' : 'videoOff'}
+      disabled={disabled}
     />
   );
 }

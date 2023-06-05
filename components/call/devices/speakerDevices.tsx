@@ -29,6 +29,9 @@ export function SpeakerDevices() {
           <SelectValue placeholder="System default" />
         </SelectTrigger>
         <SelectContent>
+          {speakers.length === 0 && (
+            <SelectItem value="">System default</SelectItem>
+          )}
           {speakers.map((speaker) => (
             <SelectItem
               key={speaker.device.deviceId}
