@@ -12,7 +12,7 @@ interface Props {
   variant?: ButtonProps['variant'];
 }
 
-export function JoinAsButton({
+export function PrivilegeButton({
   roomName,
   privilege,
   buttonText,

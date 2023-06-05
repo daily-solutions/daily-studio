@@ -5,7 +5,7 @@ import {
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
-import { JoinAsButton } from '@/components/room/privilege/JoinAsButton';
+import { PrivilegeButton } from '@/components/room/privilege/PrivilegeButton';
 
 interface Props {
   roomName: string;
@@ -31,7 +31,7 @@ export function PrivilegeCard({
         <p className="text-sm">{description}</p>
       </CardContent>
       <CardFooter>
-        <JoinAsButton
+        <PrivilegeButton
           roomName={roomName}
           privilege={privilege}
           buttonText={buttonText}
