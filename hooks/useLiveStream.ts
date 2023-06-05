@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import { useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
 import { useRTMP } from '@/states/rtmpState';
 import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
 import { useLiveStreaming } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
+import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipants } from '@/hooks/useParticipants';
 
 export const useLiveStream = () => {
@@ -19,7 +20,7 @@ export const useLiveStream = () => {
 
   const [rtmps] = useRTMP();
   const [params] = useParams();
-  const [assets] = useAssets();
+  const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
   const { participantIds } = useParticipants();
 

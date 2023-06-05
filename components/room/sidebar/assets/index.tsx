@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { Asset as AssetType, useAssets } from '@/states/assetState';
 
-import { useSyncAssets } from '@/hooks/useSyncParams';
+import { Asset as AssetType } from '@/types/asset';
+import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,8 +14,8 @@ export function Assets() {
     url: '',
   });
 
-  const [assets, setAssets] = useAssets();
-  const { updateAssets } = useSyncAssets();
+  const [{ assets }, setSessionState] =
+    useMeetingSessionState<MeetingSessionState>();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -29,20 +30,22 @@ export function Assets() {
       let name = asset.name.replace(/\s+/g, '-').toLowerCase();
       if (!name.endsWith('.png')) name += '.png';
 
-      setAssets((assets) => {
-        const newAssets = {
-          ...assets,
-          [name]: {
-            name: name,
-            url: asset.url,
+      setSessionState(
+        {
+          assets: {
+            ...assets,
+            [name]: {
+              name: name,
+              url: asset.url,
+            },
           },
-        };
-        updateAssets(newAssets);
-        return newAssets;
-      });
+        },
+        'shallow-merge'
+      );
+
       setAsset({ name: '', url: '' });
     },
-    [asset.name, asset.url, setAssets, updateAssets]
+    [asset.name, asset.url, assets, setSessionState]
   );
 
   return (
@@ -84,7 +87,7 @@ export function Assets() {
           <h3 className="text-sm">Uploaded assets</h3>
           <div className="mt-4 flex flex-col space-y-4">
             {Object.keys(assets).map((key) => (
-              <Asset asset={assets[key]} key={key} />
+              <Asset asset={assets?.[key]} key={key} />
             ))}
           </div>
         </div>

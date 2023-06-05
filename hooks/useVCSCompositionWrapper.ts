@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useAssets } from '@/states/assetState';
 import { useParams } from '@/states/params';
 import { useLocalSessionId, useMeetingState } from '@daily-co/daily-react';
 
+import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipantCount } from '@/hooks/useParticipantCount';
 import { useSyncParams } from '@/hooks/useSyncParams';
 import { useVideoTracks } from '@/hooks/useVideoTracks';
@@ -41,7 +42,7 @@ export const useVCSCompositionWrapper = ({
 
   const [params] = useParams();
   const meetingState = useMeetingState();
-  const [assets] = useAssets();
+  const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
   const { activeVideoInputs, remoteTracksBySessionId } = useVideoTracks();
 

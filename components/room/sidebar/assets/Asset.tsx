@@ -1,19 +1,20 @@
 import { useCallback } from 'react';
-import { Asset as AssetType, useAssets } from '@/states/assetState';
 
+import { Asset as AssetType } from '@/types/asset';
+import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 
 export function Asset({ asset }: { asset: AssetType }) {
-  const [, setAssets] = useAssets();
+  const [{ assets }, setSessionState] =
+    useMeetingSessionState<MeetingSessionState>();
 
   const handleDelete = useCallback(() => {
-    setAssets((assets) => {
-      const newAssets = { ...assets };
-      delete newAssets[asset.name];
-      return newAssets;
-    });
-  }, [asset.name, setAssets]);
+    const newAssets = { ...assets };
+    delete newAssets[asset.name];
+    setSessionState({ assets: { ...newAssets } }, 'shallow-merge');
+  }, [asset.name, assets, setSessionState]);
 
   return (
     <div className="flex items-center justify-between gap-2">

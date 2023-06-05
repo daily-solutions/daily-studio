@@ -3,9 +3,10 @@ import { imageParams } from '@/constants/imageParams';
 import { textParams } from '@/constants/textParams';
 import { toastParams } from '@/constants/toastParams';
 import { viewParams } from '@/constants/viewParams';
-import { useAssets } from '@/states/assetState';
 import { useSidebar } from '@/states/sidebar';
 
+import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { FormMaker } from '@/components/formMaker';
 import { Assets } from '@/components/room/sidebar/assets';
 import { Chat } from '@/components/room/sidebar/chat';
@@ -15,7 +16,7 @@ import { Stream } from '@/components/room/sidebar/stream';
 
 export function TabContent() {
   const [sidebar] = useSidebar();
-  const [assets] = useAssets();
+  const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
   const assetFileNames = useMemo(
     () => Object.values(assets).map((asset) => asset.name),
