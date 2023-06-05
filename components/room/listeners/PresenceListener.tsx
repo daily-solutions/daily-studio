@@ -9,7 +9,7 @@ import { useDailyEvent, useParticipantIds } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 
-export const usePresence = () => {
+export function PresenceListener() {
   const { name } = useParams();
   const isOwner = useIsOwner();
 
@@ -17,7 +17,7 @@ export const usePresence = () => {
     filter: useCallback((p: DailyParticipant) => p.permissions.hasPresence, []),
   });
 
-  const [viewers, setViewers] = useViewers();
+  const [, setViewers] = useViewers();
 
   const fetchParticipants = useCallback(async () => {
     const participantsRes = await fetch(`/api/daily/presence?roomName=${name}`);
@@ -48,5 +48,5 @@ export const usePresence = () => {
     )
   );
 
-  return viewers;
-};
+  return null;
+}

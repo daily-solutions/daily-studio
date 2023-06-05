@@ -1,11 +1,9 @@
 import React from 'react';
 import { DailyAudio } from '@daily-co/daily-react';
 
-import { usePresence } from '@/hooks/usePresence';
-import { useReceiveSettings } from '@/hooks/useReceiveSettings';
-import { useTrackSubscriptions } from '@/hooks/useTrackSubscriptions';
 import { Tray } from '@/components/call/tray';
 import { Layout } from '@/components/call/tray/layout';
+import { Listeners } from '@/components/room/listeners';
 import { BroadcastModal } from '@/components/room/modals/broadcast';
 import { JoinStageModal } from '@/components/room/modals/joinStage';
 import { RTMPModal } from '@/components/room/modals/rtmp';
@@ -14,10 +12,6 @@ import { Stage } from '@/components/room/stage';
 import { VcsPreview } from '@/components/vcs/vcsPreview';
 
 export function Room() {
-  usePresence();
-  useTrackSubscriptions();
-  useReceiveSettings();
-
   return (
     <div className="flex-1">
       <div className="flex">
@@ -33,6 +27,7 @@ export function Room() {
       <BroadcastModal />
       <JoinStageModal />
       <DailyAudio />
+      <Listeners />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useDaily, useLocalSessionId } from '@daily-co/daily-react';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useParticipants } from '@/hooks/useParticipants';
 
-export const useReceiveSettings = () => {
+export function ReceiveSettingsListener() {
   const daily = useDaily();
 
   const localSessionId = useLocalSessionId();
@@ -50,5 +50,5 @@ export const useReceiveSettings = () => {
     updateReceiveSettings();
   }, [updateReceiveSettings]);
 
-  return {};
-};
+  return null;
+}

@@ -9,7 +9,7 @@ import {
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useParticipants } from '@/hooks/useParticipants';
 
-export const useTrackSubscriptions = () => {
+export function SubscriptionsListener() {
   const daily = useDaily();
   const isOwner = useIsOwner();
 
@@ -71,5 +71,5 @@ export const useTrackSubscriptions = () => {
     });
   }, [daily, isOwner, participantIds, subscribedIds]);
 
-  return {};
-};
+  return null;
+}
