@@ -4,7 +4,6 @@ import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/icons';
 
 export function JoinButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,8 +21,7 @@ export function JoinButton() {
   }, [router]);
 
   return (
-    <Button size="sm" onClick={handleOnJoin} disabled={isLoading}>
-      {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+    <Button size="sm" onClick={handleOnJoin} isLoading={isLoading}>
       Start call
     </Button>
   );
