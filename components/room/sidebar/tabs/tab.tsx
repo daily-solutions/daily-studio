@@ -1,10 +1,9 @@
 'use client';
 
-import { Sidebar, useSidebar } from '@/states/sidebar';
-
+import { Sidebar } from '@/types/sidebar';
 import { cn } from '@/lib/utils';
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { Button } from '@/components/ui/button';
+import { TabsTrigger } from '@/components/ui/tabs';
 import { Icon, Icons } from '@/components/icons';
 
 interface Props {
@@ -23,26 +22,19 @@ export function Tab({
   ownerOnly = true,
 }: Props) {
   const isOwner = useIsOwner();
-  const [sidebar, setSidebar] = useSidebar();
 
   if (ownerOnly && !isOwner) return null;
 
   return (
-    <Button
-      variant="none"
-      size="auto"
+    <TabsTrigger
+      value={name}
+      className="data-[state=active]:text-selected"
       disabled={disabled}
-      onClick={() => setSidebar(name)}
     >
-      <div
-        className={cn(
-          'flex flex-col items-center gap-y-2',
-          sidebar === name && 'text-selected'
-        )}
-      >
+      <div className={cn('flex flex-col items-center gap-y-2')}>
         <Icon icon={icon} className="h-6 w-6" />
         <p className="text-xs">{text}</p>
       </div>
-    </Button>
+    </TabsTrigger>
   );
 }

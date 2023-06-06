@@ -1,13 +1,16 @@
 'use client';
 
 import { useMemo } from 'react';
-import { useSidebar } from '@/states/sidebar';
 
-export function TabHeading() {
-  const [sidebar] = useSidebar();
+import { Sidebar } from '@/types/sidebar';
 
+interface Props {
+  value: Sidebar;
+}
+
+export function TabHeading({ value }: Props) {
   const { heading, description } = useMemo(() => {
-    switch (sidebar) {
+    switch (value) {
       case 'text':
         return {
           heading: 'Text',
@@ -54,7 +57,7 @@ export function TabHeading() {
           description: 'Adjust the layout options',
         };
     }
-  }, [sidebar]);
+  }, [value]);
 
   return (
     <div className="flex h-16 flex-col justify-center gap-y-1 border-b bg-background px-4">

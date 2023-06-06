@@ -17,10 +17,10 @@ export function Chat() {
   }, [messages]);
 
   return (
-    <div className="relative flex h-full flex-col justify-between p-4">
+    <div className="relative flex h-full max-h-[calc(100%-4rem)] flex-col justify-between p-4">
       <div
         ref={messagesRef}
-        className="flex h-full max-h-[calc(100%-4rem)] flex-col overflow-y-auto"
+        className="flex max-h-[calc(100%-4rem)] flex-col overflow-y-auto"
       >
         {messages.length > 0 ? (
           messages.map((message, index) => (

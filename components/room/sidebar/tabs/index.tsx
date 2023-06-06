@@ -1,5 +1,6 @@
 import { useLiveStreaming, useRecording } from '@daily-co/daily-react';
 
+import { TabsList } from '@/components/ui/tabs';
 import { Tab } from '@/components/room/sidebar/tabs/tab';
 
 export function Tabs() {
@@ -7,7 +8,7 @@ export function Tabs() {
   const { isRecording } = useRecording();
 
   return (
-    <div className="flex flex-col items-center gap-y-2 border-l p-2">
+    <TabsList className="flex flex-col items-center gap-y-2 border-l p-2">
       <Tab name="layout" icon="view" text="View" />
       <Tab name="text" icon="text" text="Text" />
       <Tab name="image" icon="image" text="Image" />
@@ -22,6 +23,6 @@ export function Tabs() {
         disabled={isLiveStreaming || isRecording}
       />
       <Tab name="settings" icon="settings" text="Config" ownerOnly={false} />
-    </div>
+    </TabsList>
   );
 }

@@ -3,19 +3,24 @@ import { imageParams } from '@/constants/imageParams';
 import { textParams } from '@/constants/textParams';
 import { toastParams } from '@/constants/toastParams';
 import { viewParams } from '@/constants/viewParams';
-import { useSidebar } from '@/states/sidebar';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
+import { Sidebar } from '@/types/sidebar';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
+import { TabsContent } from '@/components/ui/tabs';
 import { FormMaker } from '@/components/formMaker';
 import { Assets } from '@/components/room/sidebar/assets';
 import { Chat } from '@/components/room/sidebar/chat';
 import { People } from '@/components/room/sidebar/people';
 import { Settings } from '@/components/room/sidebar/settings';
 import { Stream } from '@/components/room/sidebar/stream';
+import { TabHeading } from '@/components/room/sidebar/tabs/TabHeading';
 
-export function TabContent() {
-  const [sidebar] = useSidebar();
+interface Props {
+  value: Sidebar;
+}
+
+export function TabContent({ value }: Props) {
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
   const assetFileNames = useMemo(
@@ -24,7 +29,7 @@ export function TabContent() {
   );
 
   const content = useMemo(() => {
-    switch (sidebar) {
+    switch (value) {
       case 'text':
         return <FormMaker fields={textParams} />;
       case 'image':
@@ -48,11 +53,14 @@ export function TabContent() {
       default:
         return <FormMaker fields={viewParams} />;
     }
-  }, [assetFileNames, sidebar]);
+  }, [assetFileNames, value]);
 
   return (
-    <div className="h-[calc(100dvh-8rem)] overflow-auto scroll-smooth">
-      {content}
-    </div>
+    <TabsContent value={value}>
+      <div className="h-[calc(100dvh-4rem)] overflow-auto scroll-smooth">
+        <TabHeading value={value} />
+        {content}
+      </div>
+    </TabsContent>
   );
 }

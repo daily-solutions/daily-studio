@@ -57,10 +57,10 @@ export function Stage() {
             />
           </TabsList>
           <div className="h-full flex-1">
-            <TabsContent value="stage">
+            <TabsContent className="mt-2" value="stage">
               <Participants participantIds={participantIds} />
             </TabsContent>
-            <TabsContent value="waiting">
+            <TabsContent className="mt-2" value="waiting">
               <Participants participantIds={waitingParticipantIds} />
             </TabsContent>
           </div>
