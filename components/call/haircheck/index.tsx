@@ -30,7 +30,7 @@ export function Haircheck() {
   if (!localSessionId) return <Loader showHeader={false} />;
 
   return (
-    <div className="flex h-full w-full flex-1 items-center justify-center">
+    <div className="flex h-full w-full flex-1 items-center justify-center p-4 sm:p-0">
       <Card className="w-full sm:w-[70dvw] md:w-[60dvw] xl:w-[30dvw] 2xl:w-[25dvw]">
         {state === 'haircheck' ? (
           <Setup />

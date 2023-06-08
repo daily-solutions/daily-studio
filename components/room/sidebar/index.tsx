@@ -17,7 +17,7 @@ export function Sidebar() {
     <Tabs
       orientation="vertical"
       defaultValue={defaultSidebar}
-      className="h-full w-[30dvw] min-w-[30dvw] border-l 2xl:w-[25dvw] 2xl:min-w-[25dvw]"
+      className="hidden h-full w-[30dvw] min-w-[30dvw] border-l md:block 2xl:w-[25dvw] 2xl:min-w-[25dvw]"
     >
       <div className="flex bg-background">
         <div className="flex-1">

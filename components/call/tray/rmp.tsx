@@ -91,7 +91,7 @@ export function Rmp() {
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger className="hidden md:block" asChild>
         <Button
           variant="ghost"
           size="trayButton"

@@ -1,7 +1,10 @@
+import React from 'react';
+
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Icon, Icons } from '@/components/icons';
 
-interface Props {
+interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
   text: string;
   icon: keyof typeof Icons;
   onClick?: () => void;
@@ -17,15 +20,20 @@ export function TrayButton({
   muted,
   selected,
   disabled = false,
+  className,
 }: Props) {
+  const textColor = muted
+    ? 'text-destructive'
+    : selected
+    ? 'text-selected'
+    : 'text-inherit';
+
   return (
     <Button
       variant="ghost"
       size="trayButton"
       onClick={onClick}
-      className={
-        muted ? 'text-destructive' : selected ? 'text-selected' : 'text-inherit'
-      }
+      className={cn(textColor, className)}
       disabled={disabled}
     >
       <div className="flex flex-col items-center justify-center gap-y-1">

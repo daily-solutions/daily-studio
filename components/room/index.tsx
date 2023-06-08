@@ -14,8 +14,8 @@ import { VcsPreview } from '@/components/vcs/vcsPreview';
 export function Room() {
   return (
     <div className="flex-1">
-      <div className="flex">
-        <div className="relative flex w-[70dvw] max-w-[70dvw] flex-1 flex-col 2xl:w-[75dvw] 2xl:max-w-[75dvw]">
+      <div className="flex h-full">
+        <div className="relative flex w-full flex-1 flex-col md:w-[70dvw] md:max-w-[70dvw] 2xl:w-[75dvw] 2xl:max-w-[75dvw]">
           <VcsPreview />
           <Layout />
           <Stage />

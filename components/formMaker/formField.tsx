@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { Icons } from '@/components/icons';
 
 type Props = {
   field: Param;

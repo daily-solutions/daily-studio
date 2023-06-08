@@ -22,8 +22,8 @@ export function Invite() {
     [params]
   );
 
-  const handleCopyToClipboard = useCallback((url: string) => {
-    navigator.clipboard.writeText(url);
+  const handleCopyToClipboard = useCallback(async (url: string) => {
+    await navigator.clipboard.writeText(url);
     toast({ title: 'Copied to clipboard' });
   }, []);
 
@@ -31,7 +31,7 @@ export function Invite() {
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger className="hidden md:block" asChild>
         <Button variant="ghost" size="trayButton" className="text-inherit">
           <div className="flex flex-col items-center justify-center gap-y-1">
             <Icon icon="userPlus" className="h-6 w-6" />

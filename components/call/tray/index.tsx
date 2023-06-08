@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Audio } from '@/components/call/tray/audio';
 import { Invite } from '@/components/call/tray/invite';
 import { Leave } from '@/components/call/tray/leave';
+import { More } from '@/components/call/tray/more';
 import { Record } from '@/components/call/tray/record';
 import { Rmp } from '@/components/call/tray/rmp';
 import { Screenshare } from '@/components/call/tray/screenshare';
@@ -49,6 +50,7 @@ export function Tray() {
         <Stream />
       </div>
       <div className="flex items-center">
+        <More />
         <Invite />
         <Settings />
         <Leave />

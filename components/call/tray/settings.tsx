@@ -11,7 +11,7 @@ import { Devices } from '../devices';
 export function Settings() {
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger className="hidden md:block" asChild>
         <Button variant="ghost" size="trayButton" className="text-inherit">
           <div className="flex flex-col items-center justify-center gap-y-1">
             <Icon icon="settings" className="h-6 w-6" />
