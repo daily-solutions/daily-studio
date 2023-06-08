@@ -2,8 +2,10 @@ import { useCallback, useEffect } from 'react';
 import { useParams } from '@/states/params';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import { useAppMessage } from '@daily-co/daily-react';
+import { dequal } from 'dequal';
 
 import { getDiff } from '@/lib/getDiff';
+import { useIsOwner } from '@/hooks/useIsOwner';
 
 interface SyncParams {
   type: 'params';
@@ -14,17 +16,14 @@ type SyncParamsAppMessage = SyncParams;
 
 export const useSyncParams = (vcsCompRef) => {
   const [params, setParams] = useParams();
+  const isOwner = useIsOwner();
 
   const sendAppMessage = useAppMessage<SyncParamsAppMessage>({
     onAppMessage: useCallback(
       (ev: DailyEventObjectAppMessage<SyncParamsAppMessage>) => {
         const { data } = ev;
-        switch (data.type) {
-          case 'params':
-            setParams(data.params);
-            break;
-          default:
-            break;
+        if (data.type === 'params') {
+          setParams(data.params);
         }
       },
       [setParams]
@@ -32,7 +31,12 @@ export const useSyncParams = (vcsCompRef) => {
   });
 
   useEffect(() => {
-    if (!vcsCompRef.current) return;
+    if (
+      !vcsCompRef.current ||
+      !isOwner ||
+      dequal(vcsCompRef.current?.paramValues, params)
+    )
+      return;
 
     const diff = getDiff(vcsCompRef.current?.paramValues, params);
     if (
@@ -48,5 +52,5 @@ export const useSyncParams = (vcsCompRef) => {
 
     // send params to other participants
     sendAppMessage({ type: 'params', params });
-  }, [params, sendAppMessage, vcsCompRef]);
+  }, [isOwner, params, sendAppMessage, vcsCompRef]);
 };
