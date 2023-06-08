@@ -31,11 +31,7 @@ export const useSyncParams = (vcsCompRef) => {
   });
 
   useEffect(() => {
-    if (
-      !vcsCompRef.current ||
-      !isOwner ||
-      dequal(vcsCompRef.current?.paramValues, params)
-    )
+    if (!vcsCompRef.current || dequal(vcsCompRef.current?.paramValues, params))
       return;
 
     const diff = getDiff(vcsCompRef.current?.paramValues, params);
@@ -49,6 +45,8 @@ export const useSyncParams = (vcsCompRef) => {
     for (const key in diff) {
       vcsCompRef.current.sendParam(key, diff[key]);
     }
+
+    if (!isOwner) return;
 
     // send params to other participants
     sendAppMessage({ type: 'params', params });
