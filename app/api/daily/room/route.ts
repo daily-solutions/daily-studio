@@ -20,6 +20,7 @@ export async function POST() {
       name: generateRandomRoomName(),
       privacy: 'public',
       properties: {
+        enable_mesh_sfu: true,
         enable_recording: 'cloud',
         permissions: {
           hasPresence: false,

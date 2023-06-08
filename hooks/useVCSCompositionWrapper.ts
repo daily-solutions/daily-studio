@@ -33,6 +33,7 @@ export const useVCSCompositionWrapper = ({
   viewport: { width, height },
 }: Props) => {
   const localSessionId = useLocalSessionId();
+  const meetingState = useMeetingState();
   const { present: participantCount } = useParticipantCount();
 
   const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
@@ -41,7 +42,6 @@ export const useVCSCompositionWrapper = ({
   useSyncParams(vcsCompRef);
 
   const [params] = useParams();
-  const meetingState = useMeetingState();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
   const { activeVideoInputs, remoteTracksBySessionId } = useVideoTracks();
