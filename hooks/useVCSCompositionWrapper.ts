@@ -52,16 +52,9 @@ export const useVCSCompositionWrapper = ({
     (el) => {
       if (!el || meetingState !== 'joined-meeting' || !width || !height) return;
 
-      if (vcsCompRef.current) {
-        const elements = document.getElementsByClassName(
-          'vcs-asset-preload-container'
-        );
-        for (const el of Array.from(elements)) {
-          el.remove();
-        }
-        setVcsInitialized(false);
-        vcsCompRef.current?.stop();
-        vcsCompRef.current = null;
+      if (vcsInitialized) {
+        vcsCompRef.current?.rootDisplaySizeChanged();
+        return;
       }
 
       vcsCompRef.current = new VCSCompositionWrapper(
@@ -70,19 +63,20 @@ export const useVCSCompositionWrapper = ({
         params,
         { getAssetUrlCb }
       );
-      vcsCompRef.current.start().then(() => {
-        console.log('VCS started');
-        setVcsInitialized(true);
-      });
+      vcsCompRef.current
+        .start()
+        .then(() => {
+          console.log('VCS started');
+          setVcsInitialized(true);
+        })
+        .catch((err) => console.error(`VCS start failed: ${err}`));
     },
-    [height, meetingState, params, width]
+    [height, meetingState, params, vcsInitialized, width]
   );
 
   useEffect(() => {
-    if (vcsInitialized) return;
-
     createVCSView(outputElementRef.current);
-  }, [createVCSView, vcsInitialized]);
+  }, [createVCSView]);
 
   useEffect(() => {
     if (!vcsCompRef.current || !localSessionId) return;
@@ -110,7 +104,7 @@ export const useVCSCompositionWrapper = ({
     const updateAssets = async () => {
       const promises: Promise<any>[] = [];
 
-      for (const asset of Object.values(assets)) {
+      for (const asset of Object.values(assets ?? {})) {
         promises.push(
           new Promise((resolve, reject) => {
             const img = new Image();
@@ -137,23 +131,15 @@ export const useVCSCompositionWrapper = ({
       return imagesByName;
     };
 
-    updateAssets().then((assets) => {
-      if (!vcsCompRef.current) return;
+    updateAssets()
+      .then((assets) => {
+        if (!vcsCompRef.current) return;
 
-      vcsCompRef.current.sources.assetImages = assets;
-      vcsCompRef.current?.sendUpdateImageSources();
-    });
+        vcsCompRef.current.sources.assetImages = assets;
+        vcsCompRef.current?.sendUpdateImageSources();
+      })
+      .catch((err) => console.error(err));
   }, [assets]);
-
-  useEffect(() => {
-    window.addEventListener('resize', () =>
-      vcsCompRef.current?.rootDisplaySizeChanged()
-    );
-    return () =>
-      window.removeEventListener('resize', () =>
-        vcsCompRef.current?.rootDisplaySizeChanged()
-      );
-  }, []);
 
   return { outputElementRef, vcsCompRef };
 };
