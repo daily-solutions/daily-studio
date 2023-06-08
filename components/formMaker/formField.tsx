@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
+import { Icons } from '@/components/icons';
 
 type Props = {
   field: Param;
@@ -133,19 +134,23 @@ export const FormField = ({ field }: Props) => {
           <div className="flex flex-col gap-y-2">
             <Label>{field.label}</Label>
             <div className="flex items-center gap-x-2">
-              <Input
-                type="color"
-                name={field.id}
-                value={params?.[field.id] || field.defaultValue}
-                onChange={handleChange}
-                className="w-20 rounded-md border-none p-0 outline-none"
-              />
-              <Input
-                type="text"
-                name={field.id}
-                value={params?.[field.id] || field.defaultValue}
-                onChange={handleChange}
-              />
+              <div className="relative w-full">
+                <Input
+                  type="text"
+                  name={field.id}
+                  value={params?.[field.id] || field.defaultValue}
+                  onChange={handleChange}
+                />
+                <div className="absolute right-2 top-2">
+                  <Input
+                    type="color"
+                    name={field.id}
+                    value={params?.[field.id] || field.defaultValue}
+                    onChange={handleChange}
+                    className="m-0 h-6 w-6 border-none p-0"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         );
