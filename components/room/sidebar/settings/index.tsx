@@ -1,4 +1,4 @@
-import { QualityToggle } from '@/components/room/sidebar/settings/QualityToggle';
+import { SendQuality } from '@/components/room/sidebar/settings/SendQuality';
 import { ThemeToggle } from '@/components/room/sidebar/settings/ThemeToggle';
 
 export function Settings() {
@@ -6,7 +6,7 @@ export function Settings() {
     <div className="p-4">
       <div className="flex flex-col gap-y-4">
         <ThemeToggle />
-        <QualityToggle />
+        <SendQuality />
       </div>
     </div>
   );

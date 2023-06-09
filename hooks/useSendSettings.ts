@@ -3,13 +3,16 @@ import { DailyEventObjectSendSettingsUpdated } from '@daily-co/daily-js';
 import { useDaily, useDailyEvent } from '@daily-co/daily-react';
 import { atom, useRecoilState } from 'recoil';
 
-const sendSettingsQualityState = atom({
+type SendSettingsQuality = 'low' | 'medium' | 'high';
+
+const sendSettingsQualityState = atom<SendSettingsQuality>({
   key: 'send-settings-quality',
   default: 'high',
 });
 
 export const useSendSettingsQuality = () => {
   const daily = useDaily();
+
   const [quality, setQuality] = useRecoilState(sendSettingsQualityState);
 
   useDailyEvent(
@@ -26,7 +29,7 @@ export const useSendSettingsQuality = () => {
   );
 
   const updateQuality = useCallback(
-    async (quality: 'low' | 'medium' | 'high') => {
+    async (quality: SendSettingsQuality) => {
       if (!daily) return;
 
       await daily.updateSendSettings({
