@@ -14,7 +14,7 @@ export function Tabs() {
       <Tab name="image" icon="image" text="Image" />
       <Tab name="toast" icon="bell" text="Toast" />
       <Tab name="chat" icon="chat" text="Chat" ownerOnly={false} />
-      <Tab name="people" icon="people" text="People" />
+      <Tab name="people" icon="people" text="People" ownerOnly={false} />
       <Tab name="stream" icon="stream" text="RTMP" />
       <Tab
         name="assets"
