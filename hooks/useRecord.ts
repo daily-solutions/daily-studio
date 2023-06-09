@@ -7,15 +7,28 @@ import { dequal } from 'dequal';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipants } from '@/hooks/useParticipants';
+import { useToast } from '@/components/ui/use-toast';
 
 export const useRecord = () => {
+  const { toast } = useToast();
   const {
     isRecording,
     layout,
     startRecording: dailyStartRecording,
     updateRecording,
     stopRecording: dailyStopRecording,
-  } = useRecording();
+  } = useRecording({
+    onRecordingError: useCallback(
+      (ev) => {
+        toast({
+          title: 'Recording failed',
+          description: ev.errorMsg,
+          variant: 'destructive',
+        });
+      },
+      [toast]
+    ),
+  });
 
   const [params] = useParams();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();

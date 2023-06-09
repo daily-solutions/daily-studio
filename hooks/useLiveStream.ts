@@ -7,15 +7,28 @@ import { dequal } from 'dequal';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipants } from '@/hooks/useParticipants';
+import { useToast } from '@/components/ui/use-toast';
 
 export const useLiveStream = () => {
+  const { toast } = useToast();
   const {
     layout,
     isLiveStreaming,
     stopLiveStreaming: dailyStopLiveStreaming,
     startLiveStreaming: dailyStartLiveStreaming,
     updateLiveStreaming,
-  } = useLiveStreaming();
+  } = useLiveStreaming({
+    onLiveStreamingError: useCallback(
+      (ev) => {
+        toast({
+          title: 'Live-streaming failed',
+          description: ev.errorMsg,
+          variant: 'destructive',
+        });
+      },
+      [toast]
+    ),
+  });
 
   const [params] = useParams();
   const [{ assets, rtmps }] = useMeetingSessionState<MeetingSessionState>();
