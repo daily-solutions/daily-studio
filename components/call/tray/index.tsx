@@ -48,11 +48,11 @@ export function Tray() {
         <Rmp />
         <Record />
         <Stream />
-        <Settings />
       </div>
       <div className="flex items-center">
         <More />
         <Invite />
+        <Settings />
         <Leave />
       </div>
     </div>

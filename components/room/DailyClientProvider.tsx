@@ -33,6 +33,8 @@ export function DailyClientProvider({
         sendSettings: {
           video: 'quality-optimized',
         },
+        // by default everyone will receive low quality video
+        receiveSettings: { base: { video: { layer: 0 } } },
         dailyConfig: {
           useDevicePreferenceCookies: true,
         },
