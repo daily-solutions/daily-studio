@@ -26,7 +26,7 @@ export const useLiveStream = () => {
     const rtmpURLs = Object.values(rtmps)
       .filter((rtmp) => rtmp.active)
       .map((rtmp) => rtmp.streamURL + rtmp.streamKey);
-    const session_assets = Object.values(assets).reduce((acc, asset) => {
+    const session_assets = Object.values(assets ?? {}).reduce((acc, asset) => {
       acc[`images/${asset.name}`] = asset.url;
       return acc;
     }, {});
