@@ -1,4 +1,5 @@
 import {
+  ArrowUpDown,
   Bell,
   CircleSlash,
   Clapperboard,
@@ -6,6 +7,7 @@ import {
   Columns,
   Contact,
   Disc2,
+  Download,
   Eye,
   Image,
   LayoutGrid,
@@ -62,6 +64,7 @@ export const Icons = {
   grid: LayoutGrid,
   screenShareOn: ScreenShare,
   screenShareOff: ScreenShareOff,
+  download: Download,
   upload: Upload,
   trash: TrashIcon,
   settings: Settings,
@@ -78,6 +81,7 @@ export const Icons = {
   play: PlayCircle,
   pause: PauseCircle,
   stop: CircleSlash,
+  network: ArrowUpDown,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
