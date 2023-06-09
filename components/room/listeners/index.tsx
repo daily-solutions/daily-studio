@@ -1,3 +1,4 @@
+import { AppMessageListener } from '@/components/room/listeners/AppMessageListener';
 import { PresenceListener } from '@/components/room/listeners/PresenceListener';
 import { ReceiveSettingsListener } from '@/components/room/listeners/ReceiveSettingsListener';
 import { SubscriptionsListener } from '@/components/room/listeners/SubscriptionsListener';
@@ -5,6 +6,7 @@ import { SubscriptionsListener } from '@/components/room/listeners/Subscriptions
 export function Listeners() {
   return (
     <>
+      <AppMessageListener />
       <SubscriptionsListener />
       <PresenceListener />
       <ReceiveSettingsListener />

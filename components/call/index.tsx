@@ -1,18 +1,9 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { useMessages } from '@/states/messagesState';
-import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
-import {
-  useDaily,
-  useDailyEvent,
-  useMeetingState,
-} from '@daily-co/daily-react';
+import React, { useEffect, useMemo } from 'react';
+import { useDaily, useMeetingState } from '@daily-co/daily-react';
 
-import { useStage } from '@/hooks/useStage';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ToastAction } from '@/components/ui/toast';
-import { useToast } from '@/components/ui/use-toast';
 import { Haircheck } from '@/components/call/haircheck';
 import { Header } from '@/components/header';
 import { Icons } from '@/components/icons';
@@ -20,55 +11,7 @@ import { Room } from '@/components/room';
 
 export function Call() {
   const daily = useDaily();
-
   const meetingState = useMeetingState();
-  const [, setMessages] = useMessages();
-
-  const { toast } = useToast();
-
-  const { acceptRequestToJoin } = useStage();
-
-  const { appMessage } = useStage({
-    onRequestToJoin: useCallback(
-      ({ sessionId, userName }) => {
-        toast({
-          title: 'Request to join',
-          description: `${userName} has requested to join the call`,
-          action: (
-            <ToastAction
-              altText="Accept"
-              onClick={() => acceptRequestToJoin(sessionId)}
-            >
-              Accept
-            </ToastAction>
-          ),
-        });
-      },
-      [acceptRequestToJoin, toast]
-    ),
-  });
-
-  useDailyEvent(
-    'app-message',
-    useCallback(
-      (ev: DailyEventObjectAppMessage) => {
-        const { event, ...rest } = ev.data;
-
-        if (event === 'message') {
-          setMessages((messages) => [
-            ...messages,
-            {
-              ...rest,
-              fromId: ev.fromId,
-              isLocal: false,
-              receivedAt: new Date(),
-            },
-          ]);
-        } else appMessage(ev);
-      },
-      [appMessage, setMessages]
-    )
-  );
 
   const content = useMemo(() => {
     switch (meetingState) {
