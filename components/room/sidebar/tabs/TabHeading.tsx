@@ -46,11 +46,6 @@ export function TabHeading({ value }: Props) {
           heading: 'Chat',
           description: 'Talk with other participants',
         };
-      case 'settings':
-        return {
-          heading: 'Settings',
-          description: 'Adjust the default settings',
-        };
       default:
         return {
           heading: 'View Settings',

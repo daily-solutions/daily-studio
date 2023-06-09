@@ -6,5 +6,4 @@ export type Sidebar =
   | 'people'
   | 'assets'
   | 'stream'
-  | 'chat'
-  | 'settings';
+  | 'chat';

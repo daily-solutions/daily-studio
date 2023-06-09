@@ -10,6 +10,7 @@ import {
   Download,
   Eye,
   Image,
+  Laptop,
   LayoutGrid,
   LayoutTemplate,
   Loader2,
@@ -18,6 +19,7 @@ import {
   MessageCircle,
   Mic,
   MicOff,
+  Moon,
   MoreHorizontal,
   PauseCircle,
   PlayCircle,
@@ -28,6 +30,7 @@ import {
   Send,
   Settings,
   StopCircle,
+  Sun,
   TrashIcon,
   Tv,
   Type,
@@ -82,6 +85,9 @@ export const Icons = {
   pause: PauseCircle,
   stop: CircleSlash,
   network: ArrowUpDown,
+  sun: Sun,
+  moon: Moon,
+  laptop: Laptop,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

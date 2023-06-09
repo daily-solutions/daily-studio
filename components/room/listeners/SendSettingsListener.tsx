@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { useSendQualityState } from '@/states/sendQualityState';
 import {
   DailyEventObjectCpuLoadEvent,
   DailyEventObjectNetworkQualityEvent,
@@ -9,13 +8,10 @@ import { useDailyEvent } from '@daily-co/daily-react';
 import { useSendSettingsQuality } from '@/hooks/useSendSettings';
 
 export function SendSettingsListener() {
-  const [defaultQuality] = useSendQualityState();
   const { updateQuality } = useSendSettingsQuality();
 
   const handleNetworkQualityChange = useCallback(
     async (ev: DailyEventObjectNetworkQualityEvent) => {
-      if (defaultQuality !== 'auto') return;
-
       const { threshold } = ev;
       switch (threshold) {
         case 'very-low':
@@ -29,25 +25,21 @@ export function SendSettingsListener() {
           break;
       }
     },
-    [defaultQuality, updateQuality]
+    [updateQuality]
   );
 
   // disables sending high quality video when screen sharing
   const handleOnScreenShare = useCallback(
     async (ev) => {
-      if (defaultQuality !== 'auto') return;
-
       if (ev.action === 'local-screen-share-started')
         await updateQuality('medium');
       else await updateQuality('high');
     },
-    [defaultQuality, updateQuality]
+    [updateQuality]
   );
 
   const handleCPULoadChange = useCallback(
     async (ev: DailyEventObjectCpuLoadEvent) => {
-      if (defaultQuality !== 'auto') return;
-
       const { cpuLoadState, cpuLoadStateReason } = ev;
 
       switch (cpuLoadState) {
@@ -63,7 +55,7 @@ export function SendSettingsListener() {
           break;
       }
     },
-    [defaultQuality, updateQuality]
+    [updateQuality]
   );
 
   useDailyEvent('cpu-load-change', handleCPULoadChange);

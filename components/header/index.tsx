@@ -6,6 +6,7 @@ import { useMeetingState } from '@daily-co/daily-react';
 
 import { siteConfig } from '@/config/site';
 import { buttonVariants } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/header/ThemeToggle';
 import { StatusBadge } from '@/components/header/statusBadge';
 import { ViewerCount } from '@/components/header/viewerCount';
 import { Icons } from '@/components/icons';
@@ -20,21 +21,28 @@ export function Header() {
           <span className="inline-block font-bold">{siteConfig.name}</span>
         </Link>
         <StatusBadge />
-        {meetingState === 'joined-meeting' ? (
-          <ViewerCount />
-        ) : (
-          <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
-            <div
-              className={buttonVariants({
-                size: 'sm',
-                variant: 'ghost',
-              })}
+        <div className="flex items-center justify-center gap-x-2">
+          {meetingState === 'joined-meeting' ? (
+            <ViewerCount />
+          ) : (
+            <Link
+              href={siteConfig.links.github}
+              target="_blank"
+              rel="noreferrer"
             >
-              <Icons.gitHub className="h-5 w-5" />
-              <span className="sr-only">GitHub</span>
-            </div>
-          </Link>
-        )}
+              <div
+                className={buttonVariants({
+                  size: 'sm',
+                  variant: 'ghost',
+                })}
+              >
+                <Icons.gitHub className="h-5 w-5" />
+                <span className="sr-only">GitHub</span>
+              </div>
+            </Link>
+          )}
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
