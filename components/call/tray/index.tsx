@@ -41,18 +41,18 @@ export function Tray() {
         <div className="flex items-center">
           <Video />
           <Audio />
-          <Screenshare />
-          <Rmp />
         </div>
       )}
-      <div className="flex items-center justify-center gap-x-2">
+      <div className="flex items-center justify-center">
+        <Screenshare />
+        <Rmp />
         <Record />
         <Stream />
+        <Settings />
       </div>
       <div className="flex items-center">
         <More />
         <Invite />
-        <Settings />
         <Leave />
       </div>
     </div>

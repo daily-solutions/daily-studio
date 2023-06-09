@@ -18,13 +18,16 @@ export const useAspectRatio = ({ ref, aspectRatio, onResize }: Props) => {
       if (!width || !height) return;
 
       const originalRatio = width / height;
+      let size;
       if (originalRatio > aspectRatio) {
-        setSize({ width: Math.floor(height * aspectRatio), height });
+        size = { width: Math.floor(height * aspectRatio), height };
       } else {
-        setSize({ width, height: Math.floor(width / aspectRatio) });
+        size = { width, height: Math.floor(width / aspectRatio) };
       }
+      setSize(size);
+      onResize?.(size);
     },
-    [aspectRatio]
+    [aspectRatio, onResize]
   );
 
   useEffect(() => {
@@ -37,12 +40,9 @@ export const useAspectRatio = ({ ref, aspectRatio, onResize }: Props) => {
   useResizeObserver({
     ref,
     onResize: useCallback(
-      ({ width, height }) => {
-        const size = { width: Math.round(width), height: Math.round(height) };
-        calculateSize(size);
-        onResize?.(size);
-      },
-      [calculateSize, onResize]
+      ({ width, height }) =>
+        calculateSize({ width: Math.round(width), height: Math.round(height) }),
+      [calculateSize]
     ),
   });
 
