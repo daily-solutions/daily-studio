@@ -3534,6 +3534,11 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
+tinykeys@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tinykeys/-/tinykeys-2.0.0.tgz#f862f656c47fdbe346613e44cff1a44629b7ab25"
+  integrity sha512-jY+PTFGIOuMD/38o11uMJQmF9RlItzG3ihj///q+FFQVjLePGtkmSbIOIgeHO5EqqEuLh5ahyREL/GkqTEWkEg==
+
 to-fast-properties@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-2.0.0.tgz"
