@@ -46,6 +46,10 @@ type ButtonParams = {
   defaultValue: number;
 };
 
+type HeadingParams = {
+  type: 'heading';
+};
+
 export type Param = BasicParam &
   (
     | BooleanParams
@@ -55,4 +59,5 @@ export type Param = BasicParam &
     | StringParams
     | ColorParams
     | ButtonParams
+    | HeadingParams
   );

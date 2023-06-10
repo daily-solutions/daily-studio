@@ -29,6 +29,7 @@ export function Sidebar() {
           <TabContent value="people" />
           <TabContent value="stream" />
           <TabContent value="assets" />
+          <TabContent value="config" />
         </div>
         <TabsList />
       </div>

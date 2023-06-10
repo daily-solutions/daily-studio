@@ -46,6 +46,11 @@ export function TabHeading({ value }: Props) {
           heading: 'Chat',
           description: 'Talk with other participants',
         };
+      case 'config':
+        return {
+          heading: 'Configuration',
+          description: 'Manage the VCS configuration',
+        };
       default:
         return {
           heading: 'View Settings',

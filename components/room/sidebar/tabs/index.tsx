@@ -22,6 +22,7 @@ export function Tabs() {
         text="Assets"
         disabled={isLiveStreaming || isRecording}
       />
+      <Tab name="config" icon="settings" text="Config" />
     </TabsList>
   );
 }

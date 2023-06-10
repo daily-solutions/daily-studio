@@ -57,7 +57,7 @@ export const FormField = ({ field }: Props) => {
     }));
   };
 
-  const handleOnClick = (field: Param) => {
+  const handleOnClick = (field: Exclude<Param, { type: 'heading' }>) => {
     setParams((params: { [key: string]: any }) => ({
       ...params,
       [field.id]: (params[field.id] ?? field.defaultValue) + 1,
@@ -66,6 +66,14 @@ export const FormField = ({ field }: Props) => {
 
   const render = () => {
     switch (field.type) {
+      case 'heading':
+        return (
+          <div className="flex flex-col gap-y-2">
+            <Label className="text-xs font-bold text-muted-foreground">
+              {field.label}
+            </Label>
+          </div>
+        );
       case 'boolean':
         return (
           <div className="flex items-center justify-between space-x-2">

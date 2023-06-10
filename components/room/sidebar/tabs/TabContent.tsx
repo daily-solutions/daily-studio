@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { configParams } from '@/constants/configParams';
 import { imageParams } from '@/constants/imageParams';
 import { textParams } from '@/constants/textParams';
 import { toastParams } from '@/constants/toastParams';
@@ -47,6 +48,8 @@ export function TabContent({ value }: Props) {
         return <Assets />;
       case 'chat':
         return <Chat />;
+      case 'config':
+        return <FormMaker fields={configParams} />;
       default:
         return <FormMaker fields={viewParams} />;
     }
