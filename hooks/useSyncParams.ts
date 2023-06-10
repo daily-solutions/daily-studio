@@ -1,54 +1,48 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams } from '@/states/params';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import { useAppMessage } from '@daily-co/daily-react';
-import { dequal } from 'dequal';
 
-import { getDiff } from '@/lib/getDiff';
 import { useIsOwner } from '@/hooks/useIsOwner';
 
-interface SyncParams {
+interface Params {
+  event: 'params';
   type: 'params';
   params: Record<string, any>;
 }
 
-type SyncParamsAppMessage = SyncParams;
+type SyncParamsAppMessage = Params;
 
-export const useSyncParams = (vcsCompRef) => {
-  const [params, setParams] = useParams();
+export const useSyncParams = () => {
   const isOwner = useIsOwner();
+  const [, setParams] = useParams();
 
-  const sendAppMessage = useAppMessage<SyncParamsAppMessage>({
-    onAppMessage: useCallback(
-      (ev: DailyEventObjectAppMessage<SyncParamsAppMessage>) => {
-        const { data } = ev;
-        if (data.type === 'params') {
-          setParams(data.params);
-        }
-      },
-      [setParams]
-    ),
-  });
+  const sendAppMessage = useAppMessage<SyncParamsAppMessage>();
 
-  useEffect(() => {
-    if (!vcsCompRef.current || dequal(vcsCompRef.current?.paramValues, params))
-      return;
+  const appMessage = useCallback(
+    (ev: DailyEventObjectAppMessage<SyncParamsAppMessage>) => {
+      const { data } = ev;
+      if (data.event !== 'params') return;
 
-    const diff = getDiff(vcsCompRef.current?.paramValues, params);
-    if (
-      diff &&
-      Object.keys(diff).length === 0 &&
-      Object.getPrototypeOf(diff) === Object.prototype
-    )
-      return;
+      if (data.type === 'params') {
+        setParams(data.params);
+      }
+    },
+    [setParams]
+  );
 
-    for (const key in diff) {
-      vcsCompRef.current.sendParam(key, diff[key]);
-    }
+  const updateParams = useCallback(
+    (param) => {
+      if (!isOwner) return;
 
-    if (!isOwner) return;
+      setParams((prev) => {
+        const newParams = { ...prev, ...param };
+        sendAppMessage({ event: 'params', type: 'params', params: newParams });
+        return newParams;
+      });
+    },
+    [isOwner, sendAppMessage, setParams]
+  );
 
-    // send params to other participants
-    sendAppMessage({ type: 'params', params });
-  }, [isOwner, params, sendAppMessage, vcsCompRef]);
+  return { appMessage, updateParams };
 };

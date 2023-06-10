@@ -2,16 +2,18 @@ import { useCallback } from 'react';
 import { useParams } from '@/states/params';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
+import { useSyncParams } from '@/hooks/useSyncParams';
 import { TrayButton } from '@/components/ui/trayButton';
 
 export function Layout() {
   const isOwner = useIsOwner();
-  const [params, setParams] = useParams();
+  const [params] = useParams();
+  const { updateParams } = useSyncParams();
 
   const handleSelect = useCallback(
     (mode: 'single' | 'split' | 'grid' | 'dominant' | 'pip') =>
-      setParams((params) => ({ ...params, mode })),
-    [setParams]
+      updateParams({ mode }),
+    [updateParams]
   );
 
   if (!isOwner) return null;

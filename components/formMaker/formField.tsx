@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useParams } from '@/states/params';
 
 import { Param } from '@/types/params';
+import { useSyncParams } from '@/hooks/useSyncParams';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,49 +21,40 @@ type Props = {
 };
 
 export const FormField = ({ field }: Props) => {
-  const [params, setParams] = useParams();
+  const [params] = useParams();
+  const { updateParams } = useSyncParams();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (field.type === 'boolean') {
-      setParams((params: { [key: string]: any }) => ({
-        ...params,
-        [e.target.name]: e.target.checked,
-      }));
-    } else {
-      setParams((params: { [key: string]: any }) => ({
-        ...params,
-        [e.target.name]: e.target.value,
-      }));
-    }
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (field.type === 'boolean')
+        updateParams({ [e.target.name]: e.target.checked });
+      else updateParams({ [e.target.name]: e.target.value });
+    },
+    [field.type, updateParams]
+  );
 
-  const handleOnSelectChange = (value: string) => {
-    setParams((params: { [key: string]: any }) => ({
-      ...params,
-      [field.id]: value,
-    }));
-  };
+  const handleOnSelectChange = useCallback(
+    (value: string) => updateParams({ [field.id]: value }),
+    [field.id, updateParams]
+  );
 
-  const handleCheckedChange = (checked: boolean) => {
-    setParams((params: { [key: string]: any }) => ({
-      ...params,
-      [field.id]: checked,
-    }));
-  };
+  const handleCheckedChange = useCallback(
+    (checked: boolean) => updateParams({ [field.id]: checked }),
+    [field.id, updateParams]
+  );
 
-  const handleSlideChange = (value: number[]) => {
-    setParams((params: { [key: string]: any }) => ({
-      ...params,
-      [field.id]: value[0],
-    }));
-  };
+  const handleSlideChange = useCallback(
+    (value: number[]) => updateParams({ [field.id]: value[0] }),
+    [field.id, updateParams]
+  );
 
-  const handleOnClick = (field: Exclude<Param, { type: 'heading' }>) => {
-    setParams((params: { [key: string]: any }) => ({
-      ...params,
-      [field.id]: (params[field.id] ?? field.defaultValue) + 1,
-    }));
-  };
+  const handleOnClick = useCallback(
+    (field: Exclude<Param, { type: 'heading' }>) =>
+      updateParams({
+        [field.id]: (params[field.id] ?? field.defaultValue) + 1,
+      }),
+    [params, updateParams]
+  );
 
   const render = () => {
     switch (field.type) {

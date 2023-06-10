@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from '@/states/params';
 import { useLocalSessionId, useMeetingState } from '@daily-co/daily-react';
+import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
+import { getDiff } from '@/lib/getDiff';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipantCount } from '@/hooks/useParticipantCount';
-import { useSyncParams } from '@/hooks/useSyncParams';
 import { useVideoTracks } from '@/hooks/useVideoTracks';
 import { VCSCompositionWrapper } from '@/components/vcs/vcsCompositionWrapper';
 
@@ -38,8 +39,6 @@ export const useVCSCompositionWrapper = ({
 
   const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
   const outputElementRef = useRef<HTMLDivElement | null>(null);
-
-  useSyncParams(vcsCompRef);
 
   const [params] = useParams();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
@@ -140,6 +139,23 @@ export const useVCSCompositionWrapper = ({
       })
       .catch((err) => console.error(err));
   }, [assets]);
+
+  useEffect(() => {
+    if (!vcsCompRef.current || dequal(vcsCompRef.current?.paramValues, params))
+      return;
+
+    const diff = getDiff(vcsCompRef.current?.paramValues, params);
+    if (
+      diff &&
+      Object.keys(diff).length === 0 &&
+      Object.getPrototypeOf(diff) === Object.prototype
+    )
+      return;
+
+    for (const key in diff) {
+      vcsCompRef.current.sendParam(key, diff[key]);
+    }
+  }, [height, params, width]);
 
   return { outputElementRef, vcsCompRef };
 };

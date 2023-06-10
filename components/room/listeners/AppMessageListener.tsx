@@ -3,6 +3,7 @@ import { useMessages } from '@/states/messagesState';
 import { useAppMessage } from '@daily-co/daily-react';
 
 import { useStage } from '@/hooks/useStage';
+import { useSyncParams } from '@/hooks/useSyncParams';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -32,6 +33,8 @@ export function AppMessageListener() {
     ),
   });
 
+  const { appMessage: syncParamsAppMessage } = useSyncParams();
+
   useAppMessage({
     onAppMessage: useCallback(
       (ev) => {
@@ -47,9 +50,10 @@ export function AppMessageListener() {
               receivedAt: new Date(),
             },
           ]);
-        } else appMessage(ev);
+        } else if (event === 'params') syncParamsAppMessage(ev);
+        else appMessage(ev);
       },
-      [appMessage, setMessages]
+      [appMessage, setMessages, syncParamsAppMessage]
     ),
   });
 
