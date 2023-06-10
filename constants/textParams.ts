@@ -86,6 +86,7 @@ export const textParams: Param[] = [
     label: 'Font Size',
     type: 'number',
     defaultValue: 2.5,
+    step: 0.1,
   },
   {
     id: 'text.color',
