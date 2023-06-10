@@ -103,7 +103,7 @@ export function Rmp() {
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="min-w-100">
+      <PopoverContent className="min-w-max">
         <RMPPopover />
       </PopoverContent>
     </Popover>

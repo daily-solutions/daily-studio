@@ -73,7 +73,7 @@ export function Network() {
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full md:w-[20dvw]">
+      <PopoverContent className="min-w-max">
         <NetworkPopover />
       </PopoverContent>
     </Popover>
