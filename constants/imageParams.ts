@@ -47,18 +47,18 @@ export const imageParams = (
       step: 0.1,
     },
     {
-      id: 'image.height_vh',
+      id: 'image.height_gu',
       label: 'Height of the Image',
       type: 'number',
-      defaultValue: 0.3,
+      defaultValue: 12,
       step: 0.1,
     },
     {
-      id: 'image.margin_vh',
+      id: 'image.margin_gu',
       label: 'Margin around the image',
       type: 'number',
-      defaultValue: 0.04,
-      step: 0.01,
+      defaultValue: 1.5,
+      step: 0.1,
     },
     {
       id: 'image.opacity',
