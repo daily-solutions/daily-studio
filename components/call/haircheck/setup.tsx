@@ -8,11 +8,11 @@ import {
 import { Tile } from 'components/tile';
 
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { Button } from '@/components/ui/button';
 import { Devices } from '@/components/call/devices';
 import { DeviceError } from '@/components/call/haircheck/DeviceError';
-import { DevicePending } from '@/components/call/haircheck/DevicePending';
 import { Audio } from '@/components/call/tray/audio';
 import { Video } from '@/components/call/tray/video';
 
@@ -21,6 +21,7 @@ export function Setup({ onJoin = () => {} } = {}) {
   const localSessionId = useLocalSessionId();
   const meetingState = useMeetingState();
   const isOwner = useIsOwner();
+  const isMobile = useIsMobile();
 
   const { hasCamError, hasMicError, camState, micState } = useDevices();
 
@@ -63,7 +64,11 @@ export function Setup({ onJoin = () => {} } = {}) {
     <div>
       <div className="border-b">
         {permissionsGranted ? (
-          <Tile sessionId={localSessionId} />
+          <Tile
+            videoFit="cover"
+            sessionId={localSessionId}
+            aspectRatio={isMobile ? 4 / 3 : 16 / 9}
+          />
         ) : (
           <DeviceError />
         )}

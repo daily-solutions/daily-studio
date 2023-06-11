@@ -11,6 +11,8 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   sessionId: string;
   noVideoTileColor?: string;
   showMenu?: boolean;
+  aspectRatio?: number;
+  videoFit?: 'contain' | 'cover';
 }
 
 function TileComponent({
@@ -18,6 +20,8 @@ function TileComponent({
   className,
   noVideoTileColor = 'bg-muted',
   showMenu = false,
+  aspectRatio = 16 / 9,
+  videoFit = 'contain',
 }: Props) {
   const [videoState, participantType] = useParticipantProperty(sessionId, [
     'tracks.video.state',
@@ -30,15 +34,15 @@ function TileComponent({
   return (
     <AspectRatio
       className={cn('relative rounded-md', noVideoTileColor, className)}
-      ratio={16 / 9}
+      ratio={aspectRatio}
     >
       {state === 'off' ? (
         <NoVideoTile sessionId={sessionId} bgColor={noVideoTileColor} />
       ) : (
         <>
           <DailyVideo
+            fit={videoFit}
             automirror
-            fit="cover"
             style={{
               position: 'absolute',
               height: '100%',
