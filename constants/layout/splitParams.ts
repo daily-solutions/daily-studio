@@ -12,6 +12,7 @@ export const splitParams: Param[] = [
     label: 'Split Layout Margin',
     type: 'number',
     defaultValue: 0,
+    step: 0.1,
     render: { key: 'mode', value: 'split' },
   },
   {

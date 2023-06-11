@@ -46,6 +46,7 @@ export const dominantParams: Param[] = [
     label: 'Margin between chiclet items',
     type: 'number',
     defaultValue: 0.7,
+    step: 0.1,
     render: { key: 'mode', value: 'dominant' },
   },
   {
@@ -53,6 +54,7 @@ export const dominantParams: Param[] = [
     label: 'Padding around chiclet items',
     type: 'number',
     defaultValue: 0.5,
+    step: 0.1,
     render: { key: 'mode', value: 'dominant' },
   },
   {
@@ -60,6 +62,7 @@ export const dominantParams: Param[] = [
     label: 'Margin between active speaker and chiclet items',
     type: 'number',
     defaultValue: 0,
+    step: 0.1,
     render: { key: 'mode', value: 'dominant' },
   },
   {

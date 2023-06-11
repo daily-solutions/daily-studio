@@ -223,10 +223,10 @@
     fast-deep-equal "^3.1.3"
     lodash.throttle "^4.1.1"
 
-"@daily-co/vcs-composition-daily-baseline-web@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.5.tgz"
-  integrity sha512-PULXWJf0ooNW0V9Kgfdj74oa2UyWEXeWBA9D6/YsXUADi7mDhAtVmN0XMmNgUvYWKgM6qhz+x5Oub8Ax23JjJA==
+"@daily-co/vcs-composition-daily-baseline-web@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.6.tgz#9a3a4c4588e452af9b51db43c7496b1df200887e"
+  integrity sha512-mQb9Kv7SSG4AH6+1/XRUQ5DzN9eSRb8aIh8lBO2grjxivbZpd/6PfUaSea3EEmWeyQz3PCgDL4EZHsU2+gboTg==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"

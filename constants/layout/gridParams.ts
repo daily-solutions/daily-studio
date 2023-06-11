@@ -33,6 +33,7 @@ export const gridParams: Param[] = [
     label: 'Margin between grid tiles (-1 for auto)',
     type: 'number',
     defaultValue: -1,
+    step: 0.1,
     render: { key: 'mode', value: 'grid' },
   },
   {
@@ -40,6 +41,7 @@ export const gridParams: Param[] = [
     label: 'Padding around grid tiles (-1 for auto)',
     type: 'number',
     defaultValue: -1,
+    step: 0.1,
     render: { key: 'mode', value: 'grid' },
   },
 ];
