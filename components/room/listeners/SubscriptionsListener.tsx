@@ -7,7 +7,6 @@ import {
 } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { useParticipants } from '@/hooks/useParticipants';
 
 export function SubscriptionsListener() {
   const daily = useDaily();
@@ -15,8 +14,6 @@ export function SubscriptionsListener() {
 
   const [subscribedToTracksAutomatically, setSubscribeToTracksAutomatically] =
     useState(false);
-
-  const { participantIds } = useParticipants();
 
   const subscribedIds = useParticipantIds({
     filter: useCallback(
@@ -60,16 +57,6 @@ export function SubscriptionsListener() {
     ['participant-joined', 'participant-updated'],
     handleSubscriptions
   );
-
-  useEffect(() => {
-    if (!daily || isOwner) return;
-
-    participantIds.forEach((id) => {
-      if (subscribedIds.includes(id)) return;
-
-      daily.updateParticipant(id, {});
-    });
-  }, [daily, isOwner, participantIds, subscribedIds]);
 
   return null;
 }
