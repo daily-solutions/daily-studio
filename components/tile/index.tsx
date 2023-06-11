@@ -38,6 +38,7 @@ function TileComponent({
         <>
           <DailyVideo
             automirror
+            fit="cover"
             style={{
               position: 'absolute',
               height: '100%',

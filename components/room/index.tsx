@@ -15,7 +15,7 @@ export function Room() {
   return (
     <div className="flex-1">
       <div className="flex h-full">
-        <div className="relative flex w-full flex-1 flex-col md:w-[70dvw] md:max-w-[70dvw] 2xl:w-[75dvw] 2xl:max-w-[75dvw]">
+        <div className="relative flex w-full flex-1 flex-col md:w-[calc(100%-400px)]">
           <VcsPreview />
           <Layout />
           <Stage />
