@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useJoinStage } from '@/states/joinStageState';
 import { useIsRequesting, useRequestedParticipants } from '@/states/stageState';
+import { useToast } from '@/ui/useToast';
 import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import {
   useAppMessage,
@@ -11,7 +12,6 @@ import {
 } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { useToast } from '@/components/ui/use-toast';
 
 type RequestToJoinStage = {
   event: 'request-to-join-stage';

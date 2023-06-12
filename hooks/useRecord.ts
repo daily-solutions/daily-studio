@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useParams } from '@/states/params';
+import { useToast } from '@/ui/useToast';
 import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
 import { useRecording } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
@@ -7,7 +8,6 @@ import { dequal } from 'dequal';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipants } from '@/hooks/useParticipants';
-import { useToast } from '@/components/ui/use-toast';
 
 export const useRecord = () => {
   const { toast } = useToast();

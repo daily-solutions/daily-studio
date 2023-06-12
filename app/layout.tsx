@@ -1,11 +1,11 @@
 import '@/styles/globals.css';
 import React from 'react';
 import { Metadata } from 'next';
+import { Toaster } from '@/ui/Toaster';
 
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { Toaster } from '@/components/ui/toaster';
 import { RecoilProvider } from '@/components/RecoilProvider';
 import { TailwindIndicator } from '@/components/TailwindIndicator';
 import { ThemeProvider } from '@/components/ThemeProvider';

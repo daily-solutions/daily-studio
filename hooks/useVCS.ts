@@ -8,7 +8,7 @@ import { getDiff } from '@/lib/getDiff';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipantCount } from '@/hooks/useParticipantCount';
 import { useVideoTracks } from '@/hooks/useVideoTracks';
-import { VCSCompositionWrapper } from '@/components/vcs/vcsCompositionWrapper';
+import { VCSCompositionWrapper } from '@/components/Vcs/VcsCompositionWrapper';
 
 const getAssetUrlCb = (name: string, namespace: string, type: string) => {
   switch (type) {

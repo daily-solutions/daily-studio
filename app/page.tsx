@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { siteConfig } from '@/config/site';
-import { Header } from '@/components/header';
-import { JoinButton } from '@/components/joinButton';
+import { Header } from '@/components/Header';
+import { JoinButton } from '@/components/JoinButton';
 
 export default function IndexPage() {
   return (

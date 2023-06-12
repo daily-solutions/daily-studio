@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Call } from '@/components/call';
-import { Loader } from '@/components/loader';
-import { DailyClientProvider } from '@/components/room/DailyClientProvider';
+import { Call } from '@/components/Call';
+import { Loader } from '@/components/Loader';
+import { DailyClientProvider } from '@/components/Room/DailyClientProvider';
 
 async function generateToken(roomName: string) {
   const res = await fetch(

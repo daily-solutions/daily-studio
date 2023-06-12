@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Call } from '@/components/call';
-import { DailyClientProvider } from '@/components/room/DailyClientProvider';
+import { Call } from '@/components/Call';
+import { DailyClientProvider } from '@/components/Room/DailyClientProvider';
 
 export default function ViewerPage({
   params: { name },

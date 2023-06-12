@@ -1,6 +1,6 @@
 import { siteConfig } from '@/config/site';
-import { Header } from '@/components/header';
-import { PrivilegeCard } from '@/components/room/privilege/PrivilegeCard';
+import { Header } from '@/components/Header';
+import { PrivilegeCard } from '@/components/Room/Privilege/PrivilegeCard';
 
 export default function RoomPage({
   params: { name },
