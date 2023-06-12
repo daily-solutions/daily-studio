@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useJoinStage } from '@/states/joinStageState';
 
 import { useStage } from '@/hooks/useStage';
@@ -17,33 +17,41 @@ import { Video } from '@/components/call/tray/video';
 
 export function Tray() {
   const [, setJoinStage] = useJoinStage();
-  const {
-    isRequesting,
-    toggleRequestToJoin,
-    showRequestToJoin,
-    showInvitedToJoin,
-    showVideoControls,
-  } = useStage();
+  const { isRequesting, requestToJoin, cancelRequestToJoin, state } =
+    useStage();
+
+  const handleRequestToJoin = useCallback(
+    () => (isRequesting ? cancelRequestToJoin() : requestToJoin()),
+    [isRequesting, cancelRequestToJoin, requestToJoin]
+  );
+
+  const content = useMemo(() => {
+    switch (state) {
+      case 'request-to-join':
+        return (
+          <Button
+            variant={isRequesting ? 'destructive' : 'default'}
+            onClick={handleRequestToJoin}
+          >
+            {isRequesting ? 'Cancel request' : 'Request to join stage'}
+          </Button>
+        );
+      case 'invited-to-stage':
+        return <Button onClick={() => setJoinStage(true)}>Join stage</Button>;
+      case 'on-stage':
+      case 'back-stage':
+        return (
+          <div className="flex items-center">
+            <Video />
+            <Audio />
+          </div>
+        );
+    }
+  }, [handleRequestToJoin, isRequesting, setJoinStage, state]);
 
   return (
     <div className="flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t bg-background p-4">
-      {showRequestToJoin && (
-        <Button
-          variant={isRequesting ? 'destructive' : 'default'}
-          onClick={toggleRequestToJoin}
-        >
-          {isRequesting ? 'Cancel request' : 'Request to join stage'}
-        </Button>
-      )}
-      {showInvitedToJoin && (
-        <Button onClick={() => setJoinStage(true)}>Join stage</Button>
-      )}
-      {showVideoControls && (
-        <div className="flex items-center">
-          <Video />
-          <Audio />
-        </div>
-      )}
+      {content}
       <div className="flex items-center justify-center">
         <Screenshare />
         <Rmp />

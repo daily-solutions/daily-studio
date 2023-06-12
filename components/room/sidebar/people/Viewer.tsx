@@ -12,12 +12,7 @@ export function Viewer({
   sessionId: string;
   userName: string;
 }) {
-  const {
-    inviteToStage,
-    requestedParticipants,
-    acceptRequestToJoin,
-    declineRequestToJoin,
-  } = useStage();
+  const { invite, requestedParticipants, accept, deny } = useStage();
 
   const isRequesting = useMemo(
     () => Boolean(requestedParticipants?.[sessionId]),
@@ -25,9 +20,8 @@ export function Viewer({
   );
 
   const handleInviteToStage = useCallback(
-    () =>
-      isRequesting ? acceptRequestToJoin(sessionId) : inviteToStage(sessionId),
-    [acceptRequestToJoin, inviteToStage, isRequesting, sessionId]
+    () => (isRequesting ? accept(sessionId) : invite(sessionId)),
+    [accept, invite, isRequesting, sessionId]
   );
 
   return (
@@ -46,7 +40,7 @@ export function Viewer({
           <Button
             variant="destructive"
             size="xs"
-            onClick={() => declineRequestToJoin(sessionId)}
+            onClick={() => deny(sessionId)}
           >
             <Icons.userMinus className="mr-2 h-4 w-4" />
             <span>Decline</span>

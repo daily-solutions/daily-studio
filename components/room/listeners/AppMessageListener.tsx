@@ -11,7 +11,7 @@ export function AppMessageListener() {
   const [, setMessages] = useMessages();
 
   const { toast } = useToast();
-  const { acceptRequestToJoin } = useStage();
+  const { accept } = useStage();
 
   const { appMessage } = useStage({
     onRequestToJoin: useCallback(
@@ -20,16 +20,13 @@ export function AppMessageListener() {
           title: 'Request to join',
           description: `${userName} has requested to join the call`,
           action: (
-            <ToastAction
-              altText="Accept"
-              onClick={() => acceptRequestToJoin(sessionId)}
-            >
+            <ToastAction altText="Accept" onClick={() => accept(sessionId)}>
               Accept
             </ToastAction>
           ),
         });
       },
-      [acceptRequestToJoin, toast]
+      [accept, toast]
     ),
   });
 

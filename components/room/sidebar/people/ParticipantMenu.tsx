@@ -41,7 +41,7 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
   const { canSendAudio, canSendVideo, canSendScreenVideo } =
     useRemotePermissions(sessionId);
 
-  const { removeFromStage, toggleStageVisibility } = useStage();
+  const { remove, setStageVisibility } = useStage();
 
   const handlePermissionChange = useCallback(
     (type: 'audio' | 'video' | 'screen', checked: boolean) => {
@@ -89,8 +89,8 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
   );
 
   const handleRemoveFromStage = useCallback(
-    () => removeFromStage(sessionId),
-    [removeFromStage, sessionId]
+    () => remove(sessionId),
+    [remove, sessionId]
   );
 
   const { isPlaying, updateRemoteMediaPlayer, stopRemoteMediaPlayer } =
@@ -118,7 +118,9 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
                 !(userData?.['acceptedToJoin'] || userData?.['onStage'])
               }
               checked={hasPresence && userData?.['onStage']}
-              onCheckedChange={() => toggleStageVisibility(sessionId)}
+              onCheckedChange={() =>
+                setStageVisibility(sessionId, !userData?.['onStage'])
+              }
             >
               Visible on stream
             </DropdownMenuCheckboxItem>

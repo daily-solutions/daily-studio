@@ -9,23 +9,26 @@ import { Badge } from '@/components/ui/badge';
 export function StatusBadge() {
   const isOwner = useIsOwner();
   const meetingState = useMeetingState();
-  const { onStage, waitingForHost } = useStage();
+  const { state } = useStage();
 
   const { isLiveStreaming } = useLiveStream();
   const { isRecording } = useRecord();
+
+  const isOnStage = state === 'on-stage';
+  const isOnBackStage = state === 'back-stage';
 
   if (meetingState !== 'joined-meeting') return null;
 
   return (
     <div className="flex items-center justify-center gap-3">
-      {onStage && (
-        <Badge variant="destructive" className="px-2 py-1">
-          You are on stage
-        </Badge>
-      )}
-      {waitingForHost && (
-        <Badge className="px-2 py-1">
-          {isOwner
+      {(isOnStage || isOnBackStage) && (
+        <Badge
+          variant={isOnStage ? 'destructive' : 'default'}
+          className="px-2 py-1"
+        >
+          {isOnStage
+            ? 'You are on stage'
+            : isOwner
             ? 'You are not on stage'
             : 'Waiting for host to bring you on stage'}
         </Badge>
