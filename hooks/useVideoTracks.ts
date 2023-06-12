@@ -78,9 +78,14 @@ export const useVideoTracks = () => {
     });
 
     screens.forEach((screen) => {
-      const isOff = ['off', 'interrupted'].includes(screen.screenVideo.state);
-      const track = isOff ? undefined : screen.screenVideo.persistentTrack;
-      addActiveVideo(`${screen.session_id}-screen`, '', track);
+      if (
+        (screen.local && userData?.['onStage']) ||
+        participantIds.includes(screen.session_id)
+      ) {
+        const isOff = ['off', 'interrupted'].includes(screen.screenVideo.state);
+        const track = isOff ? undefined : screen.screenVideo.persistentTrack;
+        addActiveVideo(`${screen.session_id}-screen`, 'Screen', track);
+      }
     });
 
     rmpIds.forEach((id) => {
