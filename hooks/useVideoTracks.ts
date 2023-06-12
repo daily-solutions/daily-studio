@@ -1,14 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { DailyParticipant } from '@daily-co/daily-js';
-import {
-  useDaily,
-  useLocalSessionId,
-  useMediaTrack,
-  useParticipantIds,
-  useParticipantProperty,
-  usePermissions,
-  useScreenShare,
-} from '@daily-co/daily-react';
+import { useDaily, useParticipantIds } from '@daily-co/daily-react';
 
 type ActiveVideoInput = {
   id: string;
@@ -17,30 +9,32 @@ type ActiveVideoInput = {
 
 export const useVideoTracks = () => {
   const daily = useDaily();
-  const localSessionId = useLocalSessionId();
-  const [userName, userData] = useParticipantProperty(localSessionId, [
-    'user_name',
-    'userData',
-  ]);
-  const { persistentTrack: videoTrack } = useMediaTrack(localSessionId);
-
-  const { hasPresence } = usePermissions();
 
   const participantIds = useParticipantIds({
     filter: useCallback(
       (p: DailyParticipant) =>
         p.permissions.hasPresence &&
-        p.userData?.['onStage'] &&
-        !p.local &&
-        p.participantType !== 'remote-media-player',
+        (p.userData?.['onStage'] ||
+          p.participantType === 'remote-media-player'),
       []
     ),
-    sort: 'joined_at',
+    sort: useCallback((a: DailyParticipant, b: DailyParticipant) => {
+      const aSort = a.joined_at;
+      const bSort = b.joined_at;
+
+      if (a.local || b.local) return 1;
+      if (aSort === undefined) return -1;
+      if (bSort === undefined) return 1;
+      if (aSort > bSort) return 1;
+      if (aSort < bSort) return -1;
+      return 0;
+    }, []),
   });
-  const { screens } = useScreenShare();
-  const rmpIds = useParticipantIds({
+  const screenIds = useParticipantIds({
     filter: useCallback(
-      (p: DailyParticipant) => Boolean(p?.tracks?.rmpVideo),
+      (p: DailyParticipant) =>
+        Boolean(p.tracks.screenVideo.persistentTrack) &&
+        p.userData?.['onStage'],
       []
     ),
     sort: 'joined_at',
@@ -57,64 +51,44 @@ export const useVideoTracks = () => {
       tracksBySessionId[id] = { track, userName };
     };
 
-    if (hasPresence && userData?.['onStage']) {
-      addActiveVideo(localSessionId, userName, videoTrack);
-    }
-
     const participants = Object.values(daily.participants());
 
     participantIds.forEach((id) => {
       const participant = participants.find((p) => p.session_id === id);
       if (!participant) return;
 
-      const displayName = participant.user_name;
-      const isOff = ['off', 'interrupted'].includes(
-        participant.tracks.video.state
-      );
-      const track = isOff
+      const isRMP = participant.participantType === 'remote-media-player';
+
+      const displayName = isRMP ? 'RMP' : participant.user_name;
+      const { video, rmpVideo } = participant.tracks;
+      const isOff = ['off', 'interrupted'].includes(video.state);
+
+      const track = isRMP
+        ? rmpVideo?.persistentTrack
+        : isOff
         ? undefined
-        : participant.tracks.video.persistentTrack;
+        : video.persistentTrack;
       addActiveVideo(id, displayName, track);
     });
 
-    screens.forEach((screen) => {
-      if (
-        (screen.local && userData?.['onStage']) ||
-        participantIds.includes(screen.session_id)
-      ) {
-        const isOff = ['off', 'interrupted'].includes(screen.screenVideo.state);
-        const track = isOff ? undefined : screen.screenVideo.persistentTrack;
-        addActiveVideo(`${screen.session_id}-screen`, 'Screen', track);
-      }
-    });
-
-    rmpIds.forEach((id) => {
+    screenIds.forEach((id) => {
       const participant = participants.find((p) => p.session_id === id);
       if (!participant) return;
 
-      addActiveVideo(
-        id,
-        'RMP',
-        participant.tracks.rmpVideo?.persistentTrack,
-        'RMP'
+      const isOff = ['off', 'interrupted'].includes(
+        participant.tracks.screenVideo.state
       );
+      const track = isOff
+        ? undefined
+        : participant.tracks.screenVideo.persistentTrack;
+      addActiveVideo(`${id}-screen`, 'Screen', track);
     });
 
     return {
       activeVideoInputs: activeVideos,
       remoteTracksBySessionId: tracksBySessionId,
     };
-  }, [
-    daily,
-    hasPresence,
-    localSessionId,
-    participantIds,
-    rmpIds,
-    screens,
-    userData,
-    userName,
-    videoTrack,
-  ]);
+  }, [daily, participantIds, screenIds]);
 
   return {
     activeVideoInputs,
