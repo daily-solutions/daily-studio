@@ -30,9 +30,7 @@ interface Props {
   };
 }
 
-export const useVCSCompositionWrapper = ({
-  viewport: { width, height },
-}: Props) => {
+export const useVCS = ({ viewport: { width, height } }: Props) => {
   const localSessionId = useLocalSessionId();
   const meetingState = useMeetingState();
   const { present: participantCount } = useParticipantCount();

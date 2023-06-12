@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 import { useAspectRatio } from '@/hooks/useAspectRatio';
-import { useVCSCompositionWrapper } from '@/hooks/useVCSCompositionWrapper';
+import { useVCS } from '@/hooks/useVCS';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 export function VcsPreview() {
@@ -12,7 +12,7 @@ export function VcsPreview() {
     aspectRatio: 16 / 9,
   });
 
-  const { outputElementRef } = useVCSCompositionWrapper({
+  const { outputElementRef } = useVCS({
     viewport: size,
   });
 
