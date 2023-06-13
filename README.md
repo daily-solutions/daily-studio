@@ -2,20 +2,45 @@
 
 # VCS Studio
 
-Custom composite a live stream in real-time with Daily
+Create a custom live and recorded experience with Daily's Video Component System (VCS) and Interactive Live Streaming (ILS)
 
 ## Features
 
-* Interactive Live Streaming ([ILS](https://www.daily.co/products/interactive-live-streaming)), supports three roles.
-  * Owner - The owner of the stream, can invite participants to join the stream, customize the layout.
-  * Presenter - The presenter of the stream, can share their camera, screen, and audio.
-  * Viewer - The viewer of the stream, can only view the stream.
-* Stream to multiple platforms at once (e.g. YouTube, Twitch, Facebook, etc.)
-* Record your stream
-* Customizable Stream UI
-* Invite participants to join your stream
-* Chat with participants
-* Remote Media Player
+### Studio for Layout Management 
+
+Craft the video experience you want. Control layouts, add static text, logos or dynamic elements with the Studio UI.
+
+* Choose between five preset video layouts: Single, Split, Grid, Speaker, and Picture-in-Picture
+* Overlay text and image elements (eg: logos)
+* Trigger dynamic toast elements
+
+### Multi-endpoint RTMP streaming 
+
+Stream using RTMP to multiple endpoints such as Youtube, Twitch, LinkedIn, and more. Stream up to 20 concurrent destinations
+
+### Recording
+
+Record your session and save a mp4 file for on-demand pipelines
+
+> Note - you can stream out via RTMP and record a session at the same time
+
+### Real-time live experience via ILS
+
+Invite viewers to watch and participate in the live session
+
+* Support up to 100,000 viewers broadcasting in real-time latency (200ms) via Daily's Interactive Live Streaming
+* Bring viewers to the stage to ask questions and build a true two-way interactive  
+* Host up to 25 speakers "on stage"
+* Chat with your viewers in real-time
+
+> Note - The ILS live experience, RTMP live stream, and the recording will all display and retain the UI elements created in the Studio as-is!
+
+### Playback recorded media
+
+Add and play pre-recorded videos in the live experience!
+
+* Play any hosted video file as part of the live experience
+
 
 ### Live example
 
