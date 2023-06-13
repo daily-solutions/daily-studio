@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from 'react';
 import { useDaily, useLocalSessionId } from '@daily-co/daily-react';
+import { dequal } from 'dequal';
 
 import { useParticipants } from '@/hooks/useParticipants';
 
 export function ReceiveSettingsListener() {
   const daily = useDaily();
-
   const localSessionId = useLocalSessionId();
-  const { participantIds } = useParticipants();
+  const { participantIds, waitingParticipantIds } = useParticipants();
 
   const updateReceiveSettings = useCallback(async () => {
     if (!daily) return;
@@ -18,28 +18,31 @@ export function ReceiveSettingsListener() {
     const layer =
       participantIds.length < 5 ? 2 : participantIds.length < 10 ? 1 : 0;
 
-    participantIds.forEach((participantId) => {
-      if (
-        participantId === localSessionId ||
-        layer === receiveSettings?.[participantId]?.video?.layer
-      )
-        return;
-
+    const updateSettingsForParticipant = (
+      participantId: string,
+      layer: 0 | 1 | 2
+    ) => {
+      if (participantId === localSessionId) return;
       updatedReceiveSettings[participantId] = { video: { layer } };
-    });
+    };
 
-    Object.keys(receiveSettings).forEach((user) => {
-      if (user === 'base' || user === '*') return;
+    participantIds.forEach((participantId) =>
+      updateSettingsForParticipant(participantId, layer)
+    );
 
-      if (!participantIds.includes(user)) {
-        updatedReceiveSettings[user] = { video: { layer: 0 } };
-      }
-    });
+    waitingParticipantIds.forEach((participantId) =>
+      updateSettingsForParticipant(participantId, 0)
+    );
 
-    if (Object.keys(updatedReceiveSettings).length === 0) return;
+    if (
+      Object.keys(updatedReceiveSettings).length === 0 ||
+      dequal(receiveSettings, updatedReceiveSettings)
+    ) {
+      return;
+    }
 
     await daily.updateReceiveSettings(updatedReceiveSettings);
-  }, [daily, localSessionId, participantIds]);
+  }, [daily, localSessionId, participantIds, waitingParticipantIds]);
 
   useEffect(() => {
     updateReceiveSettings();
