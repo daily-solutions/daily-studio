@@ -6,11 +6,13 @@ import { useRecording } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipants } from '@/hooks/useParticipants';
 
 export const useRecord = () => {
   const { toast } = useToast();
+  const isOwner = useIsOwner();
   const {
     isRecording,
     layout,
@@ -58,7 +60,7 @@ export const useRecord = () => {
   }, [assets, dailyStartRecording, params, participantIds]);
 
   useEffect(() => {
-    if (!isRecording) return;
+    if (!isRecording || !isOwner) return;
 
     const areParamsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).composition_params,
@@ -85,7 +87,7 @@ export const useRecord = () => {
         },
       },
     });
-  }, [params, layout, isRecording, updateRecording, participantIds]);
+  }, [params, layout, isRecording, updateRecording, participantIds, isOwner]);
 
   const stopRecording = useCallback(
     () =>

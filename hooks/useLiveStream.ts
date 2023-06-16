@@ -6,11 +6,13 @@ import { useLiveStreaming } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useParticipants } from '@/hooks/useParticipants';
 
 export const useLiveStream = () => {
   const { toast } = useToast();
+  const isOwner = useIsOwner();
   const {
     layout,
     isLiveStreaming,
@@ -62,7 +64,7 @@ export const useLiveStream = () => {
   }, [assets, dailyStartLiveStreaming, params, participantIds, rtmps]);
 
   useEffect(() => {
-    if (!isLiveStreaming) return;
+    if (!isLiveStreaming || !isOwner) return;
 
     const areParamsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).composition_params,
@@ -89,7 +91,14 @@ export const useLiveStream = () => {
         },
       },
     });
-  }, [params, isLiveStreaming, layout, updateLiveStreaming, participantIds]);
+  }, [
+    params,
+    isLiveStreaming,
+    layout,
+    updateLiveStreaming,
+    participantIds,
+    isOwner,
+  ]);
 
   const stopLiveStreaming = useCallback(
     () =>
