@@ -1,67 +1,58 @@
-import { useCallback } from 'react';
-import {
-  DailyEventObjectCpuLoadEvent,
-  DailyEventObjectNetworkQualityEvent,
-} from '@daily-co/daily-js';
-import { useDailyEvent } from '@daily-co/daily-react';
+import { useCallback, useEffect } from 'react';
+import { useNetwork, useScreenShare } from '@daily-co/daily-react';
 
-import { useSendSettingsQuality } from '@/hooks/useSendSettings';
+import { useCPULoad } from '@/hooks/useCPULoad';
+import {
+  SendSettingsQuality,
+  useSendSettingsQuality,
+} from '@/hooks/useSendSettings';
 
 export function SendSettingsListener() {
   const { updateQuality } = useSendSettingsQuality();
+  const { threshold } = useNetwork();
+  const { isSharingScreen } = useScreenShare();
+  const { cpuLoadState, cpuLoadStateReason } = useCPULoad();
 
-  const handleNetworkQualityChange = useCallback(
-    async (ev: DailyEventObjectNetworkQualityEvent) => {
-      const { threshold } = ev;
-      switch (threshold) {
-        case 'very-low':
-          await updateQuality('low');
-          break;
-        case 'low':
-          await updateQuality('medium');
-          break;
-        case 'good':
-          await updateQuality('high');
-          break;
-      }
-    },
-    [updateQuality]
-  );
+  const handleSendVideoQuality = useCallback(async () => {
+    let videoQuality: SendSettingsQuality = 'high';
 
-  // disables sending high quality video when screen sharing
-  const handleOnScreenShare = useCallback(
-    async (ev) => {
-      if (ev.action === 'local-screen-share-started')
-        await updateQuality('medium');
-      else await updateQuality('high');
-    },
-    [updateQuality]
-  );
+    /*
+     * there are three cases of video quality here
+     * 1. low
+     *    a. when network threshold is very-low
+     *    b. when cpu load is high & reason is encode
+     * 2. medium
+     *    a. when the local participant is sharing the screen
+     *    b. when threshold is low.
+     *    c. when cpu load is high
+     * 3. high - for rest of the cases.
+     */
 
-  const handleCPULoadChange = useCallback(
-    async (ev: DailyEventObjectCpuLoadEvent) => {
-      const { cpuLoadState, cpuLoadStateReason } = ev;
+    if (
+      threshold === 'very-low' ||
+      (cpuLoadState === 'high' && cpuLoadStateReason === 'encode')
+    ) {
+      videoQuality = 'low';
+    } else if (
+      threshold === 'low' ||
+      isSharingScreen ||
+      cpuLoadState === 'high'
+    ) {
+      videoQuality = 'medium';
+    }
 
-      switch (cpuLoadState) {
-        case 'high':
-          await updateQuality(
-            cpuLoadStateReason === 'encode' ? 'low' : 'medium'
-          );
-          break;
-        case 'low':
-          await updateQuality('high');
-          break;
-        default:
-          break;
-      }
-    },
-    [updateQuality]
-  );
+    await updateQuality(videoQuality);
+  }, [
+    cpuLoadState,
+    cpuLoadStateReason,
+    isSharingScreen,
+    threshold,
+    updateQuality,
+  ]);
 
-  useDailyEvent('cpu-load-change', handleCPULoadChange);
-  useDailyEvent('network-quality-change', handleNetworkQualityChange);
-  useDailyEvent('local-screen-share-started', handleOnScreenShare);
-  useDailyEvent('local-screen-share-stopped', handleOnScreenShare);
+  useEffect(() => {
+    handleSendVideoQuality();
+  }, [handleSendVideoQuality]);
 
   return null;
 }

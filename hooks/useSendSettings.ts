@@ -3,7 +3,7 @@ import { DailyEventObjectSendSettingsUpdated } from '@daily-co/daily-js';
 import { useDaily, useDailyEvent } from '@daily-co/daily-react';
 import { atom, useRecoilState } from 'recoil';
 
-type SendSettingsQuality = 'low' | 'medium' | 'high';
+export type SendSettingsQuality = 'low' | 'medium' | 'high';
 
 const sendSettingsQualityState = atom<SendSettingsQuality>({
   key: 'send-settings-quality',
