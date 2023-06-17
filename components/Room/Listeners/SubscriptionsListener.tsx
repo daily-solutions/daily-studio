@@ -21,9 +21,8 @@ export function SubscriptionsListener() {
         const isSubscribed = tracks.video.subscribed === true;
 
         if (permissions.hasPresence) {
-          if (userData?.['onStage']) {
+          if (userData?.['onStage'] && !isSubscribed) {
             // If the participant is on stage, subscribe to their video
-            if (isSubscribed) return;
             updateParticipants[session_id] = { setSubscribedTracks: true };
           }
         } else {

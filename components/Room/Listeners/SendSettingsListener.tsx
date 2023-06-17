@@ -8,7 +8,7 @@ import {
 } from '@/hooks/useSendSettings';
 
 export function SendSettingsListener() {
-  const { updateQuality } = useSendSettingsQuality();
+  const { quality, updateQuality } = useSendSettingsQuality();
   const { threshold } = useNetwork();
   const { isSharingScreen } = useScreenShare();
   const { cpuLoadState, cpuLoadStateReason } = useCPULoad();
@@ -41,11 +41,13 @@ export function SendSettingsListener() {
       videoQuality = 'medium';
     }
 
+    if (quality === videoQuality) return;
     await updateQuality(videoQuality);
   }, [
     cpuLoadState,
     cpuLoadStateReason,
     isSharingScreen,
+    quality,
     threshold,
     updateQuality,
   ]);
