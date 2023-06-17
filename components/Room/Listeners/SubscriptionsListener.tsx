@@ -13,7 +13,10 @@ export function SubscriptionsListener() {
 
       events.forEach((event) => {
         const participant: DailyParticipant = event.participant;
-        const { permissions, userData, session_id, tracks } = participant;
+        const { permissions, userData, session_id, tracks, local } =
+          participant;
+
+        if (local) return;
 
         const isSubscribed = tracks.video.subscribed === true;
 
