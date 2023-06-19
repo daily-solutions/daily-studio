@@ -1,61 +1,138 @@
 import { useCallback, useEffect } from 'react';
+import { useVideoLayer } from '@/states/videoLayerState';
 import {
-  useNetwork,
-  useScreenShare,
-  useSendSettings,
-} from '@daily-co/daily-react';
+  DailyEventObject,
+  DailyEventObjectCpuLoadEvent,
+  DailyEventObjectNetworkQualityEvent,
+} from '@daily-co/daily-js';
+import { useSendSettings, useThrottledDailyEvent } from '@daily-co/daily-react';
 
-import { useCPULoad } from '@/hooks/useCPULoad';
-
-type SendSettingsQuality = 'low' | 'medium' | 'high';
+import { useParticipants } from '@/hooks/useParticipants';
+import { VIDEO_QUALITY_LAYERS } from '@/components/Room/Listeners/ReceiveSettingsListener';
 
 export function SendSettingsListener() {
   const { sendSettings, updateSendSettings } = useSendSettings();
-  const { threshold } = useNetwork();
-  const { isSharingScreen } = useScreenShare();
-  const { cpuLoadState, cpuLoadStateReason } = useCPULoad();
+
+  const [{ send }, setVideoLayer] = useVideoLayer();
+
+  const { participantIds } = useParticipants();
+
+  const handleEvents = useCallback(
+    (
+      events: (
+        | DailyEventObjectCpuLoadEvent
+        | DailyEventObjectNetworkQualityEvent
+        | DailyEventObject
+      )[]
+    ) => {
+      events.forEach((ev) => {
+        switch (ev.action) {
+          case 'network-quality-change':
+            const { threshold } = ev;
+            const networkQualityLayer =
+              threshold === 'good'
+                ? VIDEO_QUALITY_LAYERS.HIGH
+                : threshold === 'low'
+                ? VIDEO_QUALITY_LAYERS.MEDIUM
+                : VIDEO_QUALITY_LAYERS.LOW;
+
+            setVideoLayer((prev) => {
+              if (prev.send.layerBasedOnNetwork === networkQualityLayer) {
+                return prev;
+              }
+              return {
+                ...prev,
+                send: { ...prev.send, networkQualityLayer },
+              };
+            });
+            break;
+          case 'cpu-load-change':
+            const { cpuLoadState, cpuLoadStateReason } = ev;
+            const cpuLoadLayer =
+              cpuLoadState === 'low'
+                ? VIDEO_QUALITY_LAYERS.HIGH
+                : cpuLoadStateReason === 'decode'
+                ? VIDEO_QUALITY_LAYERS.MEDIUM
+                : VIDEO_QUALITY_LAYERS.LOW;
+
+            setVideoLayer((prev) => {
+              if (prev.send.layerBasedOnCPU === cpuLoadLayer) {
+                return prev;
+              }
+              return { ...prev, send: { ...prev.send, cpuLoadLayer } };
+            });
+            break;
+          case 'local-screen-share-started':
+            setVideoLayer((prev) => {
+              return {
+                ...prev,
+                send: { ...prev.send, layerBasedOnScreenShare: 1 },
+              };
+            });
+            break;
+          case 'local-screen-share-stopped':
+            setVideoLayer((prev) => {
+              return {
+                ...prev,
+                send: { ...prev.send, layerBasedOnScreenShare: 2 },
+              };
+            });
+            break;
+          default:
+            break;
+        }
+      });
+    },
+    [setVideoLayer]
+  );
+
+  useThrottledDailyEvent(
+    [
+      'network-quality-change',
+      'cpu-load-change',
+      'local-screen-share-started',
+      'local-screen-share-stopped',
+    ],
+    handleEvents
+  );
+
+  useEffect(() => {
+    const participantCount = participantIds.length;
+    const participantCountLayer =
+      participantCount < 5
+        ? VIDEO_QUALITY_LAYERS.HIGH
+        : participantCount < 10
+        ? VIDEO_QUALITY_LAYERS.MEDIUM
+        : VIDEO_QUALITY_LAYERS.LOW;
+
+    setVideoLayer((prev) => {
+      if (prev.send.layerBasedOnParticipantCount === participantCountLayer) {
+        return prev;
+      }
+      return { ...prev, send: { ...prev.send, participantCountLayer } };
+    });
+  }, [participantIds, setVideoLayer]);
 
   const handleSendVideoQuality = useCallback(async () => {
-    let videoQuality: SendSettingsQuality = 'high';
+    const layers = [
+      send.layerBasedOnCPU,
+      send.layerBasedOnNetwork,
+      send.layerBasedOnParticipantCount,
+      send.layerBasedOnScreenShare,
+    ];
+    const layer = Math.min(...layers);
 
-    /*
-     * there are three cases of video quality here
-     * 1. low
-     *    a. when network threshold is very-low
-     *    b. when cpu load is high & reason is encode
-     * 2. medium
-     *    a. when the local participant is sharing the screen
-     *    b. when threshold is low.
-     *    c. when cpu load is high
-     * 3. high - for rest of the cases.
-     */
+    if (sendSettings?.video?.maxQuality === layer) return;
 
-    if (
-      threshold === 'very-low' ||
-      (cpuLoadState === 'high' && cpuLoadStateReason === 'encode')
-    ) {
-      videoQuality = 'low';
-    } else if (
-      threshold === 'low' ||
-      isSharingScreen ||
-      cpuLoadState === 'high'
-    ) {
-      videoQuality = 'medium';
-    }
-
-    if (sendSettings?.video?.maxQuality === videoQuality) return;
-    await updateSendSettings({
-      video: {
-        maxQuality: videoQuality,
-      },
-    });
+    const maxQuality = layer === 2 ? 'high' : layer === 1 ? 'medium' : 'low';
+    await updateSendSettings({ video: { maxQuality } });
   }, [
-    cpuLoadState,
-    cpuLoadStateReason,
-    isSharingScreen,
-    threshold,
-    updateSendSettings,
+    send.layerBasedOnCPU,
+    send.layerBasedOnNetwork,
+    send.layerBasedOnParticipantCount,
+    send.layerBasedOnScreenShare,
     sendSettings?.video?.maxQuality,
+    updateSendSettings,
   ]);
 
   useEffect(() => {
