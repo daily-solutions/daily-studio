@@ -1,46 +1,16 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
+import { DailySessionDataMergeStrategy } from '@daily-co/daily-js';
 import {
-  DailyEventObjectMeetingSessionStateUpdated,
-  DailySessionDataMergeStrategy,
-} from '@daily-co/daily-js';
-import { useDaily, useDailyEvent } from '@daily-co/daily-react';
-import { atom, useRecoilState } from 'recoil';
-
-const meetingSessionState = atom<any>({
-  key: 'meeting-session-state',
-  default: {},
-});
+  useDaily,
+  useMeetingSessionState as useDailyMeetingSessionState,
+} from '@daily-co/daily-react';
 
 export const useMeetingSessionState = <T>(): [
   T,
   (data: unknown, mergeStrategy?: DailySessionDataMergeStrategy) => void
 ] => {
   const daily = useDaily();
-  const [state, setState] = useRecoilState<T>(meetingSessionState);
-
-  useDailyEvent(
-    'meeting-session-state-updated',
-    useCallback(
-      (ev: DailyEventObjectMeetingSessionStateUpdated) =>
-        setState(ev.meetingSessionState.data as T),
-      [setState]
-    )
-  );
-
-  useDailyEvent(
-    'joined-meeting',
-    useCallback(() => {
-      if (!daily) return;
-
-      setState(daily.meetingSessionState().data as T);
-    }, [daily, setState])
-  );
-
-  useEffect(() => {
-    if (!daily || daily.meetingState() !== 'joined-meeting') return;
-
-    setState(daily.meetingSessionState().data as T);
-  }, [daily, setState]);
+  const { data } = useDailyMeetingSessionState<T>();
 
   const updateMeetingSessionData = useCallback(
     (data: unknown, mergeStrategy?: DailySessionDataMergeStrategy) => {
@@ -51,5 +21,5 @@ export const useMeetingSessionState = <T>(): [
     [daily]
   );
 
-  return [state, updateMeetingSessionData];
+  return [data ?? ({} as T), updateMeetingSessionData];
 };

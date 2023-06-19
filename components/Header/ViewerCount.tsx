@@ -1,11 +1,10 @@
 import { Badge } from '@/ui/Badge';
-
-import { useParticipantCount } from '@/hooks/useParticipantCount';
+import { useParticipantCounts } from '@daily-co/daily-react';
 
 import { Icons } from '../Icons';
 
 export function ViewerCount() {
-  const { hidden } = useParticipantCount();
+  const { hidden } = useParticipantCounts();
 
   return (
     <Badge variant="outline" className="px-2 py-1">

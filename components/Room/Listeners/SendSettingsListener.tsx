@@ -1,14 +1,16 @@
 import { useCallback, useEffect } from 'react';
-import { useNetwork, useScreenShare } from '@daily-co/daily-react';
+import {
+  useNetwork,
+  useScreenShare,
+  useSendSettings,
+} from '@daily-co/daily-react';
 
 import { useCPULoad } from '@/hooks/useCPULoad';
-import {
-  SendSettingsQuality,
-  useSendSettingsQuality,
-} from '@/hooks/useSendSettings';
+
+type SendSettingsQuality = 'low' | 'medium' | 'high';
 
 export function SendSettingsListener() {
-  const { quality, updateQuality } = useSendSettingsQuality();
+  const { sendSettings, updateSendSettings } = useSendSettings();
   const { threshold } = useNetwork();
   const { isSharingScreen } = useScreenShare();
   const { cpuLoadState, cpuLoadStateReason } = useCPULoad();
@@ -41,15 +43,19 @@ export function SendSettingsListener() {
       videoQuality = 'medium';
     }
 
-    if (quality === videoQuality) return;
-    await updateQuality(videoQuality);
+    if (sendSettings?.video?.maxQuality === videoQuality) return;
+    await updateSendSettings({
+      video: {
+        maxQuality: videoQuality,
+      },
+    });
   }, [
     cpuLoadState,
     cpuLoadStateReason,
     isSharingScreen,
-    quality,
     threshold,
-    updateQuality,
+    updateSendSettings,
+    sendSettings?.video?.maxQuality,
   ]);
 
   useEffect(() => {

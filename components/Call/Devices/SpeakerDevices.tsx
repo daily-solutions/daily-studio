@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { Label } from '@/ui/Label';
 import {
   Select,
@@ -10,18 +9,13 @@ import {
 import { useDevices } from '@daily-co/daily-react';
 
 export function SpeakerDevices() {
-  const { speakers, setSpeaker } = useDevices();
-
-  const selectedSpeaker = useMemo(
-    () => speakers.find((speaker) => speaker.selected),
-    [speakers]
-  );
+  const { speakers, setSpeaker, currentSpeaker } = useDevices();
 
   return (
     <div className="flex flex-col gap-y-2">
       <Label className="text-xs">Speaker</Label>
       <Select
-        value={selectedSpeaker?.device.deviceId}
+        value={currentSpeaker?.device.deviceId}
         onValueChange={(value) => setSpeaker(value)}
       >
         <SelectTrigger className="w-full">

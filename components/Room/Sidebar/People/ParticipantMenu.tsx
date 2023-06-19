@@ -13,10 +13,10 @@ import {
   useDaily,
   useLocalSessionId,
   useParticipantProperty,
+  usePermissions,
 } from '@daily-co/daily-react';
 
 import { useRMP } from '@/hooks/useRMP';
-import { useRemotePermissions } from '@/hooks/useRemotePermissions';
 import { useStage } from '@/hooks/useStage';
 import { Icons } from '@/components/Icons';
 
@@ -50,7 +50,7 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
   ]);
 
   const { canSendAudio, canSendVideo, canSendScreenVideo } =
-    useRemotePermissions(sessionId);
+    usePermissions(sessionId);
 
   const { remove, setStageVisibility } = useStage();
 

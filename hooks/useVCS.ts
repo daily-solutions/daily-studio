@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from '@/states/params';
-import { useLocalSessionId, useMeetingState } from '@daily-co/daily-react';
+import {
+  useLocalSessionId,
+  useMeetingState,
+  useParticipantCounts,
+} from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { getDiff } from '@/lib/getDiff';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { useParticipantCount } from '@/hooks/useParticipantCount';
 import { useVideoTracks } from '@/hooks/useVideoTracks';
 import { VCSCompositionWrapper } from '@/components/Vcs/VcsCompositionWrapper';
 
@@ -33,7 +36,7 @@ interface Props {
 export const useVCS = ({ viewport: { width, height } }: Props) => {
   const localSessionId = useLocalSessionId();
   const meetingState = useMeetingState();
-  const { present: participantCount } = useParticipantCount();
+  const { present: participantCount } = useParticipantCounts();
 
   const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
   const outputElementRef = useRef<HTMLDivElement | null>(null);

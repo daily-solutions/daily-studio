@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { Label } from '@/ui/Label';
 import {
   Select,
@@ -12,18 +11,13 @@ import { useDevices } from '@daily-co/daily-react';
 const DEVICES_NOT_FOUND = ['idle', 'pending'];
 
 export function VideoDevices() {
-  const { cameras, setCamera, camState } = useDevices();
-
-  const selectedCamera = useMemo(
-    () => cameras.find((cam) => cam.selected),
-    [cameras]
-  );
+  const { cameras, setCamera, camState, currentCam } = useDevices();
 
   return (
     <div className="flex flex-col gap-y-2">
       <Label className="text-xs">Camera</Label>
       <Select
-        value={selectedCamera?.device.deviceId}
+        value={currentCam?.device.deviceId}
         onValueChange={(value) => setCamera(value)}
       >
         <SelectTrigger className="w-full">
