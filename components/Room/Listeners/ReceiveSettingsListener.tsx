@@ -1,8 +1,16 @@
 import { useCallback, useEffect } from 'react';
-import { useDaily, useLocalSessionId, useNetwork } from '@daily-co/daily-react';
+import { useVideoLayer } from '@/states/videoLayerState';
+import {
+  DailyEventObjectCpuLoadEvent,
+  DailyEventObjectNetworkQualityEvent,
+} from '@daily-co/daily-js';
+import {
+  useDaily,
+  useLocalSessionId,
+  useThrottledDailyEvent,
+} from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
-import { useCPULoad } from '@/hooks/useCPULoad';
 import { useParticipants } from '@/hooks/useParticipants';
 
 export enum VIDEO_QUALITY_LAYERS {
@@ -16,37 +24,76 @@ export function ReceiveSettingsListener() {
   const localSessionId = useLocalSessionId();
   const { participantIds, waitingParticipantIds } = useParticipants();
 
-  const { threshold } = useNetwork();
-  const { cpuLoadState, cpuLoadStateReason } = useCPULoad();
+  const [{ receive }, setVideoLayer] = useVideoLayer();
 
-  const calculateOptimalLayer = useCallback(() => {
-    const isCPULoadLow = cpuLoadState === 'low';
-    const isCPULoadHigh = cpuLoadState === 'high';
-    const isCPULoadDueToDecode = cpuLoadStateReason === 'decode';
+  const handleEvent = useCallback(
+    (
+      events: (
+        | DailyEventObjectCpuLoadEvent
+        | DailyEventObjectNetworkQualityEvent
+      )[]
+    ) => {
+      events.forEach((ev) => {
+        if (ev.action === 'network-quality-change') {
+          const { threshold } = ev;
+          const networkQualityLayer =
+            threshold === 'good'
+              ? VIDEO_QUALITY_LAYERS.HIGH
+              : threshold === 'low'
+              ? VIDEO_QUALITY_LAYERS.MEDIUM
+              : VIDEO_QUALITY_LAYERS.LOW;
 
-    const isThresholdGood = threshold === 'good';
-    const isThresholdLow = threshold === 'low';
+          setVideoLayer((prev) => {
+            if (prev.receive.layerBasedOnNetwork === networkQualityLayer) {
+              return prev;
+            }
+            return {
+              ...prev,
+              receive: { ...prev.receive, networkQualityLayer },
+            };
+          });
+        } else if (ev.action === 'cpu-load-change') {
+          const { cpuLoadState, cpuLoadStateReason } = ev;
+          const cpuLoadLayer =
+            cpuLoadState === 'low'
+              ? VIDEO_QUALITY_LAYERS.HIGH
+              : cpuLoadStateReason === 'decode'
+              ? VIDEO_QUALITY_LAYERS.MEDIUM
+              : VIDEO_QUALITY_LAYERS.LOW;
 
-    let optimalLayer: VIDEO_QUALITY_LAYERS = VIDEO_QUALITY_LAYERS.LOW;
+          setVideoLayer((prev) => {
+            if (prev.receive.layerBasedOnCPU === cpuLoadLayer) {
+              return prev;
+            }
+            return { ...prev, receive: { ...prev.receive, cpuLoadLayer } };
+          });
+        }
+      });
+    },
+    [setVideoLayer]
+  );
 
-    if (participantIds.length < 5) {
-      if (isCPULoadLow && isThresholdGood) {
-        optimalLayer = VIDEO_QUALITY_LAYERS.HIGH;
-      } else if (isThresholdLow) {
-        optimalLayer = VIDEO_QUALITY_LAYERS.MEDIUM;
-      } else if (isCPULoadHigh) {
-        optimalLayer = isCPULoadDueToDecode
-          ? VIDEO_QUALITY_LAYERS.LOW
-          : VIDEO_QUALITY_LAYERS.MEDIUM;
+  useThrottledDailyEvent(
+    ['network-quality-change', 'cpu-load-change'],
+    handleEvent
+  );
+
+  useEffect(() => {
+    const participantCount = participantIds.length;
+    const participantCountLayer =
+      participantCount < 5
+        ? VIDEO_QUALITY_LAYERS.HIGH
+        : participantCount < 10
+        ? VIDEO_QUALITY_LAYERS.MEDIUM
+        : VIDEO_QUALITY_LAYERS.LOW;
+
+    setVideoLayer((prev) => {
+      if (prev.receive.layerBasedOnParticipantCount === participantCountLayer) {
+        return prev;
       }
-    } else if (participantIds.length < 10) {
-      if (isCPULoadLow && isThresholdGood) {
-        optimalLayer = VIDEO_QUALITY_LAYERS.MEDIUM;
-      }
-    }
-
-    return optimalLayer;
-  }, [cpuLoadState, cpuLoadStateReason, participantIds.length, threshold]);
+      return { ...prev, receive: { ...prev.receive, participantCountLayer } };
+    });
+  }, [participantIds, setVideoLayer]);
 
   const updateReceiveSettings = useCallback(async () => {
     if (!daily) return;
@@ -54,12 +101,15 @@ export function ReceiveSettingsListener() {
     const updatedReceiveSettings = {};
     const receiveSettings = await daily.getReceiveSettings();
 
-    const layer = calculateOptimalLayer();
+    const layers = [
+      receive.layerBasedOnCPU,
+      receive.layerBasedOnNetwork,
+      receive.layerBasedOnParticipantCount,
+    ];
 
-    const updateSettingsForParticipant = (
-      participantId: string,
-      layer: VIDEO_QUALITY_LAYERS
-    ) => {
+    const layer = Math.min(...layers);
+
+    const updateSettingsForParticipant = (participantId, layer) => {
       if (participantId === localSessionId) return;
       updatedReceiveSettings[participantId] = { video: { layer } };
     };
@@ -81,10 +131,12 @@ export function ReceiveSettingsListener() {
 
     await daily.updateReceiveSettings(updatedReceiveSettings);
   }, [
-    calculateOptimalLayer,
     daily,
     localSessionId,
     participantIds,
+    receive.layerBasedOnCPU,
+    receive.layerBasedOnNetwork,
+    receive.layerBasedOnParticipantCount,
     waitingParticipantIds,
   ]);
 
