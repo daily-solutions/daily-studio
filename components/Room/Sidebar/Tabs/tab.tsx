@@ -4,6 +4,7 @@ import { TabsTrigger } from '@/ui/Tabs';
 
 import { Sidebar } from '@/types/sidebar';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { Icon, Icons } from '@/components/Icons';
 
@@ -23,6 +24,7 @@ export function Tab({
   ownerOnly = true,
 }: Props) {
   const isOwner = useIsOwner();
+  const isMobile = useIsMobile();
 
   if (ownerOnly && !isOwner) return null;
 
@@ -32,10 +34,14 @@ export function Tab({
       className="data-[state=active]:text-selected"
       disabled={disabled}
     >
-      <div className={cn('flex flex-col items-center gap-y-2')}>
-        <Icon icon={icon} className="h-6 w-6" />
-        <p className="text-xs">{text}</p>
-      </div>
+      {isMobile ? (
+        <p className="text-sm">{text}</p>
+      ) : (
+        <div className={cn('flex flex-col items-center gap-y-2')}>
+          <Icon icon={icon} className="h-6 w-6" />
+          <p className="text-xs">{text}</p>
+        </div>
+      )}
     </TabsTrigger>
   );
 }

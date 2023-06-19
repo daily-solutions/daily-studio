@@ -4,9 +4,7 @@ import { DailyAudio } from '@daily-co/daily-react';
 import { Tray } from '@/components/Call/Tray';
 import { Layout } from '@/components/Call/Tray/Layout';
 import { Listeners } from '@/components/Room/Listeners';
-import { BroadcastModal } from '@/components/Room/Modals/Broadcast';
-import { JoinStageModal } from '@/components/Room/Modals/JoinStage';
-import { RTMPModal } from '@/components/Room/Modals/Rtmp';
+import { Modals } from '@/components/Room/Modals';
 import { Sidebar } from '@/components/Room/Sidebar';
 import { Stage } from '@/components/Room/Stage';
 import { VcsPreview } from '@/components/Vcs/VcsPreview';
@@ -23,9 +21,7 @@ export function Room() {
         </div>
         <Sidebar />
       </div>
-      <RTMPModal />
-      <BroadcastModal />
-      <JoinStageModal />
+      <Modals />
       <DailyAudio />
       <Listeners />
     </div>

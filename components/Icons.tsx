@@ -16,6 +16,7 @@ import {
   Loader2,
   LogOut,
   LucideProps,
+  Menu,
   MessageCircle,
   Mic,
   MicOff,
@@ -88,6 +89,7 @@ export const Icons = {
   sun: Sun,
   moon: Moon,
   laptop: Laptop,
+  menu: Menu,
   dominant: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

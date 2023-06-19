@@ -1,26 +1,34 @@
 import { useMemo } from 'react';
 import { Tabs } from '@/ui/Tabs';
 
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { Tabs as TabsList } from '@/components/Room/Sidebar/Tabs';
 import { TabContent } from '@/components/Room/Sidebar/Tabs/TabContent';
 
-export function Sidebar() {
+interface Props {
+  visibleInMobile?: boolean;
+}
+
+export function Sidebar({ visibleInMobile = false }: Props) {
   const isOwner = useIsOwner();
+  const isMobile = useIsMobile();
 
   const defaultSidebar = useMemo(
     () => (isOwner ? 'layout' : 'chat'),
     [isOwner]
   );
 
+  if (isMobile && !visibleInMobile) return null;
+
   return (
     <Tabs
-      orientation="vertical"
+      orientation={isMobile ? 'horizontal' : 'vertical'}
       defaultValue={defaultSidebar}
-      className="hidden h-full w-[400px] border-l md:block"
+      className="h-full w-full md:w-[400px] md:border-l"
     >
-      <div className="flex bg-background">
-        <div className="flex-1">
+      <div className="flex flex-col bg-background md:flex-row">
+        <div className="order-1 flex-1 md:order-none">
           <TabContent value="layout" />
           <TabContent value="text" />
           <TabContent value="image" />
