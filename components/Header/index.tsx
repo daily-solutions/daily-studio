@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { buttonVariants } from '@/ui/Button';
+import { Icons } from '@/ui/Icons';
 import { useMeetingState } from '@daily-co/daily-react';
 
 import { siteConfig } from '@/config/site';
@@ -10,7 +11,6 @@ import { Menu } from '@/components/Header/Menu';
 import { StatusBadge } from '@/components/Header/StatusBadge';
 import { ThemeToggle } from '@/components/Header/ThemeToggle';
 import { ViewerCount } from '@/components/Header/ViewerCount';
-import { Icons } from '@/components/Icons';
 
 export function Header() {
   const meetingState = useMeetingState();

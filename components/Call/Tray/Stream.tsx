@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { useBroadcast } from '@/states/broadcastState';
+import { Icon } from '@/ui/Icons';
 import { TrayButton } from '@/ui/TrayButton';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useLiveStream } from '@/hooks/useLiveStream';
-import { Icon } from '@/components/Icons';
 
 interface Props {
   mobileUi?: boolean;

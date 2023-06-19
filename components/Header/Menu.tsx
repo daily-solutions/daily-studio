@@ -1,10 +1,10 @@
 import React from 'react';
 import { useMobileSidebar } from '@/states/mobileSidebarState';
 import { Button } from '@/ui/Button';
+import { Icons } from '@/ui/Icons';
 import { useMeetingState } from '@daily-co/daily-react';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { Icons } from '@/components/Icons';
 
 export function Menu() {
   const isMobile = useIsMobile();

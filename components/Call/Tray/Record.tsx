@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
+import { Icon } from '@/ui/Icons';
 import { TrayButton } from '@/ui/TrayButton';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useRecord } from '@/hooks/useRecord';
-import { Icon } from '@/components/Icons';
 
 interface Props {
   mobileUi?: boolean;

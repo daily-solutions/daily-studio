@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/ui/Button';
 import { Card } from '@/ui/Card';
+import { Icon } from '@/ui/Icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
 import { DailyNetworkStats } from '@daily-co/daily-js';
 import { useNetwork } from '@daily-co/daily-react';
-
-import { Icon } from '@/components/Icons';
 
 function NetworkPopover() {
   const { getStats, threshold } = useNetwork();

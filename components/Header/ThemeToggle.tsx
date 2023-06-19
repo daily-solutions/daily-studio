@@ -6,9 +6,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
+import { Icons } from '@/ui/Icons';
 import { useTheme } from 'next-themes';
-
-import { Icons } from '@/components/Icons';
 
 export function ThemeToggle() {
   const { setTheme } = useTheme();

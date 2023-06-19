@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { Button } from '@/ui/Button';
+import { Icons } from '@/ui/Icons';
 import { Switch } from '@/ui/Switch';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { RTMP } from '@/types/rtmp';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { Icons } from '@/components/Icons';
 
 interface Props {
   id: string;

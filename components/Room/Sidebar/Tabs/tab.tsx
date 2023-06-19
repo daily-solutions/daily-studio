@@ -1,12 +1,12 @@
 'use client';
 
+import { Icon, Icons } from '@/ui/Icons';
 import { TabsTrigger } from '@/ui/Tabs';
 
 import { Sidebar } from '@/types/sidebar';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { Icon, Icons } from '@/components/Icons';
 
 interface Props {
   name: Sidebar;

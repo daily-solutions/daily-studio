@@ -6,10 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
+import { Icon } from '@/ui/Icons';
 
 import { Record } from '@/components/Call/Tray/Record';
 import { Stream } from '@/components/Call/Tray/Stream';
-import { Icon } from '@/components/Icons';
 
 export function More() {
   return (

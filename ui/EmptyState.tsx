@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { Icon, Icons } from '@/components/Icons';
+import { Icon, Icons } from '@/ui/Icons';
 
 interface Props {
   title: string;

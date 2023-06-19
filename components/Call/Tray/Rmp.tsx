@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Button } from '@/ui/Button';
+import { Icon } from '@/ui/Icons';
 import { Input } from '@/ui/Input';
 import { Label } from '@/ui/Label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
@@ -7,7 +8,6 @@ import { useToast } from '@/ui/useToast';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useRMP } from '@/hooks/useRMP';
-import { Icon } from '@/components/Icons';
 
 export const RMPPopover = () => {
   const { toast } = useToast();

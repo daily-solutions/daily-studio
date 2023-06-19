@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/ui/Button';
 
-export function JoinButton() {
+export function CreateCallButton() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 

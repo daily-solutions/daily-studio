@@ -2,11 +2,11 @@
 
 import React, { useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader } from '@/ui/Card';
+import { Icons } from '@/ui/Icons';
 import { useDaily, useMeetingState } from '@daily-co/daily-react';
 
 import { Haircheck } from '@/components/Call/Haircheck';
 import { Header } from '@/components/Header';
-import { Icons } from '@/components/Icons';
 import { Room } from '@/components/Room';
 
 export function Call() {

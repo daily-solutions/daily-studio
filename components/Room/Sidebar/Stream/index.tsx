@@ -2,10 +2,10 @@ import React from 'react';
 import { useCreateRTMP } from '@/states/createRTMPState';
 import { Button } from '@/ui/Button';
 import { EmptyState } from '@/ui/EmptyState';
+import { Icons } from '@/ui/Icons';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { Icons } from '@/components/Icons';
 import { Rtmp } from '@/components/Room/Sidebar/Stream/Rtmp';
 
 export function Stream({

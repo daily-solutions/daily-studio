@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from '@/ui/Button';
+import { Icon, Icons } from '@/ui/Icons';
 
 import { cn } from '@/lib/utils';
-import { Icon, Icons } from '@/components/Icons';
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
   text: string;

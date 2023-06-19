@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import { Button } from '@/ui/Button';
+import { Icons } from '@/ui/Icons';
 import { Label } from '@/ui/Label';
 
 import { useStage } from '@/hooks/useStage';
-import { Icons } from '@/components/Icons';
 
 export function Viewer({
   sessionId,

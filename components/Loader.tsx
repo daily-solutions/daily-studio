@@ -1,7 +1,7 @@
 import React from 'react';
+import { Icons } from '@/ui/Icons';
 
 import { Header } from '@/components/Header';
-import { Icons } from '@/components/Icons';
 
 export function Loader({ showHeader = true }: { showHeader?: boolean }) {
   return (

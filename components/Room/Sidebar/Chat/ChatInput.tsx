@@ -1,14 +1,13 @@
 import React, { useCallback, useRef } from 'react';
 import { useMessages } from '@/states/messagesState';
 import { Button } from '@/ui/Button';
+import { Icons } from '@/ui/Icons';
 import { Input } from '@/ui/Input';
 import {
   useDaily,
   useLocalSessionId,
   useParticipantProperty,
 } from '@daily-co/daily-react';
-
-import { Icons } from '@/components/Icons';
 
 export function ChatInput() {
   const daily = useDaily();

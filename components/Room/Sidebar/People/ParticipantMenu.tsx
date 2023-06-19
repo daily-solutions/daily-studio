@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
+import { Icons } from '@/ui/Icons';
 import {
   useDaily,
   useLocalSessionId,
@@ -18,7 +19,6 @@ import {
 
 import { useRMP } from '@/hooks/useRMP';
 import { useStage } from '@/hooks/useStage';
-import { Icons } from '@/components/Icons';
 
 interface Props {
   sessionId: string;

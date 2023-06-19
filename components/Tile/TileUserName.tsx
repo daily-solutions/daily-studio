@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { Icon } from '@/ui/Icons';
 import { useParticipantProperty } from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
-import { Icon } from '@/components/Icons';
 
 interface Props {
   sessionId: string;

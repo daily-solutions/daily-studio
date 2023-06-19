@@ -1,7 +1,6 @@
 import { Button } from '@/ui/Button';
+import { Icon } from '@/ui/Icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
-
-import { Icon } from '@/components/Icons';
 
 import { Devices } from '../Devices';
 

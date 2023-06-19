@@ -1,10 +1,10 @@
 import React from 'react';
+import { Icon } from '@/ui/Icons';
 import { Label } from '@/ui/Label';
 import { useParticipantProperty } from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { Icon } from '@/components/Icons';
 import { ParticipantMenu } from '@/components/Room/Sidebar/People/ParticipantMenu';
 
 const MUTED_STATES = ['interrupted', 'off', 'blocked'];

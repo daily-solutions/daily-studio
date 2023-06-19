@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { Button } from '@/ui/Button';
+import { Icons } from '@/ui/Icons';
 
 import { Asset as AssetType } from '@/types/asset';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { Icons } from '@/components/Icons';
 
 export function Asset({ asset }: { asset: AssetType }) {
   const [{ assets }, setSessionState] =
