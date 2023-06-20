@@ -21,32 +21,35 @@ export function DailyClientProvider({
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
 
   useEffect(() => {
-    if (callObject || !roomName || (requiresToken && !token)) return;
+    const handleCreateCallObject = async () => {
+      if (callObject || !roomName || (requiresToken && !token)) return;
 
-    const url = `https://${process.env.NEXT_PUBLIC_DAILY_DOMAIN}.daily.co/${roomName}`;
-    let newCallObject: DailyCall | null = null;
-    try {
-      newCallObject = DailyIframe.createCallObject({
-        url,
-        token,
-        strictMode: true,
-        sendSettings: {
-          video: 'quality-optimized',
-        },
-        dailyConfig: {
-          useDevicePreferenceCookies: true,
-        },
-        subscribeToTracksAutomatically: false,
-      });
-    } catch {
-      newCallObject = DailyIframe.getCallInstance();
-    }
-    setCallObject(newCallObject);
+      const url = `https://${process.env.NEXT_PUBLIC_DAILY_DOMAIN}.daily.co/${roomName}`;
+      let newCallObject: DailyCall | null = null;
+      try {
+        newCallObject = DailyIframe.createCallObject({
+          url,
+          token,
+          strictMode: true,
+          sendSettings: {
+            video: 'quality-optimized',
+          },
+          dailyConfig: {
+            useDevicePreferenceCookies: true,
+          },
+          subscribeToTracksAutomatically: false,
+        });
+      } catch {
+        newCallObject = DailyIframe.getCallInstance();
+      }
+      setCallObject(newCallObject);
+      // attach callObject to window
+      window['callObject'] = newCallObject;
 
-    // attach callObject to window
-    window['callObject'] = newCallObject;
+      await newCallObject.preAuth({ url, token });
+    };
 
-    newCallObject.preAuth({ url, token });
+    handleCreateCallObject();
   }, [callObject, requiresToken, roomName, token]);
 
   if (!callObject) return <Loader />;

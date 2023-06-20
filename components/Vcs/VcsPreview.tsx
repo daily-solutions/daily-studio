@@ -17,9 +17,7 @@ export function VcsPreview() {
     aspectRatio: isMobile ? MOBILE_ASPECT_RATIO : DESKTOP_ASPECT_RATIO,
   });
 
-  const { outputElementRef } = useVCS({
-    viewport: size,
-  });
+  const { outputElementRef } = useVCS({ viewport: size });
 
   return (
     <div
