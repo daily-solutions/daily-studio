@@ -11,7 +11,7 @@ import {
 } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
-import { useParticipants } from '@/hooks/useParticipants';
+import { useStage } from '@/hooks/useStage';
 
 export enum VIDEO_QUALITY_LAYERS {
   LOW = 0,
@@ -22,7 +22,7 @@ export enum VIDEO_QUALITY_LAYERS {
 export function ReceiveSettingsListener() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const { participantIds, waitingParticipantIds } = useParticipants();
+  const { participantIds, waitingParticipantIds } = useStage();
 
   const [{ receive }, setVideoLayer] = useVideoLayer();
 

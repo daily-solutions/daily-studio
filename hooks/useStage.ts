@@ -2,11 +2,15 @@ import { useCallback, useMemo } from 'react';
 import { useJoinStage } from '@/states/joinStageState';
 import { useIsRequesting, useRequestedParticipants } from '@/states/stageState';
 import { useToast } from '@/ui/useToast';
-import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
+import {
+  DailyEventObjectAppMessage,
+  DailyParticipant,
+} from '@daily-co/daily-js';
 import {
   useAppMessage,
   useDaily,
   useLocalSessionId,
+  useParticipantIds,
   useParticipantProperty,
   usePermissions,
 } from '@daily-co/daily-react';
@@ -450,11 +454,34 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     }
   }, [hasPresence, userData]);
 
+  const participantIds = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence &&
+        (p.userData?.['onStage'] ||
+          p?.participantType === 'remote-media-player'),
+      []
+    ),
+  });
+
+  const waitingParticipantIds = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence &&
+        p.userData?.['acceptedToJoin'] &&
+        !p.userData?.['onStage'],
+      []
+    ),
+  });
+
   return {
     isRequesting,
     requestedParticipants,
     appMessage,
     state,
+    // participants list
+    participantIds,
+    waitingParticipantIds,
     // methods
     requestToJoin,
     cancelRequestToJoin,

@@ -3,12 +3,12 @@ import { DailyParticipant } from '@daily-co/daily-js';
 import { useDaily, useParticipantIds } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { useParticipants } from '@/hooks/useParticipants';
+import { useStage } from '@/hooks/useStage';
 
 export const useSubscribe = () => {
   const daily = useDaily();
   const isOwner = useIsOwner();
-  const { waitingParticipantIds } = useParticipants();
+  const { waitingParticipantIds } = useStage();
 
   const subscribedIds = useParticipantIds({
     filter: useCallback(

@@ -8,7 +8,7 @@ import { dequal } from 'dequal';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { useParticipants } from '@/hooks/useParticipants';
+import { useStage } from '@/hooks/useStage';
 
 export const useLiveStream = () => {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export const useLiveStream = () => {
   const [params] = useParams();
   const [{ assets, rtmps }] = useMeetingSessionState<MeetingSessionState>();
 
-  const { participantIds } = useParticipants();
+  const { participantIds } = useStage();
 
   const startLiveStreaming = useCallback(() => {
     const rtmpURLs = Object.values(rtmps)

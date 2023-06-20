@@ -8,7 +8,7 @@ import { dequal } from 'dequal';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { useParticipants } from '@/hooks/useParticipants';
+import { useStage } from '@/hooks/useStage';
 
 export const useRecord = () => {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export const useRecord = () => {
   const [params] = useParams();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
-  const { participantIds } = useParticipants();
+  const { participantIds } = useStage();
 
   const startRecording = useCallback(() => {
     const session_assets = Object.values(assets ?? {}).reduce((acc, asset) => {

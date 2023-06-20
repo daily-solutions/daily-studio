@@ -3,7 +3,6 @@ import { Tabs, TabsContent, TabsList } from '@/ui/Tabs';
 import { useLocalSessionId } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { useParticipants } from '@/hooks/useParticipants';
 import { useStage } from '@/hooks/useStage';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import { Participants } from '@/components/Room/Stage/Participants';
@@ -13,8 +12,7 @@ import { Tile } from '@/components/Tile';
 export function Stage() {
   const isOwner = useIsOwner();
   const localSessionId = useLocalSessionId();
-  const { state } = useStage();
-  const { participantIds, waitingParticipantIds } = useParticipants();
+  const { state, participantIds, waitingParticipantIds } = useStage();
 
   const [tab, setTab] = useState('stage');
 

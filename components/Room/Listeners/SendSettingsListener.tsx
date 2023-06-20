@@ -7,7 +7,7 @@ import {
 } from '@daily-co/daily-js';
 import { useSendSettings, useThrottledDailyEvent } from '@daily-co/daily-react';
 
-import { useParticipants } from '@/hooks/useParticipants';
+import { useStage } from '@/hooks/useStage';
 import { VIDEO_QUALITY_LAYERS } from '@/components/Room/Listeners/ReceiveSettingsListener';
 
 export function SendSettingsListener() {
@@ -15,7 +15,7 @@ export function SendSettingsListener() {
 
   const [{ send }, setVideoLayer] = useVideoLayer();
 
-  const { participantIds } = useParticipants();
+  const { participantIds } = useStage();
 
   const handleEvents = useCallback(
     (
