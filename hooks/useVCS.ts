@@ -5,7 +5,7 @@ import {
   useMeetingState,
   useParticipantCounts,
 } from '@daily-co/daily-react';
-import { dequal } from 'dequal';
+import { isEqual } from 'lodash';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { getDiff } from '@/lib/getDiff';
@@ -142,7 +142,7 @@ export const useVCS = ({ viewport: { width, height } }: Props) => {
   }, [assets]);
 
   useEffect(() => {
-    if (!vcsCompRef.current || dequal(vcsCompRef.current?.paramValues, params))
+    if (!vcsCompRef.current || isEqual(vcsCompRef.current?.paramValues, params))
       return;
 
     const diff = getDiff(vcsCompRef.current?.paramValues, params);

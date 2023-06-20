@@ -46,7 +46,7 @@ export function Participants({ participantIds }: Props) {
               transform: `translateX(${virtualColumn.start}px)`,
             }}
           >
-            <Tile sessionId={participantIds[virtualColumn.index]} />
+            <Tile sessionId={participantIds[virtualColumn.index]} showMenu />
           </div>
         ))}
       </div>

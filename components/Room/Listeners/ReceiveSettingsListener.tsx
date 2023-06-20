@@ -9,7 +9,7 @@ import {
   useLocalSessionId,
   useThrottledDailyEvent,
 } from '@daily-co/daily-react';
-import { dequal } from 'dequal';
+import { isEqual } from 'lodash';
 
 import { useStage } from '@/hooks/useStage';
 
@@ -124,7 +124,7 @@ export function ReceiveSettingsListener() {
 
     if (
       Object.keys(updatedReceiveSettings).length === 0 ||
-      dequal(receiveSettings, updatedReceiveSettings)
+      isEqual(receiveSettings, updatedReceiveSettings)
     ) {
       return;
     }
