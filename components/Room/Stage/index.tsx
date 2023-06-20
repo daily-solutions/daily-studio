@@ -31,7 +31,7 @@ export function Stage() {
     unsubscribeFromWaitingParticipants,
   ]);
 
-  if (state === 'back-stage') {
+  if (!isOwner && state === 'back-stage') {
     return (
       <div className="absolute bottom-28 left-8 w-[calc(9rem*(16/9))]">
         <Tile sessionId={localSessionId} noVideoTileColor="bg-background" />
