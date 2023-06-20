@@ -13,15 +13,23 @@ export function SubscriptionsListener() {
 
       events.forEach((event) => {
         const participant: DailyParticipant = event.participant;
-        const { permissions, userData, session_id, tracks, local } =
-          participant;
+        const {
+          permissions,
+          userData,
+          session_id,
+          tracks,
+          local,
+          participantType,
+        } = participant;
 
         if (local) return;
 
-        const isSubscribed = tracks.video.subscribed === true;
+        const isRMP = participantType === 'remote-media-player';
+        const isSubscribed =
+          tracks?.[isRMP ? 'rmpVideo' : 'video']?.subscribed === true;
 
         if (permissions.hasPresence) {
-          if (userData?.['onStage'] && !isSubscribed) {
+          if ((userData?.['onStage'] || isRMP) && !isSubscribed) {
             // If the participant is on stage, subscribe to their video
             updateParticipants[session_id] = { setSubscribedTracks: true };
           }
