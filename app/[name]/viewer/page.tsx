@@ -1,6 +1,6 @@
 import React from 'react';
+import { ViewLayout } from 'components/ViewLayout';
 
-import { Call } from '@/components/Call';
 import { DailyClientProvider } from '@/components/Room/DailyClientProvider';
 
 export default function ViewerPage({
@@ -10,7 +10,7 @@ export default function ViewerPage({
 }) {
   return (
     <DailyClientProvider roomName={name}>
-      <Call />
+      <ViewLayout />
     </DailyClientProvider>
   );
 }

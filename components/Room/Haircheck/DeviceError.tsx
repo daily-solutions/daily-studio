@@ -2,8 +2,8 @@ import { AspectRatio } from '@/ui/AspectRatio';
 import { useDevices } from '@daily-co/daily-react';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { DeviceBlocked } from '@/components/Call/Haircheck/DeviceBlocked';
-import { DevicePending } from '@/components/Call/Haircheck/DevicePending';
+import { DeviceBlocked } from '@/components/Room/Haircheck/DeviceBlocked';
+import { DevicePending } from '@/components/Room/Haircheck/DevicePending';
 
 export function DeviceError() {
   const isMobile = useIsMobile();

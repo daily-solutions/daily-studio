@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@/ui/Dialog';
 
-import { Setup } from '@/components/Call/Haircheck/Setup';
+import { Setup } from '@/components/Room/Haircheck/Setup';
 
 export function JoinStageModal() {
   const [show, setShow] = useJoinStage();

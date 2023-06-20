@@ -6,9 +6,9 @@ import {
   usePermissions,
 } from '@daily-co/daily-react';
 
-import { NameSetup } from '@/components/Call/Haircheck/NameSetup';
-import { Setup } from '@/components/Call/Haircheck/Setup';
 import { Loader } from '@/components/Loader';
+import { NameSetup } from '@/components/Room/Haircheck/NameSetup';
+import { Setup } from '@/components/Room/Haircheck/Setup';
 
 export function Haircheck() {
   const [state, setState] = useState<'setup' | 'haircheck'>('setup');

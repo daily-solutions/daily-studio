@@ -8,8 +8,8 @@ import {
 } from '@/ui/DropdownMenu';
 import { Icon } from '@/ui/Icons';
 
-import { Record } from '@/components/Call/Tray/Record';
-import { Stream } from '@/components/Call/Tray/Stream';
+import { Record } from '@/components/Room/Tray/Record';
+import { Stream } from '@/components/Room/Tray/Stream';
 
 export function More() {
   return (

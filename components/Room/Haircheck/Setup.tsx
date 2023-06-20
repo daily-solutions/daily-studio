@@ -10,10 +10,10 @@ import {
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { Devices } from '@/components/Call/Devices';
-import { DeviceError } from '@/components/Call/Haircheck/DeviceError';
-import { Audio } from '@/components/Call/Tray/Audio';
-import { Video } from '@/components/Call/Tray/Video';
+import { Devices } from '@/components/Room/Devices';
+import { DeviceError } from '@/components/Room/Haircheck/DeviceError';
+import { Audio } from '@/components/Room/Tray/Audio';
+import { Video } from '@/components/Room/Tray/Video';
 import { Tile } from '@/components/Tile';
 
 export function Setup({ onJoin = () => {} } = {}) {

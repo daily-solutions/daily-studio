@@ -1,8 +1,8 @@
 import { usePermissions } from '@daily-co/daily-react';
 
-import { AudioDevices } from '@/components/Call/Devices/AudioDevices';
-import { SpeakerDevices } from '@/components/Call/Devices/SpeakerDevices';
-import { VideoDevices } from '@/components/Call/Devices/VideoDevices';
+import { AudioDevices } from '@/components/Room/Devices/AudioDevices';
+import { SpeakerDevices } from '@/components/Room/Devices/SpeakerDevices';
+import { VideoDevices } from '@/components/Room/Devices/VideoDevices';
 
 export function Devices() {
   const { canSendAudio, canSendVideo } = usePermissions();

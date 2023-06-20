@@ -4,12 +4,12 @@ import React, { useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader } from '@/ui/Card';
 import { Icons } from '@/ui/Icons';
 import { useDaily, useMeetingState } from '@daily-co/daily-react';
+import { Haircheck } from 'components/Room/Haircheck';
 
-import { Haircheck } from '@/components/Call/Haircheck';
 import { Header } from '@/components/Header';
 import { Room } from '@/components/Room';
 
-export function Call() {
+export function ViewLayout() {
   const daily = useDaily();
   const meetingState = useMeetingState();
 

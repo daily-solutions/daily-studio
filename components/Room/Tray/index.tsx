@@ -3,17 +3,17 @@ import { useJoinStage } from '@/states/joinStageState';
 import { Button } from '@/ui/Button';
 
 import { useStage } from '@/hooks/useStage';
-import { Audio } from '@/components/Call/Tray/Audio';
-import { Invite } from '@/components/Call/Tray/Invite';
-import { Leave } from '@/components/Call/Tray/Leave';
-import { More } from '@/components/Call/Tray/More';
-import { Network } from '@/components/Call/Tray/Network';
-import { Record } from '@/components/Call/Tray/Record';
-import { Rmp } from '@/components/Call/Tray/Rmp';
-import { Screenshare } from '@/components/Call/Tray/ScreenShare';
-import { Settings } from '@/components/Call/Tray/Settings';
-import { Stream } from '@/components/Call/Tray/Stream';
-import { Video } from '@/components/Call/Tray/Video';
+import { Audio } from '@/components/Room/Tray/Audio';
+import { Invite } from '@/components/Room/Tray/Invite';
+import { Leave } from '@/components/Room/Tray/Leave';
+import { More } from '@/components/Room/Tray/More';
+import { Network } from '@/components/Room/Tray/Network';
+import { Record } from '@/components/Room/Tray/Record';
+import { Rmp } from '@/components/Room/Tray/Rmp';
+import { Screenshare } from '@/components/Room/Tray/ScreenShare';
+import { Settings } from '@/components/Room/Tray/Settings';
+import { Stream } from '@/components/Room/Tray/Stream';
+import { Video } from '@/components/Room/Tray/Video';
 
 export function Tray() {
   const [, setJoinStage] = useJoinStage();
