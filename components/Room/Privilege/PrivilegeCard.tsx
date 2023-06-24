@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/ui/Card';
 
 import { PrivilegeButton } from '@/components/Room/Privilege/PrivilegeButton';
 
-interface Props {
+export interface Props {
   roomName: string;
   heading: string;
   description: string;

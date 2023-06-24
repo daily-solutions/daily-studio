@@ -9,7 +9,6 @@ import { useMeetingState } from '@daily-co/daily-react';
 import { siteConfig } from '@/config/site';
 import { Menu } from '@/components/Header/Menu';
 import { StatusBadge } from '@/components/Header/StatusBadge';
-import { ThemeToggle } from '@/components/Header/ThemeToggle';
 import { ViewerCount } from '@/components/Header/ViewerCount';
 
 export function Header() {
@@ -42,7 +41,6 @@ export function Header() {
               </div>
             </Link>
           )}
-          <ThemeToggle />
           <Menu />
         </div>
       </div>
