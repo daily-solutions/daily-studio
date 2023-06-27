@@ -6,7 +6,7 @@ import { Toaster } from '@/ui/Toaster';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { Providers } from '@/components/Providers';
+import { RecoilProvider } from '@/components/Providers';
 import { TailwindIndicator } from '@/components/TailwindIndicator';
 
 export const metadata: Metadata = {
@@ -40,11 +40,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <Providers>
+        <RecoilProvider>
           <div className="h-full overflow-hidden">{children}</div>
           <Toaster />
           <TailwindIndicator />
-        </Providers>
+        </RecoilProvider>
       </body>
     </html>
   );

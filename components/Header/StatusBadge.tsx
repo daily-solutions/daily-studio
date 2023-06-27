@@ -1,5 +1,4 @@
 import { Badge } from '@/ui/Badge';
-import { useMeetingState } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useLiveStream } from '@/hooks/useLiveStream';
@@ -8,7 +7,6 @@ import { useStage } from '@/hooks/useStage';
 
 export function StatusBadge() {
   const isOwner = useIsOwner();
-  const meetingState = useMeetingState();
   const { state } = useStage();
 
   const { isLiveStreaming } = useLiveStream();
@@ -16,8 +14,6 @@ export function StatusBadge() {
 
   const isOnStage = state === 'on-stage';
   const isOnBackStage = state === 'back-stage';
-
-  if (meetingState !== 'joined-meeting') return null;
 
   return (
     <div className="flex items-center justify-center gap-3">

@@ -2,7 +2,7 @@ import React from 'react';
 import { ViewLayout } from 'components/ViewLayout';
 
 import { Loader } from '@/components/Loader';
-import { DailyClientProvider } from '@/components/Room/DailyClientProvider';
+import { DailyClientProvider } from '@/components/Providers';
 
 async function generateToken(roomName: string) {
   const res = await fetch(
