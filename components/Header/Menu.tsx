@@ -3,8 +3,13 @@ import { useMobileSidebar } from '@/states/mobileSidebarState';
 import { Button } from '@/ui/Button';
 import { Icons } from '@/ui/Icons';
 
-export default function Menu() {
+import { useIsMobile } from '@/hooks/useIsMobile';
+
+export function Menu() {
+  const isMobile = useIsMobile();
   const [, setShow] = useMobileSidebar();
+
+  if (!isMobile) return null;
 
   return (
     <Button
