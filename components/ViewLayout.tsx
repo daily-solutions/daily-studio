@@ -1,9 +1,18 @@
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader } from '@/ui/Card';
 import { Icons } from '@/ui/Icons';
-import { useDaily, useMeetingState } from '@daily-co/daily-react';
+import { useToast } from '@/ui/useToast';
+import {
+  DailyEventObject,
+  DailyEventObjectNetworkConnectionEvent,
+} from '@daily-co/daily-js';
+import {
+  useDaily,
+  useDailyEvent,
+  useMeetingState,
+} from '@daily-co/daily-react';
 import { Haircheck } from 'components/Room/Haircheck';
 
 import { Header } from '@/components/Header';
@@ -12,6 +21,49 @@ import { Room } from '@/components/Room';
 export function ViewLayout() {
   const daily = useDaily();
   const meetingState = useMeetingState();
+
+  const { toast } = useToast();
+
+  useDailyEvent(
+    'load-attempt-failed',
+    useCallback(
+      (ev: DailyEventObject) => {
+        toast({
+          title: 'Failed to load meeting',
+          description: ev.errorMsg,
+          variant: 'destructive',
+        });
+      },
+      [toast]
+    )
+  );
+
+  useDailyEvent(
+    'network-connection',
+    useCallback(
+      (ev: DailyEventObjectNetworkConnectionEvent) => {
+        if (ev.event !== 'interrupted') return;
+        toast({
+          title: 'Network connection interrupted',
+          description: 'Attempting to reconnect...',
+          variant: 'destructive',
+        });
+      },
+      [toast]
+    )
+  );
+
+  useDailyEvent(
+    'error',
+    useCallback(() => {
+      toast({
+        title: 'Looks like you are offline',
+        description: 'Leaving the call...',
+        variant: 'destructive',
+      });
+      daily?.leave();
+    }, [daily, toast])
+  );
 
   const content = useMemo(() => {
     switch (meetingState) {
