@@ -39,7 +39,7 @@ const initialValues = {
   active: true,
 };
 
-export function RTMPModal() {
+export default function RTMPModal() {
   const [show, setShow] = useCreateRTMP();
 
   const [{ rtmps }, setSessionState] =

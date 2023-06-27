@@ -16,7 +16,7 @@ import { useLiveStream } from '@/hooks/useLiveStream';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Stream } from '@/components/Room/Sidebar/Stream';
 
-export function BroadcastModal() {
+export default function BroadcastModal() {
   const [broadcast, setBroadcast] = useBroadcast();
   const [{ rtmps }] = useMeetingSessionState<MeetingSessionState>();
   const [, setCreateRTMP] = useCreateRTMP();

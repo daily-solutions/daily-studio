@@ -3,7 +3,7 @@ import { Sheet, SheetContent } from '@/ui/Sheet';
 
 import { Sidebar } from '@/components/Room/Sidebar';
 
-export const MobileSidebar = () => {
+export default function MobileSidebar() {
   const [open, setOpen] = useMobileSidebar();
 
   return (
@@ -13,4 +13,4 @@ export const MobileSidebar = () => {
       </SheetContent>
     </Sheet>
   );
-};
+}
