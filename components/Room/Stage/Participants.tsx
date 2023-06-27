@@ -46,7 +46,11 @@ export function Participants({ participantIds }: Props) {
               transform: `translateX(${virtualColumn.start}px)`,
             }}
           >
-            <Tile sessionId={participantIds[virtualColumn.index]} showMenu />
+            <Tile
+              sessionId={participantIds[virtualColumn.index]}
+              noVideoTileColor="bg-background"
+              showMenu
+            />
           </div>
         ))}
       </div>
