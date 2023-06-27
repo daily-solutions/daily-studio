@@ -16,7 +16,7 @@ const privilegeOptions: any[] = [
     description:
       'Add an owner to the room prior to adding additional participants. Select this option to join from the perspective of a presenter.',
     buttonText: 'Join as presenter',
-    buttonVariant: 'secondary',
+    buttonVariant: 'outline',
     privilege: 'presenter',
   },
   {
