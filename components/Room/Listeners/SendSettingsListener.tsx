@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useVideoLayer } from '@/states/videoLayerState';
 import {
   DailyEventObject,
@@ -11,10 +11,10 @@ import { useStage } from '@/hooks/useStage';
 import { VIDEO_QUALITY_LAYERS } from '@/components/Room/Listeners/ReceiveSettingsListener';
 
 export function SendSettingsListener() {
-  const { sendSettings, updateSendSettings } = useSendSettings();
+  const lastSendSettingsMaxQualityRef = useRef<number>(2);
 
+  const { updateSendSettings } = useSendSettings();
   const [{ send }, setVideoLayer] = useVideoLayer();
-
   const { participantIds } = useStage();
 
   const handleEvents = useCallback(
@@ -122,16 +122,16 @@ export function SendSettingsListener() {
     ];
     const layer = Math.min(...layers);
 
-    if (sendSettings?.video?.maxQuality === layer) return;
+    if (lastSendSettingsMaxQualityRef.current === layer) return;
 
     const maxQuality = layer === 2 ? 'high' : layer === 1 ? 'medium' : 'low';
     await updateSendSettings({ video: { maxQuality } });
+    lastSendSettingsMaxQualityRef.current = layer;
   }, [
     send.layerBasedOnCPU,
     send.layerBasedOnNetwork,
     send.layerBasedOnParticipantCount,
     send.layerBasedOnScreenShare,
-    sendSettings?.video?.maxQuality,
     updateSendSettings,
   ]);
 
