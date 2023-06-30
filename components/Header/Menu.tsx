@@ -5,7 +5,7 @@ import { Icons } from '@/ui/Icons';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-export function Menu() {
+export default function Menu() {
   const isMobile = useIsMobile();
   const [, setShow] = useMobileSidebar();
 

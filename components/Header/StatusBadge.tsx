@@ -5,7 +5,7 @@ import { useLiveStream } from '@/hooks/useLiveStream';
 import { useRecord } from '@/hooks/useRecord';
 import { useStage } from '@/hooks/useStage';
 
-export function StatusBadge() {
+export default function StatusBadge() {
   const isOwner = useIsOwner();
   const { state } = useStage();
 

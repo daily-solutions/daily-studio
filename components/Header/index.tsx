@@ -1,48 +1,45 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import { buttonVariants } from '@/ui/Button';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/ui/Button';
 import { Icons } from '@/ui/Icons';
 import { useMeetingState } from '@daily-co/daily-react';
 
 import { siteConfig } from '@/config/site';
-import { Menu } from '@/components/Header/Menu';
-import { StatusBadge } from '@/components/Header/StatusBadge';
-import { ViewerCount } from '@/components/Header/ViewerCount';
+import { useIsMobile } from '@/hooks/useIsMobile';
+
+const StatusBadge = dynamic(() => import('@/components/Header/StatusBadge'));
+const Menu = dynamic(() => import('@/components/Header/Menu'));
+const ViewerCount = dynamic(() => import('@/components/Header/ViewerCount'));
 
 export function Header() {
+  const isMobile = useIsMobile();
   const meetingState = useMeetingState();
+
+  const router = useRouter();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="mx-2 flex h-16 items-center justify-between">
-        <Link href="/">
-          <span className="inline-block font-bold">{siteConfig.name}</span>
-        </Link>
-        <StatusBadge />
+        <span className="inline-block font-bold">{siteConfig.name}</span>
+        {meetingState === 'joined-meeting' && <StatusBadge />}
         <div className="flex items-center justify-center gap-x-2">
           {meetingState === 'joined-meeting' ? (
             <>
               <ViewerCount />
-              <Menu />
+              {isMobile && <Menu />}
             </>
           ) : (
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => router.push(siteConfig.links.github)}
             >
-              <div
-                className={buttonVariants({
-                  size: 'sm',
-                  variant: 'ghost',
-                })}
-              >
-                <Icons.gitHub className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </div>
-            </Link>
+              <Icons.gitHub className="h-5 w-5" />
+              <span className="sr-only">GitHub</span>
+            </Button>
           )}
         </div>
       </div>
