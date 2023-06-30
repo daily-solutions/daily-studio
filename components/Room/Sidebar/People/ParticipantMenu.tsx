@@ -17,6 +17,7 @@ import {
   usePermissions,
 } from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useRMP } from '@/hooks/useRMP';
 import { useStage } from '@/hooks/useStage';
 
@@ -27,32 +28,17 @@ interface Props {
 
 const IS_OFF = ['off', 'blocked'];
 
-export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
+function PermissionsMenu({ sessionId }: { sessionId: string }) {
   const daily = useDaily();
-  const localSessionId = useLocalSessionId();
-  const isLocalOwner = useParticipantProperty(localSessionId, 'owner');
-  const [
-    isOwner,
-    isLocal,
-    userData,
-    hasPresence,
-    participantType,
-    video,
-    audio,
-  ] = useParticipantProperty(sessionId, [
-    'owner',
-    'local',
-    'userData',
-    'permissions.hasPresence',
-    'participantType',
-    'tracks.video.state',
-    'tracks.audio.state',
-  ]);
-
   const { canSendAudio, canSendVideo, canSendScreenVideo } =
     usePermissions(sessionId);
 
-  const { remove, setStageVisibility } = useStage();
+  const localSessionId = useLocalSessionId();
+  const [isLocalOwner, isLocal] = useParticipantProperty(localSessionId, [
+    'owner',
+    'local',
+  ]);
+  const isOwner = useIsOwner(sessionId);
 
   const handlePermissionChange = useCallback(
     (type: 'audio' | 'video' | 'screen', checked: boolean) => {
@@ -99,30 +85,156 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
     [canSendAudio, canSendScreenVideo, canSendVideo, daily, sessionId]
   );
 
+  const { remove } = useStage();
+
   const handleRemoveFromStage = useCallback(
     () => remove(sessionId),
     [remove, sessionId]
   );
 
-  const { isPlaying, updateRemoteMediaPlayer, stopRemoteMediaPlayer } =
-    useRMP();
+  if (isOwner || isLocal || !isLocalOwner) return null;
 
-  const handlePlayPause = useCallback(async () => {
-    if (isPlaying) await updateRemoteMediaPlayer({ state: 'pause' });
-    else await updateRemoteMediaPlayer({ state: 'play' });
-  }, [isPlaying, updateRemoteMediaPlayer]);
+  return (
+    <>
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>Permissions</DropdownMenuLabel>
+      <DropdownMenuCheckboxItem
+        checked={canSendAudio}
+        onCheckedChange={(c) => handlePermissionChange('audio', c)}
+      >
+        Audio
+      </DropdownMenuCheckboxItem>
+      <DropdownMenuCheckboxItem
+        checked={canSendVideo}
+        onCheckedChange={(c) => handlePermissionChange('video', c)}
+      >
+        Video
+      </DropdownMenuCheckboxItem>
+      <DropdownMenuCheckboxItem
+        checked={canSendScreenVideo}
+        onCheckedChange={(c) => handlePermissionChange('screen', c)}
+      >
+        ScreenShare
+      </DropdownMenuCheckboxItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        className="text-destructive"
+        onClick={handleRemoveFromStage}
+      >
+        <Icons.userMinus className="mr-2 h-4 w-4" />
+        <span>Remove from stage</span>
+      </DropdownMenuItem>
+    </>
+  );
+}
+
+function ModerationMenu({ sessionId }: { sessionId: string }) {
+  const daily = useDaily();
+
+  const localSessionId = useLocalSessionId();
+  const [isLocalOwner, isLocal] = useParticipantProperty(localSessionId, [
+    'owner',
+    'local',
+  ]);
+
+  const [video, audio] = useParticipantProperty(sessionId, [
+    'tracks.video.state',
+    'tracks.audio.state',
+  ]);
 
   const handleTurnOff = useCallback(
     (device: 'audio' | 'video' = 'video') => {
       if (!daily) return;
 
-      daily.updateParticipant(
-        sessionId,
-        device === 'audio' ? { setAudio: false } : { setVideo: false }
-      );
+      const updates =
+        device === 'audio' ? { setAudio: false } : { setVideo: false };
+      daily.updateParticipant(sessionId, updates);
     },
     [daily, sessionId]
   );
+
+  if (isLocal || !isLocalOwner) return null;
+
+  return (
+    <>
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>Moderation</DropdownMenuLabel>
+      <DropdownMenuItem
+        disabled={IS_OFF.includes(video)}
+        onClick={() => handleTurnOff('video')}
+      >
+        <Icons.videoOff className="mr-2 h-4 w-4" />
+        <span>Turn off camera</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        disabled={IS_OFF.includes(audio)}
+        onClick={() => handleTurnOff('audio')}
+      >
+        <Icons.micOff className="mr-2 h-4 w-4" />
+        <span>Mute microphone</span>
+      </DropdownMenuItem>
+    </>
+  );
+}
+
+function RemoteMediaPlayerMenu() {
+  const { isPlaying, updateRemoteMediaPlayer, stopRemoteMediaPlayer } =
+    useRMP();
+
+  const handlePlayPause = useCallback(
+    async () =>
+      await updateRemoteMediaPlayer({ state: isPlaying ? 'pause' : 'play' }),
+    [isPlaying, updateRemoteMediaPlayer]
+  );
+
+  return (
+    <>
+      <DropdownMenuItem onClick={handlePlayPause}>
+        {isPlaying ? (
+          <Icons.pause className="mr-2 h-4 w-4" />
+        ) : (
+          <Icons.play className="mr-2 h-4 w-4" />
+        )}
+        <span>{isPlaying ? 'Pause' : 'Resume'}</span>
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        className="text-destructive"
+        onClick={stopRemoteMediaPlayer}
+      >
+        <Icons.stop className="mr-2 h-4 w-4" />
+        <span>Stop media player</span>
+      </DropdownMenuItem>
+    </>
+  );
+}
+
+function StageVisibilityMenu({ sessionId }: { sessionId: string }) {
+  const [userData, hasPresence] = useParticipantProperty(sessionId, [
+    'userData',
+    'permissions.hasPresence',
+  ]);
+
+  const { setStageVisibility } = useStage();
+
+  return (
+    <>
+      <DropdownMenuSeparator />
+      <DropdownMenuCheckboxItem
+        disabled={!(userData?.['acceptedToJoin'] || userData?.['onStage'])}
+        checked={hasPresence && userData?.['onStage']}
+        onCheckedChange={() =>
+          setStageVisibility(sessionId, !userData?.['onStage'])
+        }
+      >
+        Visible on stream
+      </DropdownMenuCheckboxItem>
+    </>
+  );
+}
+
+export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
+  const participantType = useParticipantProperty(sessionId, 'participantType');
 
   return (
     <DropdownMenu>
@@ -134,90 +246,12 @@ export function ParticipantMenu({ sessionId, variant = 'ghost' }: Props) {
       <DropdownMenuContent>
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         {participantType === 'remote-media-player' ? (
-          <>
-            <DropdownMenuItem onClick={handlePlayPause}>
-              {isPlaying ? (
-                <Icons.pause className="mr-2 h-4 w-4" />
-              ) : (
-                <Icons.play className="mr-2 h-4 w-4" />
-              )}
-              <span>{isPlaying ? 'Pause' : 'Resume'}</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-destructive"
-              onClick={stopRemoteMediaPlayer}
-            >
-              <Icons.stop className="mr-2 h-4 w-4" />
-              <span>Stop media player</span>
-            </DropdownMenuItem>
-          </>
+          <RemoteMediaPlayerMenu />
         ) : (
           <>
-            <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem
-              disabled={
-                !(userData?.['acceptedToJoin'] || userData?.['onStage'])
-              }
-              checked={hasPresence && userData?.['onStage']}
-              onCheckedChange={() =>
-                setStageVisibility(sessionId, !userData?.['onStage'])
-              }
-            >
-              Visible on stream
-            </DropdownMenuCheckboxItem>
-            {isLocalOwner && !isLocal && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Moderation</DropdownMenuLabel>
-                <DropdownMenuItem
-                  disabled={IS_OFF.includes(video)}
-                  onClick={() => handleTurnOff('video')}
-                >
-                  <Icons.videoOff className="mr-2 h-4 w-4" />
-                  <span>Turn off camera</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  disabled={IS_OFF.includes(audio)}
-                  onClick={() => handleTurnOff('audio')}
-                >
-                  <Icons.micOff className="mr-2 h-4 w-4" />
-                  <span>Mute microphone</span>
-                </DropdownMenuItem>
-              </>
-            )}
-            {isLocalOwner && !isOwner && !isLocal && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Permissions</DropdownMenuLabel>
-                <DropdownMenuCheckboxItem
-                  checked={canSendAudio}
-                  onCheckedChange={(c) => handlePermissionChange('audio', c)}
-                >
-                  Audio
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={canSendVideo}
-                  onCheckedChange={(c) => handlePermissionChange('video', c)}
-                >
-                  Video
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={canSendScreenVideo}
-                  onCheckedChange={(c) => handlePermissionChange('screen', c)}
-                >
-                  ScreenShare
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="text-destructive"
-                  onClick={handleRemoveFromStage}
-                >
-                  <Icons.userMinus className="mr-2 h-4 w-4" />
-                  <span>Remove from stage</span>
-                </DropdownMenuItem>
-              </>
-            )}
+            <StageVisibilityMenu sessionId={sessionId} />
+            <ModerationMenu sessionId={sessionId} />
+            <PermissionsMenu sessionId={sessionId} />
           </>
         )}
       </DropdownMenuContent>
