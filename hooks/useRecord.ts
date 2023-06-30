@@ -3,7 +3,7 @@ import { useParams } from '@/states/params';
 import { useToast } from '@/ui/useToast';
 import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
 import { useRecording } from '@daily-co/daily-react';
-import { isEqual } from 'lodash';
+import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useIsOwner } from '@/hooks/useIsOwner';
@@ -62,12 +62,12 @@ export const useRecord = () => {
   useEffect(() => {
     if (!isRecording || !isOwner) return;
 
-    const areParamsEqual = isEqual(
+    const areParamsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).composition_params,
       params
     );
 
-    const areParticipantsEqual = isEqual(
+    const areParticipantsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).video,
       participantIds
     );

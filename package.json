@@ -33,7 +33,7 @@
     "@tanstack/react-virtual": "^3.0.0-alpha.0",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
-    "lodash": "^4.17.21",
+    "dequal": "^2.0.3",
     "lucide-react": "^0.216.0",
     "next": "^13.4.6",
     "react": "^18.2.0",
