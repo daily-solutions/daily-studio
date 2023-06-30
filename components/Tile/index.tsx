@@ -1,11 +1,13 @@
 import React, { memo } from 'react';
+import dynamic from 'next/dynamic';
 import { AspectRatio } from '@/ui/AspectRatio';
 import { DailyVideo, useParticipantProperty } from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
 import { NoVideoTile } from '@/components/Tile/NoVideoTile';
-import { TileMenu } from '@/components/Tile/TileMenu';
 import { TileUserName } from '@/components/Tile/TileUserName';
+
+const TileMenu = dynamic(() => import('@/components/Tile/TileMenu'));
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   sessionId: string;

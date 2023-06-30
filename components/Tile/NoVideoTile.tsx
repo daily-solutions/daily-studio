@@ -19,11 +19,7 @@ export function NoVideoTile({
   );
 
   return (
-    <div
-      className={
-        'absolute inset-0 flex items-center justify-center border  text-muted-foreground'
-      }
-    >
+    <div className="absolute inset-0 flex items-center justify-center border  text-muted-foreground">
       <h2>
         {tileName} {isLocal && '(You)'}
       </h2>
