@@ -232,7 +232,7 @@
 
 "@daily-co/vcs-composition-daily-baseline-web@^0.1.6":
   version "0.1.6"
-  resolved "https://registry.npmjs.org/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.6.tgz"
+  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.6.tgz#9a3a4c4588e452af9b51db43c7496b1df200887e"
   integrity sha512-mQb9Kv7SSG4AH6+1/XRUQ5DzN9eSRb8aIh8lBO2grjxivbZpd/6PfUaSea3EEmWeyQz3PCgDL4EZHsU2+gboTg==
 
 "@eslint-community/eslint-utils@^4.2.0":
