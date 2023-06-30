@@ -1,7 +1,7 @@
 import React from 'react';
-import { ViewLayout } from 'components/ViewLayout';
 
 import { DailyClientProvider } from '@/components/Providers';
+import { ViewLayout } from '@/components/ViewLayout';
 
 export default function ViewerPage({
   params: { name },

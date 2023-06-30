@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Card, CardContent, CardHeader } from '@/ui/Card';
-import { Icons } from '@/ui/Icons';
+import dynamic from 'next/dynamic';
 import { useToast } from '@/ui/useToast';
 import {
   DailyEventObject,
@@ -13,10 +12,24 @@ import {
   useDailyEvent,
   useMeetingState,
 } from '@daily-co/daily-react';
-import { Haircheck } from 'components/Room/Haircheck';
 
 import { Header } from '@/components/Header';
-import { Room } from '@/components/Room';
+import { Loader } from '@/components/Loader';
+
+const Haircheck = dynamic(
+  () => import('@/components/Room/Haircheck').then((mod) => mod.Haircheck),
+  { loading: () => <Loader showHeader={false} /> }
+);
+
+const Room = dynamic(
+  () => import('@/components/Room').then((mod) => mod.Room),
+  { loading: () => <Loader showHeader={false} /> }
+);
+
+const LeftMeeting = dynamic(
+  () => import('@/components/Room/LeftMeeting').then((mod) => mod.LeftMeeting),
+  { loading: () => <Loader showHeader={false} /> }
+);
 
 export function ViewLayout() {
   const daily = useDaily();
@@ -72,27 +85,12 @@ export function ViewLayout() {
       case 'joined-meeting':
         return <Room />;
       case 'left-meeting':
-        return (
-          <div className="flex h-full w-full flex-1 items-center justify-center">
-            <Card className="flex flex-col items-center justify-center">
-              <CardHeader>
-                <h2 className="font-semibold">You&apos;ve left the call</h2>
-              </CardHeader>
-              <CardContent>
-                <p>Have a nice day!</p>
-              </CardContent>
-            </Card>
-          </div>
-        );
+        return <LeftMeeting />;
       case 'new':
       case 'joining-meeting':
       case 'loading':
       default:
-        return (
-          <div className="flex h-full w-full flex-1 items-center justify-center">
-            <Icons.spinner className="h-8 w-8 animate-spin" />
-          </div>
-        );
+        return <Loader showHeader={false} />;
     }
   }, [meetingState]);
 

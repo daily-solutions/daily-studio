@@ -1,12 +1,10 @@
 import '@/styles/globals.css';
 import React from 'react';
 import { Metadata } from 'next';
-import { Toaster } from '@/ui/Toaster';
 
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { RecoilProvider } from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: {
@@ -39,10 +37,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <RecoilProvider>
-          <div className="h-full overflow-hidden">{children}</div>
-          <Toaster />
-        </RecoilProvider>
+        <div className="h-full overflow-hidden">{children}</div>
       </body>
     </html>
   );

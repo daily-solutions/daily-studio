@@ -2,7 +2,7 @@ import { Badge } from '@/ui/Badge';
 import { Icons } from '@/ui/Icons';
 import { useParticipantCounts } from '@daily-co/daily-react';
 
-export default function ViewerCount() {
+export function ViewerCount() {
   const { hidden } = useParticipantCounts();
 
   return (

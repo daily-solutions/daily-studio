@@ -1,8 +1,8 @@
 import React from 'react';
-import { ViewLayout } from 'components/ViewLayout';
 
 import { Loader } from '@/components/Loader';
 import { DailyClientProvider } from '@/components/Providers';
+import { ViewLayout } from '@/components/ViewLayout';
 
 async function generateToken(roomName: string) {
   const res = await fetch(
