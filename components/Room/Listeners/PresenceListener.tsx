@@ -41,7 +41,7 @@ export function PresenceListener() {
 
         if (ev.participantCounts.hidden > 0) {
           fetchParticipants();
-          setTimeout(fetchParticipants, 1500);
+          setTimeout(fetchParticipants, 2500);
         } else setViewers([]);
       },
       [fetchParticipants, isOwner, setViewers]
