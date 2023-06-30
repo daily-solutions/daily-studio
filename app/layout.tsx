@@ -7,7 +7,6 @@ import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { RecoilProvider } from '@/components/Providers';
-import { TailwindIndicator } from '@/components/TailwindIndicator';
 
 export const metadata: Metadata = {
   title: {
@@ -43,7 +42,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <RecoilProvider>
           <div className="h-full overflow-hidden">{children}</div>
           <Toaster />
-          <TailwindIndicator />
         </RecoilProvider>
       </body>
     </html>
