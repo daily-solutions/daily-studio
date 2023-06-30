@@ -7,7 +7,9 @@ import { cn } from '@/lib/utils';
 import { NoVideoTile } from '@/components/Tile/NoVideoTile';
 import { TileUserName } from '@/components/Tile/TileUserName';
 
-const TileMenu = dynamic(() => import('@/components/Tile/TileMenu'));
+const TileMenu = dynamic(() =>
+  import('@/components/Tile/TileMenu').then((mod) => mod.TileMenu)
+);
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   sessionId: string;

@@ -1,9 +1,12 @@
 import { Badge } from '@/ui/Badge';
 import { Icons } from '@/ui/Icons';
-import { useParticipantCounts } from '@daily-co/daily-react';
+import { useMeetingState, useParticipantCounts } from '@daily-co/daily-react';
 
 export function ViewerCount() {
+  const meetingState = useMeetingState();
   const { hidden } = useParticipantCounts();
+
+  if (meetingState !== 'joined-meeting') return null;
 
   return (
     <Badge variant="outline" className="px-2 py-1">

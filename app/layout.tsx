@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
+import { RecoilProvider } from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: {
@@ -23,11 +24,7 @@ export const metadata: Metadata = {
   },
 };
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: React.PropsWithChildren<{}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -37,7 +34,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <div className="h-full overflow-hidden">{children}</div>
+        <RecoilProvider>
+          <div className="h-full overflow-hidden">{children}</div>
+        </RecoilProvider>
       </body>
     </html>
   );

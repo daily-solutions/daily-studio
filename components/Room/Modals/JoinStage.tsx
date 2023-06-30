@@ -10,7 +10,7 @@ import {
 
 import { Setup } from '@/components/Room/Haircheck/Setup';
 
-export default function JoinStageModal() {
+export function JoinStageModal() {
   const [show, setShow] = useJoinStage();
 
   const onJoin = useCallback(() => setShow(false), [setShow]);

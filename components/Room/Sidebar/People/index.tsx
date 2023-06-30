@@ -6,7 +6,7 @@ import { useParticipantIds } from '@daily-co/daily-react';
 import { Participant } from '@/components/Room/Sidebar/People/Participant';
 import { Viewer } from '@/components/Room/Sidebar/People/Viewer';
 
-export default function People() {
+export function People() {
   const participantIds = useParticipantIds({
     filter: useCallback((p: DailyParticipant) => p.permissions.hasPresence, []),
     sort: useCallback((a: DailyParticipant, b: DailyParticipant) => {

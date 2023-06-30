@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import dynamic from 'next/dynamic';
 import { useBroadcast } from '@/states/broadcastState';
 import { useCreateRTMP } from '@/states/createRTMPState';
 import { Button } from '@/ui/Button';
@@ -15,10 +14,9 @@ import {
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useLiveStream } from '@/hooks/useLiveStream';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
+import { Stream } from '@/components/Room/Sidebar/Stream';
 
-const Stream = dynamic(() => import('@/components/Room/Sidebar/Stream'));
-
-export default function BroadcastModal() {
+export function BroadcastModal() {
   const [broadcast, setBroadcast] = useBroadcast();
   const [{ rtmps }] = useMeetingSessionState<MeetingSessionState>();
   const [, setCreateRTMP] = useCreateRTMP();
