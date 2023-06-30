@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import { configParams } from '@/constants/configParams';
 import { imageParams } from '@/constants/imageParams';
 import { textParams } from '@/constants/textParams';
@@ -9,12 +10,24 @@ import { TabsContent } from '@/ui/Tabs';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { Sidebar } from '@/types/sidebar';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { FormMaker } from '@/components/FormMaker';
-import { Assets } from '@/components/Room/Sidebar/Assets';
-import { Chat } from '@/components/Room/Sidebar/Chat';
-import { People } from '@/components/Room/Sidebar/People';
-import { Stream } from '@/components/Room/Sidebar/Stream';
+import { Loading } from '@/components/Room/Sidebar/Loading';
 import { TabHeading } from '@/components/Room/Sidebar/Tabs/TabHeading';
+
+const FormMaker = dynamic(() => import('@/components/FormMaker'), {
+  loading: () => <Loading />,
+});
+const People = dynamic(() => import('@/components/Room/Sidebar/People'), {
+  loading: () => <Loading />,
+});
+const Assets = dynamic(() => import('@/components/Room/Sidebar/Assets'), {
+  loading: () => <Loading />,
+});
+const Chat = dynamic(() => import('@/components/Room/Sidebar/Chat'), {
+  loading: () => <Loading />,
+});
+const Stream = dynamic(() => import('@/components/Room/Sidebar/Stream'), {
+  loading: () => <Loading />,
+});
 
 interface Props {
   value: Sidebar;

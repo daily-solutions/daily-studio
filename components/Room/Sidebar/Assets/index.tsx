@@ -8,7 +8,7 @@ import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Asset } from '@/components/Room/Sidebar/Assets/Asset';
 
-export function Assets() {
+export default function Assets() {
   const [asset, setAsset] = useState<AssetType>({
     name: '',
     url: '',

@@ -6,7 +6,7 @@ interface Props {
   fields: Param[];
 }
 
-export function FormMaker({ fields }: Props) {
+export default function FormMaker({ fields }: Props) {
   return (
     <div className="flex flex-col gap-y-6 p-4">
       {fields.map((field) => (

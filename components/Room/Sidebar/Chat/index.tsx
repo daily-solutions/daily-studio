@@ -5,7 +5,7 @@ import { EmptyState } from '@/ui/EmptyState';
 import { ChatInput } from '@/components/Room/Sidebar/Chat/ChatInput';
 import { ChatMessage } from '@/components/Room/Sidebar/Chat/ChatMessage';
 
-export function Chat() {
+export default function Chat() {
   const messagesRef = useRef<HTMLDivElement | null>(null);
   const [messages] = useMessages();
 

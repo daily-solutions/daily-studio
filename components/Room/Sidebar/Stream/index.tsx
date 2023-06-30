@@ -8,7 +8,7 @@ import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { Rtmp } from '@/components/Room/Sidebar/Stream/Rtmp';
 
-export function Stream({
+export default function Stream({
   showHeader = false,
   showSwitch = false,
 }: {
