@@ -33,9 +33,8 @@ export function SubscriptionsListener() {
             // If the participant is on stage, subscribe to their video
             updateParticipants[session_id] = { setSubscribedTracks: true };
           }
-        } else {
+        } else if (isSubscribed) {
           // If the participant is not on stage, unsubscribe from their video
-          if (!isSubscribed) return;
           updateParticipants[session_id] = { setSubscribedTracks: false };
         }
       });
