@@ -12,7 +12,6 @@ import {
 import { Icons } from '@/ui/Icons';
 import {
   useDaily,
-  useLocalSessionId,
   useParticipantProperty,
   usePermissions,
 } from '@daily-co/daily-react';
@@ -33,12 +32,11 @@ function PermissionsMenu({ sessionId }: { sessionId: string }) {
   const { canSendAudio, canSendVideo, canSendScreenVideo } =
     usePermissions(sessionId);
 
-  const localSessionId = useLocalSessionId();
-  const [isLocalOwner, isLocal] = useParticipantProperty(localSessionId, [
+  const [isOwner, isLocal] = useParticipantProperty(sessionId, [
     'owner',
     'local',
   ]);
-  const isOwner = useIsOwner(sessionId);
+  const isLocalOwner = useIsOwner();
 
   const handlePermissionChange = useCallback(
     (type: 'audio' | 'video' | 'screen', checked: boolean) => {
@@ -130,12 +128,7 @@ function PermissionsMenu({ sessionId }: { sessionId: string }) {
 
 function ModerationMenu({ sessionId }: { sessionId: string }) {
   const daily = useDaily();
-
-  const localSessionId = useLocalSessionId();
-  const [isLocalOwner, isLocal] = useParticipantProperty(localSessionId, [
-    'owner',
-    'local',
-  ]);
+  const isOwner = useIsOwner();
 
   const [video, audio] = useParticipantProperty(sessionId, [
     'tracks.video.state',
@@ -153,7 +146,7 @@ function ModerationMenu({ sessionId }: { sessionId: string }) {
     [daily, sessionId]
   );
 
-  if (isLocal || !isLocalOwner) return null;
+  if (!isOwner) return null;
 
   return (
     <>
