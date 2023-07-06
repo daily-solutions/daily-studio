@@ -44,6 +44,7 @@ export function Tray() {
           <div className="flex items-center">
             <Video />
             <Audio />
+            <Screenshare />
           </div>
         );
     }
@@ -53,7 +54,6 @@ export function Tray() {
     <div className="flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t bg-background p-4">
       {content}
       <div className="flex items-center justify-center">
-        <Screenshare />
         <Rmp />
         <Record />
         <Stream />
