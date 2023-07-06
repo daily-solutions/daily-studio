@@ -50,7 +50,7 @@ export function RTMPModal() {
     setCurrentPlatform((cp) => ({
       ...cp,
       name: value,
-      platform: '',
+      platform: value,
       streamURL: PLATFORMS[value],
     }));
   };

@@ -2,7 +2,6 @@ import React from 'react';
 import { DailyAudio } from '@daily-co/daily-react';
 import { Tray } from 'components/Room/Tray';
 
-import { Listeners } from '@/components/Room/Listeners';
 import { Modals } from '@/components/Room/Modals';
 import { Sidebar } from '@/components/Room/Sidebar';
 import { Stage } from '@/components/Room/Stage';
@@ -23,7 +22,6 @@ export function Room() {
       </div>
       <Modals />
       <DailyAudio />
-      <Listeners />
     </div>
   );
 }

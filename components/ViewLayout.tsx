@@ -15,6 +15,7 @@ import {
 
 import { Header } from '@/components/Header';
 import { Loader } from '@/components/Loader';
+import { Listeners } from '@/components/Room/Listeners';
 
 const Haircheck = dynamic(
   () => import('@/components/Room/Haircheck').then((mod) => mod.Haircheck),
@@ -104,6 +105,7 @@ export function ViewLayout() {
     <div className="flex h-full flex-col">
       <Header />
       {content}
+      <Listeners />
     </div>
   );
 }
