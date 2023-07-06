@@ -38,6 +38,14 @@ export function BroadcastModal() {
           </DialogDescription>
         </DialogHeader>
         <Stream showSwitch />
+        {Object.keys(rtmps ?? {}).length > 0 && (
+          <p
+            className="cursor-pointer text-xs font-medium underline"
+            onClick={() => setCreateRTMP(true)}
+          >
+            Want to add more RTMP destinations?
+          </p>
+        )}
         <DialogFooter className="mt-4">
           {Object.keys(rtmps ?? {}).length > 0 ? (
             <Button
