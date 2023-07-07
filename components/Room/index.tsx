@@ -5,7 +5,7 @@ import { Tray } from 'components/Room/Tray';
 import { Modals } from '@/components/Room/Modals';
 import { Sidebar } from '@/components/Room/Sidebar';
 import { Stage } from '@/components/Room/Stage';
-import { Layout } from '@/components/Room/Tray/Layout';
+import { LayoutSwitchMenu } from '@/components/Room/Tray/LayoutSwitchMenu';
 import { VcsPreview } from '@/components/Vcs/VcsPreview';
 
 export function Room() {
@@ -14,7 +14,7 @@ export function Room() {
       <div className="flex h-full">
         <div className="relative flex w-full flex-1 flex-col md:w-[calc(100%-400px)]">
           <VcsPreview />
-          <Layout />
+          <LayoutSwitchMenu />
           <Stage />
           <Tray />
         </div>

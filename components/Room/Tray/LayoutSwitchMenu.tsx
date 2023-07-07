@@ -5,7 +5,7 @@ import { TrayButton } from '@/ui/TrayButton';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useSyncParams } from '@/hooks/useSyncParams';
 
-export function Layout() {
+export function LayoutSwitchMenu() {
   const isOwner = useIsOwner();
   const [params] = useParams();
   const { updateParams } = useSyncParams();
