@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from '@/states/params';
 import {
   useLocalSessionId,
@@ -9,6 +9,7 @@ import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { getDiff } from '@/lib/getDiff';
+import { useAspectRatio } from '@/hooks/useAspectRatio';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useVideoTracks } from '@/hooks/useVideoTracks';
 import { VCSCompositionWrapper } from '@/components/Vcs/VcsCompositionWrapper';
@@ -27,13 +28,11 @@ const getAssetUrlCb = (name: string, namespace: string, type: string) => {
 };
 
 interface Props {
-  viewport: {
-    width: number;
-    height: number;
-  };
+  aspectRatio: number;
+  viewportRef: React.RefObject<HTMLDivElement>;
 }
 
-export const useVCS = ({ viewport: { width, height } }: Props) => {
+export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   const localSessionId = useLocalSessionId();
   const meetingState = useMeetingState();
   const { present: participantCount } = useParticipantCounts();
@@ -48,14 +47,14 @@ export const useVCS = ({ viewport: { width, height } }: Props) => {
 
   const [vcsInitialized, setVcsInitialized] = useState(false);
 
+  const { width, height } = useAspectRatio({
+    ref: viewportRef,
+    aspectRatio,
+  });
+
   const createVCSView = useCallback(
     (el) => {
       if (!el || meetingState !== 'joined-meeting' || !width || !height) return;
-
-      if (vcsInitialized) {
-        vcsCompRef.current?.rootDisplaySizeChanged();
-        return;
-      }
 
       vcsCompRef.current = new VCSCompositionWrapper(
         el,
@@ -71,12 +70,17 @@ export const useVCS = ({ viewport: { width, height } }: Props) => {
         })
         .catch((err) => console.error(`VCS start failed: ${err}`));
     },
-    [height, meetingState, params, vcsInitialized, width]
+    [height, meetingState, params, width]
   );
 
   useEffect(() => {
+    if (vcsInitialized) {
+      vcsCompRef.current?.rootDisplaySizeChanged();
+      return;
+    }
+
     createVCSView(outputElementRef.current);
-  }, [createVCSView]);
+  }, [createVCSView, vcsInitialized]);
 
   useEffect(() => {
     if (!vcsCompRef.current || !localSessionId) return;
@@ -158,5 +162,5 @@ export const useVCS = ({ viewport: { width, height } }: Props) => {
     }
   }, [height, params, width]);
 
-  return { outputElementRef, vcsCompRef };
+  return { outputElementRef, vcsCompRef, width, height };
 };

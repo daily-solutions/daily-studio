@@ -301,6 +301,7 @@ export class VCSCompositionWrapper {
       }
       this.sendActiveVideoInputSlots();
     }
+    this.rootDisplaySizeChanged();
   }
 
   reconcileMeetingTracks(newTracksById) {
@@ -369,6 +370,7 @@ export class VCSCompositionWrapper {
       }
       this.sendActiveVideoInputSlots();
     }
+    this.rootDisplaySizeChanged();
   }
 
   rootDisplaySizeChanged() {
