@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import dynamic from 'next/dynamic';
+import { DESKTOP_ASPECT_RATIO } from '@/constants/aspectRatio';
 import { AspectRatio } from '@/ui/AspectRatio';
 import { DailyVideo, useParticipantProperty } from '@daily-co/daily-react';
 
@@ -24,7 +25,7 @@ function TileComponent({
   className,
   noVideoTileColor = 'bg-muted',
   showMenu = false,
-  aspectRatio = 16 / 9,
+  aspectRatio = DESKTOP_ASPECT_RATIO,
   videoFit = 'contain',
 }: Props) {
   const [videoState, participantType] = useParticipantProperty(sessionId, [

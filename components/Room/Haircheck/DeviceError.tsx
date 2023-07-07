@@ -1,3 +1,7 @@
+import {
+  DESKTOP_ASPECT_RATIO,
+  MOBILE_ASPECT_RATIO,
+} from '@/constants/aspectRatio';
 import { AspectRatio } from '@/ui/AspectRatio';
 import { useDevices } from '@daily-co/daily-react';
 
@@ -13,7 +17,10 @@ export function DeviceError() {
   const isBlocked = camState === 'blocked' || micState === 'blocked';
 
   return (
-    <AspectRatio ratio={isMobile ? 4 / 3 : 16 / 9} className="bg-muted">
+    <AspectRatio
+      ratio={isMobile ? MOBILE_ASPECT_RATIO : DESKTOP_ASPECT_RATIO}
+      className="bg-muted"
+    >
       <div className="flex h-full flex-col items-center justify-center gap-2 p-4">
         {isPending && <DevicePending />}
         {isBlocked && <DeviceBlocked />}

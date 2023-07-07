@@ -1,4 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import {
+  DESKTOP_ASPECT_RATIO,
+  MOBILE_ASPECT_RATIO,
+} from '@/constants/aspectRatio';
 import { Button } from '@/ui/Button';
 import {
   useDaily,
@@ -67,7 +71,7 @@ export function Setup({ onJoin = () => {} } = {}) {
           <Tile
             videoFit="cover"
             sessionId={localSessionId}
-            aspectRatio={isMobile ? 4 / 3 : 16 / 9}
+            aspectRatio={isMobile ? MOBILE_ASPECT_RATIO : DESKTOP_ASPECT_RATIO}
           />
         ) : (
           <DeviceError />

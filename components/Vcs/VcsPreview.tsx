@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
+import {
+  DESKTOP_ASPECT_RATIO,
+  MOBILE_ASPECT_RATIO,
+} from '@/constants/aspectRatio';
 import { AspectRatio } from '@/ui/AspectRatio';
 
 import { useAspectRatio } from '@/hooks/useAspectRatio';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useVCS } from '@/hooks/useVCS';
-
-const MOBILE_ASPECT_RATIO = 4 / 3;
-const DESKTOP_ASPECT_RATIO = 16 / 9;
 
 export function VcsPreview() {
   const isMobile = useIsMobile();
