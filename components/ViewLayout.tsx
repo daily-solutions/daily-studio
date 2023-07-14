@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@/ui/useToast';
 import {
   DailyEventObject,
@@ -36,6 +37,8 @@ export function ViewLayout() {
   const daily = useDaily();
   const meetingState = useMeetingState();
 
+  const router = useRouter();
+
   const { toast } = useToast();
 
   useDailyEvent(
@@ -69,14 +72,29 @@ export function ViewLayout() {
 
   useDailyEvent(
     'error',
-    useCallback(() => {
-      toast({
-        title: 'Looks like you are offline',
-        description: 'Leaving the call...',
-        variant: 'destructive',
-      });
-      daily?.leave();
-    }, [daily, toast])
+    useCallback(
+      (ev) => {
+        if (
+          ev.errorMsg === "The meeting you're trying to join does not exist."
+        ) {
+          toast({
+            title: 'Meeting you are trying to join does not exist',
+            description: 'Redirecting you in 3 seconds...',
+            variant: 'destructive',
+          });
+          daily?.leave();
+          setTimeout(() => router.push('/'), 3000);
+        } else if (ev.errorMsg === 'network unreachable') {
+          toast({
+            title: 'Looks like you are offline',
+            description: 'Leaving the call...',
+            variant: 'destructive',
+          });
+          daily?.leave();
+        }
+      },
+      [daily, router, toast]
+    )
   );
 
   const content = useMemo(() => {
