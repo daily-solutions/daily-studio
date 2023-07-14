@@ -1,14 +1,3 @@
-const generateRandomRoomName = () => {
-  const PREFIX = 'vs-';
-  const RANDOM_STRING_LENGTH = 30;
-
-  const randomString = Array.from({ length: RANDOM_STRING_LENGTH })
-    .map(() => Math.random().toString(36)[2])
-    .join('');
-
-  return PREFIX + randomString;
-};
-
 export async function POST() {
   const options = {
     method: 'POST',
@@ -17,7 +6,6 @@ export async function POST() {
       Authorization: `Bearer ${process.env.DAILY_API_KEY}`,
     },
     body: JSON.stringify({
-      name: generateRandomRoomName(),
       privacy: 'public',
       properties: {
         enable_mesh_sfu: true,
