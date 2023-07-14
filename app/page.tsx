@@ -10,7 +10,7 @@ export default function IndexPage() {
     'use server';
 
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/daily/room`;
-    const response = await fetch(url, { method: 'POST' });
+    const response = await fetch(url, { method: 'POST', cache: 'no-store' });
     const { name } = await response.json();
     redirect(`/${name}`);
   };
