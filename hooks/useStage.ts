@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useJoinStage } from '@/states/joinStageState';
 import { useIsRequesting, useRequestedParticipants } from '@/states/stageState';
-import { useToast } from '@/ui/useToast';
 import {
   DailyEventObjectAppMessage,
   DailyParticipant,
@@ -83,9 +82,23 @@ type AppMessage =
 
 interface Props {
   onRequestToJoin?(data: RequestToJoinStage['payload']): void;
+  onCancelRequestToJoin?(data: { sessionId: string }): void;
+  onDeny?(data: DenyRequestToJoinStage['payload']): void;
+  onInvitedToStage?(data: InviteToStage['payload']): void;
+  onRemovedFromStage?(data: RemoveFromStage['payload']): void;
+  onStageVisibilityChange?(
+    data: VisibleOnStage['payload'] | HideOnStage['payload']
+  ): void;
 }
 
-export const useStage = ({ onRequestToJoin }: Props = {}) => {
+export const useStage = ({
+  onRequestToJoin,
+  onCancelRequestToJoin,
+  onDeny,
+  onInvitedToStage,
+  onRemovedFromStage,
+  onStageVisibilityChange,
+}: Props = {}) => {
   const daily = useDaily();
   const isOwner = useIsOwner();
 
@@ -101,33 +114,33 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     useRequestedParticipants();
   const [, setJoinStage] = useJoinStage();
 
-  const { toast } = useToast();
   const sendAppMessage = useAppMessage<AppMessage>();
 
   const handleRequestToJoin = useCallback(
-    (payload: RequestToJoinStage['payload'], runOnJoin = true) => {
-      if (!isOwner) return;
-
-      setRequestedParticipants((prev) => ({
-        ...prev,
-        [payload.sessionId]: payload,
-      }));
-      if (runOnJoin) onRequestToJoin?.(payload);
+    (payload: RequestToJoinStage['payload']) => {
+      if (isOwner) {
+        setRequestedParticipants((prev) => ({
+          ...prev,
+          [payload.sessionId]: payload,
+        }));
+      }
+      onRequestToJoin?.(payload);
     },
     [isOwner, onRequestToJoin, setRequestedParticipants]
   );
 
   const handleCancelRequestToJoin = useCallback(
     (sessionId: string) => {
-      if (!isOwner) return;
-
-      setRequestedParticipants((prev) => {
-        const next = { ...prev };
-        delete next[sessionId];
-        return next;
-      });
+      if (isOwner) {
+        setRequestedParticipants((prev) => {
+          const next = { ...prev };
+          delete next[sessionId];
+          return next;
+        });
+      }
+      onCancelRequestToJoin?.({ sessionId });
     },
-    [isOwner, setRequestedParticipants]
+    [isOwner, onCancelRequestToJoin, setRequestedParticipants]
   );
 
   const handleAccept = useCallback(
@@ -162,13 +175,10 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
         });
       } else if (localSessionId === payload.sessionId) {
         setIsRequesting(false);
-        toast({
-          title: 'You have been declined to join the stage.',
-          description: 'You can still watch the stage.',
-        });
+        onDeny?.(payload);
       }
     },
-    [isOwner, localSessionId, setIsRequesting, setRequestedParticipants, toast]
+    [isOwner, localSessionId, onDeny, setIsRequesting, setRequestedParticipants]
   );
 
   const handleInvite = useCallback(
@@ -182,19 +192,16 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
       } else if (localSessionId === payload.sessionId) {
         setIsRequesting(false);
         setJoinStage(true);
-        toast({
-          title: 'You have been invited to join the stage.',
-          description: 'You can unmute yourself to speak.',
-        });
+        onInvitedToStage?.(payload);
       }
     },
     [
       isOwner,
       localSessionId,
+      onInvitedToStage,
       setIsRequesting,
       setJoinStage,
       setRequestedParticipants,
-      toast,
     ]
   );
 
@@ -205,16 +212,10 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
       setIsRequesting(false);
       daily
         .setUserData({ onStage: false, acceptedToJoin: false })
-        .then(() => {
-          toast({
-            title: 'You have been removed from the stage.',
-            description: 'You can still watch the stage.',
-            variant: 'destructive',
-          });
-        })
+        .then(() => onRemovedFromStage?.(payload))
         .catch((err) => console.error(err));
     },
-    [daily, localSessionId, setIsRequesting, toast]
+    [daily, localSessionId, onRemovedFromStage, setIsRequesting]
   );
 
   const handleStageVisibility = useCallback(
@@ -224,25 +225,11 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
       if (payload.sessionId === localSessionId) {
         daily
           .setUserData({ acceptedToJoin: true, onStage: visible })
-          .then(() => {
-            if (visible) {
-              toast({
-                title: 'You are now visible on stage.',
-                description: 'You can unmute yourself to speak.',
-              });
-            } else {
-              toast({
-                title: 'You are now hidden from stage.',
-                description:
-                  'You can still watch the stage and wait for your turn.',
-                variant: 'destructive',
-              });
-            }
-          })
+          .then(() => onStageVisibilityChange?.(payload))
           .catch((err) => console.error(err));
       }
     },
-    [daily, localSessionId, toast]
+    [daily, localSessionId, onStageVisibilityChange]
   );
 
   const appMessage = useCallback(
@@ -305,19 +292,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
       event: 'request-to-join-stage',
       payload: { sessionId: localSessionId, userName },
     });
-
-    toast({
-      title: 'Request to join stage',
-      description: 'Your request to join the stage has been sent.',
-    });
-  }, [
-    isOwner,
-    localSessionId,
-    sendAppMessage,
-    setIsRequesting,
-    toast,
-    userName,
-  ]);
+  }, [isOwner, localSessionId, sendAppMessage, setIsRequesting, userName]);
 
   /*
    * cancelRequestToJoin
@@ -329,12 +304,7 @@ export const useStage = ({ onRequestToJoin }: Props = {}) => {
     setIsRequesting(false);
     // send message to everyone in the call, so the owners can receive the message.
     sendAppMessage({ event: 'cancel-request-to-join-stage' });
-
-    toast({
-      title: 'Cancel request to join stage',
-      description: 'Your request to join the stage has been canceled.',
-    });
-  }, [isOwner, sendAppMessage, setIsRequesting, toast]);
+  }, [isOwner, sendAppMessage, setIsRequesting]);
 
   /*
    * accept
