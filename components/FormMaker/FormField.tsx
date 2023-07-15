@@ -96,6 +96,11 @@ export const FormField = ({ field }: Props) => {
                 ))}
               </SelectContent>
             </Select>
+            {field?.description && (
+              <p className="text-xs text-muted-foreground">
+                {field.description}
+              </p>
+            )}
           </div>
         );
       case 'number':
@@ -111,6 +116,11 @@ export const FormField = ({ field }: Props) => {
               max={field?.max}
               onChange={handleChange}
             />
+            {field?.description && (
+              <p className="text-xs text-muted-foreground">
+                {field.description}
+              </p>
+            )}
           </div>
         );
       case 'range':
@@ -126,6 +136,11 @@ export const FormField = ({ field }: Props) => {
               value={[params?.[field.id] || field.defaultValue]}
               onValueChange={handleSlideChange}
             />
+            {field?.description && (
+              <p className="text-xs text-muted-foreground">
+                {field.description}
+              </p>
+            )}
           </div>
         );
       case 'color':
@@ -151,6 +166,11 @@ export const FormField = ({ field }: Props) => {
                 </div>
               </div>
             </div>
+            {field?.description && (
+              <p className="text-xs text-muted-foreground">
+                {field.description}
+              </p>
+            )}
           </div>
         );
       case 'string':
@@ -162,6 +182,11 @@ export const FormField = ({ field }: Props) => {
               value={params?.[field.id] || field.defaultValue}
               onChange={handleChange}
             />
+            {field?.description && (
+              <p className="text-xs text-muted-foreground">
+                {field.description}
+              </p>
+            )}
           </div>
         );
       case 'button':

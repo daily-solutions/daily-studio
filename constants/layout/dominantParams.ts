@@ -29,7 +29,9 @@ export const dominantParams: Param[] = [
   },
   {
     id: 'videoSettings.dominant.numChiclets',
-    label: 'Number of tiles to display (except active speaker)',
+    label: 'Number of tiles to display',
+    description:
+      'Excluding the active speaker, how many tiles to display in the side view',
     type: 'number',
     defaultValue: 5,
     render: { key: 'mode', value: 'dominant' },

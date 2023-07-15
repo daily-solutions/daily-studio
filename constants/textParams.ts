@@ -43,7 +43,8 @@ export const textParams: Param[] = [
   },
   {
     id: 'text.rotation_deg',
-    label: 'Degrees to rotate (positive for clock-wise rotation)',
+    label: 'Degrees to rotate',
+    description: 'Positive for clock-wise rotation',
     type: 'number',
     defaultValue: 0,
     min: -360,

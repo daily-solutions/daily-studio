@@ -30,7 +30,8 @@ export const gridParams: Param[] = [
   },
   {
     id: 'videoSettings.grid.itemInterval_gu',
-    label: 'Margin between grid tiles (-1 for auto)',
+    label: 'Margin between grid tiles',
+    description: 'Set to -1 to for auto',
     type: 'number',
     defaultValue: -1,
     step: 0.1,
@@ -38,7 +39,8 @@ export const gridParams: Param[] = [
   },
   {
     id: 'videoSettings.grid.outerPadding_gu',
-    label: 'Padding around grid tiles (-1 for auto)',
+    label: 'Padding around grid tiles',
+    description: 'Set to -1 to for auto',
     type: 'number',
     defaultValue: -1,
     step: 0.1,

@@ -2,6 +2,7 @@ export type BasicParam = {
   id: string;
   label: string;
   render?: { key: string; value: string | boolean | number };
+  description?: string;
 };
 
 export type NumberParams = {
