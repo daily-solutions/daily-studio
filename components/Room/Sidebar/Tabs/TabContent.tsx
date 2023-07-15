@@ -85,8 +85,8 @@ export function TabContent({ value }: Props) {
 
   return (
     <TabsContent value={value}>
-      <div className="h-[calc(100dvh-4rem)] overflow-auto scroll-smooth">
-        <TabHeading value={value} />
+      <TabHeading value={value} />
+      <div className="h-[calc(100dvh-8rem)] overflow-auto scroll-smooth">
         {content}
       </div>
     </TabsContent>
