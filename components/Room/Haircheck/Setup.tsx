@@ -5,6 +5,12 @@ import {
 } from '@/constants/aspectRatio';
 import { Button } from '@/ui/Button';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/ui/Tooltip';
+import {
   useDaily,
   useDevices,
   useLocalSessionId,
@@ -84,8 +90,26 @@ export function Setup({ onJoin = () => {} } = {}) {
         )}
       >
         <div className="flex items-center justify-center">
-          <Video disabled={videoDisabled} />
-          <Audio disabled={audioDisabled} />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Video disabled={videoDisabled} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>CMD + E</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Audio disabled={audioDisabled} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>CMD + D</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
         <Button disabled={!permissionsGranted} onClick={handleJoin}>
           Join
