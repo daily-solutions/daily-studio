@@ -1,8 +1,8 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMessages } from '@/states/messagesState';
 import { Button } from '@/ui/Button';
 import { Icons } from '@/ui/Icons';
-import { Input } from '@/ui/Input';
+import { Textarea } from '@/ui/TextArea';
 import {
   useDaily,
   useLocalSessionId,
@@ -11,55 +11,90 @@ import {
 
 export function ChatInput() {
   const daily = useDaily();
-  const formRef = useRef<HTMLFormElement | null>(null);
-
   const localSessionId = useLocalSessionId();
   const userName = useParticipantProperty(localSessionId, 'user_name');
   const [, setMessages] = useMessages();
 
-  const sendAppMessage = useCallback(
-    (ev: React.FormEvent<HTMLFormElement>) => {
-      if (!daily || !localSessionId) return;
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [height, setHeight] = useState('auto');
+  const [message, setMessage] = useState('');
 
-      ev.preventDefault();
+  const sendAppMessage = useCallback(() => {
+    if (!daily || !localSessionId) return;
 
-      const formData = new FormData(formRef.current as HTMLFormElement);
-      const message = formData.get('message') as string;
+    const id = crypto.randomUUID();
 
-      const id = crypto.randomUUID();
+    daily.sendAppMessage({
+      event: 'message',
+      id,
+      userName,
+      message,
+    });
 
-      daily.sendAppMessage({
-        event: 'message',
+    setMessages((messages) => [
+      ...messages,
+      {
         id,
         userName,
         message,
-      });
-      setMessages((messages) => [
-        ...messages,
-        {
-          id,
-          userName,
-          message,
-          receivedAt: new Date(),
-          fromId: localSessionId,
-          isLocal: true,
-        },
-      ]);
-      formRef.current?.reset();
+        receivedAt: new Date(),
+        fromId: localSessionId,
+        isLocal: true,
+      },
+    ]);
+    setMessage('');
+  }, [daily, localSessionId, setMessages, userName, message]);
+
+  useEffect(() => {
+    if (!textAreaRef.current) return;
+
+    if (!message) {
+      setHeight('auto');
+    } else {
+      setHeight(
+        `${
+          textAreaRef.current.scrollHeight +
+          (textAreaRef.current.offsetHeight - textAreaRef.current.clientHeight)
+        }px`
+      );
+    }
+  }, [message, textAreaRef]);
+
+  const handleKeyDown = useCallback(
+    (ev: React.KeyboardEvent) => {
+      if (
+        ev.key === 'Enter' &&
+        !(ev.shiftKey || ev.altKey || ev.ctrlKey || ev.metaKey)
+      ) {
+        ev.preventDefault();
+        sendAppMessage();
+      }
     },
-    [daily, localSessionId, setMessages, userName]
+    [sendAppMessage]
   );
 
   return (
-    <div className="absolute bottom-0 left-0 z-30 w-full p-4">
-      <form ref={formRef} onSubmit={sendAppMessage}>
+    <div className="w-full pb-4">
+      <form
+        onSubmit={(ev) => {
+          ev.preventDefault();
+          sendAppMessage();
+        }}
+      >
         <div className="relative">
-          <Input
+          <Textarea
+            ref={textAreaRef}
+            onKeyDown={handleKeyDown}
+            value={message}
+            rows={1}
+            onChange={(ev) => setMessage(ev.target.value)}
             name="message"
-            className="h-12 pr-10"
+            className="resize-none py-3 pr-10"
             placeholder="Enter your message here"
+            style={{ height }}
+            autoComplete="off"
           />
-          <div className="absolute right-2 top-2">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2">
             <Button type="submit" size="auto" variant="ghost">
               <Icons.send className="h-4 w-4" />
             </Button>

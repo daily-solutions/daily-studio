@@ -17,7 +17,7 @@ export function Chat() {
   }, [messages]);
 
   return (
-    <div className="relative flex h-full max-h-[calc(100%-4rem)] flex-col justify-between p-4">
+    <div className="relative flex h-full flex-col justify-between gap-y-4 px-4 py-0">
       <div
         ref={messagesRef}
         className="flex max-h-[calc(100%-4rem)] flex-col overflow-y-auto"
@@ -32,6 +32,7 @@ export function Chat() {
           ))
         ) : (
           <EmptyState
+            className="mt-4"
             icon="chat"
             title="It's empty in here!"
             description="Would you like to say something?"

@@ -1,5 +1,7 @@
 import { Message } from '@/states/messagesState';
 
+import { cn } from '@/lib/utils';
+
 export function ChatMessage({
   message,
   sameSender,
@@ -7,13 +9,15 @@ export function ChatMessage({
   message: Message;
   sameSender: boolean;
 }) {
-  const bgColor = message.isLocal ? 'bg-accent' : 'bg-muted';
+  const bgColor = message.isLocal ? 'bg-muted' : 'bg-accent';
 
   return (
     <div
-      className={`flex flex-col rounded-md p-3 ${bgColor} ${
+      className={cn(
+        'flex flex-col rounded-md p-3',
+        bgColor,
         sameSender ? 'mt-1' : 'mt-2'
-      }`}
+      )}
     >
       {!sameSender && (
         <div className="flex items-center justify-between">
