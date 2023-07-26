@@ -58,7 +58,7 @@ export function Stage() {
               active={tab === 'stage'}
             />
             <TabHeader
-              name="Waiting"
+              name="Backstage"
               value="waiting"
               count={waitingParticipantIds.length}
               active={tab === 'waiting'}
