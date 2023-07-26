@@ -87,7 +87,9 @@ interface Props {
   onInvitedToStage?(data: InviteToStage['payload']): void;
   onRemovedFromStage?(data: RemoveFromStage['payload']): void;
   onStageVisibilityChange?(
-    data: VisibleOnStage['payload'] | HideOnStage['payload']
+    data: {
+      event: 'visible-on-stage' | 'hide-on-stage';
+    } & VisibleOnStage['payload']
   ): void;
 }
 
@@ -225,7 +227,12 @@ export const useStage = ({
       if (payload.sessionId === localSessionId) {
         daily
           .setUserData({ acceptedToJoin: true, onStage: visible })
-          .then(() => onStageVisibilityChange?.(payload))
+          .then(() =>
+            onStageVisibilityChange?.({
+              event: visible ? 'visible-on-stage' : 'hide-on-stage',
+              ...payload,
+            })
+          )
           .catch((err) => console.error(err));
       }
     },
