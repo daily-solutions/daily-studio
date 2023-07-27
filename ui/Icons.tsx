@@ -10,6 +10,7 @@ import {
   Download,
   Eye,
   Image,
+  ImportIcon,
   Laptop,
   LayoutGrid,
   LayoutTemplate,
@@ -133,6 +134,7 @@ export const Icons = {
       />
     </svg>
   ),
+  import: ImportIcon,
 };
 
 export const Icon = ({

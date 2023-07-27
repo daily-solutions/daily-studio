@@ -44,6 +44,13 @@ const Stream = dynamic(
   }
 );
 
+const VCS = dynamic(
+  () => import('@/components/Room/Sidebar/VCS').then((mod) => mod.VCS),
+  {
+    loading: () => <Loading />,
+  }
+);
+
 interface Props {
   value: Sidebar;
 }
@@ -78,6 +85,8 @@ export function TabContent({ value }: Props) {
         return <Chat />;
       case 'config':
         return <FormMaker fields={configParams} />;
+      case 'vcs':
+        return <VCS />;
       default:
         return <FormMaker fields={viewParams} />;
     }

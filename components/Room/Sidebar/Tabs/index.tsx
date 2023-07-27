@@ -1,7 +1,7 @@
 import { TabsList } from '@/ui/Tabs';
 import { useLiveStreaming, useRecording } from '@daily-co/daily-react';
 
-import { Tab } from '@/components/Room/Sidebar/Tabs/tab';
+import { Tab } from '@/components/Room/Sidebar/Tabs/Tab';
 
 export function Tabs() {
   const { isLiveStreaming } = useLiveStreaming();
@@ -23,6 +23,7 @@ export function Tabs() {
         disabled={isLiveStreaming || isRecording}
       />
       <Tab name="config" icon="settings" text="Config" />
+      <Tab name="vcs" icon="import" text="VCS" />
     </TabsList>
   );
 }

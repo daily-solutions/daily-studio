@@ -51,6 +51,11 @@ export function TabHeading({ value }: Props) {
           heading: 'Configuration',
           description: 'Manage the VCS configuration',
         };
+      case 'vcs':
+        return {
+          heading: 'VCS Configuration',
+          description: 'Manage the VCS configuration',
+        };
       default:
         return {
           heading: 'View Settings',

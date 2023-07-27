@@ -38,6 +38,7 @@ export function Sidebar({ visibleInMobile = false }: Props) {
           <TabContent value="stream" />
           <TabContent value="assets" />
           <TabContent value="config" />
+          <TabContent value="vcs" />
         </div>
         <TabsList />
       </div>
