@@ -1,18 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from '@/states/params';
-import {
-  useLocalSessionId,
-  useMeetingState,
-  useParticipantCounts,
-} from '@daily-co/daily-react';
+import { useDaily, useMeetingState } from '@daily-co/daily-react';
+import { DailyVCSWebRenderer } from '@daily-co/daily-vcs-web';
+import * as comp from '@daily-co/vcs-composition-daily-baseline-web';
 import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
-import { getDiff } from '@/lib/getDiff';
 import { useAspectRatio } from '@/hooks/useAspectRatio';
-import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { useVideoTracks } from '@/hooks/useVideoTracks';
-import { VCSCompositionWrapper } from '@/components/Vcs/VcsCompositionWrapper';
+
+import { useMeetingSessionState } from './useMeetingSessionState';
+import { useStage } from './useStage';
 
 const getAssetUrlCb = (name: string, namespace: string, type: string) => {
   switch (type) {
@@ -33,17 +30,14 @@ interface Props {
 }
 
 export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
-  const localSessionId = useLocalSessionId();
+  const daily = useDaily();
   const meetingState = useMeetingState();
-  const { present: participantCount } = useParticipantCounts();
 
-  const vcsCompRef = useRef<VCSCompositionWrapper | null>(null);
+  const vcsCompRef = useRef<DailyVCSWebRenderer | null>(null);
   const outputElementRef = useRef<HTMLDivElement | null>(null);
 
   const [params] = useParams();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
-
-  const { activeVideoInputs, remoteTracksBySessionId } = useVideoTracks();
 
   const [vcsInitialized, setVcsInitialized] = useState(false);
 
@@ -52,115 +46,77 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
     aspectRatio,
   });
 
+  const { participantIds } = useStage();
+
   const createVCSView = useCallback(
     (el) => {
-      if (!el || meetingState !== 'joined-meeting' || !width || !height) return;
+      if (
+        !el ||
+        meetingState !== 'joined-meeting' ||
+        !width ||
+        !height ||
+        !daily
+      )
+        return;
 
-      vcsCompRef.current = new VCSCompositionWrapper(
-        el,
-        { w: width, h: height },
-        params,
-        { getAssetUrlCb }
-      );
-      vcsCompRef.current
-        .start()
-        .then(() => {
-          console.log('VCS started');
-          setVcsInitialized(true);
-        })
-        .catch((err) => console.error(`VCS start failed: ${err}`));
+      vcsCompRef.current = new DailyVCSWebRenderer(daily, comp, el, {
+        getAssetUrlCb,
+        viewportSize: { w: width, h: height },
+        defaultParams: params,
+        participantIds,
+        callbacks: {
+          onStart() {
+            console.log('VCS Started');
+            setVcsInitialized(true);
+          },
+          onStop() {
+            console.log('VCS Stopped');
+            setVcsInitialized(false);
+          },
+          onError(error) {
+            console.error('VCS Error: ', error);
+            setVcsInitialized(false);
+          },
+        },
+      });
+      vcsCompRef.current.start();
     },
-    [height, meetingState, params, width]
+    [daily, height, meetingState, params, participantIds, width]
   );
 
   useEffect(() => {
-    if (vcsInitialized) {
-      vcsCompRef.current?.rootDisplaySizeChanged();
-      return;
-    }
+    if (vcsInitialized) return;
 
     createVCSView(outputElementRef.current);
   }, [createVCSView, vcsInitialized]);
 
   useEffect(() => {
-    if (!vcsCompRef.current || !localSessionId) return;
-
-    if (participantCount > 0) {
-      vcsCompRef.current?.applyMeetingTracksAndOrdering(
-        remoteTracksBySessionId,
-        activeVideoInputs
-      );
-    } else {
-      vcsCompRef.current?.reconcileMeetingTracks(remoteTracksBySessionId);
-    }
-  }, [
-    vcsInitialized,
-    activeVideoInputs,
-    localSessionId,
-    participantCount,
-    remoteTracksBySessionId,
-    vcsCompRef,
-  ]);
-
-  useEffect(() => {
     if (!vcsCompRef.current) return;
 
-    const updateAssets = async () => {
-      const promises: Promise<any>[] = [];
+    const images = Object.keys(assets).reduce((acc, key) => {
+      acc[key] = assets[key].url;
+      return acc;
+    }, {});
 
-      for (const asset of Object.values(assets ?? {})) {
-        promises.push(
-          new Promise((resolve, reject) => {
-            const img = new Image();
-
-            img.onload = () => {
-              resolve({ name: asset.name, image: img });
-            };
-            img.onerror = () => {
-              const msg = `Image load failed, asset ${asset.name}`;
-              console.error(msg);
-              reject(new Error(msg));
-            };
-            img.src = asset.url;
-          })
-        );
-      }
-
-      const results = await Promise.all(promises);
-      const imagesByName = {};
-      for (const item of results) {
-        imagesByName[item.name] = item.image;
-        console.log('loaded test image: ', item.name);
-      }
-      return imagesByName;
-    };
-
-    updateAssets()
-      .then((assets) => {
-        if (!vcsCompRef.current) return;
-
-        vcsCompRef.current.sources.assetImages = assets;
-        vcsCompRef.current?.sendUpdateImageSources();
-      })
-      .catch((err) => console.error(err));
+    vcsCompRef.current.updateImageSources(images);
   }, [assets]);
 
   useEffect(() => {
-    if (!vcsCompRef.current || dequal(vcsCompRef.current?.paramValues, params))
+    if (!vcsCompRef.current || dequal(vcsCompRef.current?.params, params))
       return;
 
-    const diff = getDiff(vcsCompRef.current?.paramValues, params);
+    vcsCompRef.current.sendParams(params, 'replace');
+  }, [height, params, width]);
+
+  useEffect(() => {
     if (
-      diff &&
-      Object.keys(diff).length === 0 &&
-      Object.getPrototypeOf(diff) === Object.prototype
+      !vcsCompRef.current ||
+      dequal(vcsCompRef.current.participants, participantIds)
     )
       return;
 
-    for (const key in diff) {
-      vcsCompRef.current.sendParam(key, diff[key]);
-    }
-  }, [height, params, width]);
+    vcsCompRef.current.updateParticipantIds(participantIds);
+  }, [participantIds]);
 
   return { outputElementRef, vcsCompRef, width, height };
 };

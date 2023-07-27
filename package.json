@@ -18,6 +18,7 @@
   "dependencies": {
     "@daily-co/daily-js": "^0.48.0",
     "@daily-co/daily-react": "^0.11.0",
+    "@daily-co/daily-vcs-web": "^0.0.1-alpha.2",
     "@daily-co/vcs-composition-daily-baseline-web": "^0.1.6",
     "@radix-ui/react-aspect-ratio": "^1.0.2",
     "@radix-ui/react-dialog": "^1.0.4",

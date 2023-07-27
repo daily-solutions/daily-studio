@@ -6,7 +6,7 @@ import { Modals } from '@/components/Room/Modals';
 import { Sidebar } from '@/components/Room/Sidebar';
 import { Stage } from '@/components/Room/Stage';
 import { LayoutSwitchMenu } from '@/components/Room/Tray/LayoutSwitchMenu';
-import { VcsPreview } from '@/components/Vcs/VcsPreview';
+import { VcsPreview } from '@/components/Vcs';
 
 export function Room() {
   return (

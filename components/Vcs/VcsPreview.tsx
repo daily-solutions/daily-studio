@@ -29,8 +29,8 @@ export function VcsPreview() {
     >
       <div
         className="bg-black"
-        style={{ height, width }}
         ref={outputElementRef}
+        style={{ width, height }}
       />
     </div>
   );
