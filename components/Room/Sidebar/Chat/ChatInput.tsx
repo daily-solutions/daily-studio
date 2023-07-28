@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useMessages } from '@/states/messagesState';
 import { Button } from '@/ui/Button';
 import { Icons } from '@/ui/Icons';
@@ -15,8 +15,6 @@ export function ChatInput() {
   const userName = useParticipantProperty(localSessionId, 'user_name');
   const [, setMessages] = useMessages();
 
-  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [height, setHeight] = useState('auto');
   const [message, setMessage] = useState('');
 
   const sendAppMessage = useCallback(() => {
@@ -45,21 +43,6 @@ export function ChatInput() {
     setMessage('');
   }, [daily, localSessionId, setMessages, userName, message]);
 
-  useEffect(() => {
-    if (!textAreaRef.current) return;
-
-    if (!message) {
-      setHeight('auto');
-    } else {
-      setHeight(
-        `${
-          textAreaRef.current.scrollHeight +
-          (textAreaRef.current.offsetHeight - textAreaRef.current.clientHeight)
-        }px`
-      );
-    }
-  }, [message, textAreaRef]);
-
   const handleKeyDown = useCallback(
     (ev: React.KeyboardEvent) => {
       if (
@@ -83,7 +66,7 @@ export function ChatInput() {
       >
         <div className="relative">
           <Textarea
-            ref={textAreaRef}
+            autoGrow
             onKeyDown={handleKeyDown}
             value={message}
             rows={1}
@@ -91,7 +74,6 @@ export function ChatInput() {
             name="message"
             className="resize-none py-3 pr-10"
             placeholder="Enter your message here"
-            style={{ height }}
             autoComplete="off"
           />
           <div className="absolute right-2 top-1/2 -translate-y-1/2">

@@ -1,79 +1,79 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from '@/states/params';
+import React, { useCallback, useMemo, useState } from 'react';
+import { initialParams, useParams } from '@/states/params';
 import { Button } from '@/ui/Button';
-import { Icon } from '@/ui/Icons';
+import { Input } from '@/ui/Input';
+import { Label } from '@/ui/Label';
 import { Textarea } from '@/ui/TextArea';
 import { useToast } from '@/ui/useToast';
+import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
+import { slugify } from '@/lib/slugify';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
-import { useSyncParams } from '@/hooks/useSyncParams';
 
 export function VCSConfig() {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [height, setHeight] = useState('auto');
+  const [name, setName] = useState('');
 
   const { toast } = useToast();
 
   const [params] = useParams();
-  const { updateParams } = useSyncParams();
+  const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
-  const [{ assets, rtmps }, updateMeetingSessionState] =
-    useMeetingSessionState<MeetingSessionState>();
+  const config = useMemo(() => ({ params, assets }), [params, assets]);
 
-  const [config, setConfig] = useState({});
+  const handleSave = useCallback(() => {
+    const ilsConfig = localStorage.getItem('ils-config');
+    let parsedConfig = {};
 
-  useEffect(() => {
-    setConfig({ params, assets, rtmps });
-  }, [params, assets, rtmps]);
+    if (ilsConfig) parsedConfig = JSON.parse(ilsConfig);
 
-  useEffect(() => {
-    if (!textAreaRef.current) return;
+    parsedConfig = {
+      ...parsedConfig,
+      [slugify(name)]: {
+        name,
+        config,
+      },
+    };
 
-    if (!config) {
-      setHeight('auto');
-    } else {
-      setHeight(
-        `${
-          textAreaRef.current.scrollHeight +
-          (textAreaRef.current.offsetHeight - textAreaRef.current.clientHeight)
-        }px`
-      );
-    }
-  }, [config, textAreaRef]);
+    localStorage.setItem('ils-config', JSON.stringify(parsedConfig));
+    window.dispatchEvent(new Event('storage'));
+    toast({
+      title: 'Saved configuration',
+      description: 'Configuration is saved in local storage',
+    });
+    setName('');
+  }, [config, name, toast]);
 
-  const handleCopyToClipboard = useCallback(async () => {
-    await navigator.clipboard.writeText(JSON.stringify(config));
-    toast({ title: 'Copied to clipboard' });
-  }, [config, toast]);
-
-  const handleChange = useCallback(
-    (e) => {
-      try {
-        const parsedValue = JSON.parse(e.target.value);
-        setConfig(parsedValue);
-        const { params, rtmps, assets } = parsedValue;
-        if (params) updateParams(params);
-        if (rtmps || assets) updateMeetingSessionState({ rtmps, assets });
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    [updateMeetingSessionState, updateParams]
+  const isDisabled = useMemo(
+    () =>
+      !name ||
+      dequal(params, initialParams) ||
+      Object.keys(params).length === 0,
+    [name, params]
   );
 
   return (
-    <div className="flex flex-col gap-y-8">
-      <Textarea
-        ref={textAreaRef}
-        rows={4}
-        onChange={handleChange}
-        value={JSON.stringify(config)}
-        style={{ height }}
-      />
-      <Button variant="outline" onClick={handleCopyToClipboard}>
-        <Icon icon="clipboard" className="mr-2 h-4 w-4" />
-        <span>Copy to clipboard</span>
+    <div className="flex flex-col gap-y-4">
+      <div className="flex flex-col gap-y-2">
+        <Label>Name</Label>
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          name="name"
+          placeholder="Enter name for the config"
+        />
+      </div>
+      <div className="flex flex-col gap-y-2">
+        <Label>Config</Label>
+        <Textarea
+          autoGrow
+          value={JSON.stringify(config, null, 1)}
+          readOnly
+          className="resize-none"
+        />
+      </div>
+      <Button disabled={isDisabled} size="sm" onClick={handleSave}>
+        Save
       </Button>
     </div>
   );

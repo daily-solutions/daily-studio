@@ -19,11 +19,11 @@ export const useSyncParams = () => {
   const sendAppMessage = useAppMessage<SyncParamsAppMessage>();
 
   const updateParams = useCallback(
-    (param) => {
+    (param, type: 'replace' | 'merge' = 'merge') => {
       if (!isOwner) return;
 
       setParams((prev) => {
-        const newParams = { ...prev, ...param };
+        const newParams = type === 'merge' ? { ...prev, ...param } : param;
         sendAppMessage({ event: 'params', type: 'params', params: newParams });
         return newParams;
       });
