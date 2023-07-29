@@ -1,9 +1,9 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
-import { Button } from '@/ui/Button';
 
 import { siteConfig } from '@/config/site';
 import { Header } from '@/components/Header';
+import { StartCall } from '@/components/StartCall';
 
 export default function IndexPage() {
   const handleSubmit = async () => {
@@ -22,9 +22,7 @@ export default function IndexPage() {
         <h2 className="text-2xl font-bold leading-3">{siteConfig.name}</h2>
         <p className="leading-7">{siteConfig.description}</p>
         <form action={handleSubmit}>
-          <Button size="sm" type="submit">
-            Start call
-          </Button>
+          <StartCall />
         </form>
       </div>
     </div>
