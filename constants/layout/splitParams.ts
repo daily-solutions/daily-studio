@@ -1,10 +1,28 @@
 import { Param } from '@/types/params';
 
-export const splitParams: Param[] = [
+export const splitParams = (
+  participants: { label: string; value: string }[]
+): Param[] => [
   {
     id: 'split-layout-heading',
     type: 'heading',
     label: 'Split Layout Settings',
+    render: { key: 'mode', value: 'split' },
+  },
+  {
+    id: 'custom.layout.split.participant1',
+    label: 'Split Participant 1',
+    type: 'enum',
+    values: participants,
+    defaultValue: participants?.[0]?.value,
+    render: { key: 'mode', value: 'split' },
+  },
+  {
+    id: 'custom.layout.split.participant2',
+    label: 'Split Participant 2',
+    type: 'enum',
+    values: participants,
+    defaultValue: participants?.[1]?.value,
     render: { key: 'mode', value: 'split' },
   },
   {

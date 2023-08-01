@@ -5,10 +5,12 @@ import { textParams } from '@/constants/textParams';
 import { toastParams } from '@/constants/toastParams';
 import { viewParams } from '@/constants/viewParams';
 import { TabsContent } from '@/ui/Tabs';
+import { useDaily } from '@daily-co/daily-react';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { Sidebar } from '@/types/sidebar';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
+import { useStage } from '@/hooks/useStage';
 import { Loading } from '@/components/Room/Sidebar/Loading';
 import { TabHeading } from '@/components/Room/Sidebar/Tabs/TabHeading';
 
@@ -55,12 +57,32 @@ interface Props {
 }
 
 export function TabContent({ value }: Props) {
+  const daily = useDaily();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
 
   const assetFileNames = useMemo(
     () => Object.values(assets ?? {}).map((asset) => asset.name),
     [assets]
   );
+
+  const { participantIds } = useStage();
+
+  const participants = useMemo(() => {
+    if (!daily) return [];
+    const participantsObject = Object.fromEntries(
+      Object.values(daily.participants()).map((p) => [p.session_id, p])
+    );
+
+    return participantIds
+      .map((id) => {
+        const participant = participantsObject[id];
+        return {
+          label: participant.user_name,
+          value: participant.session_id,
+        };
+      })
+      .filter(Boolean);
+  }, [daily, participantIds]);
 
   const content = useMemo(() => {
     switch (value) {
@@ -85,9 +107,9 @@ export function TabContent({ value }: Props) {
       case 'config':
         return <VCS />;
       default:
-        return <FormMaker fields={viewParams} />;
+        return <FormMaker fields={viewParams(participants)} />;
     }
-  }, [assetFileNames, value]);
+  }, [assetFileNames, participants, value]);
 
   return (
     <TabsContent value={value}>

@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { initialParams, useParams } from '@/states/params';
+import { config as vcsConfig } from '@/config';
+import { useParams } from '@/states/params';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import { Label } from '@/ui/Label';
@@ -46,7 +47,7 @@ export function VCSConfig() {
   const isDisabled = useMemo(
     () =>
       !name ||
-      dequal(params, initialParams) ||
+      dequal(params, vcsConfig.vcs) ||
       Object.keys(params).length === 0,
     [name, params]
   );

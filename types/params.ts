@@ -29,7 +29,7 @@ export type RangeParams = {
 export type EnumParams = {
   type: 'enum';
   defaultValue: string;
-  values: string[];
+  values: string[] | { label: string; value: string }[];
 };
 
 type StringParams = {

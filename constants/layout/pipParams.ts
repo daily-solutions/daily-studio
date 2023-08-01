@@ -2,11 +2,29 @@ import { PositionCorner } from '@/constants/positions';
 
 import { Param } from '@/types/params';
 
-export const pipParams: Param[] = [
+export const pipParams = (
+  participants: { label: string; value: string }[]
+): Param[] => [
   {
     id: 'pip-layout-heading',
     type: 'heading',
     label: 'PiP Layout Settings',
+    render: { key: 'mode', value: 'pip' },
+  },
+  {
+    id: 'custom.layout.pip.participant1',
+    label: 'PiP Main Participant',
+    type: 'enum',
+    values: participants,
+    defaultValue: participants?.[0]?.value,
+    render: { key: 'mode', value: 'pip' },
+  },
+  {
+    id: 'custom.layout.pip.participant2',
+    label: 'PiP Mini Participant',
+    type: 'enum',
+    values: participants,
+    defaultValue: participants?.[1]?.value,
     render: { key: 'mode', value: 'pip' },
   },
   {

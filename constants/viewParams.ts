@@ -2,16 +2,20 @@ import {
   dominantParams,
   gridParams,
   pipParams,
+  singleParams,
   splitParams,
 } from '@/constants/layout';
 
 import { Param } from '@/types/params';
 
-export const viewParams: Param[] = [
+export const viewParams = (
+  participants: { label: string; value: string }[]
+): Param[] => [
   ...gridParams,
   ...dominantParams,
-  ...splitParams,
-  ...pipParams,
+  ...splitParams(participants),
+  ...pipParams(participants),
+  ...singleParams(participants),
   {
     id: 'label-heading',
     type: 'heading',

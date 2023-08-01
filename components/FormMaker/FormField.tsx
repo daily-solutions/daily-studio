@@ -87,11 +87,20 @@ export const FormField = ({ field }: Props) => {
                 <SelectValue placeholder={field.label} />
               </SelectTrigger>
               <SelectContent>
-                {field.values.map((field) => (
-                  <SelectItem key={field} value={field}>
-                    {field}
-                  </SelectItem>
-                ))}
+                {field.values.map((field) => {
+                  if (typeof field === 'object') {
+                    return (
+                      <SelectItem key={field.value} value={field.value}>
+                        {field.label}
+                      </SelectItem>
+                    );
+                  }
+                  return (
+                    <SelectItem key={field} value={field}>
+                      {field}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
             {field?.description && (

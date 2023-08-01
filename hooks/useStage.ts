@@ -444,6 +444,7 @@ export const useStage = ({
           p?.participantType === 'remote-media-player'),
       []
     ),
+    sort: 'joined_at',
   });
 
   const waitingParticipantIds = useParticipantIds({
