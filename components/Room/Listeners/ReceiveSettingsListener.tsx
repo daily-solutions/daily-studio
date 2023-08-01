@@ -96,7 +96,7 @@ export function ReceiveSettingsListener() {
   }, [participantIds, setVideoLayer]);
 
   const updateReceiveSettings = useCallback(async () => {
-    if (!daily) return;
+    if (!daily || daily.meetingState() !== 'joined-meeting') return;
 
     const updatedReceiveSettings = {};
     const receiveSettings = await daily.getReceiveSettings();

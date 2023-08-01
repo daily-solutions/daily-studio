@@ -5,7 +5,11 @@ import {
   DailyEventObjectCpuLoadEvent,
   DailyEventObjectNetworkQualityEvent,
 } from '@daily-co/daily-js';
-import { useSendSettings, useThrottledDailyEvent } from '@daily-co/daily-react';
+import {
+  useDaily,
+  useSendSettings,
+  useThrottledDailyEvent,
+} from '@daily-co/daily-react';
 
 import { useStage } from '@/hooks/useStage';
 import { VIDEO_QUALITY_LAYERS } from '@/components/Room/Listeners/ReceiveSettingsListener';
@@ -13,6 +17,7 @@ import { VIDEO_QUALITY_LAYERS } from '@/components/Room/Listeners/ReceiveSetting
 export function SendSettingsListener() {
   const lastSendSettingsMaxQualityRef = useRef<number>(2);
 
+  const daily = useDaily();
   const { updateSendSettings } = useSendSettings();
   const [{ send }, setVideoLayer] = useVideoLayer();
   const { participantIds } = useStage();
@@ -114,6 +119,8 @@ export function SendSettingsListener() {
   }, [participantIds, setVideoLayer]);
 
   const handleSendVideoQuality = useCallback(async () => {
+    if (!daily || daily.meetingState() !== 'joined-meeting') return;
+
     const layers = [
       send.layerBasedOnCPU,
       send.layerBasedOnNetwork,
@@ -128,6 +135,7 @@ export function SendSettingsListener() {
     await updateSendSettings({ video: { maxQuality } });
     lastSendSettingsMaxQualityRef.current = layer;
   }, [
+    daily,
     send.layerBasedOnCPU,
     send.layerBasedOnNetwork,
     send.layerBasedOnParticipantCount,

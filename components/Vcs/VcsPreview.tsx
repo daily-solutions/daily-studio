@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   DESKTOP_ASPECT_RATIO,
   MOBILE_ASPECT_RATIO,
@@ -14,10 +14,15 @@ export function VcsPreview() {
   const isMobile = useIsMobile();
   const divRef = useRef<HTMLDivElement>(null);
 
-  const { outputElementRef, width, height } = useVCS({
+  const { outputElementRef, vcsCompRef, width, height } = useVCS({
     viewportRef: divRef,
     aspectRatio: isMobile ? MOBILE_ASPECT_RATIO : DESKTOP_ASPECT_RATIO,
   });
+
+  useEffect(() => {
+    const vcsComp = vcsCompRef.current;
+    return () => vcsComp?.stop();
+  }, [vcsCompRef]);
 
   return (
     <div
