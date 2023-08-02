@@ -14,7 +14,7 @@ export const toastParams = (
     {
       id: 'toast.text',
       label: 'Text',
-      type: 'string',
+      type: 'text',
       defaultValue: 'Hello world',
     },
     {

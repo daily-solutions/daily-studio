@@ -12,6 +12,7 @@ import {
 } from '@/ui/Select';
 import { Slider } from '@/ui/Slider';
 import { Switch } from '@/ui/Switch';
+import { Textarea } from '@/ui/TextArea';
 
 import { Param } from '@/types/params';
 import { useSyncParams } from '@/hooks/useSyncParams';
@@ -25,12 +26,9 @@ export const FormField = ({ field }: Props) => {
   const { updateParams } = useSyncParams();
 
   const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (field.type === 'boolean')
-        updateParams({ [e.target.name]: e.target.checked });
-      else updateParams({ [e.target.name]: e.target.value });
-    },
-    [field.type, updateParams]
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      updateParams({ [e.target.name]: e.target.value }),
+    [updateParams]
   );
 
   const handleOnSelectChange = useCallback(
@@ -61,7 +59,7 @@ export const FormField = ({ field }: Props) => {
       case 'heading':
         return (
           <div className="flex flex-col gap-y-2">
-            <Label className="text-xs font-bold text-muted-foreground">
+            <Label className="text-muted-foreground text-xs font-bold">
               {field.label}
             </Label>
           </div>
@@ -97,7 +95,7 @@ export const FormField = ({ field }: Props) => {
               </SelectContent>
             </Select>
             {field?.description && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {field.description}
               </p>
             )}
@@ -117,7 +115,7 @@ export const FormField = ({ field }: Props) => {
               onChange={handleChange}
             />
             {field?.description && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {field.description}
               </p>
             )}
@@ -137,7 +135,7 @@ export const FormField = ({ field }: Props) => {
               onValueChange={handleSlideChange}
             />
             {field?.description && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {field.description}
               </p>
             )}
@@ -167,7 +165,7 @@ export const FormField = ({ field }: Props) => {
               </div>
             </div>
             {field?.description && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {field.description}
               </p>
             )}
@@ -183,7 +181,23 @@ export const FormField = ({ field }: Props) => {
               onChange={handleChange}
             />
             {field?.description && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
+                {field.description}
+              </p>
+            )}
+          </div>
+        );
+      case 'text':
+        return (
+          <div className="flex flex-col gap-y-2">
+            <Label>{field.label}</Label>
+            <Textarea
+              name={field.id}
+              value={params?.[field.id] || field.defaultValue}
+              onChange={handleChange}
+            />
+            {field?.description && (
+              <p className="text-muted-foreground text-xs">
                 {field.description}
               </p>
             )}

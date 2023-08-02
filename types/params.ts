@@ -37,6 +37,11 @@ type StringParams = {
   defaultValue: string;
 };
 
+type TextParams = {
+  type: 'text';
+  defaultValue: string;
+};
+
 type ColorParams = {
   type: 'color';
   defaultValue: string;
@@ -58,6 +63,7 @@ export type Param = BasicParam &
     | EnumParams
     | NumberParams
     | StringParams
+    | TextParams
     | ColorParams
     | ButtonParams
     | HeadingParams
