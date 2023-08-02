@@ -64,7 +64,7 @@ export const config = {
   vcs: {
     mode: 'grid',
     'videoSettings.showParticipantLabels': true,
-    'videoSettings.preferScreenshare': false,
+    'videoSettings.preferScreenshare': true,
     'videoSettings.omitPausedVideo': false,
     'videoSettings.omitAudioOnly': false,
     'videoSettings.omitExtraScreenshares': false,
