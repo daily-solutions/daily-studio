@@ -28,7 +28,7 @@ export function Sidebar({ visibleInMobile = false }: Props) {
       className="h-full w-full md:w-[400px] md:border-l"
     >
       <div className="bg-background flex flex-col md:flex-row">
-        <div className="order-1 flex-1 md:order-none">
+        <div className="order-1 flex-1 md:order-none md:w-[calc(100%-4rem)]">
           <TabContent value="layout" />
           <TabContent value="text" />
           <TabContent value="image" />

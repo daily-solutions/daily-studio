@@ -20,7 +20,7 @@ export function ChatMessage({
       )}
     >
       {!sameSender && (
-        <div className="flex items-center justify-between">
+        <div className="mb-1 flex items-center justify-between">
           <h3 className="text-xs">
             {message.userName} {message.isLocal && '(You)'}
           </h3>
@@ -29,7 +29,7 @@ export function ChatMessage({
           </p>
         </div>
       )}
-      {message.message}
+      <div className="break-words">{message.message}</div>
     </div>
   );
 }
