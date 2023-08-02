@@ -236,9 +236,9 @@
   integrity sha512-829p1DhPc/St+C+sBpGyrzqm/R3cPygleAvy8M/9B5zUoWXXHtY+jDK+CrVhXgtuHzHB3rVMVbGWU6TOjT4BRA==
 
 "@daily-co/vcs-composition-daily-baseline-web@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.6.tgz#9a3a4c4588e452af9b51db43c7496b1df200887e"
-  integrity sha512-mQb9Kv7SSG4AH6+1/XRUQ5DzN9eSRb8aIh8lBO2grjxivbZpd/6PfUaSea3EEmWeyQz3PCgDL4EZHsU2+gboTg==
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.7.tgz#17779d50199e99ad580a6ef5041d02659531a3f9"
+  integrity sha512-khctifeqy8hzJRmV9FeKrtFIghwkGZ238yIwEC5pBj3Ar8g4BJmmXz1+ibgvRmNS3oWSPLd/UC7iBB9e25bU5Q==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"

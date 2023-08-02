@@ -65,7 +65,7 @@ export function TabContent({ value }: Props) {
     [assets]
   );
 
-  const { participantIds } = useStage();
+  const { orderedParticipantIds } = useStage();
 
   const participants = useMemo(() => {
     if (!daily) return [];
@@ -73,7 +73,7 @@ export function TabContent({ value }: Props) {
       Object.values(daily.participants()).map((p) => [p.session_id, p])
     );
 
-    return participantIds
+    return orderedParticipantIds
       .map((id) => {
         const participant = participantsObject[id];
         return {
@@ -82,7 +82,7 @@ export function TabContent({ value }: Props) {
         };
       })
       .filter(Boolean);
-  }, [daily, participantIds]);
+  }, [daily, orderedParticipantIds]);
 
   const content = useMemo(() => {
     switch (value) {

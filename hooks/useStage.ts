@@ -444,6 +444,16 @@ export const useStage = ({
           p?.participantType === 'remote-media-player'),
       []
     ),
+  });
+
+  const orderedParticipantIds = useParticipantIds({
+    filter: useCallback(
+      (p: DailyParticipant) =>
+        p.permissions.hasPresence &&
+        (p.userData?.['onStage'] ||
+          p?.participantType === 'remote-media-player'),
+      []
+    ),
     sort: 'joined_at',
   });
 
@@ -464,6 +474,7 @@ export const useStage = ({
     state,
     // participants list
     participantIds,
+    orderedParticipantIds,
     waitingParticipantIds,
     // methods
     requestToJoin,

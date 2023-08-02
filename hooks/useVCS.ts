@@ -46,7 +46,7 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
     aspectRatio,
   });
 
-  const { participantIds } = useStage();
+  const { orderedParticipantIds } = useStage();
 
   const createVCSView = useCallback(
     (el) => {
@@ -63,7 +63,7 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
         getAssetUrlCb,
         viewportSize: { w: width, h: height },
         defaultParams: params,
-        participantIds,
+        participantIds: orderedParticipantIds,
         callbacks: {
           onStart() {
             console.log('VCS Started');
@@ -81,7 +81,7 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
       });
       vcsCompRef.current.start();
     },
-    [daily, height, meetingState, params, participantIds, width]
+    [daily, height, meetingState, params, orderedParticipantIds, width]
   );
 
   useEffect(() => {
@@ -111,12 +111,12 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   useEffect(() => {
     if (
       !vcsCompRef.current ||
-      dequal(vcsCompRef.current.participants, participantIds)
+      dequal(vcsCompRef.current.participants, orderedParticipantIds)
     )
       return;
 
-    vcsCompRef.current.updateParticipantIds(participantIds);
-  }, [participantIds]);
+    vcsCompRef.current.updateParticipantIds(orderedParticipantIds);
+  }, [orderedParticipantIds]);
 
   return { outputElementRef, vcsCompRef, width, height };
 };
