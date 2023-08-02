@@ -7,5 +7,4 @@ export type Sidebar =
   | 'assets'
   | 'stream'
   | 'chat'
-  | 'config'
-  | 'vcs';
+  | 'config';

@@ -27,7 +27,7 @@ export function Sidebar({ visibleInMobile = false }: Props) {
       defaultValue={defaultSidebar}
       className="h-full w-full md:w-[400px] md:border-l"
     >
-      <div className="flex flex-col bg-background md:flex-row">
+      <div className="bg-background flex flex-col md:flex-row">
         <div className="order-1 flex-1 md:order-none">
           <TabContent value="layout" />
           <TabContent value="text" />
@@ -38,7 +38,6 @@ export function Sidebar({ visibleInMobile = false }: Props) {
           <TabContent value="stream" />
           <TabContent value="assets" />
           <TabContent value="config" />
-          <TabContent value="vcs" />
         </div>
         <TabsList />
       </div>

@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { configParams } from '@/constants/configParams';
 import { imageParams } from '@/constants/imageParams';
 import { textParams } from '@/constants/textParams';
 import { toastParams } from '@/constants/toastParams';
@@ -84,8 +83,6 @@ export function TabContent({ value }: Props) {
       case 'chat':
         return <Chat />;
       case 'config':
-        return <FormMaker fields={configParams} />;
-      case 'vcs':
         return <VCS />;
       default:
         return <FormMaker fields={viewParams} />;

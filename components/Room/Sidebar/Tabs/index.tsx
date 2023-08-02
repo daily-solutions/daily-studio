@@ -23,7 +23,6 @@ export function Tabs() {
         disabled={isLiveStreaming || isRecording}
       />
       <Tab name="config" icon="settings" text="Config" />
-      <Tab name="vcs" icon="import" text="VCS" />
     </TabsList>
   );
 }

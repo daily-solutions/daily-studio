@@ -48,11 +48,6 @@ export function TabHeading({ value }: Props) {
         };
       case 'config':
         return {
-          heading: 'Configuration',
-          description: 'Manage the VCS configuration',
-        };
-      case 'vcs':
-        return {
           heading: 'VCS Configuration',
           description: 'Manage the VCS configuration',
         };
@@ -65,7 +60,7 @@ export function TabHeading({ value }: Props) {
   }, [value]);
 
   return (
-    <div className="flex h-16 flex-col justify-center gap-y-1 border-b bg-background px-4">
+    <div className="bg-background flex h-16 flex-col justify-center gap-y-1 border-b px-4">
       <h2 className="font-semibold">{heading}</h2>
       <p className="text-xs">{description}</p>
     </div>
