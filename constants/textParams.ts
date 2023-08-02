@@ -12,7 +12,7 @@ export const textParams: Param[] = [
   {
     id: 'text.content',
     label: 'Text',
-    type: 'string',
+    type: 'text',
     defaultValue: 'An example text overlay',
   },
   {

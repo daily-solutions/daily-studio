@@ -195,6 +195,8 @@ export const FormField = ({ field }: Props) => {
               name={field.id}
               value={params?.[field.id] ?? field.defaultValue}
               onChange={handleChange}
+              rows={1}
+              autoGrow
             />
             {field?.description && (
               <p className="text-muted-foreground text-xs">
