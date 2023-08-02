@@ -80,7 +80,7 @@ export const FormField = ({ field }: Props) => {
           <div className="flex flex-col gap-y-2">
             <Label>{field.label}</Label>
             <Select
-              value={params?.[field.id] || field.defaultValue}
+              value={params?.[field.id] ?? field.defaultValue}
               onValueChange={handleOnSelectChange}
             >
               <SelectTrigger className="w-full">
@@ -108,7 +108,7 @@ export const FormField = ({ field }: Props) => {
             <Input
               type="number"
               name={field.id}
-              value={params?.[field.id] || field.defaultValue}
+              value={params?.[field.id] ?? field.defaultValue}
               step={field?.step}
               min={field?.min}
               max={field?.max}
@@ -131,7 +131,7 @@ export const FormField = ({ field }: Props) => {
               min={field.min}
               max={field.max}
               step={field.step}
-              value={[params?.[field.id] || field.defaultValue]}
+              value={[params?.[field.id] ?? field.defaultValue]}
               onValueChange={handleSlideChange}
             />
             {field?.description && (
@@ -150,14 +150,14 @@ export const FormField = ({ field }: Props) => {
                 <Input
                   type="text"
                   name={field.id}
-                  value={params?.[field.id] || field.defaultValue}
+                  value={params?.[field.id] ?? field.defaultValue}
                   onChange={handleChange}
                 />
                 <div className="absolute right-2 top-2">
                   <Input
                     type="color"
                     name={field.id}
-                    value={params?.[field.id] || field.defaultValue}
+                    value={params?.[field.id] ?? field.defaultValue}
                     onChange={handleChange}
                     className="m-0 h-6 w-6 border-none p-0"
                   />
@@ -177,7 +177,7 @@ export const FormField = ({ field }: Props) => {
             <Label>{field.label}</Label>
             <Input
               name={field.id}
-              value={params?.[field.id] || field.defaultValue}
+              value={params?.[field.id] ?? field.defaultValue}
               onChange={handleChange}
             />
             {field?.description && (
@@ -193,7 +193,7 @@ export const FormField = ({ field }: Props) => {
             <Label>{field.label}</Label>
             <Textarea
               name={field.id}
-              value={params?.[field.id] || field.defaultValue}
+              value={params?.[field.id] ?? field.defaultValue}
               onChange={handleChange}
             />
             {field?.description && (
