@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { config } from '@/config';
 import { useBroadcast } from '@/states/broadcastState';
 import { Icon } from '@/ui/Icons';
 import { TrayButton } from '@/ui/TrayButton';
@@ -20,7 +21,7 @@ export function Stream({ mobileUi = false }: Props) {
     [isLiveStreaming, setBroadcast, stopLiveStreaming]
   );
 
-  if (!isOwner) return null;
+  if (!isOwner || !config?.options?.enable_live_streaming) return null;
 
   if (mobileUi) {
     return (

@@ -2,8 +2,7 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-
-import { siteConfig } from '@/config/site';
+import { config } from '@/config';
 
 const CallHeader = dynamic(() =>
   import('@/components/Header/CallHeader').then((mod) => mod.CallHeader)
@@ -17,7 +16,7 @@ export function Header({ inCall = true }: { inCall?: boolean }) {
     <header className="min-h-16 sticky top-0 z-40 h-16 max-h-16 w-full border-b bg-background">
       <div className="mx-2 flex h-full items-center justify-between">
         <a href="/">
-          <span className="inline-block font-bold">{siteConfig.name}</span>
+          <span className="inline-block font-bold">{config.name}</span>
         </a>
         {inCall ? <CallHeader /> : <GithubLink />}
       </div>

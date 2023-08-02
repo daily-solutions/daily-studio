@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { config } from '@/config';
 import { useJoinStage } from '@/states/joinStageState';
 import { useIsRequesting, useRequestedParticipants } from '@/states/stageState';
 import {
@@ -420,11 +421,15 @@ export const useStage = ({
     | 'on-stage'
     | 'back-stage'
     | 'request-to-join'
-    | 'invited-to-stage';
+    | 'invited-to-stage'
+    | 'viewer';
 
   const state: State = useMemo(() => {
-    if (!hasPresence) return 'request-to-join';
-    else {
+    if (!hasPresence) {
+      if (config?.options?.enable_viewers_request_to_join)
+        return 'request-to-join';
+      return 'viewer';
+    } else {
       if (userData?.['onStage']) return 'on-stage';
       else if (userData?.['acceptedToJoin']) return 'back-stage';
       else return 'invited-to-stage';

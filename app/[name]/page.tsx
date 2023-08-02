@@ -1,6 +1,6 @@
 import React from 'react';
+import { config } from '@/config';
 
-import { siteConfig } from '@/config/site';
 import { Header } from '@/components/Header';
 import { PrivilegeCard } from '@/components/Room/Privilege/PrivilegeCard';
 
@@ -40,8 +40,8 @@ export default function RoomPage({
     <div className="flex h-full flex-col overflow-auto">
       <Header inCall={false} />
       <div className="flex flex-1 flex-col items-center justify-center gap-y-6">
-        <h2 className="text-2xl font-bold leading-3">{siteConfig.name}</h2>
-        <p className="text-center leading-7">{siteConfig.description}</p>
+        <h2 className="text-2xl font-bold leading-3">{config.name}</h2>
+        <p className="text-center leading-7">{config.description}</p>
         <div className="mx-4 flex flex-col items-stretch justify-center gap-4 sm:mx-0 sm:flex-row">
           {privilegeOptions.map((option) => (
             <PrivilegeCard roomName={name} key={option.privilege} {...option} />

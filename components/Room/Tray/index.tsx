@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
+import dynamic from 'next/dynamic';
+import { config } from '@/config';
 import { useJoinStage } from '@/states/joinStageState';
 import { Button } from '@/ui/Button';
 
@@ -8,34 +10,36 @@ import { Invite } from '@/components/Room/Tray/Invite';
 import { Leave } from '@/components/Room/Tray/Leave';
 import { More } from '@/components/Room/Tray/More';
 import { Network } from '@/components/Room/Tray/Network';
-import { Record } from '@/components/Room/Tray/Record';
-import { Rmp } from '@/components/Room/Tray/Rmp';
 import { Screenshare } from '@/components/Room/Tray/ScreenShare';
 import { Settings } from '@/components/Room/Tray/Settings';
-import { Stream } from '@/components/Room/Tray/Stream';
 import { Video } from '@/components/Room/Tray/Video';
+
+const Rmp = dynamic(() =>
+  import('@/components/Room/Tray/Rmp').then((mod) => mod.Rmp)
+);
+
+const Record = dynamic(() =>
+  import('@/components/Room/Tray/Record').then((mod) => mod.Record)
+);
+
+const Stream = dynamic(() =>
+  import('@/components/Room/Tray/Stream').then((mod) => mod.Stream)
+);
+
+const RequestToJoin = dynamic(() =>
+  import('@/components/Room/Tray/RequestToJoin').then(
+    (mod) => mod.RequestToJoin
+  )
+);
 
 export function Tray() {
   const [, setJoinStage] = useJoinStage();
-  const { isRequesting, requestToJoin, cancelRequestToJoin, state } =
-    useStage();
-
-  const handleRequestToJoin = useCallback(
-    () => (isRequesting ? cancelRequestToJoin() : requestToJoin()),
-    [isRequesting, cancelRequestToJoin, requestToJoin]
-  );
+  const { state } = useStage();
 
   const content = useMemo(() => {
     switch (state) {
       case 'request-to-join':
-        return (
-          <Button
-            variant={isRequesting ? 'destructive' : 'default'}
-            onClick={handleRequestToJoin}
-          >
-            {isRequesting ? 'Cancel request' : 'Request to join stage'}
-          </Button>
-        );
+        return <RequestToJoin />;
       case 'invited-to-stage':
         return <Button onClick={() => setJoinStage(true)}>Join stage</Button>;
       case 'on-stage':
@@ -47,16 +51,18 @@ export function Tray() {
             <Screenshare />
           </div>
         );
+      case 'viewer':
+        return <p>You are a viewer</p>;
     }
-  }, [handleRequestToJoin, isRequesting, setJoinStage, state]);
+  }, [setJoinStage, state]);
 
   return (
     <div className="min-h-20 flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t bg-background p-4">
       {content}
       <div className="flex items-center justify-center">
-        <Rmp />
-        <Record />
-        <Stream />
+        {config?.options?.enable_rmp && <Rmp />}
+        {config?.options?.enable_recording && <Record />}
+        {config?.options?.enable_live_streaming && <Stream />}
         <Network />
         <Settings />
       </div>

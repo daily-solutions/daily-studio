@@ -1,7 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
+import { config } from '@/config';
 
-import { siteConfig } from '@/config/site';
 import { Header } from '@/components/Header';
 import { StartCall } from '@/components/StartCall';
 
@@ -19,8 +19,8 @@ export default function IndexPage() {
     <div className="flex h-full flex-col">
       <Header inCall={false} />
       <div className="flex flex-1 flex-col items-center justify-center gap-y-4">
-        <h2 className="text-2xl font-bold leading-3">{siteConfig.name}</h2>
-        <p className="leading-7">{siteConfig.description}</p>
+        <h2 className="text-2xl font-bold leading-3">{config.name}</h2>
+        <p className="leading-7">{config.description}</p>
         <form action={handleSubmit}>
           <StartCall />
         </form>

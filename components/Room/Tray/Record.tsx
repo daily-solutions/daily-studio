@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { config } from '@/config';
 import { Icon } from '@/ui/Icons';
 import { TrayButton } from '@/ui/TrayButton';
 
@@ -18,7 +19,7 @@ export function Record({ mobileUi = false }: Props) {
     [isRecording, startRecording, stopRecording]
   );
 
-  if (!isOwner) return null;
+  if (!isOwner || !config?.options?.enable_recording) return null;
 
   if (mobileUi) {
     return (

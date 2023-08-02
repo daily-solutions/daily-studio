@@ -1,18 +1,18 @@
 import '@/styles/globals.css';
 import React from 'react';
 import { Metadata } from 'next';
+import { config } from '@/config';
 
-import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { RecoilProvider } from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: config.name,
+    template: `%s - ${config.name}`,
   },
-  description: siteConfig.description,
+  description: config.description,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },

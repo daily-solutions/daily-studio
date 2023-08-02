@@ -1,4 +1,7 @@
 const { fontFamily } = require('tailwindcss/defaultTheme');
+const {
+  config: { theme },
+} = require('./config');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -18,48 +21,48 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        border: theme.border,
+        input: theme.input,
+        ring: theme.ring,
+        background: theme.background,
+        foreground: theme.foreground,
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: theme.primary.default,
+          foreground: theme.primary.foreground,
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: theme.secondary.default,
+          foreground: theme.secondary.foreground,
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: theme.destructive.default,
+          foreground: theme.destructive.foreground,
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: theme.muted.default,
+          foreground: theme.muted.foreground,
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: theme.accent.default,
+          foreground: theme.accent.foreground,
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: theme.popover.default,
+          foreground: theme.popover.foreground,
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: theme.card.default,
+          foreground: theme.card.foreground,
         },
         selected: {
-          DEFAULT: 'hsl(var(--selected))',
-          foreground: 'hsl(var(--selected-foreground))',
+          DEFAULT: theme.selected.default,
+          foreground: theme.selected.foreground,
         },
       },
       borderRadius: {
-        lg: `var(--radius)`,
-        md: `calc(var(--radius) - 2px)`,
-        sm: 'calc(var(--radius) - 4px)',
+        lg: theme.radius,
+        md: `calc(${theme.radius} - 2px)`,
+        sm: `calc(${theme.radius} - 4px)`,
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
