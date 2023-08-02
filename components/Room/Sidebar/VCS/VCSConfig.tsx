@@ -3,7 +3,6 @@ import { initialParams, useParams } from '@/states/params';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import { Label } from '@/ui/Label';
-import { Textarea } from '@/ui/TextArea';
 import { useToast } from '@/ui/useToast';
 import { dequal } from 'dequal';
 
@@ -65,12 +64,9 @@ export function VCSConfig() {
       </div>
       <div className="flex flex-col gap-y-2">
         <Label>Config</Label>
-        <Textarea
-          autoGrow
-          value={JSON.stringify(config, null, 1)}
-          readOnly
-          className="resize-none"
-        />
+        <pre className="bg-muted overflow-auto rounded-md p-2 font-mono text-xs">
+          {JSON.stringify(config, null, 1)}
+        </pre>
       </div>
       <Button disabled={isDisabled} size="sm" onClick={handleSave}>
         Save
