@@ -106,7 +106,7 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
       return;
 
     vcsCompRef.current.sendParams(params, 'replace');
-  }, [height, params, width]);
+  }, [params]);
 
   useEffect(() => {
     if (

@@ -28,7 +28,7 @@ export function VcsPreview() {
     <div
       ref={divRef}
       className={cn(
-        'flex w-full flex-1 items-center justify-center bg-muted',
+        'bg-muted flex w-full flex-1 items-center justify-center',
         `h-[calc(100%-${isOwner ? '24rem' : '14rem'})]`
       )}
     >
