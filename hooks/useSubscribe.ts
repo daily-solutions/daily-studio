@@ -1,6 +1,10 @@
 import { useCallback } from 'react';
 import { DailyParticipant } from '@daily-co/daily-js';
-import { useDaily, useParticipantIds } from '@daily-co/daily-react';
+import {
+  useDaily,
+  useLocalSessionId,
+  useParticipantIds,
+} from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useStage } from '@/hooks/useStage';
@@ -9,6 +13,7 @@ export const useSubscribe = () => {
   const daily = useDaily();
   const isOwner = useIsOwner();
   const { waitingParticipantIds } = useStage();
+  const localSessionId = useLocalSessionId();
 
   const subscribedIds = useParticipantIds({
     filter: useCallback(
@@ -30,13 +35,13 @@ export const useSubscribe = () => {
     const updateSubscriptions = {};
 
     waitingParticipantIds.forEach((id) => {
-      if (subscribedIds.includes(id)) return;
+      if (subscribedIds.includes(id) || localSessionId === id) return;
       updateSubscriptions[id] = { setSubscribedTracks: true };
     });
 
     if (Object.keys(updateSubscriptions).length === 0) return;
     daily.updateParticipants(updateSubscriptions);
-  }, [daily, isOwner, subscribedIds, waitingParticipantIds]);
+  }, [daily, isOwner, localSessionId, subscribedIds, waitingParticipantIds]);
 
   const unsubscribeFromWaitingParticipants = useCallback(() => {
     if (!isOwner || !daily) return;
@@ -44,13 +49,13 @@ export const useSubscribe = () => {
     const updateSubscriptions = {};
 
     waitingParticipantIds.forEach((id) => {
-      if (stagedIds.includes(id)) return;
+      if (stagedIds.includes(id) || localSessionId === id) return;
       updateSubscriptions[id] = { setSubscribedTracks: 'staged' };
     });
 
     if (Object.keys(updateSubscriptions).length === 0) return;
     daily.updateParticipants(updateSubscriptions);
-  }, [daily, isOwner, stagedIds, waitingParticipantIds]);
+  }, [daily, isOwner, localSessionId, stagedIds, waitingParticipantIds]);
 
   return {
     subscribeToWaitingParticipants,
