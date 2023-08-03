@@ -1,10 +1,14 @@
 import { Button } from '@/ui/Button';
 import { Icon } from '@/ui/Icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
+import { usePermissions } from '@daily-co/daily-react';
 
-import { Devices } from '../Devices';
+import { AudioDevices } from '@/components/Room/Devices/AudioDevices';
+import { SpeakerDevices } from '@/components/Room/Devices/SpeakerDevices';
+import { VideoDevices } from '@/components/Room/Devices/VideoDevices';
 
 export function Settings() {
+  const { canSendAudio, canSendVideo } = usePermissions();
   return (
     <Popover>
       <PopoverTrigger className="hidden md:block" asChild>
@@ -15,8 +19,10 @@ export function Settings() {
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="min-w-max">
-        <Devices />
+      <PopoverContent side="top" className="flex min-w-max flex-col gap-y-3">
+        {canSendVideo && <VideoDevices />}
+        {canSendAudio && <AudioDevices />}
+        <SpeakerDevices />
       </PopoverContent>
     </Popover>
   );
