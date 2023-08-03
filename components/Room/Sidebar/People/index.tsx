@@ -21,7 +21,7 @@ export function People() {
 
   return (
     <div className="p-4">
-      <p className="text-muted-foreground mb-3 text-xs">
+      <p className="text-muted-foreground mb-2 text-xs">
         {participantIds.length}{' '}
         {participantIds.length === 1 ? 'person' : 'people'} on the call
       </p>
@@ -32,7 +32,7 @@ export function People() {
       </div>
       {viewers.length > 0 && (
         <div className="mt-6">
-          <h3 className="text-xs">Viewers</h3>
+          <h3 className="mb-2 text-xs">Viewers</h3>
           <div className="flex flex-col gap-y-2">
             {viewers.map((viewer) => (
               <Viewer key={viewer.sessionId} {...viewer} />

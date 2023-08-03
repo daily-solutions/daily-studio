@@ -21,9 +21,9 @@ function ParticipantComponent({ sessionId }: { sessionId: string }) {
 
   return (
     <div className="flex items-center justify-between space-x-2">
-      <Label htmlFor={sessionId}>
+      <p className="text-sm">
         {userName || 'Guest'} {isLocal && '(You)'}
-      </Label>
+      </p>
       <div className="flex items-center justify-center gap-x-2">
         {isSharingScreen && <Icon icon="screenShareOn" className="h-4 w-4" />}
         <Icon

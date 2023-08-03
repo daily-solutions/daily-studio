@@ -26,7 +26,7 @@ export function Viewer({
 
   return (
     <div className="flex items-center justify-between">
-      <Label htmlFor={sessionId}>{userName || 'Guest'}</Label>
+      <p className="text-sm">{userName || 'Guest'}</p>
       <div className="flex items-center gap-x-2">
         <Button
           variant={isRequesting ? 'outline' : 'default'}
