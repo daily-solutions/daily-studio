@@ -80,8 +80,13 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
         },
       });
       vcsCompRef.current.start();
+      const images = Object.keys(assets).reduce((acc, key) => {
+        acc[key] = assets[key].url;
+        return acc;
+      }, {});
+      vcsCompRef.current.updateImageSources(images);
     },
-    [daily, height, meetingState, params, orderedParticipantIds, width]
+    [meetingState, width, height, daily, params, orderedParticipantIds, assets]
   );
 
   useEffect(() => {
