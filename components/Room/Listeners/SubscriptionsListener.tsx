@@ -39,6 +39,7 @@ export function SubscriptionsListener() {
         }
       });
 
+      if (Object.keys(updateParticipants).length === 0) return;
       daily.updateParticipants(updateParticipants);
     },
     [daily]
