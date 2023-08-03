@@ -35,6 +35,8 @@
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
     "dequal": "^2.0.3",
+    "linkify-react": "^4.1.1",
+    "linkifyjs": "^4.1.1",
     "lucide-react": "^0.216.0",
     "next": "^13.4.10",
     "react": "^18.2.0",
