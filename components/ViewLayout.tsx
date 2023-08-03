@@ -120,7 +120,7 @@ export function ViewLayout() {
   }, [daily]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full max-h-[100dvh] flex-col">
       <Header />
       {content}
       <Listeners />

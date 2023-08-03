@@ -25,18 +25,20 @@ export function VcsPreview() {
   }, [vcsCompRef]);
 
   return (
-    <div
-      ref={divRef}
-      className={cn(
-        'bg-muted flex w-full flex-1 items-center justify-center',
-        `h-[calc(100%-${isOwner ? '24rem' : '14rem'})]`
-      )}
-    >
+    <div className="h-full w-full flex-1">
       <div
-        className="bg-black"
-        ref={outputElementRef}
-        style={{ width, height }}
-      />
+        ref={divRef}
+        className={cn(
+          'bg-muted flex w-full items-center justify-center',
+          isOwner ? 'h-[calc(100dvh-24rem)]' : 'h-[calc(100dvh-9rem)]'
+        )}
+      >
+        <div
+          className="bg-black"
+          ref={outputElementRef}
+          style={{ width, height }}
+        />
+      </div>
     </div>
   );
 }
