@@ -222,10 +222,10 @@
     fast-equals "^1.6.3"
     lodash "^4.17.15"
 
-"@daily-co/daily-react@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@daily-co/daily-react/-/daily-react-0.11.0.tgz#cc01262a8435592f8f5a1654d5082cb07de5d7e0"
-  integrity sha512-swADzaKWW1jiIbq1+mw/E7uW7cFEnFoOMbyk9NMYjwIslqsOVs2T4ZbfjE+IYUQXIFAPN8M/be6F8JlhE7WLeQ==
+"@daily-co/daily-react@^0.11.1":
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/@daily-co/daily-react/-/daily-react-0.11.1.tgz#cb789d6796f446155110d6115a08047ffe8bb8ab"
+  integrity sha512-7nhzNQq381j26Mve9Ih4uKes2pAjW9bcTv8zdIjgVxbbQnoeUz35gxXQiZ4MtEDBftlLBmqO+69z7ClWmb6ZrQ==
   dependencies:
     fast-deep-equal "^3.1.3"
     lodash.throttle "^4.1.1"
@@ -235,10 +235,10 @@
   resolved "https://registry.yarnpkg.com/@daily-co/daily-vcs-web/-/daily-vcs-web-0.0.1-alpha.3.tgz#df3c4af64de196e8a0166751f3961ed79fca0ba8"
   integrity sha512-829p1DhPc/St+C+sBpGyrzqm/R3cPygleAvy8M/9B5zUoWXXHtY+jDK+CrVhXgtuHzHB3rVMVbGWU6TOjT4BRA==
 
-"@daily-co/vcs-composition-daily-baseline-web@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.6.tgz#9a3a4c4588e452af9b51db43c7496b1df200887e"
-  integrity sha512-mQb9Kv7SSG4AH6+1/XRUQ5DzN9eSRb8aIh8lBO2grjxivbZpd/6PfUaSea3EEmWeyQz3PCgDL4EZHsU2+gboTg==
+"@daily-co/vcs-composition-daily-baseline-web@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.7.tgz#17779d50199e99ad580a6ef5041d02659531a3f9"
+  integrity sha512-khctifeqy8hzJRmV9FeKrtFIghwkGZ238yIwEC5pBj3Ar8g4BJmmXz1+ibgvRmNS3oWSPLd/UC7iBB9e25bU5Q==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
