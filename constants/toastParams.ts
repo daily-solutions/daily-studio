@@ -25,13 +25,6 @@ export const toastParams = (
       defaultValue: 4,
     },
     {
-      id: 'toast.numTextLines',
-      label: 'Number of text lines',
-      type: 'number',
-      min: 1,
-      defaultValue: 2,
-    },
-    {
       id: 'toast.showIcon',
       label: 'Show Toast Icon',
       type: 'boolean',
