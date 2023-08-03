@@ -35,18 +35,18 @@ function NetworkPopover() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-3">
-      <Card className="flex w-full flex-col justify-between gap-y-1 bg-muted p-4">
+      <Card className="bg-muted flex w-full flex-col justify-between gap-y-1 p-4">
         <h3 className="text-sm font-bold">Packet loss</h3>
         <p>Your network is {threshold}</p>
       </Card>
-      <Card className="flex w-full flex-col justify-between gap-y-1 bg-muted p-4">
+      <Card className="bg-muted flex w-full flex-col justify-between gap-y-1 p-4">
         <div className="flex items-center gap-x-1">
           <Icon icon="download" className="h-4 w-4" />
           <h3 className="text-sm font-bold">Download rate</h3>
         </div>
         <p className="text-lg">{downloadKbs} kb/s</p>
       </Card>
-      <Card className="flex w-full flex-col justify-between gap-y-1 bg-muted p-4">
+      <Card className="bg-muted flex w-full flex-col justify-between gap-y-1 p-4">
         <div className="flex items-center gap-x-1">
           <Icon icon="upload" className="h-4 w-4" />
           <h3 className="text-sm font-bold">Upload rate</h3>

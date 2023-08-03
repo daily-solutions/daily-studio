@@ -24,7 +24,7 @@ export function Stream({
         <div className="mb-4 flex items-center justify-between">
           <div className="flex flex-col">
             <h3>RTMP Destinations</h3>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               {Object.keys(rtmps ?? {}).length} destinations
             </p>
           </div>

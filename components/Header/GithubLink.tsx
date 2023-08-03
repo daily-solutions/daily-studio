@@ -9,7 +9,7 @@ export function GithubLink() {
       href={config.githubLink}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent"
+      className="hover:bg-accent inline-flex h-10 w-10 items-center justify-center rounded-md"
     >
       <Icons.gitHub className="h-5 w-5" />
       <span className="sr-only">GitHub</span>

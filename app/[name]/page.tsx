@@ -47,7 +47,7 @@ export default function RoomPage({
             <PrivilegeCard roomName={name} key={option.privilege} {...option} />
           ))}
         </div>
-        <p className="text-center text-muted-foreground">
+        <p className="text-muted-foreground text-center">
           We recommend joining as an producer in one tab, and adding
           participants via another browser.
         </p>

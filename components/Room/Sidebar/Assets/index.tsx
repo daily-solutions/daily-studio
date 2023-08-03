@@ -64,7 +64,7 @@ export function Assets() {
           </div>
           <div className="flex flex-col gap-y-2">
             <Label>Asset URL</Label>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               Only PNG images are supported
             </p>
             <Input

@@ -30,7 +30,7 @@ export default function RootLayout({ children }: React.PropsWithChildren<{}>) {
       <head />
       <body
         className={cn(
-          'h-full bg-background font-sans antialiased',
+          'bg-background h-full font-sans antialiased',
           fontSans.variable
         )}
       >

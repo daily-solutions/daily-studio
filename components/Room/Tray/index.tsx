@@ -57,7 +57,7 @@ export function Tray() {
   }, [setJoinStage, state]);
 
   return (
-    <div className="min-h-20 flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t bg-background p-4">
+    <div className="min-h-20 bg-background flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t p-4">
       {content}
       <div className="flex items-center justify-center">
         {config?.options?.enable_rmp && <Rmp />}

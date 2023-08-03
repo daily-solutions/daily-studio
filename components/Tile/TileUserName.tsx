@@ -26,7 +26,7 @@ export function TileUserName({ sessionId }: Props) {
   );
 
   return (
-    <div className="absolute bottom-2 left-2 flex items-center justify-center rounded-md bg-muted p-2">
+    <div className="bg-muted absolute bottom-2 left-2 flex items-center justify-center rounded-md p-2">
       {participantType !== 'remote-media-player' && (
         <Icon
           icon={AUDIO_OFF.includes(audioState) ? 'micOff' : 'micOn'}
