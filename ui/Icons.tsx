@@ -44,10 +44,7 @@ import {
   Users,
   Video,
   VideoOff,
-  type Icon as LucideIcon,
 } from 'lucide-react';
-
-export type IconType = LucideIcon;
 
 export const Icons = {
   spinner: Loader2,
