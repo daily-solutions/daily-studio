@@ -18,7 +18,7 @@ export function ChatInput() {
   const [message, setMessage] = useState('');
 
   const sendAppMessage = useCallback(() => {
-    if (!daily || !localSessionId) return;
+    if (!daily || !localSessionId || !message) return;
 
     const id = crypto.randomUUID();
 
@@ -77,7 +77,12 @@ export function ChatInput() {
             autoComplete="off"
           />
           <div className="absolute right-2 top-1/2 -translate-y-1/2">
-            <Button type="submit" size="auto" variant="ghost">
+            <Button
+              disabled={!message}
+              type="submit"
+              size="auto"
+              variant="ghost"
+            >
               <Icons.send className="h-4 w-4" />
             </Button>
           </div>
