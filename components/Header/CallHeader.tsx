@@ -8,7 +8,7 @@ import { StatusBadge } from '@/components/Header/StatusBadge';
 import { ViewerCount } from '@/components/Header/ViewerCount';
 
 const Menu = dynamic(() =>
-  import('@/components/Header/Menu').then((mod) => mod.Menu)
+  import('@/components/Header/Menu').then((mod) => mod.Menu),
 );
 
 export function CallHeader() {

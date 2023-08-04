@@ -16,7 +16,7 @@ export function Sidebar({ visibleInMobile = false }: Props) {
 
   const defaultSidebar = useMemo(
     () => (isOwner ? 'layout' : 'chat'),
-    [isOwner]
+    [isOwner],
   );
 
   if (isMobile && !visibleInMobile) return null;
@@ -27,7 +27,7 @@ export function Sidebar({ visibleInMobile = false }: Props) {
       defaultValue={defaultSidebar}
       className="h-full w-full md:w-[400px] md:border-l"
     >
-      <div className="bg-background flex flex-col md:flex-row">
+      <div className="flex flex-col bg-background md:flex-row">
         <div className="order-1 flex-1 md:order-none md:w-[calc(100%-4rem)]">
           <TabContent value="layout" />
           <TabContent value="text" />

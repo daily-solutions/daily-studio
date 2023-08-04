@@ -15,21 +15,21 @@ import { Settings } from '@/components/Room/Tray/Settings';
 import { Video } from '@/components/Room/Tray/Video';
 
 const Rmp = dynamic(() =>
-  import('@/components/Room/Tray/Rmp').then((mod) => mod.Rmp)
+  import('@/components/Room/Tray/Rmp').then((mod) => mod.Rmp),
 );
 
 const Record = dynamic(() =>
-  import('@/components/Room/Tray/Record').then((mod) => mod.Record)
+  import('@/components/Room/Tray/Record').then((mod) => mod.Record),
 );
 
 const Stream = dynamic(() =>
-  import('@/components/Room/Tray/Stream').then((mod) => mod.Stream)
+  import('@/components/Room/Tray/Stream').then((mod) => mod.Stream),
 );
 
 const RequestToJoin = dynamic(() =>
   import('@/components/Room/Tray/RequestToJoin').then(
-    (mod) => mod.RequestToJoin
-  )
+    (mod) => mod.RequestToJoin,
+  ),
 );
 
 export function Tray() {
@@ -57,7 +57,7 @@ export function Tray() {
   }, [setJoinStage, state]);
 
   return (
-    <div className="min-h-20 bg-background flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t p-4">
+    <div className="min-h-20 flex h-20 max-h-20 w-full items-center justify-between overflow-hidden border-t bg-background p-4">
       {content}
       <div className="flex items-center justify-center">
         {config?.options?.enable_rmp && <Rmp />}

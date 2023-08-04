@@ -31,7 +31,7 @@ export function ReceiveSettingsListener() {
       events: (
         | DailyEventObjectCpuLoadEvent
         | DailyEventObjectNetworkQualityEvent
-      )[]
+      )[],
     ) => {
       events.forEach((ev) => {
         if (ev.action === 'network-quality-change') {
@@ -70,12 +70,12 @@ export function ReceiveSettingsListener() {
         }
       });
     },
-    [setVideoLayer]
+    [setVideoLayer],
   );
 
   useThrottledDailyEvent(
     ['network-quality-change', 'cpu-load-change'],
-    handleEvent
+    handleEvent,
   );
 
   useEffect(() => {
@@ -115,11 +115,11 @@ export function ReceiveSettingsListener() {
     };
 
     participantIds.forEach((participantId) =>
-      updateSettingsForParticipant(participantId, layer)
+      updateSettingsForParticipant(participantId, layer),
     );
 
     waitingParticipantIds.forEach((participantId) =>
-      updateSettingsForParticipant(participantId, 0)
+      updateSettingsForParticipant(participantId, 0),
     );
 
     if (

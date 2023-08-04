@@ -44,8 +44,8 @@ export function PresenceListener() {
           setTimeout(fetchParticipants, 2500);
         } else setViewers([]);
       },
-      [fetchParticipants, isOwner, setViewers]
-    )
+      [fetchParticipants, isOwner, setViewers],
+    ),
   );
 
   return null;

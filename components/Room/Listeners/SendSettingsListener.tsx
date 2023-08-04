@@ -28,7 +28,7 @@ export function SendSettingsListener() {
         | DailyEventObjectCpuLoadEvent
         | DailyEventObjectNetworkQualityEvent
         | DailyEventObject
-      )[]
+      )[],
     ) => {
       events.forEach((ev) => {
         switch (ev.action) {
@@ -88,7 +88,7 @@ export function SendSettingsListener() {
         }
       });
     },
-    [setVideoLayer]
+    [setVideoLayer],
   );
 
   useThrottledDailyEvent(
@@ -98,7 +98,7 @@ export function SendSettingsListener() {
       'local-screen-share-started',
       'local-screen-share-stopped',
     ],
-    handleEvents
+    handleEvents,
   );
 
   useEffect(() => {

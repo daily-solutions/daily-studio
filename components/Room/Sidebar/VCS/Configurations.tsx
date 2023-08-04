@@ -43,7 +43,7 @@ export function Configurations() {
         description: 'Configuration is applied to the meeting',
       });
     },
-    [toast, updateMeetingSessionData, updateParams]
+    [toast, updateMeetingSessionData, updateParams],
   );
 
   if (configs.length === 0) return null;

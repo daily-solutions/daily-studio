@@ -16,12 +16,12 @@ export function Viewer({
 
   const isRequesting = useMemo(
     () => Boolean(requestedParticipants?.[sessionId]),
-    [requestedParticipants, sessionId]
+    [requestedParticipants, sessionId],
   );
 
   const handleInviteToStage = useCallback(
     () => (isRequesting ? accept(sessionId) : invite(sessionId)),
-    [accept, invite, isRequesting, sessionId]
+    [accept, invite, isRequesting, sessionId],
   );
 
   return (

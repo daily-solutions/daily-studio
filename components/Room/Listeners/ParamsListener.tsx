@@ -24,7 +24,7 @@ export function ParamsListener() {
 
             daily.sendAppMessage(
               { event: 'params', type: 'sync-params', params },
-              ev.fromId
+              ev.fromId,
             );
             break;
           case 'sync-params':
@@ -39,7 +39,7 @@ export function ParamsListener() {
             break;
         }
       },
-      [daily, isWaitingForSync, params, setParams]
+      [daily, isWaitingForSync, params, setParams],
     ),
   });
 
@@ -66,14 +66,14 @@ export function ParamsListener() {
         }
 
         const randomParticipant = Object.values(participants).find(
-          (p) => (p?.joined_at ?? 0) < (local.joined_at ?? 0)
+          (p) => (p?.joined_at ?? 0) < (local.joined_at ?? 0),
         );
         sendAppMessage(
           { event: 'params', type: 'requesting-for-sync' },
-          randomParticipant?.session_id
+          randomParticipant?.session_id,
         );
       }, randomDelay);
-    }, [daily, sendAppMessage])
+    }, [daily, sendAppMessage]),
   );
 
   return null;

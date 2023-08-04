@@ -16,7 +16,7 @@ export function Record({ mobileUi = false }: Props) {
 
   const handleRecord = useCallback(
     () => (isRecording ? stopRecording() : startRecording()),
-    [isRecording, startRecording, stopRecording]
+    [isRecording, startRecording, stopRecording],
   );
 
   if (!isOwner || !config?.options?.enable_recording) return null;

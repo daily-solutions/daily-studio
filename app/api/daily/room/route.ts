@@ -30,6 +30,6 @@ export async function POST() {
       url,
       domain: process.env.NEXT_PUBLIC_DAILY_DOMAIN,
     }),
-    { status: 200 }
+    { status: 200 },
   );
 }

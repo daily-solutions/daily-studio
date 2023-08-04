@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
   const dailyRes = await fetch(
     `https://api.daily.co/v1/rooms/${roomName}/presence`,
-    options
+    options,
   );
   const { data: participants } = await dailyRes.json();
 

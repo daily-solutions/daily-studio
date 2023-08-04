@@ -20,7 +20,7 @@ export function Asset({ asset }: { asset: AssetType }) {
     <div className="flex items-center justify-between gap-2">
       <div className="flex flex-col justify-center gap-y-2">
         <h3 className="text-ellipsis text-sm font-medium">{asset.name}</h3>
-        <p className="text-muted-foreground text-xs">{asset.url}</p>
+        <p className="text-xs text-muted-foreground">{asset.url}</p>
       </div>
       <Button
         size="auto"

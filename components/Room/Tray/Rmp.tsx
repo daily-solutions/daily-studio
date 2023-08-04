@@ -25,7 +25,7 @@ export const RMPPopover = () => {
           description: e,
           variant: 'destructive',
         }),
-      [toast]
+      [toast],
     ),
   });
   const [url, setUrl] = useState('');
@@ -51,7 +51,7 @@ export const RMPPopover = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-muted-foreground text-xs">Remote Media Player</p>
+      <p className="text-xs text-muted-foreground">Remote Media Player</p>
       {sessionId ? (
         <Button className="w-full" onClick={handleRMPPlayPause}>
           {isPlaying ? 'Pause' : 'Resume'}

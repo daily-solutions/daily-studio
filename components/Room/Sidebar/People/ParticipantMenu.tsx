@@ -80,14 +80,14 @@ function PermissionsMenu({ sessionId }: { sessionId: string }) {
         },
       });
     },
-    [canSendAudio, canSendScreenVideo, canSendVideo, daily, sessionId]
+    [canSendAudio, canSendScreenVideo, canSendVideo, daily, sessionId],
   );
 
   const { remove } = useStage();
 
   const handleRemoveFromStage = useCallback(
     () => remove(sessionId),
-    [remove, sessionId]
+    [remove, sessionId],
   );
 
   if (isOwner || isLocal || !isLocalOwner) return null;
@@ -143,7 +143,7 @@ function ModerationMenu({ sessionId }: { sessionId: string }) {
         device === 'audio' ? { setAudio: false } : { setVideo: false };
       daily.updateParticipant(sessionId, updates);
     },
-    [daily, sessionId]
+    [daily, sessionId],
   );
 
   if (!isOwner) return null;
@@ -177,7 +177,7 @@ function RemoteMediaPlayerMenu() {
   const handlePlayPause = useCallback(
     async () =>
       await updateRemoteMediaPlayer({ state: isPlaying ? 'pause' : 'play' }),
-    [isPlaying, updateRemoteMediaPlayer]
+    [isPlaying, updateRemoteMediaPlayer],
   );
 
   return (

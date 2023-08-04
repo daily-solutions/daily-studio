@@ -13,7 +13,7 @@ async function generateToken(roomName: string) {
         roomName,
         isOwner: false,
       }),
-    }
+    },
   );
   const { token } = await res.json();
   return token;

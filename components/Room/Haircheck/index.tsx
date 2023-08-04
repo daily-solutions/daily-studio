@@ -24,7 +24,7 @@ export function Haircheck() {
       if (hasPresence) setState('haircheck');
       else await daily.join();
     },
-    [daily, hasPresence]
+    [daily, hasPresence],
   );
 
   if (!localSessionId) return <Loader showHeader={false} />;

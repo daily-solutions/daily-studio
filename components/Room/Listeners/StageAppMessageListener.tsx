@@ -33,7 +33,7 @@ export function StageAppMessageListener() {
           });
         }
       },
-      [accept, isOwner, localSessionId, toast]
+      [accept, isOwner, localSessionId, toast],
     ),
     onCancelRequestToJoin: useCallback(
       ({ sessionId }) => {
@@ -44,7 +44,7 @@ export function StageAppMessageListener() {
           });
         }
       },
-      [localSessionId, toast]
+      [localSessionId, toast],
     ),
     onDeny: useCallback(() => {
       toast({
@@ -78,7 +78,7 @@ export function StageAppMessageListener() {
           variant: visible ? 'default' : 'destructive',
         });
       },
-      [toast]
+      [toast],
     ),
   });
 

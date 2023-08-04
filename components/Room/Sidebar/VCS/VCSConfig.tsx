@@ -49,7 +49,7 @@ export function VCSConfig() {
       !name ||
       dequal(params, vcsConfig.vcs) ||
       Object.keys(params).length === 0,
-    [name, params]
+    [name, params],
   );
 
   return (
@@ -65,7 +65,7 @@ export function VCSConfig() {
       </div>
       <div className="flex flex-col gap-y-2">
         <Label>Config</Label>
-        <pre className="bg-muted overflow-auto rounded-md p-2 font-mono text-xs">
+        <pre className="overflow-auto rounded-md bg-muted p-2 font-mono text-xs">
           {JSON.stringify(config, null, 1)}
         </pre>
       </div>

@@ -11,7 +11,7 @@ export function Screenshare() {
 
   const handleScreenShare = useCallback(
     () => (isSharingScreen ? stopScreenShare() : startScreenShare()),
-    [isSharingScreen, startScreenShare, stopScreenShare]
+    [isSharingScreen, startScreenShare, stopScreenShare],
   );
 
   const { supportsScreenShare } = DailyIframe.supportedBrowser();

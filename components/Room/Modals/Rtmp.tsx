@@ -68,12 +68,12 @@ export function RTMPModal() {
         {
           rtmps: { ...rtmps, [uuid]: currentPlatform },
         },
-        'shallow-merge'
+        'shallow-merge',
       );
       setCurrentPlatform(initialValues);
       setShow(false);
     },
-    [currentPlatform, rtmps, setSessionState, setShow]
+    [currentPlatform, rtmps, setSessionState, setShow],
   );
 
   return (

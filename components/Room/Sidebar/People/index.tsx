@@ -21,7 +21,7 @@ export function People() {
 
   return (
     <div className="p-4">
-      <p className="text-muted-foreground mb-2 text-xs">
+      <p className="mb-2 text-xs text-muted-foreground">
         {participantIds.length}{' '}
         {participantIds.length === 1 ? 'person' : 'people'} on the call
       </p>

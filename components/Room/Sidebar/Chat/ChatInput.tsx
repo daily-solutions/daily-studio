@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { useLocalMessage } from '@/states/messageState';
 import { useMessages } from '@/states/messagesState';
+import { useLocalMessage } from '@/states/messageState';
 import { Button } from '@/ui/Button';
 import { Icons } from '@/ui/Icons';
 import { Textarea } from '@/ui/TextArea';
@@ -42,7 +42,7 @@ export function ChatInput() {
       },
     ]);
     setMessage('');
-  }, [daily, localSessionId, setMessages, userName, message]);
+  }, [daily, localSessionId, message, userName, setMessages, setMessage]);
 
   const handleKeyDown = useCallback(
     (ev: React.KeyboardEvent) => {
@@ -54,7 +54,7 @@ export function ChatInput() {
         sendAppMessage();
       }
     },
-    [sendAppMessage]
+    [sendAppMessage],
   );
 
   return (

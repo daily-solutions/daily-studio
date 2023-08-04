@@ -22,17 +22,19 @@ export function TileUserName({ sessionId }: Props) {
   const tileName = useMemo(
     () =>
       participantType === 'remote-media-player' ? 'RMP' : userName || 'Guest',
-    [userName, participantType]
+    [userName, participantType],
   );
 
   return (
-    <div className="bg-muted absolute bottom-2 left-2 flex items-center justify-center rounded-md p-2">
+    <div className="absolute bottom-2 left-2 flex items-center justify-center rounded-md bg-muted p-2">
       {participantType !== 'remote-media-player' && (
         <Icon
           icon={AUDIO_OFF.includes(audioState) ? 'micOff' : 'micOn'}
           className={cn(
             'mr-2 h-4 w-4',
-            AUDIO_OFF.includes(audioState) ? 'text-destructive' : 'text-inherit'
+            AUDIO_OFF.includes(audioState)
+              ? 'text-destructive'
+              : 'text-inherit',
           )}
         />
       )}

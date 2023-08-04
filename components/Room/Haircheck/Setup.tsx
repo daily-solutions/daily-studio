@@ -51,17 +51,17 @@ export function Setup({ onJoin = () => {} } = {}) {
 
   const permissionsGranted = useMemo(
     () => camState === 'granted' && micState === 'granted',
-    [camState, micState]
+    [camState, micState],
   );
 
   const videoDisabled = useMemo(
     () => hasCamError || camState !== 'granted',
-    [camState, hasCamError]
+    [camState, hasCamError],
   );
 
   const audioDisabled = useMemo(
     () => hasMicError || micState !== 'granted',
-    [hasMicError, micState]
+    [hasMicError, micState],
   );
 
   return (
@@ -80,7 +80,7 @@ export function Setup({ onJoin = () => {} } = {}) {
       <div
         className={cn(
           'flex items-center justify-between p-2',
-          permissionsGranted && 'border-b'
+          permissionsGranted && 'border-b',
         )}
       >
         <div className="flex items-center justify-center">

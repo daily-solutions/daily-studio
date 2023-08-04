@@ -16,7 +16,7 @@ export function NameSetup({ onContinue }: Props) {
       event.preventDefault();
       onContinue(username);
     },
-    [onContinue, username]
+    [onContinue, username],
   );
 
   return (

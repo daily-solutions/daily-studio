@@ -15,7 +15,7 @@ export function Invite() {
 
   const baseURL = useMemo(
     () => window.location.origin + '/' + params.name,
-    [params]
+    [params],
   );
 
   const handleCopyToClipboard = useCallback(async (url: string) => {

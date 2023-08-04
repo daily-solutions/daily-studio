@@ -20,7 +20,7 @@ export function Assets() {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) =>
       setAsset((asset) => ({ ...asset, [e.target.name]: e.target.value })),
-    []
+    [],
   );
 
   const handleSubmit = useCallback(
@@ -40,12 +40,12 @@ export function Assets() {
             },
           },
         },
-        'shallow-merge'
+        'shallow-merge',
       );
 
       setAsset({ name: '', url: '' });
     },
-    [asset.name, asset.url, assets, setSessionState]
+    [asset.name, asset.url, assets, setSessionState],
   );
 
   return (
@@ -64,7 +64,7 @@ export function Assets() {
           </div>
           <div className="flex flex-col gap-y-2">
             <Label>Asset URL</Label>
-            <p className="text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               Only PNG images are supported
             </p>
             <Input

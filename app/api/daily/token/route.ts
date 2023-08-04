@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   const dailyRes = await fetch(
     'https://api.daily.co/v1/meeting-tokens',
-    options
+    options,
   );
   const { token, error } = await dailyRes.json();
   if (error) {

@@ -12,7 +12,7 @@ const MUTED_STATES = ['interrupted', 'off', 'blocked'];
 function ParticipantComponent({ sessionId }: { sessionId: string }) {
   const [userName, isLocal, audioState, screenState] = useParticipantProperty(
     sessionId,
-    ['user_name', 'local', 'tracks.audio.state', 'tracks.screenVideo.state']
+    ['user_name', 'local', 'tracks.audio.state', 'tracks.screenVideo.state'],
   );
 
   const isSharingScreen = !MUTED_STATES.includes(screenState);
@@ -30,7 +30,7 @@ function ParticipantComponent({ sessionId }: { sessionId: string }) {
           icon={isMuted ? 'micOff' : 'micOn'}
           className={cn(
             'h-4 w-4',
-            isMuted ? 'text-destructive' : 'text-inherit'
+            isMuted ? 'text-destructive' : 'text-inherit',
           )}
         />
         {isOwner && <ParticipantMenu sessionId={sessionId} />}

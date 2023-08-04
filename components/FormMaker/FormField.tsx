@@ -28,22 +28,22 @@ export const FormField = ({ field }: Props) => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       updateParams({ [e.target.name]: e.target.value }),
-    [updateParams]
+    [updateParams],
   );
 
   const handleOnSelectChange = useCallback(
     (value: string) => updateParams({ [field.id]: value }),
-    [field.id, updateParams]
+    [field.id, updateParams],
   );
 
   const handleCheckedChange = useCallback(
     (checked: boolean) => updateParams({ [field.id]: checked }),
-    [field.id, updateParams]
+    [field.id, updateParams],
   );
 
   const handleSlideChange = useCallback(
     (value: number[]) => updateParams({ [field.id]: value[0] }),
-    [field.id, updateParams]
+    [field.id, updateParams],
   );
 
   const handleOnClick = useCallback(
@@ -51,7 +51,7 @@ export const FormField = ({ field }: Props) => {
       updateParams({
         [field.id]: (params[field.id] ?? field.defaultValue) + 1,
       }),
-    [params, updateParams]
+    [params, updateParams],
   );
 
   const render = () => {
@@ -59,7 +59,7 @@ export const FormField = ({ field }: Props) => {
       case 'heading':
         return (
           <div className="flex flex-col gap-y-2">
-            <Label className="text-muted-foreground text-xs font-bold">
+            <Label className="text-xs font-bold text-muted-foreground">
               {field.label}
             </Label>
           </div>
@@ -104,7 +104,7 @@ export const FormField = ({ field }: Props) => {
               </SelectContent>
             </Select>
             {field?.description && (
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {field.description}
               </p>
             )}
@@ -124,7 +124,7 @@ export const FormField = ({ field }: Props) => {
               onChange={handleChange}
             />
             {field?.description && (
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {field.description}
               </p>
             )}
@@ -144,7 +144,7 @@ export const FormField = ({ field }: Props) => {
               onValueChange={handleSlideChange}
             />
             {field?.description && (
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {field.description}
               </p>
             )}
@@ -174,7 +174,7 @@ export const FormField = ({ field }: Props) => {
               </div>
             </div>
             {field?.description && (
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {field.description}
               </p>
             )}
@@ -190,7 +190,7 @@ export const FormField = ({ field }: Props) => {
               onChange={handleChange}
             />
             {field?.description && (
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {field.description}
               </p>
             )}
@@ -208,7 +208,7 @@ export const FormField = ({ field }: Props) => {
               autoGrow
             />
             {field?.description && (
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {field.description}
               </p>
             )}

@@ -18,7 +18,7 @@ export function ChatMessage({
       className={cn(
         'flex flex-col break-words rounded-md p-3 text-sm',
         bgColor,
-        sameSender ? 'mt-1' : 'mt-2'
+        sameSender ? 'mt-1' : 'mt-2',
       )}
     >
       {!sameSender && (

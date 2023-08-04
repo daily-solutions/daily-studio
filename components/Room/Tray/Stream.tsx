@@ -18,7 +18,7 @@ export function Stream({ mobileUi = false }: Props) {
 
   const handleLiveStream = useCallback(
     () => (isLiveStreaming ? stopLiveStreaming() : setBroadcast(true)),
-    [isLiveStreaming, setBroadcast, stopLiveStreaming]
+    [isLiveStreaming, setBroadcast, stopLiveStreaming],
   );
 
   if (!isOwner || !config?.options?.enable_live_streaming) return null;

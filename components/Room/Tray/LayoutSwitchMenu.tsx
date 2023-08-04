@@ -13,7 +13,7 @@ export function LayoutSwitchMenu() {
   const handleSelect = useCallback(
     (mode: 'single' | 'split' | 'grid' | 'dominant' | 'pip') =>
       updateParams({ mode }),
-    [updateParams]
+    [updateParams],
   );
 
   if (!isOwner) return null;

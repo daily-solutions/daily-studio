@@ -18,38 +18,38 @@ const FormMaker = dynamic(
   () => import('@/components/FormMaker').then((mod) => mod.FormMaker),
   {
     loading: () => <Loading />,
-  }
+  },
 );
 const People = dynamic(
   () => import('@/components/Room/Sidebar/People').then((mod) => mod.People),
   {
     loading: () => <Loading />,
-  }
+  },
 );
 const Assets = dynamic(
   () => import('@/components/Room/Sidebar/Assets').then((mod) => mod.Assets),
   {
     loading: () => <Loading />,
-  }
+  },
 );
 const Chat = dynamic(
   () => import('@/components/Room/Sidebar/Chat').then((mod) => mod.Chat),
   {
     loading: () => <Loading />,
-  }
+  },
 );
 const Stream = dynamic(
   () => import('@/components/Room/Sidebar/Stream').then((mod) => mod.Stream),
   {
     loading: () => <Loading />,
-  }
+  },
 );
 
 const VCS = dynamic(
   () => import('@/components/Room/Sidebar/VCS').then((mod) => mod.VCS),
   {
     loading: () => <Loading />,
-  }
+  },
 );
 
 interface Props {
@@ -62,7 +62,7 @@ export function TabContent({ value }: Props) {
 
   const assetFileNames = useMemo(
     () => Object.values(assets ?? {}).map((asset) => asset.name),
-    [assets]
+    [assets],
   );
 
   const { orderedParticipantIds } = useStage();
@@ -70,7 +70,7 @@ export function TabContent({ value }: Props) {
   const participants = useMemo(() => {
     if (!daily) return [];
     const participantsObject = Object.fromEntries(
-      Object.values(daily.participants()).map((p) => [p.session_id, p])
+      Object.values(daily.participants()).map((p) => [p.session_id, p]),
     );
 
     return orderedParticipantIds

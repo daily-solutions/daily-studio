@@ -35,10 +35,10 @@ export function Rtmp({ rtmp, id, showSwitch = false }: Props) {
             },
           },
         },
-        'shallow-merge'
+        'shallow-merge',
       );
     },
-    [id, rtmps, setSessionState]
+    [id, rtmps, setSessionState],
   );
 
   return (

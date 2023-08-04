@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+
 import React from 'react';
 import { Metadata } from 'next';
 import { config } from '@/config';
@@ -30,8 +31,8 @@ export default function RootLayout({ children }: React.PropsWithChildren<{}>) {
       <head />
       <body
         className={cn(
-          'bg-background h-full font-sans antialiased',
-          fontSans.variable
+          'h-full bg-background font-sans antialiased',
+          fontSans.variable,
         )}
       >
         <RecoilProvider>

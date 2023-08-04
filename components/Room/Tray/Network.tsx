@@ -10,7 +10,7 @@ function NetworkPopover() {
   const { getStats, threshold } = useNetwork();
 
   const [stats, setStats] = useState<DailyNetworkStats['stats'] | undefined>(
-    undefined
+    undefined,
   );
 
   useEffect(() => {
@@ -26,27 +26,27 @@ function NetworkPopover() {
 
   const downloadKbs = useMemo(
     () => Math.round((stats?.latest?.videoRecvBitsPerSecond ?? 0) / 1000),
-    [stats?.latest?.videoRecvBitsPerSecond]
+    [stats?.latest?.videoRecvBitsPerSecond],
   );
   const uploadKbs = useMemo(
     () => Math.round((stats?.latest?.videoSendBitsPerSecond ?? 0) / 1000),
-    [stats?.latest?.videoSendBitsPerSecond]
+    [stats?.latest?.videoSendBitsPerSecond],
   );
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-3">
-      <Card className="bg-muted flex w-full flex-col justify-between gap-y-1 p-4">
+      <Card className="flex w-full flex-col justify-between gap-y-1 bg-muted p-4">
         <h3 className="text-sm font-bold">Packet loss</h3>
         <p>Your network is {threshold}</p>
       </Card>
-      <Card className="bg-muted flex w-full flex-col justify-between gap-y-1 p-4">
+      <Card className="flex w-full flex-col justify-between gap-y-1 bg-muted p-4">
         <div className="flex items-center gap-x-1">
           <Icon icon="download" className="h-4 w-4" />
           <h3 className="text-sm font-bold">Download rate</h3>
         </div>
         <p className="text-lg">{downloadKbs} kb/s</p>
       </Card>
-      <Card className="bg-muted flex w-full flex-col justify-between gap-y-1 p-4">
+      <Card className="flex w-full flex-col justify-between gap-y-1 bg-muted p-4">
         <div className="flex items-center gap-x-1">
           <Icon icon="upload" className="h-4 w-4" />
           <h3 className="text-sm font-bold">Upload rate</h3>

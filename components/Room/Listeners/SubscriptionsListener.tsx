@@ -42,12 +42,12 @@ export function SubscriptionsListener() {
       if (Object.keys(updateParticipants).length === 0) return;
       daily.updateParticipants(updateParticipants);
     },
-    [daily]
+    [daily],
   );
 
   useThrottledDailyEvent(
     ['participant-joined', 'participant-updated'],
-    handleSubscriptions
+    handleSubscriptions,
   );
 
   return null;

@@ -20,17 +20,17 @@ import { Listeners } from '@/components/Room/Listeners';
 
 const Haircheck = dynamic(
   () => import('@/components/Room/Haircheck').then((mod) => mod.Haircheck),
-  { loading: () => <Loader showHeader={false} /> }
+  { loading: () => <Loader showHeader={false} /> },
 );
 
 const Room = dynamic(
   () => import('@/components/Room').then((mod) => mod.Room),
-  { loading: () => <Loader showHeader={false} /> }
+  { loading: () => <Loader showHeader={false} /> },
 );
 
 const LeftMeeting = dynamic(
   () => import('@/components/Room/LeftMeeting').then((mod) => mod.LeftMeeting),
-  { loading: () => <Loader showHeader={false} /> }
+  { loading: () => <Loader showHeader={false} /> },
 );
 
 export function ViewLayout() {
@@ -51,8 +51,8 @@ export function ViewLayout() {
           variant: 'destructive',
         });
       },
-      [toast]
-    )
+      [toast],
+    ),
   );
 
   useDailyEvent(
@@ -66,8 +66,8 @@ export function ViewLayout() {
           variant: 'destructive',
         });
       },
-      [toast]
-    )
+      [toast],
+    ),
   );
 
   useDailyEvent(
@@ -93,8 +93,8 @@ export function ViewLayout() {
           daily?.leave();
         }
       },
-      [daily, router, toast]
-    )
+      [daily, router, toast],
+    ),
   );
 
   const content = useMemo(() => {

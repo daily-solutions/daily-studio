@@ -20,7 +20,7 @@ export function PrivilegeButton({
   const router = useRouter();
   const handleOnClick = useCallback(
     () => router.push(`/${roomName}/${privilege}`),
-    [privilege, roomName, router]
+    [privilege, roomName, router],
   );
 
   return (

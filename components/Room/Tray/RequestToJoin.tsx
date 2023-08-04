@@ -9,7 +9,7 @@ export function RequestToJoin() {
 
   const handleRequestToJoin = useCallback(
     () => (isRequesting ? cancelRequestToJoin() : requestToJoin()),
-    [isRequesting, cancelRequestToJoin, requestToJoin]
+    [isRequesting, cancelRequestToJoin, requestToJoin],
   );
 
   if (!config?.options?.enable_viewers_request_to_join) return null;
