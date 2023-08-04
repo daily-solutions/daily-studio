@@ -1,6 +1,7 @@
 import {
   ArrowUpDown,
   Bell,
+  ChevronDown,
   CircleSlash,
   Clapperboard,
   Clipboard,
@@ -135,6 +136,7 @@ export const Icons = {
     </svg>
   ),
   import: ImportIcon,
+  chevronDown: ChevronDown,
 };
 
 export const Icon = ({
