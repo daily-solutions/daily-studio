@@ -63,6 +63,10 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
         getAssetUrlCb,
         viewportSize: { w: width, h: height },
         defaultParams: params,
+        defaultAssets: Object.keys(assets ?? {}).reduce((acc, key) => {
+          acc[key] = assets[key].url;
+          return acc;
+        }, {}),
         participantIds: orderedParticipantIds,
         callbacks: {
           onStart() {
@@ -80,15 +84,8 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
         },
       });
       vcsCompRef.current.start();
-      if (assets) {
-        const images = Object.keys(assets).reduce((acc, key) => {
-          acc[key] = assets[key].url;
-          return acc;
-        }, {});
-        vcsCompRef.current.updateImageSources(images);
-      }
     },
-    [meetingState, width, height, daily, params, orderedParticipantIds, assets]
+    [meetingState, width, height, daily, params, orderedParticipantIds, assets],
   );
 
   useEffect(() => {
@@ -100,7 +97,7 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   useEffect(() => {
     if (!vcsCompRef.current) return;
 
-    const images = Object.keys(assets).reduce((acc, key) => {
+    const images = Object.keys(assets ?? {}).reduce((acc, key) => {
       acc[key] = assets[key].url;
       return acc;
     }, {});
