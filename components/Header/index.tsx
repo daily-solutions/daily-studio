@@ -2,6 +2,7 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { config } from '@/config';
 
 const CallHeader = dynamic(() =>
@@ -15,9 +16,9 @@ export function Header({ inCall = true }: { inCall?: boolean }) {
   return (
     <header className="min-h-16 bg-background sticky top-0 z-40 h-16 max-h-16 w-full border-b">
       <div className="mx-2 flex h-full items-center justify-between">
-        <a href="/">
+        <Link href="/" target="_blank">
           <span className="inline-block font-bold">{config.name}</span>
-        </a>
+        </Link>
         {inCall ? <CallHeader /> : <GithubLink />}
       </div>
     </header>
