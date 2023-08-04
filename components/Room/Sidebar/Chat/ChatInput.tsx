@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { useLocalMessage } from '@/states/messageState';
 import { useMessages } from '@/states/messagesState';
 import { Button } from '@/ui/Button';
 import { Icons } from '@/ui/Icons';
@@ -15,7 +16,7 @@ export function ChatInput() {
   const userName = useParticipantProperty(localSessionId, 'user_name');
   const [, setMessages] = useMessages();
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useLocalMessage();
 
   const sendAppMessage = useCallback(() => {
     if (!daily || !localSessionId || !message) return;
