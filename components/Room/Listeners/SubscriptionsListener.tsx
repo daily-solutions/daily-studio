@@ -14,7 +14,7 @@ export function SubscriptionsListener() {
       events.forEach((event) => {
         const participant: DailyParticipant = event.participant;
         const {
-          permissions,
+          permissions: { hasPresence },
           userData,
           session_id,
           tracks,
@@ -28,13 +28,16 @@ export function SubscriptionsListener() {
         const isSubscribed =
           tracks?.[isRMP ? 'rmpVideo' : 'video']?.subscribed === true;
 
-        if (permissions.hasPresence) {
+        if (hasPresence) {
           if ((userData?.['onStage'] || isRMP) && !isSubscribed) {
             // If the participant is on stage, subscribe to their video
             updateParticipants[session_id] = { setSubscribedTracks: true };
+          } else {
+            // If the participant is not on stage, unsubscribe from their video
+            updateParticipants[session_id] = { setSubscribedTracks: false };
           }
         } else if (isSubscribed) {
-          // If the participant is not on stage, unsubscribe from their video
+          // If the participant doesn't have presence, unsubscribe from their video
           updateParticipants[session_id] = { setSubscribedTracks: false };
         }
       });
