@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList } from '@/ui/Tabs';
 import { useLocalSessionId } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useStage } from '@/hooks/useStage';
-import { useSubscribe } from '@/hooks/useSubscribe';
 import { Participants } from '@/components/Room/Stage/Participants';
 import { TabHeader } from '@/components/Room/Stage/TabHeader';
 import { Tile } from '@/components/Tile';
@@ -15,21 +14,6 @@ export function Stage() {
   const { state, participantIds, waitingParticipantIds } = useStage();
 
   const [tab, setTab] = useState('stage');
-
-  const { subscribeToWaitingParticipants, unsubscribeFromWaitingParticipants } =
-    useSubscribe();
-
-  useEffect(() => {
-    if (!isOwner) return;
-
-    if (tab === 'waiting') subscribeToWaitingParticipants();
-    else unsubscribeFromWaitingParticipants();
-  }, [
-    isOwner,
-    subscribeToWaitingParticipants,
-    tab,
-    unsubscribeFromWaitingParticipants,
-  ]);
 
   if (!isOwner && state === 'back-stage') {
     return (

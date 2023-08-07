@@ -1,12 +1,18 @@
 import { useCallback } from 'react';
-import { DailyParticipant } from '@daily-co/daily-js';
+import {
+  DailyEventObjectParticipant,
+  DailyParticipant,
+} from '@daily-co/daily-js';
 import { useDaily, useThrottledDailyEvent } from '@daily-co/daily-react';
+
+import { useIsOwner } from '@/hooks/useIsOwner';
 
 export function SubscriptionsListener() {
   const daily = useDaily();
+  const isOwner = useIsOwner();
 
   const handleSubscriptions = useCallback(
-    (events) => {
+    (events: DailyEventObjectParticipant[]) => {
       if (!daily) return;
 
       const updateParticipants = {};
@@ -27,14 +33,19 @@ export function SubscriptionsListener() {
         const isRMP = participantType === 'remote-media-player';
         const isSubscribed =
           tracks?.[isRMP ? 'rmpVideo' : 'video']?.subscribed === true;
+        const isStaged =
+          tracks?.[isRMP ? 'rmpVideo' : 'video']?.subscribed === 'staged';
 
         if (hasPresence) {
-          if ((userData?.['onStage'] || isRMP) && !isSubscribed) {
+          if (userData?.['onStage'] || isRMP) {
+            if (isSubscribed) return;
             // If the participant is on stage, subscribe to their video
             updateParticipants[session_id] = { setSubscribedTracks: true };
           } else {
-            // If the participant is not on stage, unsubscribe from their video
-            updateParticipants[session_id] = { setSubscribedTracks: false };
+            if (isSubscribed || isStaged) return;
+            updateParticipants[session_id] = {
+              setSubscribedTracks: isOwner ? true : 'staged',
+            };
           }
         } else if (isSubscribed) {
           // If the participant doesn't have presence, unsubscribe from their video
@@ -45,7 +56,7 @@ export function SubscriptionsListener() {
       if (Object.keys(updateParticipants).length === 0) return;
       daily.updateParticipants(updateParticipants);
     },
-    [daily],
+    [daily, isOwner],
   );
 
   useThrottledDailyEvent(
