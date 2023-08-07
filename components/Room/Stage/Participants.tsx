@@ -3,12 +3,14 @@ import { EmptyState } from '@/ui/EmptyState';
 import { useVirtual } from '@tanstack/react-virtual';
 
 import { cn } from '@/lib/utils';
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { Tile } from '@/components/Tile';
 
 interface Props {
   participantIds: string[];
 }
 export function Participants({ participantIds }: Props) {
+  const isOwner = useIsOwner();
   const parentRef = useRef<HTMLDivElement>(null);
 
   const virtual = useVirtual({
@@ -49,7 +51,7 @@ export function Participants({ participantIds }: Props) {
             <Tile
               sessionId={participantIds[virtualColumn.index]}
               noVideoTileColor="bg-background"
-              showMenu
+              showMenu={isOwner}
             />
           </div>
         ))}

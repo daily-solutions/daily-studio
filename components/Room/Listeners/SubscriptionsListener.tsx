@@ -3,13 +3,15 @@ import {
   DailyEventObjectParticipant,
   DailyParticipant,
 } from '@daily-co/daily-js';
-import { useDaily, useThrottledDailyEvent } from '@daily-co/daily-react';
-
-import { useIsOwner } from '@/hooks/useIsOwner';
+import {
+  useDaily,
+  usePermissions,
+  useThrottledDailyEvent,
+} from '@daily-co/daily-react';
 
 export function SubscriptionsListener() {
   const daily = useDaily();
-  const isOwner = useIsOwner();
+  const { hasPresence: hasLocalPresence } = usePermissions();
 
   const handleSubscriptions = useCallback(
     (events: DailyEventObjectParticipant[]) => {
@@ -44,7 +46,7 @@ export function SubscriptionsListener() {
           } else {
             if (isSubscribed || isStaged) return;
             updateParticipants[session_id] = {
-              setSubscribedTracks: isOwner ? true : 'staged',
+              setSubscribedTracks: hasLocalPresence ? true : 'staged',
             };
           }
         } else if (isSubscribed) {
@@ -56,7 +58,7 @@ export function SubscriptionsListener() {
       if (Object.keys(updateParticipants).length === 0) return;
       daily.updateParticipants(updateParticipants);
     },
-    [daily, isOwner],
+    [daily, hasLocalPresence],
   );
 
   useThrottledDailyEvent(
