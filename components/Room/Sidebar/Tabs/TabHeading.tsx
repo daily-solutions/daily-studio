@@ -3,12 +3,14 @@
 import { useMemo } from 'react';
 
 import { Sidebar } from '@/types/sidebar';
+import { useIsOwner } from '@/hooks/useIsOwner';
 
 interface Props {
   value: Sidebar;
 }
 
 export function TabHeading({ value }: Props) {
+  const isOwner = useIsOwner();
   const { heading, description } = useMemo(() => {
     switch (value) {
       case 'text':
@@ -28,8 +30,10 @@ export function TabHeading({ value }: Props) {
         };
       case 'people':
         return {
-          heading: 'People',
-          description: 'Manage the people shown in the layout',
+          heading: isOwner ? 'People' : 'Presenters',
+          description: isOwner
+            ? 'Manage the people shown in the layout'
+            : 'Presenters on the stream',
         };
       case 'assets':
         return {
@@ -57,7 +61,7 @@ export function TabHeading({ value }: Props) {
           description: 'Adjust the layout options',
         };
     }
-  }, [value]);
+  }, [isOwner, value]);
 
   return (
     <div className="flex h-16 flex-col justify-center gap-y-1 border-b bg-background px-4">
