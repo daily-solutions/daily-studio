@@ -19,7 +19,7 @@ export function LayoutSwitchMenu() {
   if (!isOwner) return null;
 
   return (
-    <div className="min-h-20 flex h-20 max-h-20 items-center justify-center border-t">
+    <div className="min-h-20 flex h-20 items-center justify-center border-t">
       <TrayButton
         selected={params.mode === 'single'}
         onClick={() => handleSelect('single')}
