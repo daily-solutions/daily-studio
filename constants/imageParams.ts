@@ -4,7 +4,7 @@ import { PositionCorner } from './positions';
 
 export const imageParams = (
   options: string[],
-  defaultValue?: string
+  defaultValue?: string,
 ): Param[] => {
   return [
     {

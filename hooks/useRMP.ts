@@ -24,8 +24,8 @@ export const useRMP = ({ onError = () => {} }: Props = {}) => {
           sessionId: ev.session_id,
         });
       },
-      [setRMP]
-    )
+      [setRMP],
+    ),
   );
 
   useDailyEvent(
@@ -38,8 +38,8 @@ export const useRMP = ({ onError = () => {} }: Props = {}) => {
           sessionId: ev.session_id,
         });
       },
-      [setRMP]
-    )
+      [setRMP],
+    ),
   );
 
   useDailyEvent(
@@ -50,7 +50,7 @@ export const useRMP = ({ onError = () => {} }: Props = {}) => {
         isPaused: false,
         sessionId: '',
       });
-    }, [setRMP])
+    }, [setRMP]),
   );
 
   useDailyEvent(
@@ -66,8 +66,8 @@ export const useRMP = ({ onError = () => {} }: Props = {}) => {
         });
         onError?.(ev.errorMsg);
       },
-      [onError, setRMP]
-    )
+      [onError, setRMP],
+    ),
   );
 
   const startRemoteMediaPlayer = useCallback(
@@ -76,7 +76,7 @@ export const useRMP = ({ onError = () => {} }: Props = {}) => {
 
       await daily.startRemoteMediaPlayer(options);
     },
-    [daily]
+    [daily],
   );
 
   const updateRemoteMediaPlayer = useCallback(
@@ -88,7 +88,7 @@ export const useRMP = ({ onError = () => {} }: Props = {}) => {
         settings,
       });
     },
-    [daily, rmp.sessionId]
+    [daily, rmp.sessionId],
   );
 
   const stopRemoteMediaPlayer = useCallback(async () => {

@@ -3,7 +3,7 @@ import { PositionCorner } from '@/constants/positions';
 import { Param } from '@/types/params';
 
 export const pipParams = (
-  participants: { label: string; value: string }[]
+  participants: { label: string; value: string }[],
 ): Param[] => [
   {
     id: 'pip-layout-heading',

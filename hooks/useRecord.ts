@@ -28,7 +28,7 @@ export const useRecord = () => {
           variant: 'destructive',
         });
       },
-      [toast]
+      [toast],
     ),
   });
 
@@ -64,12 +64,12 @@ export const useRecord = () => {
 
     const areParamsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).composition_params,
-      params
+      params,
     );
 
     const areParticipantsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).video,
-      participantIds
+      participantIds,
     );
 
     if (areParamsEqual && areParticipantsEqual) return;
@@ -94,7 +94,7 @@ export const useRecord = () => {
       dailyStopRecording({
         instanceId: '40000008-4008-4000-8008-800000000004',
       }),
-    [dailyStopRecording]
+    [dailyStopRecording],
   );
 
   return { isRecording, stopRecording, startRecording };

@@ -90,7 +90,7 @@ interface Props {
   onStageVisibilityChange?(
     data: {
       event: 'visible-on-stage' | 'hide-on-stage';
-    } & VisibleOnStage['payload']
+    } & VisibleOnStage['payload'],
   ): void;
 }
 
@@ -129,7 +129,7 @@ export const useStage = ({
       }
       onRequestToJoin?.(payload);
     },
-    [isOwner, onRequestToJoin, setRequestedParticipants]
+    [isOwner, onRequestToJoin, setRequestedParticipants],
   );
 
   const handleCancelRequestToJoin = useCallback(
@@ -143,7 +143,7 @@ export const useStage = ({
       }
       onCancelRequestToJoin?.({ sessionId });
     },
-    [isOwner, onCancelRequestToJoin, setRequestedParticipants]
+    [isOwner, onCancelRequestToJoin, setRequestedParticipants],
   );
 
   const handleAccept = useCallback(
@@ -165,7 +165,7 @@ export const useStage = ({
       setIsRequesting,
       setJoinStage,
       setRequestedParticipants,
-    ]
+    ],
   );
 
   const handleDeny = useCallback(
@@ -181,7 +181,13 @@ export const useStage = ({
         onDeny?.(payload);
       }
     },
-    [isOwner, localSessionId, onDeny, setIsRequesting, setRequestedParticipants]
+    [
+      isOwner,
+      localSessionId,
+      onDeny,
+      setIsRequesting,
+      setRequestedParticipants,
+    ],
   );
 
   const handleInvite = useCallback(
@@ -205,7 +211,7 @@ export const useStage = ({
       setIsRequesting,
       setJoinStage,
       setRequestedParticipants,
-    ]
+    ],
   );
 
   const handleRemove = useCallback(
@@ -218,7 +224,7 @@ export const useStage = ({
         .then(() => onRemovedFromStage?.(payload))
         .catch((err) => console.error(err));
     },
-    [daily, localSessionId, onRemovedFromStage, setIsRequesting]
+    [daily, localSessionId, onRemovedFromStage, setIsRequesting],
   );
 
   const handleStageVisibility = useCallback(
@@ -228,16 +234,17 @@ export const useStage = ({
       if (payload.sessionId === localSessionId) {
         daily
           .setUserData({ acceptedToJoin: true, onStage: visible })
-          .then(() =>
-            onStageVisibilityChange?.({
-              event: visible ? 'visible-on-stage' : 'hide-on-stage',
-              ...payload,
-            })
+          .then(
+            () =>
+              onStageVisibilityChange?.({
+                event: visible ? 'visible-on-stage' : 'hide-on-stage',
+                ...payload,
+              }),
           )
           .catch((err) => console.error(err));
       }
     },
-    [daily, localSessionId, onStageVisibilityChange]
+    [daily, localSessionId, onStageVisibilityChange],
   );
 
   const appMessage = useCallback(
@@ -269,7 +276,7 @@ export const useStage = ({
         case 'hide-on-stage':
           handleStageVisibility(
             data.payload,
-            data.event === 'visible-on-stage'
+            data.event === 'visible-on-stage',
           );
           break;
         default:
@@ -284,7 +291,7 @@ export const useStage = ({
       handleRemove,
       handleRequestToJoin,
       handleStageVisibility,
-    ]
+    ],
   );
 
   /*
@@ -334,7 +341,7 @@ export const useStage = ({
         payload: { sessionId },
       });
     },
-    [daily, handleAccept, isOwner, sendAppMessage]
+    [daily, handleAccept, isOwner, sendAppMessage],
   );
 
   /*
@@ -351,7 +358,7 @@ export const useStage = ({
         payload: { sessionId },
       });
     },
-    [handleDeny, isOwner, sendAppMessage]
+    [handleDeny, isOwner, sendAppMessage],
   );
 
   /*
@@ -374,7 +381,7 @@ export const useStage = ({
         payload: { sessionId },
       });
     },
-    [daily, handleInvite, isOwner, sendAppMessage]
+    [daily, handleInvite, isOwner, sendAppMessage],
   );
 
   /*
@@ -397,7 +404,7 @@ export const useStage = ({
         payload: { sessionId },
       });
     },
-    [daily, isOwner, sendAppMessage]
+    [daily, isOwner, sendAppMessage],
   );
 
   /*
@@ -414,7 +421,7 @@ export const useStage = ({
         payload: { sessionId },
       });
     },
-    [daily, handleStageVisibility, isOwner, sendAppMessage]
+    [daily, handleStageVisibility, isOwner, sendAppMessage],
   );
 
   type State =
@@ -442,7 +449,7 @@ export const useStage = ({
         p.permissions.hasPresence &&
         (p.userData?.['onStage'] ||
           p?.participantType === 'remote-media-player'),
-      []
+      [],
     ),
   });
 
@@ -452,7 +459,7 @@ export const useStage = ({
         p.permissions.hasPresence &&
         (p.userData?.['onStage'] ||
           p?.participantType === 'remote-media-player'),
-      []
+      [],
     ),
     sort: 'joined_at',
   });
@@ -463,7 +470,7 @@ export const useStage = ({
         p.permissions.hasPresence &&
         p.userData?.['acceptedToJoin'] &&
         !p.userData?.['onStage'],
-      []
+      [],
     ),
   });
 

@@ -28,7 +28,7 @@ export const useSyncParams = () => {
         return newParams;
       });
     },
-    [isOwner, sendAppMessage, setParams]
+    [isOwner, sendAppMessage, setParams],
   );
 
   return { updateParams };

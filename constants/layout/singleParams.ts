@@ -1,7 +1,7 @@
 import { Param } from '@/types/params';
 
 export const singleParams = (
-  participants: { label: string; value: string }[]
+  participants: { label: string; value: string }[],
 ): Param[] => [
   {
     id: 'single-layout-heading',

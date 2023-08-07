@@ -28,7 +28,7 @@ export const useLiveStream = () => {
           variant: 'destructive',
         });
       },
-      [toast]
+      [toast],
     ),
   });
 
@@ -68,12 +68,12 @@ export const useLiveStream = () => {
 
     const areParamsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).composition_params,
-      params
+      params,
     );
 
     const areParticipantsEqual = dequal(
       (layout as DailyUpdateStreamingCustomLayoutConfig).video,
-      participantIds
+      participantIds,
     );
 
     if (areParamsEqual && areParticipantsEqual) return;
@@ -105,12 +105,12 @@ export const useLiveStream = () => {
       dailyStopLiveStreaming({
         instanceId: '40000000-4000-4000-8000-800000000000',
       }),
-    [dailyStopLiveStreaming]
+    [dailyStopLiveStreaming],
   );
 
   const enableBroadcast = useMemo(
     () => Object.values(rtmps ?? {}).some((rtmp) => rtmp.active),
-    [rtmps]
+    [rtmps],
   );
 
   return {

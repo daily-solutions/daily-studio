@@ -18,14 +18,14 @@ export const useSubscribe = () => {
   const subscribedIds = useParticipantIds({
     filter: useCallback(
       (p: DailyParticipant) => p.tracks.video.subscribed === true,
-      []
+      [],
     ),
   });
 
   const stagedIds = useParticipantIds({
     filter: useCallback(
       (p: DailyParticipant) => p.tracks.video.subscribed === 'staged',
-      []
+      [],
     ),
   });
 

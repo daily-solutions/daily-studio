@@ -1,7 +1,7 @@
 import { Param } from '@/types/params';
 
 export const splitParams = (
-  participants: { label: string; value: string }[]
+  participants: { label: string; value: string }[],
 ): Param[] => [
   {
     id: 'split-layout-heading',

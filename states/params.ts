@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { config } from '@/config';
 import { DailyParticipant } from '@daily-co/daily-js';
 import { useParticipantIds } from '@daily-co/daily-react';
-import { SetterOrUpdater, atom, useRecoilState } from 'recoil';
+import { atom, SetterOrUpdater, useRecoilState } from 'recoil';
 
 const paramsState = atom<{ [key: string]: any }>({
   key: 'params-state',
@@ -11,7 +11,7 @@ const paramsState = atom<{ [key: string]: any }>({
 
 export const useParams = (): [
   { [key: string]: any },
-  SetterOrUpdater<{ [key: string]: any }>
+  SetterOrUpdater<{ [key: string]: any }>,
 ] => {
   const [params, setParams] = useRecoilState(paramsState);
 
@@ -21,7 +21,7 @@ export const useParams = (): [
         p.permissions.hasPresence &&
         (p.userData?.['onStage'] ||
           p?.participantType === 'remote-media-player'),
-      []
+      [],
     ),
     sort: 'joined_at',
   });
@@ -35,7 +35,7 @@ export const useParams = (): [
             new Set([
               newParams['custom.layout.single.participant'],
               ...participantIds,
-            ])
+            ]),
           ).join(',');
         }
         return newParams;
@@ -50,7 +50,7 @@ export const useParams = (): [
               newParams[`custom.layout.${params.mode}.participant1`],
               newParams[`custom.layout.${params.mode}.participant2`],
               ...participantIds,
-            ])
+            ]),
           ).join(',');
         }
         return newParams;

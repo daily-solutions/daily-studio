@@ -2,7 +2,7 @@ import { Param } from '@/types/params';
 
 export const toastParams = (
   options: string[],
-  defaultValue?: string
+  defaultValue?: string,
 ): Param[] => {
   return [
     {

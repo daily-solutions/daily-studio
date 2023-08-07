@@ -9,7 +9,7 @@ import {
 import { Param } from '@/types/params';
 
 export const viewParams = (
-  participants: { label: string; value: string }[]
+  participants: { label: string; value: string }[],
 ): Param[] => [
   ...gridParams,
   ...dominantParams,

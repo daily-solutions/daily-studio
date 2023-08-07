@@ -27,7 +27,7 @@ export const useAspectRatio = ({ ref, aspectRatio, onResize }: Props) => {
       setSize(size);
       onResize?.(size);
     },
-    [aspectRatio, onResize]
+    [aspectRatio, onResize],
   );
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const useAspectRatio = ({ ref, aspectRatio, onResize }: Props) => {
     onResize: useCallback(
       ({ width, height }) =>
         calculateSize({ width: Math.round(width), height: Math.round(height) }),
-      [calculateSize]
+      [calculateSize],
     ),
   });
 

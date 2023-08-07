@@ -7,7 +7,7 @@ import {
 
 export const useMeetingSessionState = <T>(): [
   T,
-  (data: unknown, mergeStrategy?: DailySessionDataMergeStrategy) => void
+  (data: unknown, mergeStrategy?: DailySessionDataMergeStrategy) => void,
 ] => {
   const daily = useDaily();
   const { data } = useDailyMeetingSessionState<T>();
@@ -18,7 +18,7 @@ export const useMeetingSessionState = <T>(): [
 
       daily.setMeetingSessionData(data, mergeStrategy);
     },
-    [daily]
+    [daily],
   );
 
   return [data ?? ({} as T), updateMeetingSessionData];
