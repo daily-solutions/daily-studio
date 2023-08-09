@@ -1,4 +1,10 @@
 import { useCallback, useEffect } from 'react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/ui/Tooltip';
 import { TrayButton } from '@/ui/TrayButton';
 import {
   useDaily,
@@ -40,12 +46,19 @@ export function Audio({ disabled = false }: Props) {
   if (!canSendAudio) return null;
 
   return (
-    <TrayButton
-      muted={!audio}
-      onClick={() => daily?.setLocalAudio(!audio)}
-      text={audio ? 'Mute' : 'Unmute'}
-      icon={audio ? 'micOn' : 'micOff'}
-      disabled={disabled}
-    />
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <TrayButton
+            muted={!audio}
+            onClick={() => daily?.setLocalAudio(!audio)}
+            text={audio ? 'Mute' : 'Unmute'}
+            icon={audio ? 'micOn' : 'micOff'}
+            disabled={disabled}
+          />
+        </TooltipTrigger>
+        <TooltipContent>CMD + D</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

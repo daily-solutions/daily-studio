@@ -1,4 +1,10 @@
 import { useCallback, useEffect } from 'react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/ui/Tooltip';
 import { TrayButton } from '@/ui/TrayButton';
 import {
   useDaily,
@@ -40,12 +46,19 @@ export function Video({ disabled = false }: Props) {
   if (!canSendVideo) return null;
 
   return (
-    <TrayButton
-      muted={!video}
-      onClick={toggleCamera}
-      text={video ? 'Turn off' : 'Turn on'}
-      icon={video ? 'videoOn' : 'videoOff'}
-      disabled={disabled}
-    />
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <TrayButton
+            muted={!video}
+            onClick={toggleCamera}
+            text={video ? 'Turn off' : 'Turn on'}
+            icon={video ? 'videoOn' : 'videoOff'}
+            disabled={disabled}
+          />
+        </TooltipTrigger>
+        <TooltipContent>CMD + E</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
