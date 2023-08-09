@@ -1,5 +1,12 @@
 import React, { useCallback } from 'react';
 import { config } from '@/config';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/ui/DropdownMenu';
 import { Icon } from '@/ui/Icons';
 import { TrayButton } from '@/ui/TrayButton';
 
@@ -34,12 +41,32 @@ export function Record({ mobileUi = false }: Props) {
   }
 
   return (
-    <TrayButton
-      className="hidden md:block"
-      muted={isRecording}
-      onClick={handleRecord}
-      text={isRecording ? 'Stop' : 'Record'}
-      icon={isRecording ? 'recordOff' : 'record'}
-    />
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <TrayButton
+          className="hidden md:block"
+          muted={isRecording}
+          onClick={handleRecord}
+          text={isRecording ? 'Stop' : 'Record'}
+          icon={isRecording ? 'recordOff' : 'record'}
+        />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="min-w-max">
+        <DropdownMenuLabel>Record</DropdownMenuLabel>
+        <DropdownMenuItem onClick={handleRecord}>
+          {isRecording ? (
+            <>
+              <Icon icon="recordOff" className="mr-2 h-4 w-4" />
+              Stop Recording
+            </>
+          ) : (
+            <>
+              <Icon icon="record" className="mr-2 h-4 w-4" />
+              Start Recording
+            </>
+          )}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

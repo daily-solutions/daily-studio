@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Button } from '@/ui/Button';
 import { Icon, Icons } from '@/ui/Icons';
 
@@ -13,33 +13,43 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
   disabled?: boolean;
 }
 
-export function TrayButton({
-  text,
-  icon,
-  onClick,
-  muted,
-  selected,
-  disabled = false,
-  className,
-}: Props) {
-  const textColor = muted
-    ? 'text-destructive'
-    : selected
-    ? 'text-selected'
-    : 'text-inherit';
+export const TrayButton = forwardRef<HTMLButtonElement, Props>(
+  (
+    {
+      text,
+      icon,
+      onClick,
+      muted,
+      selected,
+      disabled = false,
+      className,
+      ...props
+    }: Props,
+    ref,
+  ) => {
+    const textColor = muted
+      ? 'text-destructive'
+      : selected
+      ? 'text-selected'
+      : 'text-inherit';
 
-  return (
-    <Button
-      variant="ghost"
-      size="trayButton"
-      onClick={onClick}
-      className={cn(textColor, className)}
-      disabled={disabled}
-    >
-      <div className="flex flex-col items-center justify-center gap-y-1">
-        <Icon icon={icon} className="h-6 w-6" />
-        <p className="text-xs">{text}</p>
-      </div>
-    </Button>
-  );
-}
+    return (
+      <Button
+        ref={ref}
+        variant="ghost"
+        size="trayButton"
+        onClick={onClick}
+        className={cn(textColor, className)}
+        disabled={disabled}
+        {...props}
+      >
+        <div className="flex flex-col items-center justify-center gap-y-1">
+          <Icon icon={icon} className="h-6 w-6" />
+          <p className="text-xs">{text}</p>
+        </div>
+      </Button>
+    );
+  },
+);
+
+TrayButton.displayName = 'TrayButton';

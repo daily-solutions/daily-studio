@@ -5,6 +5,7 @@ import { Icon } from '@/ui/Icons';
 import { Input } from '@/ui/Input';
 import { Label } from '@/ui/Label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
+import { TrayButton } from '@/ui/TrayButton';
 import { toast } from '@/ui/useToast';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
@@ -28,12 +29,7 @@ export function Invite() {
   return (
     <Popover>
       <PopoverTrigger className="hidden md:block" asChild>
-        <Button variant="ghost" size="trayButton" className="text-inherit">
-          <div className="flex flex-col items-center justify-center gap-y-1">
-            <Icon icon="userPlus" className="h-6 w-6" />
-            <p className="text-xs">Invite</p>
-          </div>
-        </Button>
+        <TrayButton text="Invite" icon="userPlus" />
       </PopoverTrigger>
       <PopoverContent>
         <div className="flex flex-col gap-y-4">

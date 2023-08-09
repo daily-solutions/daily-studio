@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button } from '@/ui/Button';
 import { Card } from '@/ui/Card';
 import { Icon } from '@/ui/Icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
+import { TrayButton } from '@/ui/TrayButton';
 import { DailyNetworkStats } from '@daily-co/daily-js';
 import { useNetwork } from '@daily-co/daily-react';
 
@@ -61,12 +61,7 @@ export function Network() {
   return (
     <Popover>
       <PopoverTrigger className="hidden md:block" asChild>
-        <Button variant="ghost" size="trayButton" className="text-inherit">
-          <div className="flex flex-col items-center justify-center gap-y-1">
-            <Icon icon="network" className="h-6 w-6" />
-            <p className="text-xs">Network</p>
-          </div>
-        </Button>
+        <TrayButton text="Network" icon="network" />
       </PopoverTrigger>
       <PopoverContent className="min-w-max">
         <NetworkPopover />

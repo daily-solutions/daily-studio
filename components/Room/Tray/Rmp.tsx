@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Button } from '@/ui/Button';
-import { Icon } from '@/ui/Icons';
 import { Input } from '@/ui/Input';
 import { Label } from '@/ui/Label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
+import { TrayButton } from '@/ui/TrayButton';
 import { useToast } from '@/ui/useToast';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
@@ -88,16 +88,7 @@ export function Rmp() {
   return (
     <Popover>
       <PopoverTrigger className="hidden md:block" asChild>
-        <Button
-          variant="ghost"
-          size="trayButton"
-          className={sessionId ? 'text-destructive' : 'text-inherit'}
-        >
-          <div className="flex flex-col items-center justify-center gap-y-1">
-            <Icon icon="media" className="h-6 w-6" />
-            <p className="text-xs">RMP</p>
-          </div>
-        </Button>
+        <TrayButton text="RMP" icon="media" muted={Boolean(sessionId)} />
       </PopoverTrigger>
       <PopoverContent className="min-w-max">
         <RMPPopover />
