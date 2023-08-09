@@ -11,13 +11,18 @@ export function ChatMessage({
   message: Message;
   sameSender: boolean;
 }) {
-  const bgColor = message.isLocal ? 'bg-muted' : 'bg-accent';
+  const bgColor = message.isLocal ? 'bg-foreground/90' : 'bg-muted';
+  const textColor = message.isLocal ? 'text-background' : 'text-default';
+  const borderRadius = message.isLocal ? 'rounded-br-none' : 'rounded-bl-none';
 
   return (
     <div
       className={cn(
-        'flex flex-col break-words rounded-md p-3 text-sm',
+        'break-words rounded-md p-3 text-sm',
         bgColor,
+        textColor,
+        borderRadius,
+        message.isLocal ? 'ml-4' : 'mr-4',
         sameSender ? 'mt-1' : 'mt-2',
       )}
     >
@@ -27,7 +32,9 @@ export function ChatMessage({
             {message.userName} {message.isLocal && '(You)'}
           </h3>
           <p className="text-xs">
-            {message.receivedAt.toLocaleTimeString([], { timeStyle: 'short' })}
+            {message.receivedAt.toLocaleTimeString([], {
+              timeStyle: 'short',
+            })}
           </p>
         </div>
       )}
