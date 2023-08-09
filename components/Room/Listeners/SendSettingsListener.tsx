@@ -11,7 +11,6 @@ import {
   useThrottledDailyEvent,
 } from '@daily-co/daily-react';
 
-import { useStage } from '@/hooks/useStage';
 import { VIDEO_QUALITY_LAYERS } from '@/components/Room/Listeners/ReceiveSettingsListener';
 
 export function SendSettingsListener() {
@@ -20,7 +19,6 @@ export function SendSettingsListener() {
   const daily = useDaily();
   const { updateSendSettings } = useSendSettings();
   const [{ send }, setVideoLayer] = useVideoLayer();
-  const { participantIds } = useStage();
 
   const handleEvents = useCallback(
     (
@@ -101,30 +99,12 @@ export function SendSettingsListener() {
     handleEvents,
   );
 
-  useEffect(() => {
-    const participantCount = participantIds.length;
-    const participantCountLayer =
-      participantCount < 5
-        ? VIDEO_QUALITY_LAYERS.HIGH
-        : participantCount < 10
-        ? VIDEO_QUALITY_LAYERS.MEDIUM
-        : VIDEO_QUALITY_LAYERS.LOW;
-
-    setVideoLayer((prev) => {
-      if (prev.send.layerBasedOnParticipantCount === participantCountLayer) {
-        return prev;
-      }
-      return { ...prev, send: { ...prev.send, participantCountLayer } };
-    });
-  }, [participantIds, setVideoLayer]);
-
   const handleSendVideoQuality = useCallback(async () => {
     if (!daily || daily.meetingState() !== 'joined-meeting') return;
 
     const layers = [
       send.layerBasedOnCPU,
       send.layerBasedOnNetwork,
-      send.layerBasedOnParticipantCount,
       send.layerBasedOnScreenShare,
     ];
     const layer = Math.min(...layers);
@@ -138,7 +118,6 @@ export function SendSettingsListener() {
     daily,
     send.layerBasedOnCPU,
     send.layerBasedOnNetwork,
-    send.layerBasedOnParticipantCount,
     send.layerBasedOnScreenShare,
     updateSendSettings,
   ]);

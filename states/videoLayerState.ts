@@ -4,7 +4,6 @@ type VideoSimulcastLayers = 0 | 1 | 2;
 
 type VideoLayerTypeState = {
   layerBasedOnNetwork: VideoSimulcastLayers;
-  layerBasedOnParticipantCount: VideoSimulcastLayers;
   layerBasedOnCPU: VideoSimulcastLayers;
 };
 
@@ -12,9 +11,13 @@ type SendVideoLayerTypeState = VideoLayerTypeState & {
   layerBasedOnScreenShare: VideoSimulcastLayers;
 };
 
+type ReceiveVideoLayerTypeState = VideoLayerTypeState & {
+  layerBasedOnParticipantCount: VideoSimulcastLayers;
+};
+
 type VideoLayerState = {
   send: SendVideoLayerTypeState;
-  receive: VideoLayerTypeState;
+  receive: ReceiveVideoLayerTypeState;
 };
 
 const videoLayerState = atom<VideoLayerState>({
@@ -22,7 +25,6 @@ const videoLayerState = atom<VideoLayerState>({
   default: {
     send: {
       layerBasedOnNetwork: 2,
-      layerBasedOnParticipantCount: 2,
       layerBasedOnCPU: 2,
       layerBasedOnScreenShare: 2,
     },
