@@ -1,3 +1,4 @@
+import { config } from '@/config';
 import { Badge } from '@/ui/Badge';
 import { Icons } from '@/ui/Icons';
 import { useMeetingState, useParticipantCounts } from '@daily-co/daily-react';
@@ -6,7 +7,11 @@ export function ViewerCount() {
   const meetingState = useMeetingState();
   const { hidden } = useParticipantCounts();
 
-  if (meetingState !== 'joined-meeting') return null;
+  if (
+    meetingState !== 'joined-meeting' ||
+    !config?.options?.enable_viewer_count
+  )
+    return null;
 
   return (
     <Badge variant="outline" className="px-2 py-1">

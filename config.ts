@@ -1,5 +1,5 @@
 export const config = {
-  name: 'VCS Studio',
+  name: 'ILS Studio',
   description: 'Custom composite a live stream in real-time with Daily',
   githubLink: 'https://github.com/daily-solutions/vcs-studio',
   theme: {
@@ -60,6 +60,36 @@ export const config = {
      * Allow viewers to request to join the call
      */
     enable_viewers_request_to_join: true,
+    /**
+     * Enable chat in the call
+     */
+    enable_chat: true,
+    /**
+     * Enable screen sharing in the call
+     */
+    enable_screenshare: true,
+    /**
+     * Enable people tab
+     */
+    enable_people: true,
+    /**
+     * Enable network UI
+     */
+    enable_network_ui: true,
+    /**
+     * Available layout modes
+     */
+    available_layouts: {
+      single: 'Single',
+      split: 'Split',
+      grid: 'Grid',
+      dominant: 'Speaker',
+      pip: 'PiP',
+    },
+    /**
+     * Enable viewer count
+     */
+    enable_viewer_count: true,
   },
   vcs: {
     mode: 'grid',

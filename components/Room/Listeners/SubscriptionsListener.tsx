@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { config } from '@/config';
 import {
   DailyEventObjectParticipant,
   DailyParticipant,
@@ -30,9 +31,10 @@ export function SubscriptionsListener() {
           participantType,
         } = participant;
 
-        if (local) return;
-
         const isRMP = participantType === 'remote-media-player';
+
+        if (local || (!config.options.enable_rmp && isRMP)) return;
+
         const isSubscribed =
           tracks?.[isRMP ? 'rmpVideo' : 'video']?.subscribed === true;
         const isStaged =

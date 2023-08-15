@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { config } from '@/config';
 import { useParams } from '@/states/params';
 import { TrayButton } from '@/ui/TrayButton';
 
@@ -20,36 +21,17 @@ export function LayoutSwitchMenu() {
 
   return (
     <div className="min-h-20 flex h-20 items-center justify-center border-t">
-      <TrayButton
-        selected={params.mode === 'single'}
-        onClick={() => handleSelect('single')}
-        text="Single"
-        icon="single"
-      />
-      <TrayButton
-        selected={params.mode === 'split'}
-        onClick={() => handleSelect('split')}
-        text="Split"
-        icon="split"
-      />
-      <TrayButton
-        selected={params.mode === 'grid'}
-        onClick={() => handleSelect('grid')}
-        text="Grid"
-        icon="grid"
-      />
-      <TrayButton
-        selected={params.mode === 'dominant'}
-        onClick={() => handleSelect('dominant')}
-        text="Speaker"
-        icon="dominant"
-      />
-      <TrayButton
-        selected={params.mode === 'pip'}
-        onClick={() => handleSelect('pip')}
-        text="PiP"
-        icon="pip"
-      />
+      {Object.entries(config?.options?.available_layouts).map(
+        ([key, value]) => (
+          <TrayButton
+            key={key}
+            selected={params.mode === key}
+            onClick={() => handleSelect(key as any)}
+            text={value}
+            icon={key}
+          />
+        ),
+      )}
     </div>
   );
 }

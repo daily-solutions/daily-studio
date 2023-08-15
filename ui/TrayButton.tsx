@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
   text: string;
-  icon: keyof typeof Icons;
+  icon: keyof typeof Icons | string;
   onClick?: () => void;
   muted?: boolean;
   selected?: boolean;

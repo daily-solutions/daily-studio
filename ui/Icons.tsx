@@ -139,7 +139,7 @@ export const Icons = {
 export const Icon = ({
   icon,
   ...props
-}: { icon: keyof typeof Icons } & LucideProps) => {
+}: { icon: keyof typeof Icons | string } & LucideProps) => {
   const Component = Icons[icon];
   return <Component {...props} />;
 };

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { config } from '@/config';
 import { Card } from '@/ui/Card';
 import { Icon } from '@/ui/Icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
@@ -58,6 +59,8 @@ function NetworkPopover() {
 }
 
 export function Network() {
+  if (!config?.options?.enable_network_ui) return null;
+
   return (
     <Popover>
       <PopoverTrigger className="hidden md:block" asChild>

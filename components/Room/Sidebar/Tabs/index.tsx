@@ -1,3 +1,4 @@
+import { config } from '@/config';
 import { TabsList } from '@/ui/Tabs';
 import { useLiveStreaming, useRecording } from '@daily-co/daily-react';
 
@@ -13,9 +14,15 @@ export function Tabs() {
       <Tab name="text" icon="text" text="Text" />
       <Tab name="image" icon="image" text="Image" />
       <Tab name="toast" icon="bell" text="Toast" />
-      <Tab name="chat" icon="chat" text="Chat" ownerOnly={false} />
-      <Tab name="people" icon="people" text="People" ownerOnly={false} />
-      <Tab name="stream" icon="stream" text="RTMP" />
+      {config?.options?.enable_chat && (
+        <Tab name="chat" icon="chat" text="Chat" ownerOnly={false} />
+      )}
+      {config?.options?.enable_people && (
+        <Tab name="people" icon="people" text="People" ownerOnly={false} />
+      )}
+      {config?.options?.enable_live_streaming && (
+        <Tab name="stream" icon="stream" text="RTMP" />
+      )}
       <Tab
         name="assets"
         icon="files"

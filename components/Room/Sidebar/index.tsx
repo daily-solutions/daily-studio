@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { config } from '@/config';
 import { Tabs } from '@/ui/Tabs';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -33,9 +34,11 @@ export function Sidebar({ visibleInMobile = false }: Props) {
           <TabContent value="text" />
           <TabContent value="image" />
           <TabContent value="toast" />
-          <TabContent value="chat" />
-          <TabContent value="people" />
-          <TabContent value="stream" />
+          {config?.options?.enable_chat && <TabContent value="chat" />}
+          {config?.options?.enable_people && <TabContent value="people" />}
+          {config?.options?.enable_live_streaming && (
+            <TabContent value="stream" />
+          )}
           <TabContent value="assets" />
           <TabContent value="config" />
         </div>

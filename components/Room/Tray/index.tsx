@@ -48,7 +48,7 @@ export function Tray() {
           <div className="flex items-center">
             <Video />
             <Audio />
-            <Screenshare />
+            {config?.options?.enable_screenshare && <Screenshare />}
           </div>
         );
       case 'viewer':
@@ -63,7 +63,7 @@ export function Tray() {
         {config?.options?.enable_rmp && <Rmp />}
         {config?.options?.enable_recording && <Record />}
         {config?.options?.enable_live_streaming && <Stream />}
-        <Network />
+        {config?.options?.enable_network_ui && <Network />}
         <Settings />
       </div>
       <div className="flex items-center">

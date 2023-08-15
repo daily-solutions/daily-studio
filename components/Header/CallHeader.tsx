@@ -2,6 +2,7 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { config } from '@/config';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { StatusBadge } from '@/components/Header/StatusBadge';
@@ -18,7 +19,7 @@ export function CallHeader() {
     <>
       <StatusBadge />
       <div className="flex items-center justify-center gap-x-2">
-        <ViewerCount />
+        {config?.options?.enable_viewer_count && <ViewerCount />}
         {isMobile && <Menu />}
       </div>
     </>
