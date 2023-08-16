@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useParams } from '@/states/params';
-import { useDaily, useMeetingState } from '@daily-co/daily-react';
+import { useDaily } from '@daily-co/daily-react';
 import { DailyVCSWebRenderer } from '@daily-co/daily-vcs-web';
 import * as comp from '@daily-co/vcs-composition-daily-baseline-web';
 import { dequal } from 'dequal';
@@ -31,35 +31,26 @@ interface Props {
 
 export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   const daily = useDaily();
-  const meetingState = useMeetingState();
-
   const vcsCompRef = useRef<DailyVCSWebRenderer | null>(null);
   const outputElementRef = useRef<HTMLDivElement | null>(null);
 
   const [params] = useParams();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
-
-  const [vcsInitialized, setVcsInitialized] = useState(false);
+  const { orderedParticipantIds } = useStage();
 
   const { width, height } = useAspectRatio({
     ref: viewportRef,
     aspectRatio,
   });
 
-  const { orderedParticipantIds } = useStage();
+  const createVCSView = useCallback(() => {
+    if (!outputElementRef.current || !width || !height || !daily) return;
 
-  const createVCSView = useCallback(
-    (el) => {
-      if (
-        !el ||
-        meetingState !== 'joined-meeting' ||
-        !width ||
-        !height ||
-        !daily
-      )
-        return;
-
-      vcsCompRef.current = new DailyVCSWebRenderer(daily, comp, el, {
+    vcsCompRef.current = new DailyVCSWebRenderer(
+      daily,
+      comp,
+      outputElementRef.current,
+      {
         getAssetUrlCb,
         viewportSize: { w: width, h: height },
         defaultParams: params,
@@ -71,28 +62,24 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
         callbacks: {
           onStart() {
             console.log('VCS Started');
-            setVcsInitialized(true);
           },
           onStop() {
             console.log('VCS Stopped');
-            setVcsInitialized(false);
           },
           onError(error) {
             console.error('VCS Error: ', error);
-            setVcsInitialized(false);
           },
         },
-      });
-      vcsCompRef.current.start();
-    },
-    [meetingState, width, height, daily, params, orderedParticipantIds, assets],
-  );
+      },
+    );
+    vcsCompRef.current.start();
+  }, [width, height, daily, params, orderedParticipantIds, assets]);
 
   useEffect(() => {
-    if (vcsInitialized) return;
+    if (vcsCompRef.current) return;
 
-    createVCSView(outputElementRef.current);
-  }, [createVCSView, vcsInitialized]);
+    createVCSView();
+  }, [createVCSView]);
 
   useEffect(() => {
     if (!vcsCompRef.current) return;

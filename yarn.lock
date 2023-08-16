@@ -225,10 +225,10 @@
     fast-deep-equal "^3.1.3"
     lodash.throttle "^4.1.1"
 
-"@daily-co/daily-vcs-web@^0.0.1-alpha.7":
-  version "0.0.1-alpha.7"
-  resolved "https://registry.yarnpkg.com/@daily-co/daily-vcs-web/-/daily-vcs-web-0.0.1-alpha.7.tgz#4bac62e1220addf951c6e20c0ca1a78f1ea4295f"
-  integrity sha512-RpYjbSNHxOGffepyQiQFXJvhLB3bSWNS2mJGcLMEgqVDzkQNCNHMyP5cXVbENYJtZHSuUi4VdmYFazgi28kXxQ==
+"@daily-co/daily-vcs-web@^0.0.1-alpha.8":
+  version "0.0.1-alpha.8"
+  resolved "https://registry.yarnpkg.com/@daily-co/daily-vcs-web/-/daily-vcs-web-0.0.1-alpha.8.tgz#96e3c9639a4fe0e14d71991d61afc757bf12fd3f"
+  integrity sha512-yg83XLqMcmmEbhSqSb3pkJYNNDneSe6ap+9jKAcuO6upA9IYn6VMU1iswLJYIa72hahNx3ZvZKok0cZrpgSQoQ==
 
 "@daily-co/vcs-composition-daily-baseline-web@^0.1.7":
   version "0.1.7"
