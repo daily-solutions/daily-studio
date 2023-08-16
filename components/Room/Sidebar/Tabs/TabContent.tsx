@@ -9,7 +9,9 @@ import { useDaily } from '@daily-co/daily-react';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { Sidebar } from '@/types/sidebar';
+import { useLiveStream } from '@/hooks/useLiveStream';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
+import { useRecord } from '@/hooks/useRecord';
 import { useStage } from '@/hooks/useStage';
 import { Loading } from '@/components/Room/Sidebar/Loading';
 import { TabHeading } from '@/components/Room/Sidebar/Tabs/TabHeading';
@@ -67,6 +69,9 @@ export function TabContent({ value }: Props) {
 
   const { orderedParticipantIds } = useStage();
 
+  const { isRecording } = useRecord();
+  const { isLiveStreaming } = useLiveStream();
+
   const participants = useMemo(() => {
     if (!daily) return [];
     const participantsObject = Object.fromEntries(
@@ -107,9 +112,13 @@ export function TabContent({ value }: Props) {
       case 'config':
         return <VCS />;
       default:
-        return <FormMaker fields={viewParams(participants)} />;
+        return (
+          <FormMaker
+            fields={viewParams(isRecording || isLiveStreaming, participants)}
+          />
+        );
     }
-  }, [assetFileNames, participants, value]);
+  }, [assetFileNames, isLiveStreaming, isRecording, participants, value]);
 
   return (
     <TabsContent value={value}>

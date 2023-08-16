@@ -1,2 +1,5 @@
 export const MOBILE_ASPECT_RATIO = 4 / 3;
+
+export const DESKTOP_LANDSCAPE_ASPECT_RATIO = 16 / 9;
+export const DESKTOP_PORTRAIT_ASPECT_RATIO = 9 / 16;
 export const DESKTOP_ASPECT_RATIO = 16 / 9;

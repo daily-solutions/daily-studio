@@ -1,6 +1,7 @@
 export type BasicParam = {
   id: string;
   label: string;
+  disabled?: boolean;
   render?: { key: string; value: string | boolean | number };
   description?: string;
 };

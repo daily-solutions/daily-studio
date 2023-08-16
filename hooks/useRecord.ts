@@ -43,8 +43,16 @@ export const useRecord = () => {
       return acc;
     }, {});
 
+    const viewport = params?.['custom.viewport'];
+    const { width, height } =
+      viewport === 'portrait'
+        ? { width: 720, height: 1280 }
+        : { width: 1280, height: 720 };
+
     dailyStartRecording({
       instanceId: '40000008-4008-4000-8008-800000000004',
+      width,
+      height,
       layout: {
         preset: 'custom',
         composition_params: params,

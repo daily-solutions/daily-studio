@@ -71,6 +71,7 @@ export const FormField = ({ field }: Props) => {
             <Switch
               name={field.id}
               checked={params?.[field.id] ?? field.defaultValue}
+              disabled={field.disabled}
               onCheckedChange={handleCheckedChange}
             />
           </div>
@@ -81,6 +82,7 @@ export const FormField = ({ field }: Props) => {
             <Label>{field.label}</Label>
             <Select
               value={params?.[field.id] ?? field.defaultValue}
+              disabled={field.disabled}
               onValueChange={handleOnSelectChange}
             >
               <SelectTrigger className="w-full">
@@ -116,6 +118,7 @@ export const FormField = ({ field }: Props) => {
             <Label>{field.label}</Label>
             <Input
               type="number"
+              disabled={field.disabled}
               name={field.id}
               value={params?.[field.id] ?? field.defaultValue}
               step={field?.step}
@@ -137,6 +140,7 @@ export const FormField = ({ field }: Props) => {
             <Slider
               className="w-full"
               name={field.id}
+              disabled={field.disabled}
               min={field.min}
               max={field.max}
               step={field.step}
@@ -159,6 +163,7 @@ export const FormField = ({ field }: Props) => {
                 <Input
                   type="text"
                   name={field.id}
+                  disabled={field.disabled}
                   value={params?.[field.id] ?? field.defaultValue}
                   onChange={handleChange}
                 />
@@ -166,6 +171,7 @@ export const FormField = ({ field }: Props) => {
                   <Input
                     type="color"
                     name={field.id}
+                    disabled={field.disabled}
                     value={params?.[field.id] ?? field.defaultValue}
                     onChange={handleChange}
                     className="m-0 h-6 w-6 border-none p-0"
@@ -186,6 +192,7 @@ export const FormField = ({ field }: Props) => {
             <Label>{field.label}</Label>
             <Input
               name={field.id}
+              disabled={field.disabled}
               value={params?.[field.id] ?? field.defaultValue}
               onChange={handleChange}
             />
@@ -202,6 +209,7 @@ export const FormField = ({ field }: Props) => {
             <Label>{field.label}</Label>
             <Textarea
               name={field.id}
+              disabled={field.disabled}
               value={params?.[field.id] ?? field.defaultValue}
               onChange={handleChange}
               rows={1}
@@ -216,7 +224,11 @@ export const FormField = ({ field }: Props) => {
         );
       case 'button':
         return (
-          <Button className="w-100" onClick={() => handleOnClick(field)}>
+          <Button
+            disabled={field.disabled}
+            className="w-100"
+            onClick={() => handleOnClick(field)}
+          >
             {field.label}
           </Button>
         );

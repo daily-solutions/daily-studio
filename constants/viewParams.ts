@@ -9,8 +9,17 @@ import {
 import { Param } from '@/types/params';
 
 export const viewParams = (
+  recordingOrLiveStreamStarted: boolean = false,
   participants: { label: string; value: string }[],
 ): Param[] => [
+  {
+    id: 'custom.viewport',
+    label: 'Viewport',
+    type: 'enum',
+    values: ['landscape', 'portrait'],
+    defaultValue: 'landscape',
+    disabled: recordingOrLiveStreamStarted,
+  },
   ...gridParams,
   ...dominantParams,
   ...splitParams(participants),

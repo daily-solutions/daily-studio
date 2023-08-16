@@ -46,9 +46,17 @@ export const useLiveStream = () => {
       return acc;
     }, {});
 
+    const viewport = params?.['custom.viewport'];
+    const { width, height } =
+      viewport === 'portrait'
+        ? { width: 720, height: 1280 }
+        : { width: 1280, height: 720 };
+
     dailyStartLiveStreaming({
       instanceId: '40000000-4000-4000-8000-800000000000',
       rtmpUrl: rtmpURLs,
+      width,
+      height,
       layout: {
         preset: 'custom',
         composition_params: params,
