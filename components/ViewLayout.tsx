@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
 import { useToast } from '@/ui/useToast';
 import {
   DailyEventObject,
@@ -33,12 +32,14 @@ const LeftMeeting = dynamic(
   { loading: () => <Loader showHeader={false} /> },
 );
 
+const Error = dynamic(
+  () => import('@/components/Room/Error').then((mod) => mod.Error),
+  { loading: () => <Loader showHeader={false} /> },
+);
+
 export function ViewLayout() {
   const daily = useDaily();
   const meetingState = useMeetingState();
-
-  const router = useRouter();
-
   const { toast } = useToast();
 
   useDailyEvent(
@@ -74,17 +75,7 @@ export function ViewLayout() {
     'error',
     useCallback(
       (ev) => {
-        if (
-          ev.errorMsg === "The meeting you're trying to join does not exist."
-        ) {
-          toast({
-            title: 'Meeting you are trying to join does not exist',
-            description: 'Redirecting you in 3 seconds...',
-            variant: 'destructive',
-          });
-          daily?.leave();
-          setTimeout(() => router.push('/'), 3000);
-        } else if (ev.errorMsg === 'network unreachable') {
+        if (ev.errorMsg === 'network unreachable') {
           toast({
             title: 'Looks like you are offline',
             description: 'Leaving the call...',
@@ -93,7 +84,7 @@ export function ViewLayout() {
           daily?.leave();
         }
       },
-      [daily, router, toast],
+      [daily, toast],
     ),
   );
 
@@ -105,6 +96,8 @@ export function ViewLayout() {
         return <Room />;
       case 'left-meeting':
         return <LeftMeeting />;
+      case 'error':
+        return <Error />;
       case 'new':
       case 'joining-meeting':
       case 'loading':

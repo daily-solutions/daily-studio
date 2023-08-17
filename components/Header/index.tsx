@@ -14,7 +14,7 @@ const GithubLink = dynamic(() =>
 
 export function Header({ inCall = true }: { inCall?: boolean }) {
   return (
-    <header className="min-h-16 sticky top-0 z-40 h-16 max-h-16 w-full border-b bg-background">
+    <header className="min-h-16 sticky top-0 z-40 h-16 max-h-16 w-full border-b bg-background px-4">
       <div className="mx-2 flex h-full items-center justify-between">
         <Link href="/" target="_blank">
           <span className="inline-block font-bold">{config.name}</span>
