@@ -21,7 +21,7 @@ export function VcsPreview() {
     else return DESKTOP_ASPECT_RATIO;
   }, [isMobile, params]);
 
-  const { outputElementRef, vcsCompRef, width, height } = useVCS({
+  const { outputElementRef, vcsCompRef } = useVCS({
     viewportRef: divRef,
     aspectRatio,
   });
@@ -36,11 +36,7 @@ export function VcsPreview() {
       ref={divRef}
       className="flex h-full w-full flex-1 items-center justify-center overflow-hidden bg-muted"
     >
-      <div
-        className="bg-black"
-        ref={outputElementRef}
-        style={{ width, height }}
-      />
+      <div className="bg-black" ref={outputElementRef} />
     </div>
   );
 }

@@ -41,6 +41,12 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   const { width, height } = useAspectRatio({
     ref: viewportRef,
     aspectRatio,
+    onResize: useCallback(({ width, height }) => {
+      if (!outputElementRef.current) return;
+
+      outputElementRef.current.style.width = `${width}px`;
+      outputElementRef.current.style.height = `${height}px`;
+    }, []),
   });
 
   const createVCSView = useCallback(() => {
@@ -122,5 +128,5 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
     createVCSView();
   }, [createVCSView, viewport]);
 
-  return { outputElementRef, vcsCompRef, width, height };
+  return { outputElementRef, vcsCompRef };
 };
