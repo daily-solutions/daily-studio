@@ -5,10 +5,11 @@ import { Icon } from '@/ui/Icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
 import { TrayButton } from '@/ui/TrayButton';
 import { DailyNetworkStats } from '@daily-co/daily-js';
-import { useNetwork } from '@daily-co/daily-react';
+import { useDaily, useNetwork } from '@daily-co/daily-react';
 
 function NetworkPopover() {
-  const { getStats, threshold } = useNetwork();
+  const daily = useDaily();
+  const { threshold } = useNetwork();
 
   const [stats, setStats] = useState<DailyNetworkStats['stats'] | undefined>(
     undefined,
@@ -16,23 +17,33 @@ function NetworkPopover() {
 
   useEffect(() => {
     const updateStats = async () => {
-      setStats(await getStats());
+      const networkStats = await daily?.getNetworkStats();
+      setStats(networkStats?.stats);
     };
     updateStats();
     const interval = setInterval(updateStats, 2000);
     return () => {
       clearInterval(interval);
     };
-  }, [getStats]);
+  }, [daily]);
 
-  const downloadKbs = useMemo(
-    () => Math.round((stats?.latest?.videoRecvBitsPerSecond ?? 0) / 1000),
-    [stats?.latest?.videoRecvBitsPerSecond],
-  );
-  const uploadKbs = useMemo(
-    () => Math.round((stats?.latest?.videoSendBitsPerSecond ?? 0) / 1000),
-    [stats?.latest?.videoSendBitsPerSecond],
-  );
+  const { downloadKbs, uploadKbs } = useMemo(() => {
+    const { latest } = stats ?? {};
+    const videoRecvBitsPerSecond = latest?.videoRecvBitsPerSecond ?? 0;
+    const audioRecvBitsPerSecond = latest?.audioRecvBitsPerSecond ?? 0;
+
+    const videoSendBitsPerSecond = latest?.videoSendBitsPerSecond ?? 0;
+    const audioSendBitsPerSecond = latest?.audioSendBitsPerSecond ?? 0;
+
+    return {
+      downloadKbs: Math.round(
+        (videoRecvBitsPerSecond + audioRecvBitsPerSecond) / 1000,
+      ),
+      uploadKbs: Math.round(
+        (videoSendBitsPerSecond + audioSendBitsPerSecond) / 1000,
+      ),
+    };
+  }, [stats]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-3">
