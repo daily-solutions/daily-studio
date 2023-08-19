@@ -9,10 +9,12 @@ import { Audio } from '@/components/Room/Tray/Audio';
 import { Invite } from '@/components/Room/Tray/Invite';
 import { Leave } from '@/components/Room/Tray/Leave';
 import { More } from '@/components/Room/Tray/More';
-import { Network } from '@/components/Room/Tray/Network';
-import { Screenshare } from '@/components/Room/Tray/ScreenShare';
 import { Settings } from '@/components/Room/Tray/Settings';
 import { Video } from '@/components/Room/Tray/Video';
+
+const Screenshare = dynamic(() =>
+  import('@/components/Room/Tray/ScreenShare').then((mod) => mod.Screenshare),
+);
 
 const Rmp = dynamic(() =>
   import('@/components/Room/Tray/Rmp').then((mod) => mod.Rmp),
@@ -32,6 +34,10 @@ const RequestToJoin = dynamic(() =>
   ),
 );
 
+const Network = dynamic(() =>
+  import('@/components/Room/Tray/Network').then((mod) => mod.Network),
+);
+
 export function Tray() {
   const [, setJoinStage] = useJoinStage();
   const { state } = useStage();
@@ -45,7 +51,7 @@ export function Tray() {
       case 'on-stage':
       case 'back-stage':
         return (
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <Video />
             <Audio />
             {config?.options?.enable_screenshare && <Screenshare />}
@@ -66,7 +72,7 @@ export function Tray() {
         {config?.options?.enable_network_ui && <Network />}
         <Settings />
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center justify-center">
         <More />
         <Invite />
         <Leave />
