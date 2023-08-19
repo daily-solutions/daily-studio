@@ -16,7 +16,7 @@
     "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
-    "@daily-co/daily-js": "^0.48.0",
+    "@daily-co/daily-js": "^0.49.1",
     "@daily-co/daily-react": "^0.11.5",
     "@daily-co/daily-vcs-web": "^0.0.1-alpha.8",
     "@daily-co/vcs-composition-daily-baseline-web": "^0.1.7",
@@ -38,7 +38,7 @@
     "linkify-react": "^4.1.1",
     "linkifyjs": "^4.1.1",
     "lucide-react": "^0.263.1",
-    "next": "^13.4.16",
+    "next": "^13.4.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recoil": "^0.7.7",
