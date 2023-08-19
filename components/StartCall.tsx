@@ -8,7 +8,7 @@ export const StartCall = () => {
   const { pending } = useFormStatus();
 
   return (
-    <Button isLoading={pending} size="sm" type="submit">
+    <Button isLoading={pending} type="submit">
       Start call
     </Button>
   );

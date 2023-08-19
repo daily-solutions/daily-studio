@@ -1,5 +1,12 @@
 import { ButtonProps } from '@/ui/Button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/ui/Card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/ui/Card';
 
 import { PrivilegeButton } from '@/components/Room/Privilege/PrivilegeButton';
 
@@ -22,7 +29,9 @@ export function PrivilegeCard({
 }: Props) {
   return (
     <Card className="flex w-full flex-col justify-between sm:max-w-[40dvh]">
-      <CardHeader className="font-bold">{heading}</CardHeader>
+      <CardHeader>
+        <CardTitle>{heading}</CardTitle>
+      </CardHeader>
       <CardContent>
         <p className="text-sm">{description}</p>
       </CardContent>

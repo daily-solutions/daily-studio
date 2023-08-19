@@ -1,6 +1,7 @@
 export const config = {
   name: 'ILS Studio',
-  description: 'Custom composite a live stream in real-time with Daily',
+  description:
+    "Create a custom live and recorded experience with Daily's Video Component System (VCS) and Interactive Live Streaming (ILS)",
   githubLink: 'https://github.com/daily-solutions/vcs-studio',
   theme: {
     background: 'hsl(224 71% 4%)',
