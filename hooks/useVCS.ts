@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useParams } from '@/states/params';
 import { useDaily } from '@daily-co/daily-react';
 import { DailyVCSWebRenderer } from '@daily-co/daily-vcs-web';
@@ -120,13 +120,11 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
     vcsCompRef.current.updateParticipantIds(orderedParticipantIds);
   }, [orderedParticipantIds]);
 
-  const viewport = useMemo(() => params?.['custom.viewport'], [params]);
-
   useEffect(() => {
-    if (!vcsCompRef.current || !viewport) return;
+    if (!vcsCompRef.current || vcsCompRef.current.ratio === aspectRatio) return;
 
-    createVCSView();
-  }, [createVCSView, viewport]);
+    vcsCompRef.current?.updateAspectRatio(aspectRatio);
+  }, [aspectRatio]);
 
   return { outputElementRef, vcsCompRef };
 };
