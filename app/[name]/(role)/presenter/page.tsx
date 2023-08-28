@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Loader } from '@/components/Loader';
 import { DailyClientProvider } from '@/components/Providers';
 import { ViewLayout } from '@/components/ViewLayout';
 
@@ -25,8 +24,6 @@ export default async function PresenterPage({
   params: { name: string };
 }) {
   const token = await generateToken(name);
-
-  if (!token) return <Loader showHeader={false} />;
 
   return (
     <DailyClientProvider roomName={name} token={token} requiresToken>
