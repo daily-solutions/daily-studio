@@ -102,12 +102,11 @@ export function SendSettingsListener() {
   const handleSendVideoQuality = useCallback(async () => {
     if (!daily || daily.meetingState() !== 'joined-meeting') return;
 
-    const layers = [
+    const layer = Math.min(
       send.layerBasedOnCPU,
       send.layerBasedOnNetwork,
       send.layerBasedOnScreenShare,
-    ];
-    const layer = Math.min(...layers);
+    );
 
     if (lastSendSettingsMaxQualityRef.current === layer) return;
 

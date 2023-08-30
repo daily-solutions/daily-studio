@@ -33,7 +33,10 @@ const LeftMeeting = dynamic(
 );
 
 const Error = dynamic(
-  () => import('@/components/Room/Error').then((mod) => mod.Error),
+  () =>
+    import('@/components/Room/MeetingNotAvailable').then(
+      (mod) => mod.MeetingNotAvailable,
+    ),
   { loading: () => <Loader showHeader={false} /> },
 );
 

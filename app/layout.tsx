@@ -2,11 +2,16 @@ import '@/styles/globals.css';
 
 import React from 'react';
 import { Metadata } from 'next';
+import { Inter as FontSans } from 'next/font/google';
 import { config } from '@/config';
 
-import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { RecoilProvider } from '@/components/Providers';
+
+const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   title: {

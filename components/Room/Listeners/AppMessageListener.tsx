@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useMessages } from '@/states/messagesState';
 import { useAppMessage, useDaily, useDailyEvent } from '@daily-co/daily-react';
 

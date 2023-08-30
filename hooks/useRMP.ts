@@ -1,18 +1,34 @@
 import { useCallback } from 'react';
-import { useRMPState } from '@/states/rmpState';
 import {
   DailyRemoteMediaPlayerSettings,
   DailyRemoteMediaPlayerStartOptions,
 } from '@daily-co/daily-js';
 import { useDaily, useDailyEvent } from '@daily-co/daily-react';
+import { atom, useRecoilState } from 'recoil';
 
 interface Props {
   onError?: (error: string) => void;
 }
 
+export type RMP = {
+  isPlaying: boolean;
+  isPaused: boolean;
+  sessionId: string;
+  error?: string;
+};
+
+export const rmpState = atom<RMP>({
+  key: 'rmp-state',
+  default: {
+    isPlaying: false,
+    isPaused: false,
+    sessionId: '',
+  },
+});
+
 export const useRMP = ({ onError = () => {} }: Props = {}) => {
   const daily = useDaily();
-  const [rmp, setRMP] = useRMPState();
+  const [rmp, setRMP] = useRecoilState(rmpState);
 
   useDailyEvent(
     'remote-media-player-started',

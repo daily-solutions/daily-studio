@@ -101,15 +101,16 @@ export function ReceiveSettingsListener() {
     const updatedReceiveSettings = {};
     const receiveSettings = await daily.getReceiveSettings();
 
-    const layers = [
+    const layer = Math.min(
       receive.layerBasedOnCPU,
       receive.layerBasedOnNetwork,
       receive.layerBasedOnParticipantCount,
-    ];
+    );
 
-    const layer = Math.min(...layers);
-
-    const updateSettingsForParticipant = (participantId, layer) => {
+    const updateSettingsForParticipant = (
+      participantId: string,
+      layer: number,
+    ) => {
       if (participantId === localSessionId) return;
       updatedReceiveSettings[participantId] = { video: { layer } };
     };

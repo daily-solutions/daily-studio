@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useMessages } from '@/states/messagesState';
-import { useLocalMessage } from '@/states/messageState';
 import { Button } from '@/ui/Button';
 import { Icons } from '@/ui/Icons';
 import { Textarea } from '@/ui/TextArea';
@@ -9,6 +8,12 @@ import {
   useLocalSessionId,
   useParticipantProperty,
 } from '@daily-co/daily-react';
+import { atom, useRecoilState } from 'recoil';
+
+const messageState = atom<string>({
+  key: 'message-state',
+  default: '',
+});
 
 export function ChatInput() {
   const daily = useDaily();
@@ -16,7 +21,7 @@ export function ChatInput() {
   const userName = useParticipantProperty(localSessionId, 'user_name');
   const [, setMessages] = useMessages();
 
-  const [message, setMessage] = useLocalMessage();
+  const [message, setMessage] = useRecoilState(messageState);
 
   const sendAppMessage = useCallback(() => {
     if (!daily || !localSessionId || !message) return;
