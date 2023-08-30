@@ -217,10 +217,10 @@
     fast-equals "^1.6.3"
     lodash "^4.17.15"
 
-"@daily-co/daily-react@^0.11.5":
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/@daily-co/daily-react/-/daily-react-0.11.5.tgz#b2e9d17b19776caaf36415721f33c1b51330a280"
-  integrity sha512-0OZ3Bi8KPDXCajFGI89OzWajrG4VfGX/NfzEgAKHbB9B6RrO/sTqwZD6lnfCG6W1KEkfH7kuZHBZJFY0aHSOUw==
+"@daily-co/daily-react@^0.11.6":
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/@daily-co/daily-react/-/daily-react-0.11.6.tgz#c8076ef69702bcad4809466db7d39ccb392d888b"
+  integrity sha512-zUX646YguQ3lOgclJ7JI8hP0xwJdmW3NO/vGMjV8CSuTKqRz3j78CrFIHjuVG3eJ5+hS7TRd0emeaHN4kmHqAQ==
   dependencies:
     fast-deep-equal "^3.1.3"
     lodash.throttle "^4.1.1"
