@@ -17,4 +17,18 @@
   div#__next {
     @apply h-full;
   }
+  .LiveFeed {
+    container: contained / size;
+  }
+  .LiveFeed video {
+    max-width: none;
+  }
+  .VCSRenderer {
+    @apply aspect-video h-auto w-full;
+  }
+  @container contained (aspect-ratio >= 16 / 9) {
+    .VCSRenderer {
+      @apply h-full w-auto;
+    }
+  }
 }
