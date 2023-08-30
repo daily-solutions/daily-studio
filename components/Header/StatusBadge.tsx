@@ -23,7 +23,7 @@ export function StatusBadge() {
     <div className="flex items-center justify-center gap-3">
       {(isOnStage || isOnBackStage) && (
         <Badge
-          variant={isOnStage ? 'destructive' : 'default'}
+          variant={isOnStage ? 'default' : 'secondary'}
           className="px-2 py-1"
         >
           {isOnStage

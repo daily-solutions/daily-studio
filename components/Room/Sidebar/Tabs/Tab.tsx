@@ -31,7 +31,7 @@ export function Tab({
   return (
     <TabsTrigger
       value={name}
-      className="data-[state=active]:text-selected"
+      className="data-[state=active]:text-primary data-[state=active]:shadow-none"
       disabled={disabled}
     >
       {isMobile ? (

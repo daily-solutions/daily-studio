@@ -9,7 +9,7 @@ export function Tabs() {
   const { isRecording } = useRecording();
 
   return (
-    <TabsList className="md:min-w-16 flex flex-row items-center gap-x-2 overflow-auto border-b p-2 md:w-16 md:flex-col md:gap-y-2 md:border-b-0 md:border-l">
+    <TabsList className="flex flex-row items-center gap-x-2 overflow-auto border-b p-2 md:flex-col md:gap-y-2 md:border-b-0 md:border-l">
       <Tab name="layout" icon="view" text="View" />
       <Tab name="text" icon="text" text="Text" />
       <Tab name="image" icon="image" text="Image" />

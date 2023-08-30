@@ -20,7 +20,7 @@ export function LayoutSwitchMenu() {
   if (!isOwner) return null;
 
   return (
-    <div className="min-h-20 flex h-20 items-center justify-center border-t">
+    <div className="flex items-center justify-center border-t p-1">
       {Object.entries(config?.options?.available_layouts).map(
         ([key, value]) => (
           <TrayButton

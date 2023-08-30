@@ -54,10 +54,6 @@ module.exports = {
           DEFAULT: theme.card.default,
           foreground: theme.card.foreground,
         },
-        selected: {
-          DEFAULT: theme.selected.default,
-          foreground: theme.selected.foreground,
-        },
       },
       borderRadius: {
         lg: theme.radius,

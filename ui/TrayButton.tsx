@@ -30,7 +30,7 @@ export const TrayButton = forwardRef<HTMLButtonElement, Props>(
     const textColor = muted
       ? 'text-destructive'
       : selected
-      ? 'text-selected'
+      ? 'text-primary'
       : 'text-inherit';
 
     return (

@@ -11,8 +11,10 @@ export function ChatMessage({
   message: Message;
   sameSender: boolean;
 }) {
-  const bgColor = message.isLocal ? 'bg-foreground/90' : 'bg-muted';
-  const textColor = message.isLocal ? 'text-background' : 'text-default';
+  const bgColor = message.isLocal ? 'bg-primary' : 'bg-muted';
+  const textColor = message.isLocal
+    ? 'text-primary-foreground'
+    : 'text-default';
   const borderRadius = message.isLocal ? 'rounded-br-none' : 'rounded-bl-none';
 
   return (
