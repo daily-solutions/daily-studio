@@ -1,4 +1,5 @@
 import { ParticipantMenu } from '@/components/Room/Sidebar/People/ParticipantMenu';
+import { VisibilityMenu } from '@/components/Tile/VisibilityMenu';
 
 interface Props {
   sessionId: string;
@@ -7,6 +8,7 @@ interface Props {
 export function TileMenu({ sessionId }: Props) {
   return (
     <div className="absolute right-2 top-2">
+      <VisibilityMenu sessionId={sessionId} />
       <ParticipantMenu sessionId={sessionId} variant="secondary" />
     </div>
   );

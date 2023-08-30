@@ -38,7 +38,7 @@ function TileComponent({
 
   return (
     <AspectRatio
-      className={cn('relative rounded-md', noVideoTileColor, className)}
+      className={cn('group relative rounded-md', noVideoTileColor, className)}
       ratio={aspectRatio}
     >
       {state === 'off' ? (
