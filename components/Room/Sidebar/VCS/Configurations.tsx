@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/ui/Button';
 import { useToast } from '@/ui/useToast';
+import { Params } from '@daily-co/daily-vcs-web';
 
+import { Asset } from '@/types/asset';
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 import { useSyncParams } from '@/hooks/useSyncParams';
@@ -34,7 +36,7 @@ export function Configurations() {
   }, []);
 
   const handleApply = useCallback(
-    (config) => {
+    (config: { params: Params; assets: Asset[] }) => {
       const { params, assets } = config;
       if (params) updateParams(params, 'replace');
       if (assets) updateMeetingSessionData({ assets });

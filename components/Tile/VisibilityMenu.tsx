@@ -8,17 +8,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/ui/Tooltip';
-import { useParticipantProperty } from '@daily-co/daily-react';
+import { usePermissions } from '@daily-co/daily-react';
 
 import { useStage } from '@/hooks/useStage';
+import { useUserData } from '@/hooks/useUserData';
 
 export const VisibilityMenu = ({ sessionId }: { sessionId: string }) => {
-  const [userData, hasPresence] = useParticipantProperty(sessionId, [
-    'userData',
-    'permissions.hasPresence',
-  ]);
+  const { hasPresence } = usePermissions(sessionId);
+  const userData = useUserData(sessionId);
+
   const isOnStage = useMemo(
-    () => hasPresence && userData?.['onStage'],
+    () => hasPresence && userData?.onStage,
     [hasPresence, userData],
   );
 

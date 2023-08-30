@@ -1,7 +1,10 @@
 import { useCallback, useEffect } from 'react';
 import { useParams } from '@/states/params';
 import { useToast } from '@/ui/useToast';
-import { DailyUpdateStreamingCustomLayoutConfig } from '@daily-co/daily-js';
+import {
+  DailyEventObjectRecordingError,
+  DailyUpdateStreamingCustomLayoutConfig,
+} from '@daily-co/daily-js';
 import { useRecording } from '@daily-co/daily-react';
 import { dequal } from 'dequal';
 
@@ -20,8 +23,9 @@ export const useRecord = () => {
     updateRecording,
     stopRecording: dailyStopRecording,
   } = useRecording({
+    // @ts-expect-error bug in @daily-co/daily-react
     onRecordingError: useCallback(
-      (ev) => {
+      (ev: DailyEventObjectRecordingError) => {
         toast({
           title: 'Recording failed',
           description: ev.errorMsg,
@@ -38,10 +42,13 @@ export const useRecord = () => {
   const { participantIds } = useStage();
 
   const startRecording = useCallback(() => {
-    const session_assets = Object.values(assets ?? {}).reduce((acc, asset) => {
-      acc[`images/${asset.name}`] = asset.url;
-      return acc;
-    }, {});
+    const session_assets = Object.values(assets ?? {}).reduce(
+      (acc: { [key: string]: string }, asset) => {
+        acc[`images/${asset.name}`] = asset.url;
+        return acc;
+      },
+      {},
+    );
 
     const viewport = params?.['custom.viewport'];
     const { width, height } =

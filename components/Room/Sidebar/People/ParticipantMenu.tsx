@@ -19,6 +19,7 @@ import {
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useRMP } from '@/hooks/useRMP';
 import { useStage } from '@/hooks/useStage';
+import { useUserData } from '@/hooks/useUserData';
 
 interface Props {
   sessionId: string;
@@ -203,10 +204,8 @@ function RemoteMediaPlayerMenu() {
 }
 
 function StageVisibilityMenu({ sessionId }: { sessionId: string }) {
-  const [userData, hasPresence] = useParticipantProperty(sessionId, [
-    'userData',
-    'permissions.hasPresence',
-  ]);
+  const { hasPresence } = usePermissions(sessionId);
+  const userData = useUserData(sessionId);
 
   const { setStageVisibility } = useStage();
 

@@ -6,7 +6,8 @@ export const useIsMobile = () => {
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 767px)');
 
-    const handleChange = (event) => setMatches(event.matches);
+    const handleChange = (event: MediaQueryListEvent | MediaQueryList) =>
+      setMatches(event.matches);
     handleChange(mediaQuery);
 
     mediaQuery.addEventListener('change', handleChange);

@@ -8,7 +8,6 @@ import { useToast } from '@/ui/useToast';
 import { dequal } from 'dequal';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
-import { slugify } from '@/lib/slugify';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 
 export function VCSConfig() {
@@ -27,9 +26,10 @@ export function VCSConfig() {
 
     if (ilsConfig) parsedConfig = JSON.parse(ilsConfig);
 
+    const slug = name.trim().toLowerCase().replace(/ /g, '-');
     parsedConfig = {
       ...parsedConfig,
-      [slugify(name)]: {
+      [slug]: {
         name,
         config,
       },

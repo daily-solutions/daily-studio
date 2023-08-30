@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useParams } from '@/states/params';
 import { useDaily } from '@daily-co/daily-react';
 import { DailyVCSWebRenderer } from '@daily-co/daily-vcs-web';
+// @ts-ignore
 import * as comp from '@daily-co/vcs-composition-daily-baseline-web';
 import { dequal } from 'dequal';
 import useResizeObserver from 'use-resize-observer';
@@ -62,10 +63,13 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
         getAssetUrlCb,
         viewportSize: { w: 1280, h: 720 },
         defaultParams: params,
-        defaultAssets: Object.keys(assets ?? {}).reduce((acc, key) => {
-          acc[key] = assets[key].url;
-          return acc;
-        }, {}),
+        defaultAssets: Object.keys(assets ?? {}).reduce(
+          (acc: { [key: string]: string }, key) => {
+            acc[key] = assets[key].url;
+            return acc;
+          },
+          {},
+        ),
         participantIds: orderedParticipantIds,
         callbacks: {
           onStart() {
@@ -92,10 +96,13 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   useEffect(() => {
     if (!vcsCompRef.current) return;
 
-    const images = Object.keys(assets ?? {}).reduce((acc, key) => {
-      acc[key] = assets[key].url;
-      return acc;
-    }, {});
+    const images = Object.keys(assets ?? {}).reduce(
+      (acc: { [key: string]: string }, key) => {
+        acc[key] = assets[key].url;
+        return acc;
+      },
+      {},
+    );
 
     vcsCompRef.current.updateImageSources(images);
   }, [assets]);

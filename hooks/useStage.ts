@@ -16,6 +16,7 @@ import {
 } from '@daily-co/daily-react';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
+import { useUserData } from '@/hooks/useUserData';
 
 type RequestToJoinStage = {
   event: 'request-to-join-stage';
@@ -106,10 +107,8 @@ export const useStage = ({
   const isOwner = useIsOwner();
 
   const localSessionId = useLocalSessionId();
-  const [userName, userData] = useParticipantProperty(localSessionId, [
-    'user_name',
-    'userData',
-  ]);
+  const userName = useParticipantProperty(localSessionId, 'user_name');
+  const userData = useUserData();
   const { hasPresence } = usePermissions();
 
   const [isRequesting, setIsRequesting] = useIsRequesting();
@@ -447,6 +446,7 @@ export const useStage = ({
     filter: useCallback(
       (p: DailyParticipant) =>
         p.permissions.hasPresence &&
+        // @ts-ignore
         (p.userData?.['onStage'] ||
           p?.participantType === 'remote-media-player'),
       [],
@@ -457,6 +457,7 @@ export const useStage = ({
     filter: useCallback(
       (p: DailyParticipant) =>
         p.permissions.hasPresence &&
+        // @ts-ignore
         (p.userData?.['onStage'] ||
           p?.participantType === 'remote-media-player'),
       [],
@@ -468,7 +469,9 @@ export const useStage = ({
     filter: useCallback(
       (p: DailyParticipant) =>
         p.permissions.hasPresence &&
+        // @ts-ignore
         p.userData?.['acceptedToJoin'] &&
+        // @ts-ignore
         !p.userData?.['onStage'],
       [],
     ),

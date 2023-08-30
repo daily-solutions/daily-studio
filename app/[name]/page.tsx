@@ -1,10 +1,19 @@
 import React from 'react';
 import { config } from '@/config';
+import { ButtonProps } from '@/ui/Button';
 
 import { Header } from '@/components/Header';
 import { PrivilegeCard } from '@/components/Room/Privilege/PrivilegeCard';
 
-const privilegeOptions: any[] = [
+interface Privilege {
+  heading: string;
+  description: string;
+  buttonText: string;
+  buttonVariant: ButtonProps['variant'];
+  privilege: 'producer' | 'presenter' | 'viewer';
+}
+
+const privilegeOptions: Privilege[] = [
   {
     heading: 'Producer',
     description:

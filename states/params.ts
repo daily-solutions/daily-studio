@@ -19,6 +19,7 @@ export const useParams = (): [
     filter: useCallback(
       (p: DailyParticipant) =>
         p.permissions.hasPresence &&
+        // @ts-ignore
         (p.userData?.['onStage'] ||
           p?.participantType === 'remote-media-player'),
       [],

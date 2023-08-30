@@ -18,7 +18,9 @@ export function SubscriptionsListener() {
     (events: DailyEventObjectParticipant[]) => {
       if (!daily) return;
 
-      const updateParticipants = {};
+      const updateParticipants: {
+        [key: string]: { setSubscribedTracks: boolean | 'staged' };
+      } = {};
 
       events.forEach((event) => {
         const participant: DailyParticipant = event.participant;
@@ -41,6 +43,7 @@ export function SubscriptionsListener() {
           tracks?.[isRMP ? 'rmpVideo' : 'video']?.subscribed === 'staged';
 
         if (hasPresence) {
+          // @ts-ignore
           if (userData?.['onStage'] || isRMP) {
             if (isSubscribed) return;
             // If the participant is on stage, subscribe to their video

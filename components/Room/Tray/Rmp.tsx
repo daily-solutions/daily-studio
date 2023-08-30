@@ -5,6 +5,7 @@ import { Label } from '@/ui/Label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
 import { TrayButton } from '@/ui/TrayButton';
 import { useToast } from '@/ui/useToast';
+import { DailyEventObjectNonFatalError } from '@daily-co/daily-js';
 
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { useRMP } from '@/hooks/useRMP';
@@ -19,7 +20,7 @@ export const RMPPopover = () => {
     sessionId,
   } = useRMP({
     onError: useCallback(
-      (e) =>
+      (e: DailyEventObjectNonFatalError['errorMsg']) =>
         toast({
           title: 'Failed to start remote media player',
           description: e,

@@ -44,8 +44,7 @@ export function DailyClientProvider({
       }
       setCallObject(newCallObject);
       // attach callObject to window
-      window['callObject'] = newCallObject;
-
+      (window as any)['callObject'] = newCallObject;
       await newCallObject.preAuth({ url, token });
     };
 

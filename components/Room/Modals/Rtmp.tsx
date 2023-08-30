@@ -22,7 +22,7 @@ import {
 import { MeetingSessionState } from '@/types/meetingSessionState';
 import { useMeetingSessionState } from '@/hooks/useMeetingSessionState';
 
-const PLATFORMS = {
+const PLATFORMS: { [key: string]: string } = {
   Youtube: 'rtmp://a.rtmp.youtube.com/live2/',
   Facebook: 'rtmps://live-api-s.facebook.com:443/rtmp/',
   Mux: 'rtmps://global-live.mux.com:443/app/',

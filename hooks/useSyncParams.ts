@@ -28,7 +28,7 @@ export const useSyncParams = () => {
   });
 
   const updateParams = useCallback(
-    (param, type: 'replace' | 'merge' = 'merge') => {
+    (param: { [key: string]: any }, type: 'replace' | 'merge' = 'merge') => {
       if (!isOwner) return;
 
       setParams((prev) => {

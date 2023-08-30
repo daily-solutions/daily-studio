@@ -15,7 +15,7 @@ export function StageAppMessageListener() {
 
   const { appMessage } = useStage({
     onRequestToJoin: useCallback(
-      ({ sessionId, userName }) => {
+      ({ sessionId, userName }: { sessionId: string; userName: string }) => {
         if (sessionId === localSessionId) {
           toast({
             title: 'Request to join stage',
@@ -36,7 +36,7 @@ export function StageAppMessageListener() {
       [accept, isOwner, localSessionId, toast],
     ),
     onCancelRequestToJoin: useCallback(
-      ({ sessionId }) => {
+      ({ sessionId }: { sessionId: string }) => {
         if (sessionId === localSessionId) {
           toast({
             title: 'Cancel request to join stage',
@@ -66,7 +66,7 @@ export function StageAppMessageListener() {
       });
     }, [toast]),
     onStageVisibilityChange: useCallback(
-      (data) => {
+      (data: { event?: string }) => {
         const visible = data?.event === 'visible-on-stage';
         toast({
           title: visible

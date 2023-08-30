@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
-import { useMessages } from '@/states/messagesState';
+import { Message, useMessages } from '@/states/messagesState';
+import { DailyEventObjectAppMessage } from '@daily-co/daily-js';
 import { useAppMessage, useDaily, useDailyEvent } from '@daily-co/daily-react';
 
 const MAX_SYNC_TIME = 10000;
@@ -14,7 +15,7 @@ export function AppMessageListener() {
 
   const sendAppMessage = useAppMessage({
     onAppMessage: useCallback(
-      (ev) => {
+      (ev: DailyEventObjectAppMessage) => {
         if (ev.data?.event !== 'message' || !daily) return;
 
         switch (ev.data.type) {
@@ -31,7 +32,7 @@ export function AppMessageListener() {
             setIsWaitingForSync(false);
             if (intervalRef.current) clearInterval(intervalRef.current);
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            const newMsgs = ev.data.messages.map((message) => ({
+            const newMsgs = ev.data.messages.map((message: Message) => ({
               ...message,
               fromId: ev.fromId,
               isLocal: false,

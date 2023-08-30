@@ -98,7 +98,9 @@ export function ReceiveSettingsListener() {
   const updateReceiveSettings = useCallback(async () => {
     if (!daily || daily.meetingState() !== 'joined-meeting') return;
 
-    const updatedReceiveSettings = {};
+    const updatedReceiveSettings: {
+      [key: string]: { video: { layer: number } };
+    } = {};
     const receiveSettings = await daily.getReceiveSettings();
 
     const layer = Math.min(
