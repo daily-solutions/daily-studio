@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from '@/states/params';
 import { useDaily } from '@daily-co/daily-react';
 import { DailyVCSWebRenderer } from '@daily-co/daily-vcs-web';
 import * as comp from '@daily-co/vcs-composition-daily-baseline-web';
 import { dequal } from 'dequal';
+import useResizeObserver from 'use-resize-observer';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
-import { useAspectRatio } from '@/hooks/useAspectRatio';
 
 import { useMeetingSessionState } from './useMeetingSessionState';
 import { useStage } from './useStage';
@@ -32,25 +32,22 @@ interface Props {
 export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   const daily = useDaily();
   const vcsCompRef = useRef<DailyVCSWebRenderer | null>(null);
-  const outputElementRef = useRef<HTMLDivElement | null>(null);
+  const vcsContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [params] = useParams();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
   const { orderedParticipantIds } = useStage();
 
-  const { width, height } = useAspectRatio({
+  useResizeObserver({
     ref: viewportRef,
-    aspectRatio,
-    onResize: useCallback(({ width, height }) => {
-      if (!outputElementRef.current) return;
-
-      outputElementRef.current.style.width = `${width}px`;
-      outputElementRef.current.style.height = `${height}px`;
-    }, []),
+    onResize: useCallback(
+      () => vcsCompRef.current?.['rootDisplaySizeChanged'](),
+      [],
+    ),
   });
 
   const createVCSView = useCallback(() => {
-    if (!outputElementRef.current || !width || !height || !daily) return;
+    if (!vcsContainerRef.current || !daily) return;
 
     if (vcsCompRef.current) {
       vcsCompRef.current.stop();
@@ -60,10 +57,10 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
     vcsCompRef.current = new DailyVCSWebRenderer(
       daily,
       comp,
-      outputElementRef.current,
+      vcsContainerRef.current,
       {
         getAssetUrlCb,
-        viewportSize: { w: width, h: height },
+        viewportSize: { w: 1280, h: 720 },
         defaultParams: params,
         defaultAssets: Object.keys(assets ?? {}).reduce((acc, key) => {
           acc[key] = assets[key].url;
@@ -84,7 +81,7 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
       },
     );
     vcsCompRef.current.start();
-  }, [width, height, daily, params, orderedParticipantIds, assets]);
+  }, [daily, params, orderedParticipantIds, assets]);
 
   useEffect(() => {
     if (vcsCompRef.current) return;
@@ -126,5 +123,5 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
     vcsCompRef.current?.updateAspectRatio(aspectRatio);
   }, [aspectRatio]);
 
-  return { outputElementRef, vcsCompRef };
+  return { vcsCompRef, vcsContainerRef };
 };
