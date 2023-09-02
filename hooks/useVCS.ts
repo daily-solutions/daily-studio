@@ -5,7 +5,6 @@ import { DailyVCSWebRenderer } from '@daily-co/daily-vcs-web';
 // @ts-ignore
 import * as comp from '@daily-co/vcs-composition-daily-baseline-web';
 import { dequal } from 'dequal';
-import useResizeObserver from 'use-resize-observer';
 
 import { MeetingSessionState } from '@/types/meetingSessionState';
 
@@ -38,14 +37,6 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
   const [params] = useParams();
   const [{ assets }] = useMeetingSessionState<MeetingSessionState>();
   const { orderedParticipantIds } = useStage();
-
-  useResizeObserver({
-    ref: viewportRef,
-    onResize: useCallback(
-      () => vcsCompRef.current?.['rootDisplaySizeChanged'](),
-      [],
-    ),
-  });
 
   const createVCSView = useCallback(() => {
     if (!vcsContainerRef.current || !daily) return;
@@ -129,6 +120,11 @@ export const useVCS = ({ aspectRatio, viewportRef }: Props) => {
 
     vcsCompRef.current?.updateAspectRatio(aspectRatio);
   }, [aspectRatio]);
+
+  useEffect(() => {
+    const vcsComp = vcsCompRef.current;
+    return () => vcsComp?.stop();
+  }, [vcsCompRef]);
 
   return { vcsCompRef, vcsContainerRef };
 };

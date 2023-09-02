@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import {
   DESKTOP_ASPECT_RATIO,
   DESKTOP_PORTRAIT_ASPECT_RATIO,
@@ -17,15 +17,10 @@ export function VcsPreview() {
     else return DESKTOP_ASPECT_RATIO;
   }, [params]);
 
-  const { vcsCompRef, vcsContainerRef } = useVCS({
+  const { vcsContainerRef } = useVCS({
     viewportRef: divRef,
     aspectRatio,
   });
-
-  useEffect(() => {
-    const vcsComp = vcsCompRef.current;
-    return () => vcsComp?.stop();
-  }, [vcsCompRef]);
 
   return (
     <div
