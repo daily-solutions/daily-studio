@@ -5,17 +5,22 @@ import {
 } from '@/constants/aspectRatio';
 import { useParams } from '@/states/params';
 
+import { cn } from '@/lib/utils';
 import { useVCS } from '@/hooks/useVCS';
 
 export function VcsPreview() {
   const divRef = useRef<HTMLDivElement>(null);
   const [params] = useParams();
 
+  const isPortrait = useMemo(
+    () => params?.['custom.viewport'] === 'portrait',
+    [params],
+  );
+
   const aspectRatio = useMemo(() => {
-    if (params?.['custom.viewport'] === 'portrait')
-      return DESKTOP_PORTRAIT_ASPECT_RATIO;
+    if (isPortrait) return DESKTOP_PORTRAIT_ASPECT_RATIO;
     else return DESKTOP_ASPECT_RATIO;
-  }, [params]);
+  }, [isPortrait]);
 
   const { vcsContainerRef } = useVCS({
     viewportRef: divRef,
@@ -29,7 +34,10 @@ export function VcsPreview() {
     >
       <div
         ref={vcsContainerRef}
-        className="VCSRenderer bg-black"
+        className={cn(
+          'VCSRenderer bg-black',
+          isPortrait ? 'portrait' : 'landscape',
+        )}
         style={{ aspectRatio }}
       />
     </div>
