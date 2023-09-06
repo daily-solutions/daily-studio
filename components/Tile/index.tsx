@@ -6,6 +6,7 @@ import { DailyVideo, useParticipantProperty } from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
 import { NoVideoTile } from '@/components/Tile/NoVideoTile';
+import { TileBorder } from '@/components/Tile/TileBorder';
 import { TileUserName } from '@/components/Tile/TileUserName';
 
 const TileMenu = dynamic(() =>
@@ -28,10 +29,10 @@ function TileComponent({
   aspectRatio = DESKTOP_ASPECT_RATIO,
   videoFit = 'contain',
 }: Props) {
-  const [videoState, participantType] = useParticipantProperty(sessionId, [
-    'tracks.video.state',
-    'participantType',
-  ]);
+  const [videoState, participantType, isLocal] = useParticipantProperty(
+    sessionId,
+    ['tracks.video.state', 'participantType', 'local'],
+  );
 
   const state =
     participantType === 'remote-media-player' ? 'playable' : videoState;
@@ -64,6 +65,7 @@ function TileComponent({
         </>
       )}
       {showMenu && <TileMenu sessionId={sessionId} />}
+      {!isLocal && <TileBorder sessionId={sessionId} />}
     </AspectRatio>
   );
 }
