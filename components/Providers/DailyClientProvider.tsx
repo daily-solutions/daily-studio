@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
 import { DailyProvider } from '@daily-co/daily-react';
 
@@ -18,11 +19,14 @@ export function DailyClientProvider({
   token = '',
   requiresToken = false,
 }: React.PropsWithChildren<DailyClientProps>) {
+  const pathname = usePathname();
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
 
   useEffect(() => {
     const handleCreateCallObject = async () => {
       if (callObject || !roomName || (requiresToken && !token)) return;
+
+      const role = pathname.split('/').pop();
 
       const url = `https://${process.env.NEXT_PUBLIC_DAILY_DOMAIN}.daily.co/${roomName}`;
       let newCallObject: DailyCall | null = null;
@@ -32,7 +36,7 @@ export function DailyClientProvider({
           token,
           strictMode: true,
           sendSettings: {
-            video: 'quality-optimized',
+            video: role === 'producer' ? 'quality-optimized' : 'default-video',
           },
           dailyConfig: {
             useDevicePreferenceCookies: true,
@@ -49,7 +53,7 @@ export function DailyClientProvider({
     };
 
     handleCreateCallObject();
-  }, [callObject, requiresToken, roomName, token]);
+  }, [callObject, requiresToken, roomName, pathname, token]);
 
   if (!callObject) return <Loader />;
 
