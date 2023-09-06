@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList } from '@/ui/Tabs';
 import { usePermissions } from '@daily-co/daily-react';
 
+import { useIsOwner } from '@/hooks/useIsOwner';
 import { useStage } from '@/hooks/useStage';
 import { Participants } from '@/components/Room/Stage/Participants';
 import { TabHeader } from '@/components/Room/Stage/TabHeader';
@@ -10,8 +11,9 @@ export function Stage() {
   const [tab, setTab] = useState('stage');
   const { participantIds, waitingParticipantIds } = useStage();
   const { hasPresence } = usePermissions();
+  const isOwner = useIsOwner();
 
-  if (!hasPresence) return null;
+  if (!isOwner && !hasPresence) return null;
 
   return (
     <Tabs
