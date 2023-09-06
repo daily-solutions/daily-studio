@@ -75,7 +75,11 @@ export const useLiveStream = () => {
         },
       },
     });
-  }, [assets, dailyStartLiveStreaming, params, participantIds, rtmps]);
+    toast({
+      title: 'Starting live-stream',
+      description: 'Your stream will be started in a few seconds',
+    });
+  }, [assets, dailyStartLiveStreaming, params, participantIds, rtmps, toast]);
 
   useEffect(() => {
     if (!isLiveStreaming || !isOwner) return;

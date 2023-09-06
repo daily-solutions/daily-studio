@@ -72,7 +72,11 @@ export const useRecord = () => {
         },
       },
     });
-  }, [assets, dailyStartRecording, params, participantIds]);
+    toast({
+      title: 'Starting recording',
+      description: 'Your recording will be started in a few seconds',
+    });
+  }, [assets, dailyStartRecording, params, participantIds, toast]);
 
   useEffect(() => {
     if (!isRecording || !isOwner) return;
