@@ -11,7 +11,7 @@ import {
   useThrottledDailyEvent,
 } from '@daily-co/daily-react';
 
-import { VIDEO_QUALITY_LAYERS } from '@/components/Room/Listeners/ReceiveSettingsListener';
+import { VIDEO_QUALITY_LAYERS } from '@/components/Listeners/ReceiveSettingsListener';
 
 export function SendSettingsListener() {
   const lastSendSettingsMaxQualityRef = useRef<number>(2);

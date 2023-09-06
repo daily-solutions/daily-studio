@@ -1,5 +1,5 @@
 import { ParticipantMenu } from '@/components/Room/Sidebar/People/ParticipantMenu/ParticipantMenu';
-import { VisibilityMenu } from '@/components/Tile/VisibilityMenu';
+import { VisibilityMenu } from '@/components/Room/Tile/VisibilityMenu';
 
 interface Props {
   sessionId: string;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { DailyAudio } from '@daily-co/daily-react';
-import { Tray } from 'components/Room/Tray';
 
 import { Modals } from '@/components/Room/Modals';
 import { Sidebar } from '@/components/Room/Sidebar';
 import { Stage } from '@/components/Room/Stage';
+import { Tray } from '@/components/Room/Tray';
 import { LayoutSwitchMenu } from '@/components/Room/Tray/LayoutSwitchMenu';
-import { VcsPreview } from '@/components/Vcs';
+import { VcsPreview } from '@/components/Room/Vcs';
 
 export function Room() {
   return (

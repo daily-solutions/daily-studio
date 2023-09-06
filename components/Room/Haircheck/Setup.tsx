@@ -16,9 +16,9 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { Devices } from '@/components/Room/Devices';
 import { DeviceError } from '@/components/Room/Haircheck/DeviceError';
+import { Tile } from '@/components/Room/Tile';
 import { Audio } from '@/components/Room/Tray/Audio';
 import { Video } from '@/components/Room/Tray/Video';
-import { Tile } from '@/components/Tile';
 
 export function Setup({ onJoin = () => {} } = {}) {
   const daily = useDaily();

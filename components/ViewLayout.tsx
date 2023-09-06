@@ -14,8 +14,8 @@ import {
 } from '@daily-co/daily-react';
 
 import { Header } from '@/components/Header';
+import { Listeners } from '@/components/Listeners';
 import { Loader } from '@/components/Loader';
-import { Listeners } from '@/components/Room/Listeners';
 
 const Haircheck = dynamic(
   () => import('@/components/Room/Haircheck').then((mod) => mod.Haircheck),

@@ -17,11 +17,11 @@ import { Textarea } from '@/ui/TextArea';
 import { Param } from '@/types/params';
 import { useSyncParams } from '@/hooks/useSyncParams';
 
-type Props = {
+type FormFieldProps = {
   field: Param;
 };
 
-export const FormField = ({ field }: Props) => {
+export const FormField = ({ field }: FormFieldProps) => {
   const [params] = useParams();
   const { updateParams } = useSyncParams();
 
@@ -241,3 +241,17 @@ export const FormField = ({ field }: Props) => {
     return render();
   return null;
 };
+
+interface Props {
+  fields: Param[];
+}
+
+export function FormMaker({ fields }: Props) {
+  return (
+    <div className="flex flex-col gap-y-6 p-4">
+      {fields.map((field) => (
+        <FormField field={field} key={field.id} />
+      ))}
+    </div>
+  );
+}

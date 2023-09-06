@@ -5,12 +5,12 @@ import { AspectRatio } from '@/ui/AspectRatio';
 import { DailyVideo, useParticipantProperty } from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
-import { NoVideoTile } from '@/components/Tile/NoVideoTile';
-import { TileBorder } from '@/components/Tile/TileBorder';
-import { TileUserName } from '@/components/Tile/TileUserName';
+import { NoVideoTile } from '@/components/Room/Tile/NoVideoTile';
+import { TileBorder } from '@/components/Room/Tile/TileBorder';
+import { TileUserName } from '@/components/Room/Tile/TileUserName';
 
 const TileMenu = dynamic(() =>
-  import('@/components/Tile/TileMenu').then((mod) => mod.TileMenu),
+  import('@/components/Room/Tile/TileMenu').then((mod) => mod.TileMenu),
 );
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {

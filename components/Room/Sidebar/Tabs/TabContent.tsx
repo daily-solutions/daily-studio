@@ -17,7 +17,7 @@ import { Loading } from '@/components/Room/Sidebar/Loading';
 import { TabHeading } from '@/components/Room/Sidebar/Tabs/TabHeading';
 
 const FormMaker = dynamic(
-  () => import('@/components/FormMaker').then((mod) => mod.FormMaker),
+  () => import('@/ui/FormMaker').then((mod) => mod.FormMaker),
   {
     loading: () => <Loading />,
   },

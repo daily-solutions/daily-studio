@@ -4,7 +4,7 @@ import { useVirtual } from '@tanstack/react-virtual';
 
 import { cn } from '@/lib/utils';
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { Tile } from '@/components/Tile';
+import { Tile } from '@/components/Room/Tile';
 
 interface Props {
   participantIds: string[];
