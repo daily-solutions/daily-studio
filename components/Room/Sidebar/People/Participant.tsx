@@ -5,7 +5,7 @@ import { useParticipantProperty } from '@daily-co/daily-react';
 
 import { cn } from '@/lib/utils';
 import { useIsOwner } from '@/hooks/useIsOwner';
-import { ParticipantMenu } from '@/components/Room/Sidebar/People/ParticipantMenu';
+import { ParticipantMenu } from '@/components/Room/Sidebar/People/ParticipantMenu/ParticipantMenu';
 
 const MUTED_STATES = ['interrupted', 'off', 'blocked'];
 

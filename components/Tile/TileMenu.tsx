@@ -1,4 +1,4 @@
-import { ParticipantMenu } from '@/components/Room/Sidebar/People/ParticipantMenu';
+import { ParticipantMenu } from '@/components/Room/Sidebar/People/ParticipantMenu/ParticipantMenu';
 import { VisibilityMenu } from '@/components/Tile/VisibilityMenu';
 
 interface Props {
