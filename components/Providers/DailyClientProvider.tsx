@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
 import { DailyProvider } from '@daily-co/daily-react';
 
@@ -20,6 +20,8 @@ export function DailyClientProvider({
   requiresToken = false,
 }: React.PropsWithChildren<DailyClientProps>) {
   const pathname = usePathname();
+  const params = useSearchParams();
+
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
 
   useEffect(() => {
@@ -54,6 +56,21 @@ export function DailyClientProvider({
 
     handleCreateCallObject();
   }, [callObject, requiresToken, roomName, pathname, token]);
+
+  useEffect(() => {
+    if (!callObject) return;
+
+    const isRobot = params.get('robot');
+    if (isRobot) {
+      const role = pathname.split('/').pop() as string;
+      if (['producer', 'presenter'].includes(role)) {
+        callObject.setUserData(
+          role === 'producer' ? { onStage: true } : { acceptedToJoin: true },
+        );
+      }
+      callObject.join();
+    }
+  }, [callObject, params, pathname]);
 
   if (!callObject) return <Loader />;
 
