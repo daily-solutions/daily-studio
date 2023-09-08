@@ -24,7 +24,11 @@ export function Participants({ participantIds }: Props) {
   if (participantIds.length === 0) {
     return (
       <div className="flex items-center justify-center">
-        <EmptyState icon="people" title="No participants in the waiting list" />
+        <EmptyState
+          className="mt-1"
+          icon="people"
+          title="No participants in the waiting list"
+        />
       </div>
     );
   }
@@ -50,7 +54,6 @@ export function Participants({ participantIds }: Props) {
           >
             <Tile
               sessionId={participantIds[virtualColumn.index]}
-              noVideoTileColor="bg-background"
               showMenu={isOwner}
             />
           </div>

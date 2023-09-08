@@ -15,7 +15,6 @@ const TileMenu = dynamic(() =>
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   sessionId: string;
-  noVideoTileColor?: string;
   showMenu?: boolean;
   aspectRatio?: number;
   videoFit?: 'contain' | 'cover';
@@ -24,7 +23,6 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 function TileComponent({
   sessionId,
   className,
-  noVideoTileColor = 'bg-muted',
   showMenu = false,
   aspectRatio = DESKTOP_ASPECT_RATIO,
   videoFit = 'contain',
@@ -39,11 +37,11 @@ function TileComponent({
 
   return (
     <AspectRatio
-      className={cn('group relative rounded-md', noVideoTileColor, className)}
+      className={cn('group relative rounded-md', className)}
       ratio={aspectRatio}
     >
       {state === 'off' ? (
-        <NoVideoTile sessionId={sessionId} bgColor={noVideoTileColor} />
+        <NoVideoTile sessionId={sessionId} />
       ) : (
         <>
           <DailyVideo

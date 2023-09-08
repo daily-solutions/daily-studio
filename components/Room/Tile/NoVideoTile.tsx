@@ -1,12 +1,7 @@
 import { useMemo } from 'react';
 import { useParticipantProperty } from '@daily-co/daily-react';
 
-export function NoVideoTile({
-  sessionId,
-}: {
-  sessionId: string;
-  bgColor?: string;
-}) {
+export function NoVideoTile({ sessionId }: { sessionId: string }) {
   const [userName, isLocal, participantType] = useParticipantProperty(
     sessionId,
     ['user_name', 'local', 'participantType'],

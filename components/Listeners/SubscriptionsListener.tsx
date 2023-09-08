@@ -3,6 +3,7 @@ import { config } from '@/config';
 import {
   DailyEventObjectParticipant,
   DailyParticipant,
+  DailyParticipantUpdateOptions,
 } from '@daily-co/daily-js';
 import {
   useDaily,
@@ -19,7 +20,7 @@ export function SubscriptionsListener() {
       if (!daily) return;
 
       const updateParticipants: {
-        [key: string]: { setSubscribedTracks: boolean | 'staged' };
+        [key: string]: DailyParticipantUpdateOptions;
       } = {};
 
       events.forEach((event) => {
