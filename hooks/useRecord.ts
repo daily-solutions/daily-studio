@@ -23,7 +23,6 @@ export const useRecord = () => {
     updateRecording,
     stopRecording: dailyStopRecording,
   } = useRecording({
-    // @ts-expect-error bug in @daily-co/daily-react
     onRecordingError: useCallback(
       (ev: DailyEventObjectRecordingError) => {
         toast({

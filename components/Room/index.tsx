@@ -21,7 +21,7 @@ export function Room() {
         <Sidebar />
       </div>
       <Modals />
-      <DailyAudio />
+      <DailyAudio autoSubscribeActiveSpeaker />
     </div>
   );
 }
