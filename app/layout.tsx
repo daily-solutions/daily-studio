@@ -4,6 +4,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import { config } from '@/config';
+import { Toaster } from '@/ui/Toaster';
 
 import { cn } from '@/lib/utils';
 import { RecoilProvider } from '@/components/Providers';
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: React.PropsWithChildren<{}>) {
       >
         <RecoilProvider>
           <div className="h-full overflow-hidden">{children}</div>
+          <Toaster />
         </RecoilProvider>
       </body>
     </html>

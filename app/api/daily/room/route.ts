@@ -19,11 +19,13 @@ export async function POST() {
   };
 
   const dailyRes = await fetch('https://api.daily.co/v1/rooms', options);
-  const { name, url, error } = await dailyRes.json();
-  if (error) {
-    return new Response(JSON.stringify(error.message), { status: 500 });
+
+  if (dailyRes.status >= 400) {
+    const error = await dailyRes.json();
+    return new Response(JSON.stringify(error), { status: dailyRes.status });
   }
 
+  const { name, url } = await dailyRes.json();
   return new Response(
     JSON.stringify({
       name,
