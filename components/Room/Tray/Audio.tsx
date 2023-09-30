@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import {
   Tooltip,
   TooltipContent,
@@ -8,28 +8,37 @@ import {
 import { TrayButton } from '@/ui/TrayButton';
 import {
   useDaily,
+  useDevices,
   useLocalSessionId,
   useParticipantProperty,
   usePermissions,
 } from '@daily-co/daily-react';
 import { tinykeys } from 'tinykeys';
 
-interface Props {
-  disabled?: boolean;
-}
+import { isTrackOff } from '@/lib/isTrackOff';
 
-export function Audio({ disabled = false }: Props) {
+export function Audio() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const audio = useParticipantProperty(localSessionId, 'audio');
-
+  const audioState = useParticipantProperty(localSessionId, 'tracks.audio');
   const { canSendAudio } = usePermissions();
+  const { hasMicError, micState } = useDevices();
+
+  const muted = useMemo(
+    () => isTrackOff(audioState) || hasMicError,
+    [audioState, hasMicError],
+  );
+
+  const disabled = useMemo(
+    () => hasMicError || micState !== 'granted',
+    [hasMicError, micState],
+  );
 
   const toggleMic = useCallback(() => {
     if (!daily || !canSendAudio) return;
 
-    daily.setLocalAudio(!audio);
-  }, [audio, canSendAudio, daily]);
+    daily.setLocalAudio(muted);
+  }, [canSendAudio, daily, muted]);
 
   useEffect(() => {
     const unsubscribe = tinykeys(window, {
@@ -50,10 +59,10 @@ export function Audio({ disabled = false }: Props) {
       <Tooltip>
         <TooltipTrigger asChild>
           <TrayButton
-            muted={!audio}
-            onClick={() => daily?.setLocalAudio(!audio)}
-            text={audio ? 'Mute' : 'Unmute'}
-            icon={audio ? 'micOn' : 'micOff'}
+            muted={muted}
+            onClick={toggleMic}
+            text={muted ? 'Unmute' : 'Mute'}
+            icon={muted ? 'micOff' : 'micOn'}
             disabled={disabled}
           />
         </TooltipTrigger>

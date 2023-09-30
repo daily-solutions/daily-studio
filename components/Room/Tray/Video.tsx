@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import {
   Tooltip,
   TooltipContent,
@@ -8,28 +8,37 @@ import {
 import { TrayButton } from '@/ui/TrayButton';
 import {
   useDaily,
+  useDevices,
   useLocalSessionId,
   useParticipantProperty,
   usePermissions,
 } from '@daily-co/daily-react';
 import { tinykeys } from 'tinykeys';
 
-interface Props {
-  disabled?: boolean;
-}
+import { isTrackOff } from '@/lib/isTrackOff';
 
-export function Video({ disabled = false }: Props) {
+export function Video() {
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
-  const video = useParticipantProperty(localSessionId, 'video');
-
+  const videoState = useParticipantProperty(localSessionId, 'tracks.video');
   const { canSendVideo } = usePermissions();
+  const { camState, hasCamError } = useDevices();
+
+  const muted = useMemo(
+    () => isTrackOff(videoState) || hasCamError,
+    [videoState, hasCamError],
+  );
+
+  const disabled = useMemo(
+    () => hasCamError || camState !== 'granted',
+    [camState, hasCamError],
+  );
 
   const toggleCamera = useCallback(() => {
     if (!daily || !canSendVideo) return;
 
-    daily.setLocalVideo(!video);
-  }, [canSendVideo, daily, video]);
+    daily.setLocalVideo(muted);
+  }, [canSendVideo, daily, muted]);
 
   useEffect(() => {
     const unsubscribe = tinykeys(window, {
@@ -50,10 +59,10 @@ export function Video({ disabled = false }: Props) {
       <Tooltip>
         <TooltipTrigger asChild>
           <TrayButton
-            muted={!video}
+            muted={muted}
             onClick={toggleCamera}
-            text={video ? 'Turn off' : 'Turn on'}
-            icon={video ? 'videoOn' : 'videoOff'}
+            text={muted ? 'Turn on' : 'Turn off'}
+            icon={muted ? 'videoOff' : 'videoOn'}
             disabled={disabled}
           />
         </TooltipTrigger>

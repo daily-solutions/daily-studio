@@ -11,11 +11,10 @@ import {
   useMeetingState,
 } from '@daily-co/daily-react';
 
-import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useIsOwner } from '@/hooks/useIsOwner';
 import { Devices } from '@/components/Room/Devices';
-import { DeviceError } from '@/components/Room/Haircheck/DeviceError';
+import { DeviceStates } from '@/components/Room/Haircheck/DeviceStates';
 import { Tile } from '@/components/Room/Tile';
 import { Audio } from '@/components/Room/Tray/Audio';
 import { Video } from '@/components/Room/Tray/Video';
@@ -27,7 +26,7 @@ export function Setup({ onJoin = () => {} } = {}) {
   const isOwner = useIsOwner();
   const isMobile = useIsMobile();
 
-  const { hasCamError, hasMicError, camState, micState } = useDevices();
+  const { camState, micState } = useDevices();
 
   useEffect(() => {
     if (!daily || meetingState === 'joined-meeting') return;
@@ -49,50 +48,35 @@ export function Setup({ onJoin = () => {} } = {}) {
     onJoin?.();
   }, [daily, isOwner, meetingState, onJoin]);
 
-  const permissionsGranted = useMemo(
+  const hasMicAndCam = useMemo(
     () => camState === 'granted' && micState === 'granted',
     [camState, micState],
-  );
-
-  const videoDisabled = useMemo(
-    () => hasCamError || camState !== 'granted',
-    [camState, hasCamError],
-  );
-
-  const audioDisabled = useMemo(
-    () => hasMicError || micState !== 'granted',
-    [hasMicError, micState],
   );
 
   return (
     <div>
       <div className="border-b">
-        {permissionsGranted ? (
+        {hasMicAndCam ? (
           <Tile
             videoFit="cover"
             sessionId={localSessionId}
             aspectRatio={isMobile ? MOBILE_ASPECT_RATIO : DESKTOP_ASPECT_RATIO}
           />
         ) : (
-          <DeviceError />
+          <DeviceStates />
         )}
       </div>
-      <div
-        className={cn(
-          'flex items-center justify-between p-2',
-          permissionsGranted && 'border-b',
-        )}
-      >
+      <div className="flex items-center justify-between p-2">
         <div className="flex items-center justify-center">
-          <Video disabled={videoDisabled} />
-          <Audio disabled={audioDisabled} />
+          <Video />
+          <Audio />
         </div>
-        <Button disabled={!permissionsGranted} onClick={handleJoin}>
+        <Button disabled={!hasMicAndCam} onClick={handleJoin}>
           Join
         </Button>
       </div>
-      {permissionsGranted && (
-        <div className="p-4">
+      {hasMicAndCam && (
+        <div className="border-t p-4">
           <Devices />
         </div>
       )}

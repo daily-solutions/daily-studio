@@ -11,7 +11,7 @@ import { NameSetup } from '@/components/Room/Haircheck/NameSetup';
 import { Setup } from '@/components/Room/Haircheck/Setup';
 
 export function Haircheck() {
-  const [state, setState] = useState<'setup' | 'haircheck'>('setup');
+  const [state, setState] = useState<'name-setup' | 'haircheck'>('name-setup');
   const localSessionId = useLocalSessionId();
   const { hasPresence } = usePermissions();
   const daily = useDaily();
