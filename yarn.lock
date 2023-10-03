@@ -231,10 +231,10 @@
   resolved "https://registry.yarnpkg.com/@daily-co/daily-vcs-web/-/daily-vcs-web-0.0.1-alpha.9.tgz#6da9ac6d52149c83757ecc7026076e6ffdf57f26"
   integrity sha512-0IzS/zNn/isFBw2+iE+0YyEHKWha/OnfKYKp1F1KqmN/ev3o1/hEZGmtMV/lNLJeesR+5R/nEU58yxSxZiHz2w==
 
-"@daily-co/vcs-composition-daily-baseline-web@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.7.tgz#17779d50199e99ad580a6ef5041d02659531a3f9"
-  integrity sha512-khctifeqy8hzJRmV9FeKrtFIghwkGZ238yIwEC5pBj3Ar8g4BJmmXz1+ibgvRmNS3oWSPLd/UC7iBB9e25bU5Q==
+"@daily-co/vcs-composition-daily-baseline-web@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@daily-co/vcs-composition-daily-baseline-web/-/vcs-composition-daily-baseline-web-0.1.8.tgz#158994da6e0975f1b67339ee33aaafc6284cc5ae"
+  integrity sha512-ByZXv1y3p+FXwrLRRWt0vrReqBVfx47J2zQtN7otVXFmgNGyBdKwKoMFgToYzcfEOzIxx5JLeoh5q1+QUUkc5g==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
