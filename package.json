@@ -16,7 +16,7 @@
     "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
-    "@daily-co/daily-js": "^0.51.1",
+    "@daily-co/daily-js": "^0.52.0",
     "@daily-co/daily-react": "^0.12.0",
     "@daily-co/daily-vcs-web": "^0.0.1-alpha.9",
     "@daily-co/vcs-composition-daily-baseline-web": "^0.1.8",
