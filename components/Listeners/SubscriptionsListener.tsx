@@ -50,7 +50,7 @@ export function SubscriptionsListener() {
             // If the participant is on stage, subscribe to their video
             updateParticipants[session_id] = { setSubscribedTracks: true };
           } else {
-            if (isSubscribed || isStaged) return;
+            if ((hasLocalPresence && isSubscribed) || isStaged) return;
             updateParticipants[session_id] = {
               setSubscribedTracks: hasLocalPresence ? true : 'staged',
             };

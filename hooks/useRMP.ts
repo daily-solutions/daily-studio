@@ -35,7 +35,9 @@ export const useRMP = ({ onError = () => {} }: Props = {}) => {
     useCallback(
       (ev) => {
         setRMP({
+          // @ts-ignore
           isPlaying: ev.remoteMediaPlayerState === 'playing',
+          // @ts-ignore
           isPaused: ev.remoteMediaPlayerState === 'paused',
           sessionId: ev.session_id,
         });
