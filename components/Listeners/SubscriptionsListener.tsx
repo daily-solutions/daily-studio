@@ -5,15 +5,13 @@ import {
   DailyParticipant,
   DailyParticipantUpdateOptions,
 } from '@daily-co/daily-js';
-import {
-  useDaily,
-  usePermissions,
-  useThrottledDailyEvent,
-} from '@daily-co/daily-react';
+import { useDaily, useThrottledDailyEvent } from '@daily-co/daily-react';
+
+import { useIsOwner } from '@/hooks/useIsOwner';
 
 export function SubscriptionsListener() {
   const daily = useDaily();
-  const { hasPresence: hasLocalPresence } = usePermissions();
+  const isLocalOwner = useIsOwner();
 
   const handleSubscriptions = useCallback(
     (events: DailyEventObjectParticipant[]) => {
@@ -50,12 +48,20 @@ export function SubscriptionsListener() {
             // If the participant is on stage, subscribe to their video
             updateParticipants[session_id] = { setSubscribedTracks: true };
           } else {
-            if ((hasLocalPresence && isSubscribed) || isStaged) return;
-            updateParticipants[session_id] = {
-              setSubscribedTracks: hasLocalPresence ? true : 'staged',
-            };
+            // If the participant isn't on stage
+            // - subscribe if local user is owner
+            // - otherwise 'stage' the subscription
+            if (isLocalOwner) {
+              if (isSubscribed) return;
+              updateParticipants[session_id] = { setSubscribedTracks: true };
+            } else {
+              if (isStaged) return;
+              updateParticipants[session_id] = {
+                setSubscribedTracks: 'staged',
+              };
+            }
           }
-        } else if (isSubscribed) {
+        } else if (isSubscribed || isStaged) {
           // If the participant doesn't have presence, unsubscribe from their video
           updateParticipants[session_id] = { setSubscribedTracks: false };
         }
@@ -64,7 +70,7 @@ export function SubscriptionsListener() {
       if (Object.keys(updateParticipants).length === 0) return;
       daily.updateParticipants(updateParticipants);
     },
-    [daily, hasLocalPresence],
+    [daily, isLocalOwner],
   );
 
   useThrottledDailyEvent(
