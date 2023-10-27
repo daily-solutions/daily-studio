@@ -10,6 +10,7 @@ export async function POST() {
       properties: {
         enable_mesh_sfu: true,
         enable_recording: 'cloud',
+        enable_terse_logging: true,
         permissions: {
           hasPresence: false,
           canSend: false,
